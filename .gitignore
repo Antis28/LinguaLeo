@@ -1,0 +1,91 @@
+#https://unity3d.com/learn/tutorials/topics/production/mastering-unity-project-folder-structure-version-control-systems?playlist=17117
+#=============== 
+#Unity generated
+#===============
+Temp/
+Library/
+
+# ======================================= #
+# Unity3D Generated File On Crash Reports
+# ======================================= #
+sysinfo.txt
+
+#=====================================
+#Visual Studio / MonoDevelop generated
+#=====================================
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+/*.csproj
+*.pidb
+*.suo
+/*.sln
+*.user
+*.unityproj
+*.booproj
+
+*.orig
+*.app
+*.exe
+*.*_data
+
+#============
+#OS generated
+#============
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+[Tt]humbs.db
+
+# ======= #
+# Builds
+# ======= #
+/_Build
+*.apk
+*.unitypackage
+
+# ======================= #
+# Генерация файлов игрой
+# ======================= #
+/Data
+
+# ======= #
+# Backups
+# ======= #
+/!_ScriptsTemp
+
+# ====== #
+# Other
+# ====== #
+DragoDog.png
+ParticleSpiralEffect.cs
+
+*.zip
+*.7z
+*.rar
+*.svg
+#*.xml
+#*.txt
+#*.cd
+*.stackdump
+LICENSE.txt
+[Ll]icense*.txt
+
+
+Assets/NULLcode Studio/
+/Assets/1/
+
