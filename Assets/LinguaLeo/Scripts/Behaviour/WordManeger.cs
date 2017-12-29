@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
+using URandom = UnityEngine.Random;
 
 public class WordManeger : MonoBehaviour
 {
@@ -11,14 +15,20 @@ public class WordManeger : MonoBehaviour
     public Text wordText;
     public ButtonComponent[] buttonText;
 
-    public string folder = "Russian"; // подпапка в Resources, для чтения
+    public string folder = "Base"; // подпапка в Resources, для чтения
 
-    private string fileName, lastName;
-    private List<Dialogue> node;
-    private Dialogue dialogue;
-    private Answer answer;
+    [SerializeField]
+    private string fileName;
+    private string lastName;
+
+    private List<QuestionLeo> nodes;
+    //private Dialogue dialogue;
+    //private Answer answer;
 
     private int id;
+    private const int TASK_COUNT = 10;
+    private const int ANSWER_COUNT = 5;
+    private bool exit;
 
     void Awake()
     {
@@ -38,7 +48,7 @@ public class WordManeger : MonoBehaviour
 
     void SetNextNode( Button button, int i ) // событие, для перенаправления на другой узел диалога
     {
-        button.onClick.AddListener(() => BuildDialogue(i));
+        button.onClick.AddListener(() => BuildTask(i));
         print("событие, для перенаправления на другой узел диалога");
     }
 
@@ -57,9 +67,9 @@ public class WordManeger : MonoBehaviour
     int FindNodeByID( int i )
     {
         int j = 0;
-        foreach( Dialogue d in node )
+        foreach( var quest in nodes )
         {
-            if( d.id == i )
+            if( quest.id == i )
                 return j;
             j++;
         }
@@ -67,12 +77,15 @@ public class WordManeger : MonoBehaviour
         return -1;
     }
 
-    void BuildDialogue( int current )
+    void BuildTask( int current )
     {
         ClearDialogue();
+        if( exit )
+            return;
 
         int j = FindNodeByID(current);
-
+        // добавление слова для перевола
+        wordText.text = nodes[j].questWord;
         if( j < 0 )
         {
             Debug.LogError(this + " в диалоге [" + fileName + ".xml] отсутствует или указан неверно идентификатор узла.");
@@ -80,113 +93,145 @@ public class WordManeger : MonoBehaviour
         }
 
         // добавление текста NPC
-        wordText.text = node[j].npcText;
-
-        for( int i = 0; i < node[j].answer.Count; i++ )
+        wordText.text = nodes[j].questWord;
+        int toNode = j + 1;
+        if( TASK_COUNT == toNode )
         {
-
-            AddToList(node[j].answer[i].exit, node[j].answer[i].toNode, node[j].answer[i].text, node[j].answer[i].questStatus, node[j].answer[i].questName, true); // текст игрока
-
+            toNode = 0;
+            exit = true;
         }
 
-        EventSystem.current.SetSelectedGameObject(this.gameObject); // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
+        for( int i = 0; i < nodes[j].answers.Count; i++ )
+        {
+            AddToList(toNode, nodes[j].answers[i].ruWord, nodes[j].answers[i].isTrue);
+        }
 
+
+        // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
+        EventSystem.current.SetSelectedGameObject(this.gameObject);
     }
 
-    void AddToList( bool exit, int toNode, string text, int questStatus, string questName, bool isActive )
+    void BuildDialogue( int current )
+    {
+        //ClearDialogue();
+
+        //int j = FindNodeByID(current);
+
+        //if( j < 0 )
+        //{
+        //    Debug.LogError(this + " в диалоге [" + fileName + ".xml] отсутствует или указан неверно идентификатор узла.");
+        //    return;
+        //}
+
+        //// добавление текста NPC
+        //wordText.text = node[j].questWord;
+
+        //for( int i = 0; i < node[j].answer.Count; i++ )
+        //{
+
+        //    AddToList(node[j].answer[i].exit, node[j].answer[i].toNode, node[j].answer[i].text, node[j].answer[i].questStatus, node[j].answer[i].questName, true); // текст игрока
+
+        //}
+    }
+
+    void AddToList( int toNode, string text, bool isTrue )
     {
         buttonText[id].text.text = text;
-        buttonText[id].button.interactable = isActive;
 
         SetNextNode(buttonText[id].button, toNode);
-
-        if( questStatus != 0 )
-            SetQuestStatus(buttonText[id].button, questStatus, questName);
-
         id++;
     }
 
     void Load()
     {
-        //if( lastName == fileName ) // проверка, чтобы не загружать уже загруженный файл
-        //{
-        //    BuildDialogue(0);
-        //    return;
-        //}
-
-        node = new List<Dialogue>();
+        if( lastName == fileName ) // проверка, чтобы не загружать уже загруженный файл
+        {
+            BuildTask(0);
+            return;
+        }
 
         TextAsset binary = Resources.Load<TextAsset>(folder + "/" + fileName);
+        if( binary == null )
+        {
+            Debug.LogWarning("File not found");
+            return;
+        }
+
+        XmlSerializer Serializer = new XmlSerializer(typeof(WordCollection));
+
+        TextReader reader = new StringReader(binary.text);
+        var result = Serializer.Deserialize(reader);
+        reader.Close();
+
+        WordCollection words = result as WordCollection;
+
+        nodes = new List<QuestionLeo>(TASK_COUNT);
+        for( int i = 0; i < TASK_COUNT; i++ )
+        {
+            // Слово для перевода
+            WordLeo word = words.GetWord();
+            QuestionLeo ql = GeneratorTask(i, word, words.GetWords());
+            nodes.Add(ql);
+        }
 
 
-
-        // Слово для перевода
-        GeneratorDialogue1();
-        GeneratorDialogue2();
-
-        BuildDialogue(0);
+        //GeneratorDialogue1();
+        BuildTask(0);
     }
 
-    private void GeneratorDialogue1()
+    private QuestionLeo GeneratorTask( int id, WordLeo word, List<WordLeo> alternativeWord )
     {
-        dialogue = new Dialogue();
-        dialogue.answer = new List<Answer>();
+        QuestionLeo questionLeo = new QuestionLeo();
+        questionLeo.answers = new List<AnswerLeo>();
 
-        dialogue.npcText = "sun";
-        dialogue.id = 0;
+        questionLeo.questWord = word.engWord;
+        questionLeo.id = id;
 
-        GenerateAnswer("qqqqqqqqqqqq", 1);
-        dialogue.answer.Add(answer);
-        GenerateAnswer("wwwwwwwwwwww", 1);
-        dialogue.answer.Add(answer);
-        GenerateAnswer("eeeeeeeeeee", 1);
-        dialogue.answer.Add(answer);
-        GenerateAnswer("rrrrrrrrrr", 1);
-        dialogue.answer.Add(answer);
-        GenerateAnswer("ttttttttttt", 1);
-        dialogue.answer.Add(answer);
+        List<AnswerLeo> sequential = CreateAnswers(alternativeWord);
+        sequential.Add(CreateAnswer(word, true));
 
-        node.Add(dialogue);
+        int index;
+        AnswerLeo answerLeo;
+        List<int> lastIndex = new List<int>(ANSWER_COUNT);
+
+        for( int i = 0; i < ANSWER_COUNT; i++ )
+        {
+            int rndValue = -1;
+            do
+            {
+                rndValue = URandom.Range(0, ANSWER_COUNT);
+            } while( lastIndex.Contains(rndValue) );
+            lastIndex.Add(rndValue);
+
+            questionLeo.answers.Add(sequential[rndValue]);
+        }
+
+        return questionLeo;
     }
 
-    private void GeneratorDialogue2()
+    private AnswerLeo CreateAnswer( WordLeo item, bool isTrue = false )
     {
-        dialogue = new Dialogue();
-        dialogue.answer = new List<Answer>();
-
-        dialogue.npcText = "Star";
-        dialogue.id = 1;
-
-        GenerateAnswer("zzzzzzzz");
-        dialogue.answer.Add(answer);
-        GenerateAnswer("xxxxxxxxx");
-        dialogue.answer.Add(answer);
-        GenerateAnswer("ccccccccccc");
-        dialogue.answer.Add(answer);
-        GenerateAnswer("vvvvvvvvvvv");
-        dialogue.answer.Add(answer);
-        GenerateAnswer("bbbbbbbbbbbb");
-        dialogue.answer.Add(answer);
-
-        node.Add(dialogue);
+        AnswerLeo al = new AnswerLeo();
+        al.ruWord = item.ruWord;
+        al.engWord = item.engWord;
+        al.isTrue = isTrue;
+        return al;
     }
 
-    private void GenerateAnswer( string text, int toNode = 0 )
+    private List<AnswerLeo> CreateAnswers( List<WordLeo> items )
     {
-        answer = new Answer();
-        answer.text = text;
-        answer.toNode = toNode;
-        answer.exit = false;
-        answer.questStatus = 2;
-        answer.questValue = 3;
-        answer.questValueGreater = 0;
-        answer.questName = "TestQuest";
+        List<AnswerLeo> list = new List<AnswerLeo>();
+        foreach( var item in items )
+        {
+            list.Add(CreateAnswer(item));
+        }
+        return list;
     }
 
     void ClearDialogue()
     {
         id = 0;
-
+        wordText.text = "";
         foreach( ButtonComponent b in buttonText )
         {
             b.text.text = string.Empty;
@@ -214,5 +259,29 @@ public class WordManeger : MonoBehaviour
             return value;
         }
         return false;
+    }
+}
+
+class UniqRandom
+{
+    readonly int MAX_COUNT;
+    List<int> lastIndex;
+
+    UniqRandom( int max )
+    {
+        MAX_COUNT = max;
+        lastIndex = new List<int>(MAX_COUNT);
+    }
+
+    int nextRandom()
+    {
+        int rndValue = -1;
+
+        do
+        {
+            rndValue = URandom.Range(0, MAX_COUNT);
+        } while( lastIndex.Contains(rndValue) );
+
+        return rndValue;
     }
 }

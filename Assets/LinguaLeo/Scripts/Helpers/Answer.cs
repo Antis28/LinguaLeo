@@ -8,4 +8,6 @@ class Answer
     public string text, questName;
     public int toNode, questValue, questValueGreater, questStatus;
     public bool exit;
+    public bool isTrue;
+
 }

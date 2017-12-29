@@ -89,3 +89,6 @@ LICENSE.txt
 Assets/NULLcode Studio/
 /Assets/1/
 
+/Assets/Resources/
+/packages
+/Assets/*.*
