@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -13,6 +11,7 @@ public class WordManeger : MonoBehaviour
 {
 
     public Text wordText;
+
     public ButtonComponent[] buttons;
 
     public string folder = "Base"; // подпапка в Resources, для чтения
@@ -25,7 +24,9 @@ public class WordManeger : MonoBehaviour
     //private Dialogue dialogue;
     //private Answer answer;
 
-    private int id;
+    private int buttonID;
+    private int questionID;
+
     private const int TASK_COUNT = 10;
     private const int ANSWER_COUNT = 5;
     private bool exit;
@@ -50,6 +51,61 @@ public class WordManeger : MonoBehaviour
     {
         button.onClick.AddListener(() => BuildTask(i));
         print("событие, для перенаправления на другой узел диалога");
+    }
+
+    void SetShowResult(Button button, bool istrue) // событие, для перенаправления на другой узел диалога
+    {
+        button.onClick.AddListener(() => ShowResult(button, istrue));
+    }
+
+    private void ShowResult(Button button, bool istrue)
+    {
+        if (istrue)
+        {
+            SetColors(button, Color.green);
+            print("Верный ответ");
+        }
+        if (!istrue)
+        {
+            foreach (var item in buttons)
+            {
+                SetColors(item.button, Color.red);
+            }
+
+            SetColors(FindTrueButton(), Color.green);
+
+            print("Ложный ответ");
+        }
+
+        SetNextQuestion();
+    }
+
+    private Button FindTrueButton()
+    {
+        foreach (var item in buttons)
+        {
+            bool trueWord = item.text.text == nodes[questionID].questWord.ruWord;
+            if (trueWord)
+            {
+                return item.button;
+            }
+        }
+        return null;
+    }
+
+    private void SetColors(Button button, Color color)
+    {
+        var colors = button.colors;
+        colors.normalColor = color;
+        colors.highlightedColor = color;
+        button.colors = colors;
+    }
+    private void ResetColors()
+    {
+        foreach (var button in buttons)
+        {
+            SetColors(button.button, Color.white);
+        }
     }
 
     void SetExitDialogue(Button button) // событие, для выхода из диалога
@@ -99,9 +155,7 @@ public class WordManeger : MonoBehaviour
         questionLeo.answers = words.GetRandomWords(ANSWER_COUNT);
 
         int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
-
         questionLeo.questWord = questionLeo.answers[indexOfQuestWord];
-        questionLeo.questWord.isTrue = true;
 
         return questionLeo;
     }
@@ -112,15 +166,14 @@ public class WordManeger : MonoBehaviour
         if (exit)
             return;
 
-        int j = FindNodeByID(current);
-
-        if (j < 0)
+        questionID = FindNodeByID(current);
+        if (questionID < 0)
         {
             Debug.LogError(this + " в диалоге [" + fileName + ".xml] отсутствует или указан неверно идентификатор узла.");
             return;
         }
 
-        int toNode = j + 1;
+        int toNode = questionID + 1;
         if (TASK_COUNT == toNode)
         {
             toNode = 0;
@@ -128,27 +181,46 @@ public class WordManeger : MonoBehaviour
         }
 
         // добавление слова для перевода
-        wordText.text = nodes[j].questWord.engWord;
+        wordText.text = nodes[questionID].questWord.engWord;
         // добавление вариантов для перевода
-        for (int i = 0; i < nodes[j].answers.Count; i++)
+        for (int i = 0; i < nodes[questionID].answers.Count; i++)
         {
-            AddToList(toNode, nodes[j].answers[i].ruWord, nodes[j].answers[i].isTrue);
+            string ruWord = nodes[questionID].answers[i].ruWord;
+            AddToList(toNode, ruWord);
         }
-
-
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
     }
 
-    private void AddToList(int toNode, string text, bool isTrue)
+    private void AddToList(int toNode, string text)
     {
-        buttons[id].text.text = text;
+        buttons[buttonID].text.text = text;
 
-        SetNextNode(buttons[id].button, toNode);
-        id++;
+        bool isTrue = CheckAnswer(buttons[buttonID].button, nodes[questionID]);
+
+        SetShowResult(buttons[buttonID].button, isTrue);
+
+        buttonID++;
+
+        //SetNextNode(buttons[id].button, toNode);
     }
 
-   
+    private bool CheckAnswer(Button button, QuestionLeo questionLeo)
+    {
+        return buttons[buttonID].text.text == questionLeo.questWord.ruWord;
+    }
+
+    void SetNextQuestion()
+    {
+        buttonID = 0;
+        for (int i = 0; i < nodes[questionID].answers.Count; i++)
+        {
+            SetNextNode(buttons[buttonID].button, questionID + 1);
+            buttonID++;
+        }
+    }
+
+
 
     /// <summary>
     /// Поиск ноды по ID 
@@ -173,7 +245,8 @@ public class WordManeger : MonoBehaviour
     /// </summary>
     void ClearDialogue()
     {
-        id = 0;
+        ResetColors();
+        buttonID = 0;
         wordText.text = "";
         foreach (ButtonComponent b in buttons)
         {
