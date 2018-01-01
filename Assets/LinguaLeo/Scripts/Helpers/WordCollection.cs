@@ -8,14 +8,13 @@ using System.Xml.Serialization;
 [XmlRoot("Root")]
 public class WordCollection
 {
-    private const int MAX_CAPACITY = 4;
-    private Random random = new Random();
-
     [XmlArray("LeoWords")]
     [XmlArrayItem("word")]
     public List<WordLeo> words;
 
-    public WordLeo GetWord()
+    private Random random = new Random();
+        
+    public WordLeo GetRandomWord()
     {
         int randomIndex = random.Next(words.Count);
 
@@ -23,12 +22,12 @@ public class WordCollection
         return word;
     }
 
-    public List<WordLeo> GetWords()
+    public List<WordLeo> GetRandomWords(int Count)
     {
-        List<WordLeo> words = new List<WordLeo>(MAX_CAPACITY);
-        for( int i = 0; i < MAX_CAPACITY; i++ )
+        List<WordLeo> words = new List<WordLeo>(Count);
+        for( int i = 0; i < Count; i++ )
         {
-            words.Add(GetWord());
+            words.Add(GetRandomWord());
         }
         return words;
     }
