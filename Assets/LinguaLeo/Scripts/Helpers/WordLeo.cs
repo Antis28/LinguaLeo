@@ -23,9 +23,6 @@ public class WordLeo
     [XmlAttribute]
     public string context2;
 
-    [XmlIgnore]
-    public bool isTrue;
-
     override
     public string ToString()
     {
