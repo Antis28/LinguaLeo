@@ -7,6 +7,6 @@ using System.Text;
 class QuestionLeo
 {
     public int id;
-    public string questWord;
-    public List<AnswerLeo> answers;
+    public WordLeo questWord;
+    public List<WordLeo> answers;
 }
