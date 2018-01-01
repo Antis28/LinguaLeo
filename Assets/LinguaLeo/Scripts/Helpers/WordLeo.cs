@@ -19,7 +19,16 @@ public class WordLeo
     [XmlAttribute]
     public string audioURL;
     [XmlAttribute]
-    public string AddedDate;
+    public string addedDate;
     [XmlAttribute]
     public string context2;
+
+    [XmlIgnore]
+    public bool isTrue;
+
+    override
+    public string ToString()
+    {
+        return engWord;
+    }
 }
