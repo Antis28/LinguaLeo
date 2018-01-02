@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -29,11 +31,14 @@ public class WordManeger : MonoBehaviour
 
     private const int TASK_COUNT = 10;
     private const int ANSWER_COUNT = 5;
+    private const string DONT_KNOW = "Не знаю :(";
+    private const string NEXT_WORD = "Следующее →";
     private bool exit;
 
     void Awake()
     {
         buttons = FindObjectsOfType<ButtonComponent>();
+        Array.Sort(buttons, new ReverseComparer());
     }
 
     public void Start()
@@ -67,16 +72,13 @@ public class WordManeger : MonoBehaviour
         }
         if (!istrue)
         {
-            foreach (var item in buttons)
-            {
-                SetColors(item.button, Color.red);
-            }
+            SetColors(button, Color.red);
 
             SetColors(FindTrueButton(), Color.green);
 
             print("Ложный ответ");
         }
-
+        FillingEnterButton(false);
         SetNextQuestion();
     }
 
@@ -182,14 +184,49 @@ public class WordManeger : MonoBehaviour
 
         // добавление слова для перевода
         wordText.text = nodes[questionID].questWord.engWord;
-        // добавление вариантов для перевода
+
+        FillingButtonsWithOptions(toNode);
+        FillingEnterButton(true);
+
+        // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
+        EventSystem.current.SetSelectedGameObject(this.gameObject);
+    }
+
+    private void FillingEnterButton(bool isFirst)
+    {
+        if (isFirst)
+        {
+            // Отдельная кнопка "не знаю"
+            ButtonComponent extraB = buttons[buttonID];
+            extraB.text.text = DONT_KNOW;
+            extraB.button.GetComponentInChildren<Text>().color = Color.black;
+            SetColors(extraB.button, Color.white);
+
+            SetShowResult(buttons[buttonID].button, false);
+        }
+        else
+        {
+            // Отдельная кнопка "следующее"
+            ButtonComponent extraB = buttons[buttonID];
+            extraB.text.text = NEXT_WORD;
+            extraB.button.GetComponentInChildren<Text>().color = Color.white;
+
+            SetColors(extraB.button, new Color(68f/255, 145/255f, 207f/255));
+            SetNextNode(buttons[buttonID].button, questionID + 1);
+        }
+    }
+
+    /// <summary>
+    /// добавление вариантов для перевода
+    /// </summary>
+    /// <param name="toNode"></param>
+    private void FillingButtonsWithOptions(int toNode)
+    {
         for (int i = 0; i < nodes[questionID].answers.Count; i++)
         {
             string ruWord = nodes[questionID].answers[i].ruWord;
             AddToList(toNode, ruWord);
         }
-        // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
-        EventSystem.current.SetSelectedGameObject(this.gameObject);
     }
 
     private void AddToList(int toNode, string text)
@@ -201,8 +238,6 @@ public class WordManeger : MonoBehaviour
         SetShowResult(buttons[buttonID].button, isTrue);
 
         buttonID++;
-
-        //SetNextNode(buttons[id].button, toNode);
     }
 
     private bool CheckAnswer(Button button, QuestionLeo questionLeo)
@@ -299,5 +334,22 @@ class UniqRandom
         } while (lastIndex.Contains(rndValue));
 
         return rndValue;
+    }
+}
+
+public class ReverseComparer : IComparer
+{
+    public int Compare(object x, object y)
+    {
+        ButtonComponent lVal = x as ButtonComponent;
+        ButtonComponent rValt = y as ButtonComponent;
+
+        return Compare(lVal.gameObject, rValt.gameObject);
+    }
+
+    // Call CaseInsensitiveComparer.Compare with the parameters reversed.
+    public int Compare(GameObject x, GameObject y)
+    {
+        return (new CaseInsensitiveComparer()).Compare(x.name, y.name);
     }
 }
