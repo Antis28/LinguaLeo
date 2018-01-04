@@ -80,12 +80,15 @@ public class WordManeger : MonoBehaviour
             SetColors(FindTrueButton(), Color.green);
 
             print("Ложный ответ");
-        }
+        }        
+        ClearListeners();
         FillingEnterButton(false);
         SetNextQuestion();
-        string url = nodes[questionID].questWord.imageURL;
-        ShowImage(Converter(url));
-        
+    }
+
+    private void SayWord(string file)
+    {
+        GameManager.audioPlayer.SayWord(ConverterUrlToName(file));
     }
 
     private Button FindTrueButton()
@@ -194,6 +197,9 @@ public class WordManeger : MonoBehaviour
         FillingButtonsWithOptions(toNode);
         FillingEnterButton(true);
 
+        ShowImage(nodes[questionID].questWord.imageURL);
+        SayWord(nodes[questionID].questWord.audioURL);
+
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
     }
@@ -264,26 +270,13 @@ public class WordManeger : MonoBehaviour
     private void ShowImage(string fileName)
     {
         string foloder = "!Pict";
-        Sprite sprite = Resources.Load<Sprite>(foloder + "/" + fileName);
-        print(foloder + "/" + fileName);
-        print(sprite);
+        Sprite sprite = Resources.Load<Sprite>(foloder + "/" + ConverterUrlToName(fileName));
         wordImage.sprite = sprite;
         wordImage.preserveAspect = true;
     }
     private void HideImage()
     {
         wordImage.sprite = null;
-    }
-
-
-    string Converter(string url)
-    {
-        //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
-        string patern = @"\d+.png$";
-        Regex rg = new Regex(patern, RegexOptions.IgnoreCase);
-        Match mat = rg.Match(url);
-        
-        return Path.GetFileNameWithoutExtension(mat.Value);
     }
 
     /// <summary>
@@ -316,13 +309,18 @@ public class WordManeger : MonoBehaviour
         foreach (ButtonComponent b in buttons)
         {
             b.text.text = string.Empty;
-            b.rect.sizeDelta = new Vector2(b.rect.sizeDelta.x, 0);
-            b.rect.anchoredPosition = new Vector2(b.rect.anchoredPosition.x, 0);
+            b.button.onClick.RemoveAllListeners();
+        }
+    }
+    void ClearListeners()
+    {
+        foreach (ButtonComponent b in buttons)
+        {
             b.button.onClick.RemoveAllListeners();
         }
     }
 
-    int GetINT(string text)
+        int GetINT(string text)
     {
         int value;
         if (int.TryParse(text, out value))
@@ -340,6 +338,17 @@ public class WordManeger : MonoBehaviour
             return value;
         }
         return false;
+    }
+
+    string ConverterUrlToName(string url)
+    {
+        //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
+        //string url = "http://contentcdn.lingualeo.com/uploads/picture/96-631152008.mp3";
+        string patern = @"(\d+.png$)|(\d+-\d+.mp3$)";
+        Regex rg = new Regex(patern, RegexOptions.IgnoreCase);
+        Match mat = rg.Match(url);
+
+        return Path.GetFileNameWithoutExtension(mat.Value);
     }
 }
 
