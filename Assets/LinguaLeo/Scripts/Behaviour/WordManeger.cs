@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Net;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,10 +11,11 @@ using UnityEngine.UI;
 
 using URandom = UnityEngine.Random;
 
+
 public class WordManeger : MonoBehaviour
 {
-
     public Text wordText;
+    public Image wordImage;
 
     public ButtonComponent[] buttons;
 
@@ -38,7 +41,7 @@ public class WordManeger : MonoBehaviour
     void Awake()
     {
         buttons = FindObjectsOfType<ButtonComponent>();
-        Array.Sort(buttons, new ReverseComparer());
+        Array.Sort(buttons, new MyComparer());
     }
 
     public void Start()
@@ -80,6 +83,9 @@ public class WordManeger : MonoBehaviour
         }
         FillingEnterButton(false);
         SetNextQuestion();
+        string url = nodes[questionID].questWord.imageURL;
+        ShowImage(Converter(url));
+        
     }
 
     private Button FindTrueButton()
@@ -255,7 +261,30 @@ public class WordManeger : MonoBehaviour
         }
     }
 
+    private void ShowImage(string fileName)
+    {
+        string foloder = "!Pict";
+        Sprite sprite = Resources.Load<Sprite>(foloder + "/" + fileName);
+        print(foloder + "/" + fileName);
+        print(sprite);
+        wordImage.sprite = sprite;
+        wordImage.preserveAspect = true;
+    }
+    private void HideImage()
+    {
+        wordImage.sprite = null;
+    }
 
+
+    string Converter(string url)
+    {
+        //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
+        string patern = @"\d+.png$";
+        Regex rg = new Regex(patern, RegexOptions.IgnoreCase);
+        Match mat = rg.Match(url);
+        
+        return Path.GetFileNameWithoutExtension(mat.Value);
+    }
 
     /// <summary>
     /// Поиск ноды по ID 
@@ -280,6 +309,7 @@ public class WordManeger : MonoBehaviour
     /// </summary>
     void ClearDialogue()
     {
+        HideImage();
         ResetColors();
         buttonID = 0;
         wordText.text = "";
@@ -337,7 +367,7 @@ class UniqRandom
     }
 }
 
-public class ReverseComparer : IComparer
+public class MyComparer : IComparer
 {
     public int Compare(object x, object y)
     {
