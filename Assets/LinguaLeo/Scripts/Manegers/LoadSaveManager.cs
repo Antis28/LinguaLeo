@@ -1,3 +1,3 @@
-﻿public class LoadSaveManager
+﻿public class LoadSaveManager : UnityEngine.Object
 {
 }
