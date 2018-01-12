@@ -10,8 +10,8 @@ using UnityEngine.SceneManagement;
 public class NotificationsManager : MonoBehaviour
 {
 
-    private Dictionary<string, List<Component>> _listeners =
-                                new Dictionary<string, List<Component>>();
+    private Dictionary<GAME_EVENTS, List<MonoBehaviour>> _listeners =
+                                new Dictionary<GAME_EVENTS, List<MonoBehaviour>>();
     public int CountListeners
     {
         get { return _listeners.Count; }
@@ -23,11 +23,11 @@ public class NotificationsManager : MonoBehaviour
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="notificationName"></param>
-    public void AddListener(Component sender, string notificationName)
+    public void AddListener(MonoBehaviour sender, GAME_EVENTS notificationName)
     {
         //Add listener to dictionary
         if (!_listeners.ContainsKey(notificationName))
-            _listeners.Add(notificationName, new List<Component>());
+            _listeners.Add(notificationName, new List<MonoBehaviour>());
 
         //Add object to listener list for this notification
         _listeners[notificationName].Add(sender);
@@ -38,16 +38,19 @@ public class NotificationsManager : MonoBehaviour
     /// Function to post a notification to a listener -
     /// Функция отправки уведомлений слушателю
     /// </summary>
-    public void PostNotification(Component sender, string notificationName)
+    public void PostNotification(Component sender, GAME_EVENTS notificationName)
     {
         //If no key in dictionary exists, then exit
         if (!_listeners.ContainsKey(notificationName))
             return;
         //Else post notification to all matching listener‘s -  Уведомлять о новых сообщениях всем соответствующим слушателям
-        foreach (Component listener in _listeners[notificationName])
+        foreach (Observer listener in _listeners[notificationName])
         {
-            if (listener)
-                listener.SendMessage(notificationName, sender, SendMessageOptions.DontRequireReceiver);
+            if (listener != null)
+                //listener.SendMessage(notificationName, sender, SendMessageOptions.DontRequireReceiver);
+                listener.OnNotify(sender, notificationName);
+            else
+                Debug.LogError("listener == null");
         }
     }
 
@@ -57,17 +60,17 @@ public class NotificationsManager : MonoBehaviour
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="notificationName"></param>
-    public void RemoveListener(Component sender, string notificationName)
+    public void RemoveListener(Component sender, GAME_EVENTS notificationName)
     {
         //If no key in dictionary exists, then exit
         if (!_listeners.ContainsKey(notificationName))
             return;
 
-        List<Component> listListeners = _listeners[notificationName];
+        List<MonoBehaviour> listListeners = _listeners[notificationName];
         int senderID = sender.GetInstanceID();
 
         //Cycle through listeners and identify component, and then remove 
-        //Проведите цикл прослушивания и идентифицируйте компонент, а затем удалите
+        //Проведите цикл прослушивающих и идентифицируйте компонент, а затем удалите
         for (int i = listListeners.Count - 1; i >= 0; i--)
         {
             int currentID = listListeners[i].GetInstanceID();
@@ -84,10 +87,10 @@ public class NotificationsManager : MonoBehaviour
     /// </summary>
     public void RemoveRedundancies()
     {
-        Dictionary<string, List<Component>> tmpListeners =
-                               new Dictionary<string, List<Component>>();
+        Dictionary<GAME_EVENTS, List<MonoBehaviour>> tmpListeners =
+                               new Dictionary<GAME_EVENTS, List<MonoBehaviour>>();
 
-        foreach (KeyValuePair<string, List<Component>> item in _listeners)
+        foreach (var item in _listeners)
         {
             // Cycle through all listener objects in list, remove null objects 
             // Циклический просмотр всех объектов-слушателей в списке, удаление нулевых объектов
@@ -136,4 +139,7 @@ public enum GAME_EVENTS
     PowerupCollected,
     SaveGamePrepare,
     WeaponChange,
+
+    CorrectAnswer,
+    NonCorrectAnswer,
 }
