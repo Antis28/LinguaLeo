@@ -88,7 +88,7 @@ public class WordManeger : MonoBehaviour
 
     private void SayWord(string file)
     {
-        GameManager.audioPlayer.SayWord(ConverterUrlToName(file));
+        GameManager.AudioPlayer.SayWord(ConverterUrlToName(file));
     }
 
     private Button FindTrueButton()
