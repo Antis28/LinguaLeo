@@ -58,7 +58,7 @@ public class WordManeger : MonoBehaviour
     void SetNextNode(Button button, int i) // событие, для перенаправления на другой узел диалога
     {
         button.onClick.AddListener(() => BuildTask(i));
-        print("событие, для перенаправления на другой узел диалога");
+        //print("событие, для перенаправления на другой узел диалога");
     }
 
     void SetShowResult(Button button, bool istrue) // событие, для перенаправления на другой узел диалога
@@ -71,15 +71,18 @@ public class WordManeger : MonoBehaviour
         if (istrue)
         {
             SetColors(button, Color.green);
-            print("Верный ответ");
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.CorrectAnswer);
+           
         }
         if (!istrue)
         {
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.NonCorrectAnswer);
+
             SetColors(button, Color.red);
 
             SetColors(FindTrueButton(), Color.green);
 
-            print("Ложный ответ");
+            
         }        
         ClearListeners();
         FillingEnterButton(false);
@@ -175,7 +178,12 @@ public class WordManeger : MonoBehaviour
     {
         ClearDialogue();
         if (exit)
+        {
+            print("ScoreValue = " + ScoreKeeper.ScoreValue);
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.Exit);
             return;
+        }
+           
 
         questionID = FindNodeByID(current);
         if (questionID < 0)
@@ -183,7 +191,7 @@ public class WordManeger : MonoBehaviour
             Debug.LogError(this + " в диалоге [" + fileName + ".xml] отсутствует или указан неверно идентификатор узла.");
             return;
         }
-
+        GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
         int toNode = questionID + 1;
         if (TASK_COUNT == toNode)
         {
