@@ -28,8 +28,8 @@ public class AudioPlayer : MonoBehaviour
     {
         string folder = "!Audio";
         sayClip = Resources.Load<AudioClip>(folder + "/" + fileName);
-        print(folder + "/" + fileName);
-        print(sayClip);
+        //print(folder + "/" + fileName);
+        //print(sayClip);
         Music.PlayOneShot(sayClip);
     }
     public void RepeatWord()
