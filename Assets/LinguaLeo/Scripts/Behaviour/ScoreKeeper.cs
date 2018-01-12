@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class ScoreKeeper : MonoBehaviour, Observer {
 
-    Text ScoreValueText;
-    static int score;
+    private static int score;
+    private readonly int currentScore = 1;
 
     public static int ScoreValue
     {
@@ -25,14 +25,12 @@ public class ScoreKeeper : MonoBehaviour, Observer {
     // Use this for initialization
     void Start () {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.NonCorrectAnswer);
-
+        Reset();
     }
 
-    public void Score(int points )
+    public void AddScore(int points )
     {
         ScoreValue += points;
-        UpdateScore();
     }  
 
     public static void Reset()
@@ -40,18 +38,14 @@ public class ScoreKeeper : MonoBehaviour, Observer {
         ScoreValue = 0;
     }
 
-    private void UpdateScore()
-    {
-        if( ScoreValueText )
-            ScoreValueText.text = ScoreValue.ToString();
-    }
-
     public void OnNotify(Component sender, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
             case GAME_EVENTS.CorrectAnswer:
-                ScoreValue++;
+                AddScore(currentScore);
+                print("Верный ответ");
+                GameManager.Notifications.PostNotification(this, GAME_EVENTS.UpdateScore);
                 break;
         }
     }
