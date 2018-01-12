@@ -142,4 +142,7 @@ public enum GAME_EVENTS
 
     CorrectAnswer,
     NonCorrectAnswer,
+    UpdateScore,
+    BuildTask,
+    Exit,
 }
