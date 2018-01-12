@@ -1,16 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 using UnityEngine.UI;
 
 //Component for sending and receiving  
 [RequireComponent(typeof(NotificationsManager))]
 [RequireComponent(typeof(ScoreKeeper))]
 [RequireComponent(typeof(AudioPlayer))]
+[RequireComponent(typeof(LevelManeger))]
+
 public class GameManager : MonoBehaviour
 {
+    //public static Scene lastScene = SceneManager.GetActiveScene();
+
     //Internal reference to single active instance of object - for singleton behaviour
     private static GameManager instance = null;
     //Internal reference to notifications object
@@ -23,6 +27,9 @@ public class GameManager : MonoBehaviour
 
     //Internal reference to notifications object
     private static ScoreKeeper scoreKeeper = null;
+
+    //Internal reference to notifications object
+    private static LevelManeger levelManeger = null;
 
     //--------------------------------------------------------------------------------------
     //C# property to retrieve currently active instance of object, if any
@@ -96,6 +103,20 @@ public class GameManager : MonoBehaviour
                 scoreKeeper = instance.GetComponent<ScoreKeeper>();                
             }
             return scoreKeeper;
+
+        }
+    }
+
+    public static LevelManeger LevelManeger
+    {
+        get
+        {
+            if (scoreKeeper == null)
+            {
+                CheckManyInstance<LevelManeger>();
+                levelManeger = instance.GetComponent<LevelManeger>();
+            }
+            return levelManeger;
 
         }
     }
