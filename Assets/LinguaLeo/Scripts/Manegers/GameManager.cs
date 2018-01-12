@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 //Component for sending and receiving  
 [RequireComponent(typeof(NotificationsManager))]
+[RequireComponent(typeof(ScoreKeeper))]
+[RequireComponent(typeof(AudioPlayer))]
 public class GameManager : MonoBehaviour
 {
     //Internal reference to single active instance of object - for singleton behaviour
@@ -19,15 +21,21 @@ public class GameManager : MonoBehaviour
     //Internal reference to notifications object
     private static AudioPlayer aPlayer = null;
 
+    //Internal reference to notifications object
+    private static ScoreKeeper scoreKeeper = null;
+
     //--------------------------------------------------------------------------------------
     //C# property to retrieve currently active instance of object, if any
     public static GameManager Instance
     {
         get
         {
-            if( instance == null )
+            if (instance == null)
+            {
+                CheckManyInstance<GameManager>();
                 instance = new GameObject("GameManager").
                             AddComponent<GameManager>(); //create game manager object if required
+            }
             return instance;
 
         }
@@ -39,7 +47,10 @@ public class GameManager : MonoBehaviour
         get
         {
             if (notifications == null)
+            {
+                CheckManyInstance<NotificationsManager>();
                 notifications = instance.GetComponent<NotificationsManager>();
+            }
             return notifications;
         }
     }
@@ -50,25 +61,59 @@ public class GameManager : MonoBehaviour
         get
         {
             if (statemanager == null)
+            {
+                CheckManyInstance<LoadSaveManager>();
                 statemanager = instance.GetComponent<LoadSaveManager>();
+            }
             return statemanager;
 
         }
     }
 
     //C# property to retrieve 
-    public static AudioPlayer audioPlayer
+    public static AudioPlayer AudioPlayer
     {
         get
         {
             if (aPlayer == null)
+            {
+                CheckManyInstance<AudioPlayer>();
                 aPlayer = instance.GetComponent<AudioPlayer>();
+            }
             return aPlayer;
 
         }
     }
 
+    //C# property to retrieve 
+    public static ScoreKeeper ScoreKeeper
+    {
+        get
+        {
+            if (scoreKeeper == null)
+            {
+                CheckManyInstance<ScoreKeeper>();
+                scoreKeeper = instance.GetComponent<ScoreKeeper>();                
+            }
+            return scoreKeeper;
 
+        }
+    }
+
+    public static void CheckManyInstance<T>()where T : Object
+    {
+#if UNITY_EDITOR
+        var manyInstanceSingleton = FindObjectsOfType<T>();
+        if (manyInstanceSingleton.Length > 1)
+        {
+            Debug.LogError("(manyInstanceSingleton)");
+            foreach (var item in manyInstanceSingleton)
+            {
+                Debug.LogError(item.name);
+            }
+        }
+#endif
+    }
 
     // Called before Start on object creation
     void Awake()
@@ -96,11 +141,11 @@ public class GameManager : MonoBehaviour
     //Exit Game
     public void ExitGame()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
             EditorApplication.isPlaying = false;
-        #else
+#else
 		    Application.Quit();
-        #endif
+#endif
     }
     
 }
