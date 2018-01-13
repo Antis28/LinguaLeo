@@ -45,7 +45,6 @@ public class ScoreKeeper : MonoBehaviour, Observer {
             case GAME_EVENTS.CorrectAnswer:
                 AddScore(currentScore);
                 print("Верный ответ");
-                GameManager.Notifications.PostNotification(this, GAME_EVENTS.UpdateScore);
                 break;
         }
     }
