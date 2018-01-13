@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     private static LoadSaveManager statemanager = null;
 
     //Internal reference to notifications object
-    private static AudioPlayer aPlayer = null;
+    private static AudioPlayer audioPlayer = null;
 
     //Internal reference to notifications object
     private static ScoreKeeper scoreKeeper = null;
@@ -82,12 +82,12 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if (aPlayer == null)
+            if (audioPlayer == null)
             {
                 CheckManyInstance<AudioPlayer>();
-                aPlayer = instance.GetComponent<AudioPlayer>();
+                audioPlayer = instance.GetComponent<AudioPlayer>();
             }
-            return aPlayer;
+            return audioPlayer;
 
         }
     }
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void CheckManyInstance<T>()where T : Object
+    private static void CheckManyInstance<T>()where T : Object
     {
 #if UNITY_EDITOR
         var manyInstanceSingleton = FindObjectsOfType<T>();
