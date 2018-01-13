@@ -133,4 +133,5 @@ public enum GAME_EVENTS
     NonCorrectAnswer,
     BuildTask,
     WordsEnded,
+    ShowResult,
 }
