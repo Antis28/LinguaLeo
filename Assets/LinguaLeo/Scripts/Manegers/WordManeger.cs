@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Net;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,12 +10,10 @@ using UnityEngine.UI;
 using URandom = UnityEngine.Random;
 
 
-public class WordManeger : MonoBehaviour
+public class WordManeger : MonoBehaviour, Observer
 {
-    public Text wordText;
-    public Image wordImage;
-
-    public ButtonComponent[] buttons;
+    private ButtonsHandler buttonsHandler; 
+    private WordTranslate wordTranslate; 
 
     public string folder = "Base"; // подпапка в Resources, для чтения
 
@@ -29,98 +25,22 @@ public class WordManeger : MonoBehaviour
     //private Dialogue dialogue;
     //private Answer answer;
 
-    private int buttonID;
     private int questionID;
 
     private const int TASK_COUNT = 10;
     private const int ANSWER_COUNT = 5;
-    private const string DONT_KNOW = "Не знаю :(";
-    private const string NEXT_WORD = "Следующее →";
     private bool wordsEnded;
-
-    void Awake()
-    {
-        buttons = FindObjectsOfType<ButtonComponent>();
-        Array.Sort(buttons, new MyComparer());
-    }
+    
 
     public void Start()
     {
-        Load();
+        buttonsHandler = FindObjectOfType<ButtonsHandler>();
+        wordTranslate = FindObjectOfType<WordTranslate>();
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
+        Initialization();
     }
-
-    void SetQuestStatus(Button button, int i, string name) // событие, для управлением статуса
-    {
-        //button.onClick.AddListener(() => QuestStatus(t));
-        print("событие, для управлением статуса");
-    }
-
-    void SetNextNode(Button button, int i) // событие, для перенаправления на другой узел диалога
-    {
-        button.onClick.AddListener(() => BuildTask(i));
-        //print("событие, для перенаправления на другой узел диалога");
-    }
-
-    void SetShowResult(Button button, bool istrue) // событие, для перенаправления на другой узел диалога
-    {
-        button.onClick.AddListener(() => ShowResult(button, istrue));
-    }
-
-    private void ShowResult(Button button, bool istrue)
-    {
-        if (istrue)
-        {
-            SetColors(button, Color.green);
-            GameManager.Notifications.PostNotification(this, GAME_EVENTS.CorrectAnswer);
-           
-        }
-        if (!istrue)
-        {
-            GameManager.Notifications.PostNotification(this, GAME_EVENTS.NonCorrectAnswer);
-
-            SetColors(button, Color.red);
-
-            SetColors(FindTrueButton(), Color.green);
-
-            
-        }        
-        ClearListeners();
-        FillingEnterButton(false);
-        SetNextQuestion();
-    }
-
-    private void SayWord(string file)
-    {
-        GameManager.AudioPlayer.SayWord(ConverterUrlToName(file));
-    }
-
-    private Button FindTrueButton()
-    {
-        foreach (var item in buttons)
-        {
-            bool trueWord = item.text.text == nodes[questionID].questWord.ruWord;
-            if (trueWord)
-            {
-                return item.button;
-            }
-        }
-        return null;
-    }
-
-    private void SetColors(Button button, Color color)
-    {
-        var colors = button.colors;
-        colors.normalColor = color;
-        colors.highlightedColor = color;
-        button.colors = colors;
-    }
-    private void ResetColors()
-    {
-        foreach (var button in buttons)
-        {
-            SetColors(button.button, Color.white);
-        }
-    }
+   
+    
 
     void SetExitDialogue(Button button) // событие, для выхода из диалога
     {
@@ -128,7 +48,7 @@ public class WordManeger : MonoBehaviour
         print("присвоено событие, для выхода из диалога");
     }
 
-    void Load()
+    void Initialization()
     {
         TextAsset binary = Resources.Load<TextAsset>(folder + "/" + fileName);
         if (binary == null)
@@ -176,7 +96,7 @@ public class WordManeger : MonoBehaviour
 
     private void BuildTask(int current)
     {
-        ClearDialogue();
+        buttonsHandler.ClearTextInButtons();
         if (wordsEnded)
         {
             GameManager.Notifications.PostNotification(this, GAME_EVENTS.WordsEnded);
@@ -199,91 +119,18 @@ public class WordManeger : MonoBehaviour
         }
 
         // добавление слова для перевода
-        wordText.text = nodes[questionID].questWord.engWord;
+        string questionWord = nodes[questionID].questWord.engWord;
+        wordTranslate.SetQuestion(questionWord);
+        
+        //TODO: заполнять все кнопки одновременно
+        buttonsHandler.FillingButtonsWithOptions(nodes[questionID].answers, questionWord);
+        buttonsHandler.FillingEnterButton(true);
 
-        FillingButtonsWithOptions(toNode);
-        FillingEnterButton(true);
-
-        ShowImage(nodes[questionID].questWord.imageURL);
-        SayWord(nodes[questionID].questWord.audioURL);
+        wordTranslate.ShowImage(nodes[questionID].questWord.imageURL);
+        wordTranslate.SayWord(nodes[questionID].questWord.audioURL);
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
-    }
-
-    private void FillingEnterButton(bool isFirst)
-    {
-        if (isFirst)
-        {
-            // Отдельная кнопка "не знаю"
-            ButtonComponent extraB = buttons[buttonID];
-            extraB.text.text = DONT_KNOW;
-            extraB.button.GetComponentInChildren<Text>().color = Color.black;
-            SetColors(extraB.button, Color.white);
-
-            SetShowResult(buttons[buttonID].button, false);
-        }
-        else
-        {
-            // Отдельная кнопка "следующее"
-            ButtonComponent extraB = buttons[buttonID];
-            extraB.text.text = NEXT_WORD;
-            extraB.button.GetComponentInChildren<Text>().color = Color.white;
-
-            SetColors(extraB.button, new Color(68f/255, 145/255f, 207f/255));
-            SetNextNode(buttons[buttonID].button, questionID + 1);
-        }
-    }
-
-    /// <summary>
-    /// добавление вариантов для перевода
-    /// </summary>
-    /// <param name="toNode"></param>
-    private void FillingButtonsWithOptions(int toNode)
-    {
-        for (int i = 0; i < nodes[questionID].answers.Count; i++)
-        {
-            string ruWord = nodes[questionID].answers[i].ruWord;
-            AddToList(toNode, ruWord);
-        }
-    }
-
-    private void AddToList(int toNode, string text)
-    {
-        buttons[buttonID].text.text = text;
-
-        bool isTrue = CheckAnswer(buttons[buttonID].button, nodes[questionID]);
-
-        SetShowResult(buttons[buttonID].button, isTrue);
-
-        buttonID++;
-    }
-
-    private bool CheckAnswer(Button button, QuestionLeo questionLeo)
-    {
-        return buttons[buttonID].text.text == questionLeo.questWord.ruWord;
-    }
-
-    void SetNextQuestion()
-    {
-        buttonID = 0;
-        for (int i = 0; i < nodes[questionID].answers.Count; i++)
-        {
-            SetNextNode(buttons[buttonID].button, questionID + 1);
-            buttonID++;
-        }
-    }
-
-    private void ShowImage(string fileName)
-    {
-        string foloder = "!Pict";
-        Sprite sprite = Resources.Load<Sprite>(foloder + "/" + ConverterUrlToName(fileName));
-        wordImage.sprite = sprite;
-        wordImage.preserveAspect = true;
-    }
-    private void HideImage()
-    {
-        wordImage.sprite = null;
     }
 
     /// <summary>
@@ -303,29 +150,7 @@ public class WordManeger : MonoBehaviour
 
         return -1;
     }
-
-    /// <summary>
-    /// Очистить кнопки от текста
-    /// </summary>
-    void ClearDialogue()
-    {
-        HideImage();
-        ResetColors();
-        buttonID = 0;
-        wordText.text = "";
-        foreach (ButtonComponent b in buttons)
-        {
-            b.text.text = string.Empty;
-            b.button.onClick.RemoveAllListeners();
-        }
-    }
-    void ClearListeners()
-    {
-        foreach (ButtonComponent b in buttons)
-        {
-            b.button.onClick.RemoveAllListeners();
-        }
-    }
+    
 
         int GetINT(string text)
     {
@@ -347,6 +172,7 @@ public class WordManeger : MonoBehaviour
         return false;
     }
 
+    //ToDo: Вынести метод в отделюный класс
     string ConverterUrlToName(string url)
     {
         //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
@@ -356,6 +182,17 @@ public class WordManeger : MonoBehaviour
         Match mat = rg.Match(url);
 
         return Path.GetFileNameWithoutExtension(mat.Value);
+    }
+
+    void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
+    {
+        switch (notificationName)
+        {
+            case GAME_EVENTS.ShowResult:
+                buttonsHandler.SetNextQuestion(nodes[questionID].answers,
+                                                () => BuildTask(questionID + 1));
+                break;
+        }
     }
 }
 
