@@ -126,23 +126,11 @@ public class NotificationsManager : MonoBehaviour
 
 public enum GAME_EVENTS
 {
-    AmmoCollected,
-    AmmoExpired,
-    AmmoChange,
-    EnemyDestroyed,
-    InputChanged,
-    AllCashCollected,
-    CashCollected,
     LoadGameComplete,
-    PlayerHealthChange,
-    PlayerDie,
-    PowerupCollected,
     SaveGamePrepare,
-    WeaponChange,
 
     CorrectAnswer,
     NonCorrectAnswer,
-    UpdateScore,
     BuildTask,
-    Exit,
+    WordsEnded,
 }

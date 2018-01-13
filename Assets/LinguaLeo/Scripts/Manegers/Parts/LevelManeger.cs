@@ -26,7 +26,8 @@ public class LevelManeger : MonoBehaviour, Observer
     {
         switch (notificationName)
         {
-            case GAME_EVENTS.Exit:
+            case GAME_EVENTS.WordsEnded:
+                print("ScoreValue = " + ScoreKeeper.ScoreValue);
                 LoadLevel("result");
                 break;
         }
@@ -35,6 +36,6 @@ public class LevelManeger : MonoBehaviour, Observer
 
     public void Start()
     {
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.Exit);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
     }
 }
