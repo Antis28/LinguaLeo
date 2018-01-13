@@ -22,8 +22,8 @@ public class WordManeger : MonoBehaviour
     public string folder = "Base"; // подпапка в Resources, для чтения
 
     [SerializeField]
-    private string fileName;
-    private string lastName;
+    private string fileName = string.Empty;
+    //private string lastName;
 
     private List<QuestionLeo> nodes;
     //private Dialogue dialogue;
@@ -36,7 +36,7 @@ public class WordManeger : MonoBehaviour
     private const int ANSWER_COUNT = 5;
     private const string DONT_KNOW = "Не знаю :(";
     private const string NEXT_WORD = "Следующее →";
-    private bool exit;
+    private bool wordsEnded;
 
     void Awake()
     {
@@ -177,13 +177,11 @@ public class WordManeger : MonoBehaviour
     private void BuildTask(int current)
     {
         ClearDialogue();
-        if (exit)
+        if (wordsEnded)
         {
-            print("ScoreValue = " + ScoreKeeper.ScoreValue);
-            GameManager.Notifications.PostNotification(this, GAME_EVENTS.Exit);
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.WordsEnded);
             return;
         }
-           
 
         questionID = FindNodeByID(current);
         if (questionID < 0)
@@ -191,12 +189,13 @@ public class WordManeger : MonoBehaviour
             Debug.LogError(this + " в диалоге [" + fileName + ".xml] отсутствует или указан неверно идентификатор узла.");
             return;
         }
+
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
         int toNode = questionID + 1;
         if (TASK_COUNT == toNode)
         {
             toNode = 0;
-            exit = true;
+            wordsEnded = true;
         }
 
         // добавление слова для перевода
