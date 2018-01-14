@@ -13,18 +13,14 @@ using URandom = UnityEngine.Random;
 public class WordManeger : MonoBehaviour, Observer
 {
     private ButtonsHandler buttonsHandler; 
-    private WordTranslate wordTranslate; 
+    private WordToTranslate wordTranslate; 
 
     public string folder = "Base"; // подпапка в Resources, для чтения
 
     [SerializeField]
     private string fileName = string.Empty;
-    //private string lastName;
 
     private List<QuestionLeo> nodes;
-    //private Dialogue dialogue;
-    //private Answer answer;
-
     private int questionID;
 
     private const int TASK_COUNT = 10;
@@ -35,7 +31,8 @@ public class WordManeger : MonoBehaviour, Observer
     public void Start()
     {
         buttonsHandler = FindObjectOfType<ButtonsHandler>();
-        wordTranslate = FindObjectOfType<WordTranslate>();
+        wordTranslate = FindObjectOfType<WordToTranslate>();
+
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
         Initialization();
     }
@@ -150,39 +147,6 @@ public class WordManeger : MonoBehaviour, Observer
 
         return -1;
     }
-    
-
-        int GetINT(string text)
-    {
-        int value;
-        if (int.TryParse(text, out value))
-        {
-            return value;
-        }
-        return 0;
-    }
-
-    bool GetBOOL(string text)
-    {
-        bool value;
-        if (bool.TryParse(text, out value))
-        {
-            return value;
-        }
-        return false;
-    }
-
-    //ToDo: Вынести метод в отделюный класс
-    string ConverterUrlToName(string url)
-    {
-        //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
-        //string url = "http://contentcdn.lingualeo.com/uploads/picture/96-631152008.mp3";
-        string patern = @"(\d+.png$)|(\d+-\d+.mp3$)";
-        Regex rg = new Regex(patern, RegexOptions.IgnoreCase);
-        Match mat = rg.Match(url);
-
-        return Path.GetFileNameWithoutExtension(mat.Value);
-    }
 
     void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
     {
@@ -193,46 +157,5 @@ public class WordManeger : MonoBehaviour, Observer
                                                 () => BuildTask(questionID + 1));
                 break;
         }
-    }
-}
-
-class UniqRandom
-{
-    readonly int MAX_COUNT;
-    List<int> lastIndex;
-
-    UniqRandom(int max)
-    {
-        MAX_COUNT = max;
-        lastIndex = new List<int>(MAX_COUNT);
-    }
-
-    int nextRandom()
-    {
-        int rndValue = -1;
-
-        do
-        {
-            rndValue = URandom.Range(0, MAX_COUNT);
-        } while (lastIndex.Contains(rndValue));
-
-        return rndValue;
-    }
-}
-
-public class MyComparer : IComparer
-{
-    public int Compare(object x, object y)
-    {
-        ButtonComponent lVal = x as ButtonComponent;
-        ButtonComponent rValt = y as ButtonComponent;
-
-        return Compare(lVal.gameObject, rValt.gameObject);
-    }
-
-    // Call CaseInsensitiveComparer.Compare with the parameters reversed.
-    public int Compare(GameObject x, GameObject y)
-    {
-        return (new CaseInsensitiveComparer()).Compare(x.name, y.name);
     }
 }
