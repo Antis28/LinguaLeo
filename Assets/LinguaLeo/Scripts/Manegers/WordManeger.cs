@@ -118,7 +118,8 @@ public class WordManeger : MonoBehaviour, Observer
         // добавление слова для перевода
         string questionWord = nodes[questionID].questWord.engWord;
         wordTranslate.SetQuestion(questionWord);
-        
+        wordTranslate.SetTranscript(nodes[questionID].questWord.transcript);
+
         //TODO: заполнять все кнопки одновременно
         buttonsHandler.FillingButtonsWithOptions(nodes[questionID].answers, questionWord);
         buttonsHandler.FillingEnterButton(true);

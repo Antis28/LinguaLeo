@@ -8,8 +8,12 @@ using UnityEngine.UI;
 
 public class WordToTranslate : MonoBehaviour, Observer
 {
-    public Text questionText; // Поле для вопроса
-    public Image wordImage; // Картинка ассоциаци со словом
+    [SerializeField]
+    private Text questionText; // Поле для вопроса
+    [SerializeField]
+    private Text transcriptText; // Поле для транскрипции
+    [SerializeField]
+    private Image wordImage; // Картинка ассоциаци со словом
 
     public Slider scoreSlider;
     public Text scoreText;   
@@ -44,6 +48,10 @@ public class WordToTranslate : MonoBehaviour, Observer
     public void SetQuestion(string quest)
     {
         questionText.text = quest;
+    }
+    public void SetTranscript(string transcript)
+    {
+        transcriptText.text = transcript;
     }
 
     public void ClearTextInQestion()
