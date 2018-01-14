@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WordTranslate : MonoBehaviour, Observer
+public class WordToTranslate : MonoBehaviour, Observer
 {
     public Text questionText; // Поле для вопроса
     public Image wordImage; // Картинка ассоциаци со словом
@@ -59,25 +59,13 @@ public class WordTranslate : MonoBehaviour, Observer
     public void ShowImage(string fileName)
     {
         string foloder = "!Pict";
-        Sprite sprite = Resources.Load<Sprite>(foloder + "/" + ConverterUrlToName(fileName));
+        Sprite sprite = Resources.Load<Sprite>(foloder + "/" + Utilities.ConverterUrlToName(fileName));
         wordImage.sprite = sprite;
         wordImage.preserveAspect = true;
     }
 
     public void SayWord(string file)
     {
-        GameManager.AudioPlayer.SayWord(ConverterUrlToName(file));
-    }
-
-    //ToDo: Вынести метод в отделюный класс
-    private string ConverterUrlToName(string url)
-    {
-        //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
-        //string url = "http://contentcdn.lingualeo.com/uploads/picture/96-631152008.mp3";
-        string patern = @"(\d+.png$)|(\d+-\d+.mp3$)";
-        Regex rg = new Regex(patern, RegexOptions.IgnoreCase);
-        Match mat = rg.Match(url);
-
-        return Path.GetFileNameWithoutExtension(mat.Value);
+        GameManager.AudioPlayer.SayWord(Utilities.ConverterUrlToName(file));
     }
 }
