@@ -20,16 +20,23 @@ public class WordToTranslate : MonoBehaviour, Observer
     [SerializeField]
     private Toggle sayToggle; // checkbox для автопроизношения
 
-    public Slider scoreSlider;
-    public Text scoreText;
+    [SerializeField]
+    private Slider scoreSlider; // Протренировано слов прогресс
+    [SerializeField]
+    private Text scoreText; // Число протренированых слов
+    [SerializeField]
+    private int answersCount; // Число протренированых слов
 
-    private int answersCount;
+    [SerializeField]
+    private Text contextText; //Поле для контекста
+    private GameObject contextPanel; //Панель для контекста
 
 
     // Use this for initialization
     void Awake()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
+        contextPanel = contextText.transform.parent.gameObject;
     }
 
     void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
@@ -82,5 +89,22 @@ public class WordToTranslate : MonoBehaviour, Observer
         GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file));
         if (sayToggle.isOn)
             GameManager.AudioPlayer.SayWord();
+    }
+
+    public void SetContext(string context)
+    {
+        if (context != string.Empty)
+            contextText.text = context;
+        else
+            contextText.text = "(нет контекста)";
+    }
+
+    public void ShowContext()
+    {
+        contextPanel.SetActive(true);
+    }
+    public void HideContext()
+    {
+        contextPanel.SetActive(false);
     }
 }

@@ -126,6 +126,8 @@ public class WordManeger : MonoBehaviour, Observer
 
         wordTranslate.SetImage(nodes[questionID].questWord.imageURL);
         wordTranslate.SetSound(nodes[questionID].questWord.audioURL);
+        wordTranslate.SetContext(nodes[questionID].questWord.context);
+        wordTranslate.HideContext();
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
@@ -154,6 +156,7 @@ public class WordManeger : MonoBehaviour, Observer
         switch (notificationName)
         {
             case GAME_EVENTS.ShowResult:
+                wordTranslate.ShowContext();
                 buttonsHandler.SetNextQuestion(nodes[questionID].answers,
                                                 () => BuildTask(questionID + 1));
                 break;
