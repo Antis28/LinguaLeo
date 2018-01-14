@@ -10,14 +10,19 @@ public class WordToTranslate : MonoBehaviour, Observer
 {
     [SerializeField]
     private Text questionText; // Поле для вопроса
+
     [SerializeField]
     private Text transcriptText; // Поле для транскрипции
+
     [SerializeField]
     private Image wordImage; // Картинка ассоциаци со словом
 
+    [SerializeField]
+    private Toggle sayToggle; // checkbox для автопроизношения
+
     public Slider scoreSlider;
-    public Text scoreText;   
-    
+    public Text scoreText;
+
     private int answersCount;
 
 
@@ -75,6 +80,7 @@ public class WordToTranslate : MonoBehaviour, Observer
     public void SetSound(string file)
     {
         GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file));
-        GameManager.AudioPlayer.SayWord();
+        if (sayToggle.isOn)
+            GameManager.AudioPlayer.SayWord();
     }
 }
