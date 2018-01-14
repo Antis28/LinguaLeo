@@ -64,7 +64,7 @@ public class WordToTranslate : MonoBehaviour, Observer
         wordImage.sprite = null;
     }
 
-    public void ShowImage(string fileName)
+    public void SetImage(string fileName)
     {
         string foloder = "!Pict";
         Sprite sprite = Resources.Load<Sprite>(foloder + "/" + Utilities.ConverterUrlToName(fileName));
@@ -72,8 +72,9 @@ public class WordToTranslate : MonoBehaviour, Observer
         wordImage.preserveAspect = true;
     }
 
-    public void SayWord(string file)
+    public void SetSound(string file)
     {
-        GameManager.AudioPlayer.SayWord(Utilities.ConverterUrlToName(file));
+        GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file));
+        GameManager.AudioPlayer.SayWord();
     }
 }

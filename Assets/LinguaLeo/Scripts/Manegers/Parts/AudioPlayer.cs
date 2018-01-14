@@ -24,15 +24,12 @@ public class AudioPlayer : MonoBehaviour
         }
     }
 
-    public void SayWord(string fileName)
+    public void SetSound(string fileName)
     {
         string folder = "!Audio";
         sayClip = Resources.Load<AudioClip>(folder + "/" + fileName);
-        //print(folder + "/" + fileName);
-        //print(sayClip);
-        Music.PlayOneShot(sayClip);
     }
-    public void RepeatWord()
+    public void SayWord()
     {
         if (sayClip == null)
             return;

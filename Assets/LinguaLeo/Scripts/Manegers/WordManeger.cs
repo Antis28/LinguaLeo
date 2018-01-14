@@ -124,8 +124,8 @@ public class WordManeger : MonoBehaviour, Observer
         buttonsHandler.FillingButtonsWithOptions(nodes[questionID].answers, questionWord);
         buttonsHandler.FillingEnterButton(true);
 
-        wordTranslate.ShowImage(nodes[questionID].questWord.imageURL);
-        wordTranslate.SayWord(nodes[questionID].questWord.audioURL);
+        wordTranslate.SetImage(nodes[questionID].questWord.imageURL);
+        wordTranslate.SetSound(nodes[questionID].questWord.audioURL);
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
