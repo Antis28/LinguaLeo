@@ -28,11 +28,16 @@ public class AudioPlayer : MonoBehaviour
     {
         string folder = "!Audio";
         sayClip = Resources.Load<AudioClip>(folder + "/" + fileName);
+        if (!sayClip)
+            Debug.Log("Clip " + fileName + " not found");
     }
     public void SayWord()
     {
         if (sayClip == null)
+        {
+            Debug.Log("Clip not loaded");
             return;
+        }
         Music.PlayOneShot(sayClip);
     }
 }
