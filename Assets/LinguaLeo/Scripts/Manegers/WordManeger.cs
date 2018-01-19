@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -12,6 +13,8 @@ using URandom = UnityEngine.Random;
 
 public class WordManeger : MonoBehaviour, Observer
 {
+    private static WordCollection vocabulary = null; // полный словарь
+
     private ButtonsHandler buttonsHandler; 
     private WordToTranslate wordTranslate; 
 
@@ -36,8 +39,11 @@ public class WordManeger : MonoBehaviour, Observer
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
         Initialization();
     }
-   
-    
+
+    public QuestionLeo GetCurrentQuest()
+    {
+        return nodes[questionID];
+    }
 
     void SetExitDialogue(Button button) // событие, для выхода из диалога
     {
@@ -47,20 +53,29 @@ public class WordManeger : MonoBehaviour, Observer
 
     void Initialization()
     {
-        TextAsset binary = Resources.Load<TextAsset>(folder + "/" + fileName);
-        if (binary == null)
-        {
-            Debug.LogWarning("File not found");
-            return;
-        }
-        nodes = new List<QuestionLeo>(TASK_COUNT);
-        WordCollection words = LoadWords(binary.text);
-        LoadTasks(words);
+        LoadVocabulary();        
+        LoadTasks(vocabulary);
         BuildTask(0);
+    }
+
+    private void LoadVocabulary()
+    {
+        if (vocabulary == null)
+        {
+            TextAsset binary = Resources.Load<TextAsset>(folder + "/" + fileName);
+            if (binary == null)
+            {
+                Debug.LogWarning("File not found");
+                return;
+            }
+            //WordCollection words = LoadWords(binary.text);
+            vocabulary = LoadWords(binary.text);
+        }
     }
 
     private void LoadTasks(WordCollection words)
     {
+        nodes = new List<QuestionLeo>(TASK_COUNT);
         for (int i = 0; i < TASK_COUNT; i++)
         {
             QuestionLeo question = GeneratorTask(i, words);
