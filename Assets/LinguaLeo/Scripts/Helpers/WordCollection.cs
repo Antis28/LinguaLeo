@@ -52,5 +52,15 @@ public class WordCollection
         }
         return groups;
     }
+
+    public void LoadGroup(string groupName)
+    {
+        wordsFromGroup = new List<WordLeo>();
+        foreach (var word in allWords)
+        {
+            if (word.groups.Contains(groupName))
+                wordsFromGroup.Add(word);
+        }
+    }
 }
 
