@@ -165,7 +165,8 @@ public class ButtonsHandler : MonoBehaviour
         }
         if (!istrue)
         {
-            GameManager.Notifications.PostNotification(null, GAME_EVENTS.NonCorrectAnswer);
+
+            GameManager.Notifications.PostNotification(button, GAME_EVENTS.NonCorrectAnswer);
 
             SetColors(button, Color.red);
             //кнопка с правильным словом
