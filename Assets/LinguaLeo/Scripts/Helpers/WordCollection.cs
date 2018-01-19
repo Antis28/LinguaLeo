@@ -9,10 +9,10 @@ public class WordCollection
 {
     [XmlArray("LeoWords")]
     [XmlArrayItem("word")]
-    public List<WordLeo> allWords;
+    public List<WordLeo> allWords; // полный словарь
 
     [XmlIgnore]
-    List<WordLeo> wordsFromGroup;
+    public List<WordLeo> wordsFromGroup; // словарь для набора слов
 
     private Random random = new Random();
 
