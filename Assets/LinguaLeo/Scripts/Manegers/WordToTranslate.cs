@@ -9,26 +9,26 @@ using UnityEngine.UI;
 public class WordToTranslate : MonoBehaviour, Observer
 {
     [SerializeField]
-    private Text questionText; // Поле для вопроса
+    private Text questionText = null; // Поле для вопроса
 
     [SerializeField]
-    private Text transcriptText; // Поле для транскрипции
+    private Text transcriptText = null; // Поле для транскрипции
 
     [SerializeField]
-    private Image wordImage; // Картинка ассоциаци со словом
+    private Image wordImage = null; // Картинка ассоциаци со словом
 
     [SerializeField]
-    private Toggle sayToggle; // checkbox для автопроизношения
+    private Toggle sayToggle = null; // checkbox для автопроизношения
 
     [SerializeField]
-    private Slider scoreSlider; // Протренировано слов прогресс
+    private Slider scoreSlider = null; // Протренировано слов прогресс
     [SerializeField]
-    private Text scoreText; // Число протренированых слов
+    private Text scoreText = null; // Число протренированых слов
     [SerializeField]
     private int answersCount; // Число протренированых слов
 
     [SerializeField]
-    private Text contextText; //Поле для контекста
+    private Text contextText = null; //Поле для контекста
     private GameObject contextPanel; //Панель для контекста
 
 
