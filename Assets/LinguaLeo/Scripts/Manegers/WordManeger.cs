@@ -116,17 +116,17 @@ public class WordManeger : MonoBehaviour, Observer
         }
 
         // добавление слова для перевода
-        string questionWord = nodes[questionID].questWord.engWord;
+        string questionWord = nodes[questionID].questWord.wordValue;
         wordTranslate.SetQuestion(questionWord);
-        wordTranslate.SetTranscript(nodes[questionID].questWord.transcript);
+        wordTranslate.SetTranscript(nodes[questionID].questWord.transcription);
 
         //TODO: заполнять все кнопки одновременно
         buttonsHandler.FillingButtonsWithOptions(nodes[questionID].answers, questionWord);
         buttonsHandler.FillingEnterButton(true);
 
-        wordTranslate.SetImage(nodes[questionID].questWord.imageURL);
-        wordTranslate.SetSound(nodes[questionID].questWord.audioURL);
-        wordTranslate.SetContext(nodes[questionID].questWord.context);
+        wordTranslate.SetImage(nodes[questionID].questWord.pictureURL);
+        wordTranslate.SetSound(nodes[questionID].questWord.soundURL);
+        wordTranslate.SetContext(nodes[questionID].questWord.highlightedContext);
         wordTranslate.HideContext();
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога

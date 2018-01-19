@@ -6,25 +6,25 @@
 public class WordLeo
 {
     [XmlAttribute]
-    public string engWord;
+    public string wordValue;
     [XmlAttribute]
-    public string ruWord;
+    public string translations;
     [XmlAttribute]
-    public string imageURL;
+    public string pictureURL;
     [XmlAttribute]
-    public string transcript;
+    public string transcription;
     [XmlAttribute]
-    public string context;
+    public string highlightedContext;
     [XmlAttribute]
-    public string audioURL;
+    public string soundURL;
     [XmlAttribute]
-    public string addedDate;
+    public string groups;
     [XmlAttribute]
-    public string context2;
+    public string clozefiedContext;
 
     override
     public string ToString()
     {
-        return engWord;
+        return wordValue;
     }
 }

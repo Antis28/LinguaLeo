@@ -44,11 +44,11 @@ public class ButtonsHandler : MonoBehaviour
         ClearListeners();
         foreach (var item in listWords)
         {
-            bool answerIsCorrect = item.engWord.Contains(questionWord);
+            bool answerIsCorrect = item.wordValue.Contains(questionWord);
             if (answerIsCorrect)
                 correctButton = buttons[buttonID].button;
 
-            buttons[buttonID].text.text = item.ruWord;
+            buttons[buttonID].text.text = item.translations;
             JoinShowResult(buttons[buttonID].button, answerIsCorrect);
             buttonID++;
         }
