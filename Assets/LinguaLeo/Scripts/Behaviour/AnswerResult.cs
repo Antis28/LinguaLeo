@@ -51,7 +51,7 @@ public class AnswerResult : MonoBehaviour, Observer
     {
         if (!button)
             return;
-        QuestionLeo quest = FindObjectOfType<WordManeger>().GetCurrentQuest();
+        QuestionLeo quest = FindObjectOfType<WordToTranslate>().GetCurrentQuest();
         WordLeo word = null;
         foreach (var item in quest.answers)
         {
