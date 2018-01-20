@@ -8,14 +8,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
-
-
 public class WordManeger : MonoBehaviour
 {
     private static WordCollection vocabulary = null; // полный словарь
 
-    public string folder = "Base"; // подпапка в Resources, для чтения
+    [SerializeField]
+    private string folder = "Base"; // подпапка в Resources, для чтения
 
     [SerializeField]
     private string fileName = string.Empty;
@@ -42,14 +40,6 @@ public class WordManeger : MonoBehaviour
         LoadVocabulary();
     }
 
-    
-
-    void SetExitDialogue(Button button) // событие, для выхода из диалога
-    {
-        //button.onClick.AddListener(() => CloseWindow());
-        print("присвоено событие, для выхода из диалога");
-    }
-
     private void LoadVocabulary()
     {
         if (vocabulary == null)
@@ -57,7 +47,7 @@ public class WordManeger : MonoBehaviour
             TextAsset binary = Resources.Load<TextAsset>(folder + "/" + fileName);
             if (binary == null)
             {
-                Debug.LogWarning("File not found");
+                Debug.LogError("File not found");
                 return;
             }
             //WordCollection words = LoadWords(binary.text);
