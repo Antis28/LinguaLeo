@@ -134,4 +134,5 @@ public enum GAME_EVENTS
     BuildTask,
     WordsEnded,
     ShowResult,
+    LoadedVocabulary,
 }
