@@ -27,7 +27,7 @@ public class LevelManeger : MonoBehaviour, Observer
         switch (notificationName)
         {
             case GAME_EVENTS.WordsEnded:
-                print("ScoreValue = " + ScoreKeeper.ScoreValue);
+                print("ScoreValue = " + GameManager.ScoreKeeper.ScoreValue);
                 LoadLevel("result");
                 break;
         }
