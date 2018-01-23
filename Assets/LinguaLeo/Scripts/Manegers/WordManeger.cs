@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class WordManeger : MonoBehaviour
 {
     private static WordCollection vocabulary = null; // полный словарь
+    private static List<string> wordGroups = null; // названия наборов слов
 
     [SerializeField]
     private string folder = "Base"; // подпапка в Resources, для чтения
@@ -53,6 +54,10 @@ public class WordManeger : MonoBehaviour
             //WordCollection words = LoadWords(binary.text);
             vocabulary = LoadFromXml(binary.text);
         }
+
+        wordGroups = vocabulary.FilterGroup();
+        vocabulary.LoadGroup(wordGroups[66]);
+
         GameManager.Notifications.PostNotification(null, GAME_EVENTS.LoadedVocabulary);
     }
     
