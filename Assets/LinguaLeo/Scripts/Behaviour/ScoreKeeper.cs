@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 
-public class ScoreKeeper : MonoBehaviour, Observer
-{
-
-    private static int score;
+public class ScoreKeeper : MonoBehaviour, Observer {
+    [SerializeField]
+    private int score;
     private readonly int currentScore = 1;
 
-    public static int ScoreValue
+    public  int ScoreValue
     {
         get
         {
@@ -31,7 +30,7 @@ public class ScoreKeeper : MonoBehaviour, Observer
         ScoreValue += points;
     }
 
-    public static void ResetScore()
+    public void ResetScore()
     {
         ScoreValue = 0;
     }
