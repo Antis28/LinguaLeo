@@ -48,9 +48,10 @@ public class WordToTranslate : MonoBehaviour, Observer
     // Use this for initialization
     void Awake()
     {
-
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+
         contextPanel = contextText.transform.parent.gameObject;
         buttonsHandler = FindObjectOfType<ButtonsHandler>();
     }
