@@ -10,6 +10,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ScoreKeeper))]
 [RequireComponent(typeof(AudioPlayer))]
 [RequireComponent(typeof(LevelManeger))]
+[RequireComponent(typeof(WordManeger))]
 
 public class GameManager : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     //Internal reference to notifications object
     private static LevelManeger levelManeger = null;
+    private static WordManeger wordManeger = null;
 
     //--------------------------------------------------------------------------------------
     //C# property to retrieve currently active instance of object, if any
@@ -120,6 +122,20 @@ public class GameManager : MonoBehaviour
 
         }
     }
+    public static WordManeger WordManeger
+    {
+        get
+        {
+            if (scoreKeeper == null)
+            {
+                CheckManyInstance<WordManeger>();
+                wordManeger = instance.GetComponent<WordManeger>();
+            }
+            return wordManeger;
+
+        }
+    }
+
 
     private static void CheckManyInstance<T>()where T : Object
     {

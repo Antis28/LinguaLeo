@@ -38,7 +38,7 @@ public class SelectGroup : MonoBehaviour, Observer
     private void CreatePanels()
     {
         var binary = Resources.Load<Sprite>("Covers" + "/" + 108);
-        List<string> group = WordManeger.Vocabulary.FilterGroup();
+        List<string> group = GameManager.WordManeger.GetGroupNames();// WordManeger.Vocabulary.FilterGroup();
 
         foreach (var item in group)
         {
