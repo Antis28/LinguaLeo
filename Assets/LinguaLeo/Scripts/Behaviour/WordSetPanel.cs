@@ -12,10 +12,13 @@ public class WordSetPanel : MonoBehaviour
     [SerializeField]
     Text WordCountText = null;
 
+    string groupName = string.Empty;
+
     public void Init(Sprite sprite, string caption, int count)
     {
         LogoImage.sprite = sprite;
-        CaptionText.text = caption;
+        groupName = caption;
+        CaptionText.text = groupName.Replace('_', ' ');
         WordCountText.text = count + " cлов";
 
         GetComponent<Transform>().localScale = Vector3.one;
@@ -33,9 +36,10 @@ public class WordSetPanel : MonoBehaviour
     {
 
     }
-    public void Test()
+    public void PanelClick()
     {
-        Debug.Log("Test");
+        Debug.Log("Test = " + groupName);
+        GameManager.WordManeger.LoadGroup(groupName);
     }
 
     // OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider
