@@ -19,24 +19,18 @@ public class WordManeger : MonoBehaviour
     [SerializeField]
     private string fileName = string.Empty;
 
-    public static WordCollection Vocabulary
+   
+    public List<string> GetGroupNames()
     {
-        get
-        {
-            if (vocabulary == null)
-            {
-                Debug.LogError("vocabulary == null");
-            }
-            return vocabulary;
-        }
-
-        set
-        {
-            vocabulary = value;
-        }
+        return vocabulary.FilterGroup();
     }
 
-    public void Start()
+    public void LoadGroup(string groupName)
+    {
+        vocabulary.LoadGroup(groupName);
+    }
+
+    void Start()
     {
         LoadVocabulary();
     }
