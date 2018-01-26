@@ -77,6 +77,10 @@ public class WordCollection
         return groups;
     }
 
+    /// <summary>
+    /// Загрука слов из набора слов
+    /// </summary>
+    /// <param name="groupName">название набора слов</param>
     public void LoadGroup(string groupName)
     {
         wordsFromGroup = new List<WordLeo>();
