@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,21 +37,39 @@ public class SelectGroup : MonoBehaviour, Observer
         }
     }
 
-    private void CreatePanels()
+    private void CreatePanels() //int spriteName
     {
-        var binary = Resources.Load<Sprite>("Covers" + "/" + 108);
-        List<string> group = GameManager.WordManeger.GetGroupNames();// WordManeger.Vocabulary.FilterGroup();
-
+       List<WordGroup> group = GameManager.WordManeger.GetGroupNames();
         foreach (var item in group)
         {
-            CreateCard(binary, item);
+            Sprite sprite = LoadSpriteFromFile(item.pictureName);
+            CreateCard(sprite, item.name, item.wordCount);
         }
     }
 
-    private void CreateCard(Sprite binary, string caption)
+    private Sprite LoadSpriteFromFile(string pictureName)
+    {
+        string path = "Data/Covers" + "/" + pictureName + ".png";
+
+        byte[] picture;
+        using (FileStream stream = new FileStream(path, FileMode.Open))
+        {
+            picture = new byte[stream.Length];
+            // считываем данные
+            stream.Read(picture, 0, picture.Length);
+        }
+
+        Texture2D texture2D = new Texture2D(1, 1);
+        texture2D.LoadImage(picture);
+
+        Sprite sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
+        return sprite;
+    }
+
+    private void CreateCard(Sprite binary, string caption, int count)
     {
         WordSetPanel setPanel = Instantiate(panelPrefab, content.transform);
-        setPanel.Init(binary, caption, 2);
+        setPanel.Init(binary, caption, count);
     }
 
     private void CalulateContentHight()
@@ -58,7 +78,7 @@ public class SelectGroup : MonoBehaviour, Observer
         float rowCount = 3;
         float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
         float panelCount = content.transform.childCount;
-        
+
         Vector2 size = new Vector2();
         RectTransform rectContent = content.GetComponent<RectTransform>();
         size.y = (PANEL_HEIGHT + panelYSpace) * panelCount / rowCount;
