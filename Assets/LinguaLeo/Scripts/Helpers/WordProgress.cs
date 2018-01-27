@@ -11,9 +11,7 @@ using System.IO;
 
 public class WordProgress
 {
-    List<WordProgress> progress;
-
-
+    [XmlAttribute]
     public string word;
     public bool word_translate,
      translate_word,
@@ -29,6 +27,8 @@ public class WordProgress
     // Use this for initialization
     public void Start()
     {
+
+        List<WordProgress> progress;
         progress = new List<WordProgress>();
         progress.Add(new WordProgress() { word = "also",word_translate = true});
         progress.Add(new WordProgress() { word = "check",audio_word = true});
