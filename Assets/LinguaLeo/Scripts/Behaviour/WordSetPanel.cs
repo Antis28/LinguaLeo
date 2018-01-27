@@ -40,6 +40,10 @@ public class WordSetPanel : MonoBehaviour
     {
         Debug.Log("Test = " + groupName);
         GameManager.WordManeger.LoadGroup(groupName);
+        foreach (WordLeo item in GameManager.WordManeger.GetVocabulary().wordsFromGroup)
+        {
+            Debug.Log(item.wordValue);
+        }
     }
 
     // OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider
