@@ -65,7 +65,7 @@ public class WordToTranslate : MonoBehaviour, Observer
                 HideImage();
                 break;
             case GAME_EVENTS.LoadedVocabulary:
-                LoadTasks(WordManeger.Vocabulary);
+                LoadTasks(GameManager.WordManeger.GetVocabulary());
                 BuildTask(0);
                 break;
             case GAME_EVENTS.ShowResult:
