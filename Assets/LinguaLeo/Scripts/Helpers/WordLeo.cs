@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 /// <summary>
 /// Mapping Class
@@ -31,6 +32,9 @@ public class WordLeo
 
     [XmlAttribute]
     public string clozefiedContext;
+    
+    [XmlArrayItem("workout")]
+    public List<WorkoutProgress> progress;
 
     public WordLeo() { }
 
@@ -39,4 +43,6 @@ public class WordLeo
     {
         return wordValue;
     }
+
+    
 }

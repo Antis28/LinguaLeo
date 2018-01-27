@@ -11,6 +11,4 @@ public struct WordGroup
     public int wordCount;
 
     public string pictureName;
-    public List<WordProgress> progress;
-    
 }
