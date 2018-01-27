@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using System.Xml.Serialization;
 
 using URandom = UnityEngine.Random;
 
@@ -38,6 +39,40 @@ public class Utilities
             return value;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Интерполяционный поиск
+    ///  Возвращает индекс элемента со значением toFind или -1, 
+    ///  если такого элемента не существует
+    /// </summary>
+    /// <param name="sortedArray"></param>
+    /// <param name="toFind"></param>
+    /// <returns></returns>
+    public int InterpolationSearch(int[] sortedArray, int toFind)
+    {        
+        int mid;
+        int low = 0;
+        int high = sortedArray.Length - 1;
+
+        while (sortedArray[low] < toFind && sortedArray[high] > toFind)
+        {
+            mid = low + ((toFind - sortedArray[low]) * (high - low)) / (sortedArray[high] - sortedArray[low]);
+
+            if (sortedArray[mid] < toFind)
+                low = mid + 1;
+            else if (sortedArray[mid] > toFind)
+                high = mid - 1;
+            else
+                return mid;
+        }
+
+        if (sortedArray[low] == toFind)
+            return low;
+        else if (sortedArray[high] == toFind)
+            return high;
+        else
+            return -1; // Not found
     }
 }
 public class MyComparer : IComparer
@@ -78,5 +113,58 @@ class UniqRandom
         } while (lastIndex.Contains(rndValue));
 
         return rndValue;
+    }
+}
+
+
+[XmlRoot("Dictionary")]
+public class XmlSerializableDictionary<TKey, TValue>
+    : Dictionary<TKey, TValue>, IXmlSerializable
+{
+    public System.Xml.Schema.XmlSchema GetSchema()
+    {
+        return null;
+    }
+
+    public void ReadXml(System.Xml.XmlReader reader)
+    {
+        XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
+        XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
+        bool wasEmpty = reader.IsEmptyElement;
+        reader.Read();
+        if (wasEmpty)
+            return;
+        while (reader.NodeType != System.Xml.XmlNodeType.EndElement)
+        {
+            reader.ReadStartElement("item");
+            reader.ReadStartElement("key");
+            TKey key = (TKey)keySerializer.Deserialize(reader);
+            reader.ReadEndElement();
+            reader.ReadStartElement("value");
+            TValue value = (TValue)valueSerializer.Deserialize(reader);
+            reader.ReadEndElement();
+            this.Add(key, value);
+            reader.ReadEndElement();
+            reader.MoveToContent();
+        }
+        reader.ReadEndElement();
+    }
+
+    public void WriteXml(System.Xml.XmlWriter writer)
+    {
+        XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
+        XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
+        foreach (TKey key in this.Keys)
+        {
+            writer.WriteStartElement("item");
+            writer.WriteStartElement("key");
+            keySerializer.Serialize(writer, key);
+            writer.WriteEndElement();
+            writer.WriteStartElement("value");
+            TValue value = this[key];
+            valueSerializer.Serialize(writer, value);
+            writer.WriteEndElement();
+            writer.WriteEndElement();
+        }
     }
 }
