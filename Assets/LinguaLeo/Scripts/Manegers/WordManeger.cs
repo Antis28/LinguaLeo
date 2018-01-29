@@ -8,13 +8,17 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class WordManeger : MonoBehaviour
 {
     private static WordCollection vocabulary = null; // полный словарь
     private static List<string> wordGroups = null; // названия наборов слов
 
     [SerializeField]
-    private string folder = "Base"; // подпапка в Resources, для чтения
+    private string folder = @"Data/Base"; // подпапка в Resources, для чтения
 
     [SerializeField]
     private string fileName = string.Empty;
@@ -25,9 +29,16 @@ public class WordManeger : MonoBehaviour
         return vocabulary;
     }
 
-    public List<string> GetGroupNames()
+    public List<WordGroup> GetGroupNames()
     {
-        return vocabulary.FilterGroup();
+        //return vocabulary.FilterGroup();
+        string path = folder + "/" + "WordGroup.xml";
+        if (!File.Exists(path))
+        {
+            Debug.LogError("File not found");
+            return null;
+        }
+       return  DeserializeGroup(path);
     }
 
     public void LoadGroup(string groupName)
@@ -38,27 +49,35 @@ public class WordManeger : MonoBehaviour
     void Start()
     {
         LoadVocabulary();
-        CreateWordGroups();
+        //CreateWordGroups();
     }
 
     private void LoadVocabulary()
     {
         if (vocabulary == null)
         {
-            TextAsset binary = Resources.Load<TextAsset>(folder + "/" + fileName);
-            if (binary == null)
-            {
-                Debug.LogError("File not found");
-                return;
-            }
-            //WordCollection words = LoadWords(binary.text);
-            vocabulary = LoadFromXml(binary.text);
+            vocabulary = LoadFromXml();
         }
 
         wordGroups = vocabulary.FilterGroup();
         vocabulary.LoadGroup(wordGroups[66]);
 
         GameManager.Notifications.PostNotification(null, GAME_EVENTS.LoadedVocabulary);
+    }
+
+    private WordCollection LoadFromXml()
+    {
+        string path = folder + "/" + fileName;
+        if (!File.Exists(path))
+        {
+            Debug.LogError("File not found");
+            return null;
+        }
+        XmlSerializer Serializer = new XmlSerializer(typeof(WordCollection));
+        FileStream Stream = new FileStream(path, FileMode.Open);
+        WordCollection result = Serializer.Deserialize(Stream) as WordCollection;
+        Stream.Close();
+        return result;
     }
 
     private WordCollection LoadFromXml(string xmlString)
@@ -71,33 +90,38 @@ public class WordManeger : MonoBehaviour
         return result;
     }
 
-    public void CreateWordGroups()
+    private void SaveToXml(string FileName)
     {
-        List<string> groupNames = GetGroupNames();
-        List<WordGroup> groups = new List<WordGroup>();
-        foreach (string name in groupNames)
-        {
-            LoadGroup(name);
-            int count = GameManager.WordManeger.GetVocabulary().wordsFromGroup.Count;
-            List<WordProgress> wordProgress = new List<WordProgress>();
-            foreach (WordLeo item in GameManager.WordManeger.GetVocabulary().wordsFromGroup)
-            {
-                wordProgress.Add(new WordProgress() { word = item.wordValue });
-            }
-
-            groups.Add(new WordGroup() {
-                name = name,
-                wordCount = count,
-                progress = wordProgress,
-                pictureName = "504"
-            });
-        }
-        SerializeGroup(groups);
+        
+        //AssetDatabase.GetAssetPath()
+        //Now save game data
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
+        FileStream Stream = new FileStream(FileName, FileMode.Create);
+        xmlSerializer.Serialize(Stream, vocabulary);
+        Stream.Close();
     }
 
-    private List<WordGroup> DeserializeGroup()
+    public void CreateWordGroups()
     {
-        string FileName = "WordGroup.xml";
+        //List<string> groupNames = GetGroupNames();
+        //List<WordGroup> groups = new List<WordGroup>();
+        //foreach (string name in groupNames)
+        //{
+        //    LoadGroup(name);
+        //    int count = GameManager.WordManeger.GetVocabulary().wordsFromGroup.Count;
+            
+        //    groups.Add(new WordGroup() {
+        //        name = name,
+        //        wordCount = count,
+        //        pictureName = "504"
+        //    });
+        //}
+        //SerializeGroup(groups);
+    }
+
+    private List<WordGroup> DeserializeGroup(string FileName)
+    {
+        //string FileName = "WordGroup.xml";
         FileStream stream = new FileStream(FileName, FileMode.Open);
 
         XmlSerializer Serializer = new XmlSerializer(typeof(List<WordGroup>));

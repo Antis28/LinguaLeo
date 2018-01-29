@@ -1,4 +1,4 @@
-#https://unity3d.com/learn/tutorials/topics/production/mastering-unity-project-folder-structure-version-control-systems?playlist=17117
+﻿#https://unity3d.com/learn/tutorials/topics/production/mastering-unity-project-folder-structure-version-control-systems?playlist=17117
 #=============== 
 #Unity generated
 #===============
@@ -93,3 +93,13 @@ Assets/NULLcode Studio/
 /packages
 /Assets/*.*
 /*.*
+
+/Data/
+/Builds/
+
+!LICENSE.MD
+!CODE_OF_CONDUCT.md
+!CONTRIBUTING.md
+!ISSUE_TEMPLATE.md
+!Pull Request template.md
+!README.md
