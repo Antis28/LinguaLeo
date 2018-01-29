@@ -65,7 +65,7 @@ public class WordToTranslate : MonoBehaviour, Observer
                 HideImage();
                 break;
             case GAME_EVENTS.LoadedVocabulary:
-                LoadTasks(WordManeger.Vocabulary);
+                LoadTasks(GameManager.WordManeger.GetVocabulary());
                 BuildTask(0);
                 break;
             case GAME_EVENTS.ShowResult:
@@ -177,7 +177,7 @@ public class WordToTranslate : MonoBehaviour, Observer
         // добавление слова для перевода
         string questionWord = questions[questionID].questWord.wordValue;
         SetQuestion(questionWord);
-       SetTranscript(questions[questionID].questWord.transcription);
+        SetTranscript(questions[questionID].questWord.transcription);
 
         //TODO: заполнять все кнопки одновременно
         buttonsHandler.FillingButtonsWithOptions(questions[questionID].answers, questionWord);
@@ -197,7 +197,13 @@ public class WordToTranslate : MonoBehaviour, Observer
         QuestionLeo questionLeo = new QuestionLeo();
         questionLeo.id = id;
 
-        questionLeo.answers = words.GetRandomWords(ANSWER_COUNT);
+        if (words.GroupExist())
+            questionLeo.answers = words.GetRandomWordsFromGroup(ANSWER_COUNT);
+        else {
+            questionLeo.answers = words.GetRandomWords(ANSWER_COUNT);
+            Debug.LogWarning("Не загружена группа слов");
+        }
+
 
         int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
         questionLeo.questWord = questionLeo.answers[indexOfQuestWord];
@@ -223,5 +229,5 @@ public class WordToTranslate : MonoBehaviour, Observer
         return -1;
     }
 
-    
+
 }

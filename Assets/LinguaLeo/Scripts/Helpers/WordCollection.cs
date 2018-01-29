@@ -33,7 +33,30 @@ public class WordCollection
         }
         return words;
     }
-       
+
+    public WordLeo GetRandomWordFromGroup()
+    {
+        int randomIndex = random.Next(wordsFromGroup.Count);
+
+        WordLeo word = wordsFromGroup[randomIndex];
+        return word;
+    }
+
+    public List<WordLeo> GetRandomWordsFromGroup(int Count)
+    {
+        List<WordLeo> words = new List<WordLeo>(Count);
+        for (int i = 0; i < Count; i++)
+        {
+            words.Add(GetRandomWordFromGroup());
+        }
+        return words;
+    }
+
+    public bool GroupExist()
+    {
+        return wordsFromGroup != null;
+    }
+
     /// <summary>
     /// Извлекает название всех групп
     /// </summary>
@@ -50,9 +73,14 @@ public class WordCollection
                     groups.Add(group);
             }
         }
+        groups = groups.OrderBy((x) => x).ToList();
         return groups;
     }
 
+    /// <summary>
+    /// Загрука слов из набора слов
+    /// </summary>
+    /// <param name="groupName">название набора слов</param>
     public void LoadGroup(string groupName)
     {
         wordsFromGroup = new List<WordLeo>();
