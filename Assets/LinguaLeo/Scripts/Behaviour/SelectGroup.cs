@@ -42,34 +42,19 @@ public class SelectGroup : MonoBehaviour, Observer
        List<WordGroup> group = GameManager.WordManeger.GetGroupNames();
         foreach (var item in group)
         {
-            Sprite sprite = LoadSpriteFromFile(item.pictureName);
+            string path = "Data/Covers" + "/" + item.pictureName + ".png";
+
+            Sprite sprite = Utilities.LoadSpriteFromFile(path);
             CreateCard(sprite, item.name, item.wordCount);
         }
     }
 
-    private Sprite LoadSpriteFromFile(string pictureName)
-    {
-        string path = "Data/Covers" + "/" + pictureName + ".png";
+    
 
-        byte[] picture;
-        using (FileStream stream = new FileStream(path, FileMode.Open))
-        {
-            picture = new byte[stream.Length];
-            // считываем данные
-            stream.Read(picture, 0, picture.Length);
-        }
-
-        Texture2D texture2D = new Texture2D(1, 1);
-        texture2D.LoadImage(picture);
-
-        Sprite sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
-        return sprite;
-    }
-
-    private void CreateCard(Sprite binary, string caption, int count)
+    private void CreateCard(Sprite sprite, string caption, int count)
     {
         WordSetPanel setPanel = Instantiate(panelPrefab, content.transform);
-        setPanel.Init(binary, caption, count);
+        setPanel.Init(sprite, caption, count);
     }
 
     private void CalulateContentHight()

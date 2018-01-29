@@ -9,8 +9,33 @@ using URandom = UnityEngine.Random;
 
 public class Utilities
 {
+    public static Sprite LoadSpriteFromFile(string path)
+    {
+        //string path = "Data/Covers" + "/" + pictureName + ".png";
+        if (!File.Exists(path))
+        {
+            Debug.LogError("File not found");
+            Debug.LogError(path);
+            return null;
+        }
 
-    public static string ConverterUrlToName(string url)
+        byte[] picture;
+
+        using (FileStream stream = new FileStream(path, FileMode.Open))
+        {
+            picture = new byte[stream.Length];
+            // считываем данные
+            stream.Read(picture, 0, picture.Length);
+        }
+
+        Texture2D texture2D = new Texture2D(1, 1);
+        texture2D.LoadImage(picture);
+
+        Sprite sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
+        return sprite;
+    }
+
+    public static string ConverterUrlToName(string url, bool withExtension = true)
     {
         //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
         //string url = "http://contentcdn.lingualeo.com/uploads/picture/96-631152008.mp3";
@@ -18,7 +43,11 @@ public class Utilities
         Regex rg = new Regex(patern, RegexOptions.IgnoreCase);
         Match mat = rg.Match(url);
 
+        if (withExtension)
+            return Path.GetFileName(mat.Value);
+
         return Path.GetFileNameWithoutExtension(mat.Value);
+
     }
 
     public int GetINT(string text)
@@ -50,7 +79,7 @@ public class Utilities
     /// <param name="toFind"></param>
     /// <returns></returns>
     public int InterpolationSearch(int[] sortedArray, int toFind)
-    {        
+    {
         int mid;
         int low = 0;
         int high = sortedArray.Length - 1;

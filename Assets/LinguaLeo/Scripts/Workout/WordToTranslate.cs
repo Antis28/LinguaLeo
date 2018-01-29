@@ -104,8 +104,10 @@ public class WordToTranslate : MonoBehaviour, Observer
 
     public void SetImage(string fileName)
     {
-        string foloder = "!Pict";
-        Sprite sprite = Resources.Load<Sprite>(foloder + "/" + Utilities.ConverterUrlToName(fileName));
+        string foloder = "Data/Picture/";
+        //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + Utilities.ConverterUrlToName(fileName));
+        Sprite sprite = Utilities.LoadSpriteFromFile(foloder + Utilities.ConverterUrlToName(fileName));
+
         wordImage.sprite = sprite;
         wordImage.preserveAspect = true;
     }
