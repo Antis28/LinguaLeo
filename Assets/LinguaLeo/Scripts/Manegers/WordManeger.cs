@@ -17,11 +17,11 @@ public class WordManeger : MonoBehaviour
     private static WordCollection vocabulary = null; // полный словарь
     private static List<string> wordGroups = null; // названия наборов слов
 
-    [SerializeField]
-    private string folder = @"Data/Base"; // подпапка в Resources, для чтения
 
-    [SerializeField]
-    private string fileName = string.Empty;
+    private string folderXml = @"Data/Base";
+
+
+    private string fileNameXml = "WordBase.xml";
 
 
     public WordCollection GetVocabulary()
@@ -32,13 +32,13 @@ public class WordManeger : MonoBehaviour
     public List<WordGroup> GetGroupNames()
     {
         //return vocabulary.FilterGroup();
-        string path = folder + "/" + "WordGroup.xml";
+        string path = folderXml + "/" + "WordGroup.xml";
         if (!File.Exists(path))
         {
             Debug.LogError("File not found");
             return null;
         }
-       return  DeserializeGroup(path);
+        return DeserializeGroup(path);
     }
 
     public void LoadGroup(string groupName)
@@ -67,7 +67,7 @@ public class WordManeger : MonoBehaviour
 
     private WordCollection LoadFromXml()
     {
-        string path = folder + "/" + fileName;
+        string path = folderXml + "/" + fileNameXml;
         if (!File.Exists(path))
         {
             Debug.LogError("File not found");
@@ -77,6 +77,8 @@ public class WordManeger : MonoBehaviour
         FileStream Stream = new FileStream(path, FileMode.Open);
         WordCollection result = Serializer.Deserialize(Stream) as WordCollection;
         Stream.Close();
+        if (result == null)
+            Debug.LogError("File not Serialize");
         return result;
     }
 
@@ -92,7 +94,7 @@ public class WordManeger : MonoBehaviour
 
     private void SaveToXml(string FileName)
     {
-        
+
         //AssetDatabase.GetAssetPath()
         //Now save game data
         XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
@@ -109,7 +111,7 @@ public class WordManeger : MonoBehaviour
         //{
         //    LoadGroup(name);
         //    int count = GameManager.WordManeger.GetVocabulary().wordsFromGroup.Count;
-            
+
         //    groups.Add(new WordGroup() {
         //        name = name,
         //        wordCount = count,
@@ -142,5 +144,11 @@ public class WordManeger : MonoBehaviour
         xmlSerializer.Serialize(Stream, list);
         Stream.Close();
         Debug.Log("SerializeGroup");
+    }
+
+    public void OnLevelWasLoaded(int level)
+    {
+        if(vocabulary != null)
+        GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
     }
 }

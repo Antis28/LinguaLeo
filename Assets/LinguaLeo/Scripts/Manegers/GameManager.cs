@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 
     //Internal reference to notifications object
     private static LevelManeger levelManeger = null;
+
     private static WordManeger wordManeger = null;
 
     //--------------------------------------------------------------------------------------
@@ -119,7 +120,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if (scoreKeeper == null)
+            if (levelManeger == null)
             {
                 CheckManyInstance<LevelManeger>();
                 levelManeger = instance.GetComponent<LevelManeger>();
@@ -128,11 +129,12 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
     public static WordManeger WordManeger
     {
         get
         {
-            if (scoreKeeper == null)
+            if (wordManeger == null)
             {
                 CheckManyInstance<WordManeger>();
                 wordManeger = instance.GetComponent<WordManeger>();
@@ -141,7 +143,6 @@ public class GameManager : MonoBehaviour
 
         }
     }
-
 
     private static void CheckManyInstance<T>()where T : Object
     {

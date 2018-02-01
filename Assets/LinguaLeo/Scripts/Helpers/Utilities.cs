@@ -14,8 +14,7 @@ public class Utilities
         //string path = "Data/Covers" + "/" + pictureName + ".png";
         if (!File.Exists(path))
         {
-            Debug.LogError("File not found");
-            Debug.LogError(path);
+            Debug.LogWarning("File not found\n" + path);
             return null;
         }
 
@@ -38,10 +37,9 @@ public class Utilities
     public static AudioClip LoadMusicFromFile(string path)
     {
         WWW www = new WWW("file://" + path);// задаем ссылку на файл
-        Debug.Log("file://" + path);
-        
-        AudioClip clip = www.GetAudioClip(false,false);//[/url] получаем по ссылке аудиоклип
+        //Debug.Log("file://" + path);
 
+        AudioClip clip = www.GetAudioClip(false,false);//[/url] получаем по ссылке аудиоклип        
         return clip;
     }
 
