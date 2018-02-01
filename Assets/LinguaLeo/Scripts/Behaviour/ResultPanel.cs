@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,9 @@ public class ResultPanel : MonoBehaviour
     [SerializeField]
     Text EatingText = null;
 
+    [SerializeField]
+    Button[] buttons;
+
     const int BED_RESULT = 0;
     const int GOOD_RESULT = 9;
     const int BEST_RESULT = 10;
@@ -23,6 +27,33 @@ public class ResultPanel : MonoBehaviour
         int score = GameManager.ScoreKeeper.ScoreValue;
         ShowCaption(score);
         ShowLearn(score);
+
+        InitButtons();
+
+        print("lastWorkout = " + GameManager.LevelManeger.lastWorkout);
+    }
+
+    private void InitButtons()
+    {
+        buttons = transform.GetComponentsInChildren<Button>();
+        foreach (var item in buttons)
+        {
+            switch (item.name)
+            {
+                case "NextWorkoutButton":
+                    //item.onClick.AddListener();
+                    break;
+                case "ListWorkoutButton":
+                    //item.onClick.AddListener();
+                    break;
+                case "ContinueWorkoutButton":
+                    //item.onClick.AddListener(GameManager.LevelManeger.LoadLastWorkOut);
+                    item.onClick.AddListener(()=>
+                    GameManager.Notifications.PostNotification(this, GAME_EVENTS.ContinueWorkout)
+                    );
+                    break;
+            }
+        }
     }
 
     private void ShowCaption(int score)
@@ -57,6 +88,8 @@ public class ResultPanel : MonoBehaviour
 
 
     }
+
+
 
     // Update is called once per frame
     void Update()

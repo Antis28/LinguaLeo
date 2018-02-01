@@ -135,4 +135,5 @@ public enum GAME_EVENTS
     WordsEnded,
     ShowResult,
     LoadedVocabulary,
+    ContinueWorkout,
 }
