@@ -114,7 +114,7 @@ public class WordToTranslate : MonoBehaviour, Observer
 
     public void SetSound(string file)
     {
-        GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file));
+        GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file,false));
         if (sayToggle.isOn)
             GameManager.AudioPlayer.SayWord();
     }
