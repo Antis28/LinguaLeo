@@ -18,6 +18,9 @@ public class AudioPlayer : MonoBehaviour
     private string bundleFolder = @"M:\My_projects\!_Unity\LinguaLeo\Assets\AssetBundles\";//@"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\";//"/Data/Audio";
     private string bundleName = "voices";
 
+    private string resFolder = @"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\OGG\";
+    private string resExt = ".ogg";
+
     public AudioSource Music
     {
         get
@@ -33,9 +36,9 @@ public class AudioPlayer : MonoBehaviour
 
     public void SetSound(string fileName)
     {
-        //sayClip = Resources.Load<AudioClip>(folder + "/" + fileName);         
+        //sayClip = Resources.Load<AudioClip>(folder + "/" + fileName);
         //sayClip = ExtractFromBundle();
-        string path = @"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\OGG\" + fileName + ".ogg";
+        string path = resFolder + fileName + resExt;
         sayClip = Utilities.LoadMusicFromFile(path);
     }
     public void SayWord()
@@ -45,12 +48,21 @@ public class AudioPlayer : MonoBehaviour
             Debug.Log("Clip not loaded");
             return;
         }
+        StartCoroutine(WaitLoadingAudio());
+    }
+
+    IEnumerator WaitLoadingAudio()
+    {
+        while (sayClip.loadState != AudioDataLoadState.Loaded)
+        {
+            yield return null;
+        }
         Music.PlayOneShot(sayClip);
     }
 
     public void Start()
     {
-        LoadBundle();
+        //LoadBundle();
     }
 
     private void LoadBundle()
