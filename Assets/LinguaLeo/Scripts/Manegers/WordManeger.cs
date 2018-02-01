@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -61,8 +62,13 @@ public class WordManeger : MonoBehaviour
 
         wordGroups = vocabulary.FilterGroup();
         vocabulary.LoadGroup(wordGroups[66]);
-
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
         GameManager.Notifications.PostNotification(null, GAME_EVENTS.LoadedVocabulary);
+    }
+    private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        if (vocabulary != null)
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
     }
 
     private WordCollection LoadFromXml()
@@ -144,11 +150,5 @@ public class WordManeger : MonoBehaviour
         xmlSerializer.Serialize(Stream, list);
         Stream.Close();
         Debug.Log("SerializeGroup");
-    }
-
-    public void OnLevelWasLoaded(int level)
-    {
-        if(vocabulary != null)
-        GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
     }
 }
