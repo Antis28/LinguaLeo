@@ -35,6 +35,16 @@ public class Utilities
         return sprite;
     }
 
+    public static AudioClip LoadMusicFromFile(string path)
+    {
+        WWW www = new WWW("file://" + path);// задаем ссылку на файл
+        Debug.Log("file://" + path);
+        
+        AudioClip clip = www.GetAudioClip(false,false);//[/url] получаем по ссылке аудиоклип
+
+        return clip;
+    }
+
     public static string ConverterUrlToName(string url, bool withExtension = true)
     {
         //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
