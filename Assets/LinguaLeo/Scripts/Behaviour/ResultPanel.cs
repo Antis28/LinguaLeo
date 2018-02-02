@@ -27,6 +27,7 @@ public class ResultPanel : MonoBehaviour
         int score = GameManager.ScoreKeeper.ScoreValue;
         ShowCaption(score);
         ShowLearn(score);
+        EatingText.text = "100%";
 
         InitButtons();
 
@@ -84,9 +85,6 @@ public class ResultPanel : MonoBehaviour
             LearnText.text = string.Format("{0} слово изучено, {1} на изучении", score, BEST_RESULT - score);
         else
             LearnText.text = string.Format("{0} слова изучено, {1} на изучении", score, BEST_RESULT - score);
-
-
-
     }
 
 
