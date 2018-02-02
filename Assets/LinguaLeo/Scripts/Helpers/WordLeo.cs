@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 /// см. класс ExportWordLeo
 /// в проекте Обучение/CSVReader
 /// </summary>
+
 public class WordLeo
 {
     [XmlAttribute]

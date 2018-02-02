@@ -14,11 +14,13 @@ using System.Text;
 using UnityEditor;
 #endif
 
-public class WordManeger : MonoBehaviour
+public class WordManeger : MonoBehaviour, Observer
 {
     private static WordCollection vocabulary = null; // полный словарь
     private static List<string> wordGroups = null; // названия наборов слов
 
+    private static WordLeo currentWord = null;
+    private static WorkoutNames currentWorkoutName;
 
     private string folderXml = @"Data/Base";
 
@@ -29,6 +31,11 @@ public class WordManeger : MonoBehaviour
     public WordCollection GetVocabulary()
     {
         return vocabulary;
+    }
+
+    public List<WordLeo> GetWords(int count)
+    {
+        return vocabulary.GetRandomWordsFromGroup(count);
     }
 
     public List<WordGroup> GetGroupNames()
@@ -50,8 +57,14 @@ public class WordManeger : MonoBehaviour
 
     void Start()
     {
-        LoadVocabulary();
-        //CreateWordGroups();
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
+        
+        LoadVocabulary();        
+        CreateWordGroups();
+
+        ResetWorkoutProgress();
     }
 
     private void LoadVocabulary()
@@ -64,7 +77,7 @@ public class WordManeger : MonoBehaviour
         wordGroups = vocabulary.FilterGroup();
         vocabulary.LoadGroup(wordGroups[66]);
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-        GameManager.Notifications.PostNotification(null, GAME_EVENTS.LoadedVocabulary);
+        GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
     }
     private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
@@ -111,7 +124,6 @@ public class WordManeger : MonoBehaviour
         using (TextWriter stream = new StreamWriter(path, false ,Encoding.UTF8))
         {
 
-        //AssetDatabase.GetAssetPath()
             //Now save game data
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
 
@@ -120,6 +132,9 @@ public class WordManeger : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Создать xml наборов слов
+    /// </summary>
     public void CreateWordGroups()
     {
         //List<string> groupNames = GetGroupNames();
@@ -161,5 +176,53 @@ public class WordManeger : MonoBehaviour
         xmlSerializer.Serialize(Stream, list);
         Stream.Close();
         Debug.Log("SerializeGroup");
+    }
+
+    public void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
+    {
+        switch (workout)
+        {
+            case WorkoutNames.translate:
+                word.progress.word_translate = true;
+                break;
+            case WorkoutNames.reverse:
+                word.progress.translate_word = true;
+                break;
+            case WorkoutNames.audio:
+                word.progress.audio_word = true;
+                break;
+            case WorkoutNames.puzzle:
+                word.progress.word_puzzle = true;
+                break;
+        }
+    }
+
+    public void ResetWorkoutProgress()
+    {
+        foreach (WordLeo item in vocabulary.allWords)
+        {
+            item.progress.Reset();
+        }
+    }
+
+    void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
+    {
+
+        switch (notificationName)
+        {
+            case GAME_EVENTS.WordsEnded:
+                SaveToXml();
+                break;
+            case GAME_EVENTS.CorrectAnswer:                
+                AddWorkoutProgress(currentWord, currentWorkoutName);
+                break;
+            case GAME_EVENTS.BuildTask:
+                IWorkout workout = sender as IWorkout;
+                currentWorkoutName = workout.WorkoutName;
+                currentWord = workout.GetCurrentWord();
+                break;
+
+
+        }
     }
 }

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 using URandom = UnityEngine.Random;
 
-public class WordToTranslate : MonoBehaviour, Observer
+public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 {
     [SerializeField]
     private Text questionText = null; // Поле для вопроса
@@ -44,6 +44,17 @@ public class WordToTranslate : MonoBehaviour, Observer
 
     private ButtonsHandler buttonsHandler;
 
+    WorkoutNames IWorkout.WorkoutName
+    {
+        get
+        {
+            return WorkoutNames.translate;
+            //return "reverse";
+            //return "audio";
+            //return "puzzle";
+        }
+    }
+
 
     // Use this for initialization
     void Awake()
@@ -65,7 +76,7 @@ public class WordToTranslate : MonoBehaviour, Observer
                 HideImage();
                 break;
             case GAME_EVENTS.LoadedVocabulary:
-                LoadTasks(GameManager.WordManeger.GetVocabulary());
+                LoadTasks();
                 BuildTask(0);
                 break;
             case GAME_EVENTS.ShowResult:
@@ -142,12 +153,12 @@ public class WordToTranslate : MonoBehaviour, Observer
         return questions[questionID];
     }
 
-    private void LoadTasks(WordCollection words)
+    private void LoadTasks()
     {
         questions = new List<QuestionLeo>(QUEST_COUNT);
         for (int i = 0; i < QUEST_COUNT; i++)
         {
-            QuestionLeo question = GeneratorTask(i, words);
+            QuestionLeo question = GeneratorTask(i);
             questions.Add(question);
         }
     }
@@ -167,8 +178,7 @@ public class WordToTranslate : MonoBehaviour, Observer
             Debug.LogError(this + "отсутствует или указан неверно идентификатор узла.");
             return;
         }
-
-        GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
+        
         int toNode = questionID + 1;
         if (QUEST_COUNT == toNode)
         {
@@ -192,24 +202,24 @@ public class WordToTranslate : MonoBehaviour, Observer
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
+        GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    private QuestionLeo GeneratorTask(int id, WordCollection words)
+    private QuestionLeo GeneratorTask(int id)
     {
         QuestionLeo questionLeo = new QuestionLeo();
         questionLeo.id = id;
 
-        if (words.GroupExist())
-            questionLeo.answers = words.GetRandomWordsFromGroup(ANSWER_COUNT);
-        else {
-            questionLeo.answers = words.GetRandomWords(ANSWER_COUNT);
-            Debug.LogWarning("Не загружена группа слов");
-        }
+        //if (words.GroupExist())
+        questionLeo.answers = GameManager.WordManeger.GetWords(ANSWER_COUNT);//words.GetRandomWordsFromGroup(ANSWER_COUNT);
+        //else {
+        //    questionLeo.answers = words.GetRandomWords(ANSWER_COUNT);
+        //    Debug.LogWarning("Не загружена группа слов");
+        //}
 
 
         int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
-        questionLeo.questWord = questionLeo.answers[indexOfQuestWord];
-
+        questionLeo.questWord = questionLeo.answers[indexOfQuestWord];        
         return questionLeo;
     }
 
@@ -231,5 +241,8 @@ public class WordToTranslate : MonoBehaviour, Observer
         return -1;
     }
 
-
+    WordLeo IWorkout.GetCurrentWord()
+    {
+        return questions[questionID].questWord;
+    }
 }

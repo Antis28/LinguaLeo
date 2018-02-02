@@ -24,4 +24,12 @@ public class WorkoutProgress
     //phrase_puzzle;
 
     public WorkoutProgress() { }
+
+    public void Reset()
+    {
+        word_translate = false;
+        translate_word = false;
+        audio_word = false;
+        word_puzzle = false;
+    }
 }

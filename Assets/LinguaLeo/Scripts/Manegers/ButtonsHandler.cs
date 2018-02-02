@@ -161,7 +161,7 @@ public class ButtonsHandler : MonoBehaviour
         if (istrue)
         {
             SetColors(button, Color.green);
-            GameManager.Notifications.PostNotification(null, GAME_EVENTS.CorrectAnswer);
+            GameManager.Notifications.PostNotification(button, GAME_EVENTS.CorrectAnswer);
         }
         if (!istrue)
         {
