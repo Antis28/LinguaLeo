@@ -23,22 +23,18 @@ public class AnswerResult : MonoBehaviour, Observer
         ButtonComponent button = null;
         if (sender)
             button = sender.GetComponent<ButtonComponent>();
+        if (ResultText == null)
+            return;
         switch (notificationName)
         {
             case GAME_EVENTS.CorrectAnswer:
-                if (ResultText != null)
-                {
-                    ResultText.text = "Верный ответ.";
-                    ResultText.color = correctColor;
-                }
+                ResultText.text = "Верный ответ.";
+                ResultText.color = correctColor;
                 break;
             case GAME_EVENTS.NonCorrectAnswer:
-                if (ResultText != null)
-                {
-                    ResultText.text = "Неверный ответ.";
-                    ResultText.color = wrongColor;                    
-                    FillSamleText(button);
-                }
+                ResultText.text = "Неверный ответ.";
+                ResultText.color = wrongColor;
+                FillSamleText(button);
                 break;
             case GAME_EVENTS.BuildTask:
                 ResultText.text = string.Empty;
