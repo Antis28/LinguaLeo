@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Text;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -79,34 +80,44 @@ public class WordManeger : MonoBehaviour
             Debug.LogError("File not found");
             return null;
         }
-        XmlSerializer Serializer = new XmlSerializer(typeof(WordCollection));
-        FileStream Stream = new FileStream(path, FileMode.Open);
-        WordCollection result = Serializer.Deserialize(Stream) as WordCollection;
-        Stream.Close();
-        if (result == null)
-            Debug.LogError("File not Serialize");
-        return result;
+        using (TextReader Stream = new StreamReader(path, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
+        {
+            XmlSerializer Serializer = new XmlSerializer(typeof(WordCollection));
+            WordCollection result = Serializer.Deserialize(Stream) as WordCollection;
+            Stream.Close();
+            if (result == null)
+                Debug.LogError("File not Serialize");
+            return result;
+        }
     }
 
     private WordCollection LoadFromXml(string xmlString)
     {
         XmlSerializer Serializer = new XmlSerializer(typeof(WordCollection));
-
         TextReader reader = new StringReader(xmlString);
         WordCollection result = Serializer.Deserialize(reader) as WordCollection;
         reader.Close();
         return result;
     }
 
-    private void SaveToXml(string FileName)
+    private void SaveToXml()
     {
+        string path = folderXml + "/" + fileNameXml;
+        if (!File.Exists(path))
+        {
+            Debug.LogError("File not found");
+            return;
+        }
+        using (TextWriter stream = new StreamWriter(path, false ,Encoding.UTF8))
+        {
 
         //AssetDatabase.GetAssetPath()
-        //Now save game data
-        XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
-        FileStream Stream = new FileStream(FileName, FileMode.Create);
-        xmlSerializer.Serialize(Stream, vocabulary);
-        Stream.Close();
+            //Now save game data
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
+
+            xmlSerializer.Serialize(stream, vocabulary);
+            stream.Close();
+        }
     }
 
     public void CreateWordGroups()

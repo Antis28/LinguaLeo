@@ -26,15 +26,15 @@ public class WordLeo
     [XmlAttribute]
     public string soundURL;
 
+    [XmlAttribute]
+    public string clozefiedContext;
+
     [XmlArray]
     [XmlArrayItem("group")]
     public string[] groups;
 
-    [XmlAttribute]
-    public string clozefiedContext;
-    
-    [XmlArrayItem("workout")]
-    public List<WorkoutProgress> progress;
+    [XmlElement]
+    public WorkoutProgress progress;
 
     public WordLeo() { }
 
