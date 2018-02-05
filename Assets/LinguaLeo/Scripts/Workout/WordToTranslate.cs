@@ -19,6 +19,8 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
     [SerializeField]
     private Image wordImage = null; // Картинка ассоциаци со словом
+    [SerializeField]
+    private Image progressImage = null; // Картинка прогесса изучения слова
 
     [SerializeField]
     private Toggle sayToggle = null; // checkbox для автопроизношения
@@ -72,12 +74,14 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         switch (notificationName)
         {
             case GAME_EVENTS.BuildTask:
+                WordProgressUpdate();
                 ProgeressUpdate();
                 HideImage();
                 break;
             case GAME_EVENTS.LoadedVocabulary:
                 LoadTasks();
                 BuildTask(0);
+                FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
             case GAME_EVENTS.ShowResult:
                 ShowContext();
@@ -87,6 +91,34 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
         }
     }
+
+    /// <summary>
+    /// показывает прогресс изучения слова
+    /// </summary>
+    private void WordProgressUpdate()
+    {
+        WordLeo word = GetCurrentQuest().questWord;
+        float progress = 0;
+
+        if (word.progress.word_translate)
+        {
+            progress += 0.25f;
+        }
+        if (word.progress.translate_word)
+        {
+            progress += 0.25f;
+        }
+        if (word.progress.audio_word)
+        {
+            progress += 0.25f;
+        }
+        if (word.progress.word_puzzle)
+        {
+            progress += 0.25f;
+        }
+        progressImage.fillAmount = progress;
+    }
+
     private void ProgeressUpdate()
     {
         answersCount++;
@@ -142,7 +174,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     {
         contextPanel.SetActive(true);
     }
-    public void HideContext()
+    private void HideContext()
     {
         contextPanel.SetActive(false);
     }
@@ -186,18 +218,20 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
             trainingСompleted = true;
         }
 
+        QuestionLeo questionLeo = questions[questionID];
+
         // добавление слова для перевода
-        string questionWord = questions[questionID].questWord.wordValue;
+        string questionWord = questionLeo.questWord.wordValue;
         SetQuestion(questionWord);
-        SetTranscript(questions[questionID].questWord.transcription);
+        SetTranscript(questionLeo.questWord.transcription);
 
         //TODO: заполнять все кнопки одновременно
-        buttonsHandler.FillingButtonsWithOptions(questions[questionID].answers, questionWord);
+        buttonsHandler.FillingButtonsWithOptions(questionLeo.answers, questionWord);
         buttonsHandler.FillingEnterButton(true);
 
-        SetImage(questions[questionID].questWord.pictureURL);
-        SetSound(questions[questionID].questWord.soundURL);
-        SetContext(questions[questionID].questWord.highlightedContext);
+        SetImage(questionLeo.questWord.pictureURL);
+        SetSound(questionLeo.questWord.soundURL);
+        SetContext(questionLeo.questWord.highlightedContext);
         HideContext();
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
