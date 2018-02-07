@@ -40,7 +40,7 @@ public class WordSetPanel : MonoBehaviour
     {
         Debug.Log("Test = " + groupName);
         GameManager.WordManeger.LoadGroup(groupName);
-        foreach (WordLeo item in GameManager.WordManeger.GetVocabulary().wordsFromGroup)
+        foreach (WordLeo item in GameManager.WordManeger.GetVocabularyGroup_s())
         {
             Debug.Log(item.wordValue);
         }
