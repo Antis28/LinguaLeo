@@ -52,6 +52,28 @@ public class WordCollection
         return words;
     }
 
+    public List<WordLeo> GetUntrainedWordsGroup(int Count)
+    {
+        List<WordLeo> untrainedWords = new List<WordLeo>(Count);
+        WordLeo word = null;
+        // неповторяемые слова
+        for (int index = 0, j = 0; index < Count; index++)
+        {
+            while (j < wordsFromGroup.Count)
+            {
+                word = wordsFromGroup[j];
+                j++;
+                if (word.progress.word_translate != true)
+                    break;
+            }
+
+            if (word == null)
+                break;
+            untrainedWords.Add(word);
+        }
+        return untrainedWords;
+    }
+
     public bool GroupExist()
     {
         return wordsFromGroup != null;

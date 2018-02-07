@@ -35,7 +35,7 @@ public class WordManeger : MonoBehaviour, Observer
 
     public List<WordLeo> GetWords(int count)
     {
-        return vocabulary.GetRandomWordsFromGroup(count);
+        return vocabulary.GetUntrainedWordsGroup(count);
     }
 
     public List<WordGroup> GetGroupNames()
@@ -50,6 +50,11 @@ public class WordManeger : MonoBehaviour, Observer
         return DeserializeGroup(path);
     }
 
+    public List<WordLeo> GetVocabularyGroup_s()
+    {
+        return vocabulary.wordsFromGroup;
+    }
+
     public void LoadGroup(string groupName)
     {
         vocabulary.LoadGroup(groupName);
@@ -60,8 +65,8 @@ public class WordManeger : MonoBehaviour, Observer
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-        
-        LoadVocabulary();        
+
+        LoadVocabulary();
         CreateWordGroups();
 
         ResetWorkoutProgress();
@@ -75,7 +80,8 @@ public class WordManeger : MonoBehaviour, Observer
         }
 
         wordGroups = vocabulary.FilterGroup();
-        vocabulary.LoadGroup(wordGroups[66]);
+        //vocabulary.LoadGroup(wordGroups[66]);
+        vocabulary.LoadGroup(wordGroups[1]);
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
     }
@@ -121,7 +127,7 @@ public class WordManeger : MonoBehaviour, Observer
             Debug.LogError("File not found");
             return;
         }
-        using (TextWriter stream = new StreamWriter(path, false ,Encoding.UTF8))
+        using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
         {
 
             //Now save game data
@@ -213,7 +219,7 @@ public class WordManeger : MonoBehaviour, Observer
             case GAME_EVENTS.WordsEnded:
                 SaveToXml();
                 break;
-            case GAME_EVENTS.CorrectAnswer:                
+            case GAME_EVENTS.CorrectAnswer:
                 AddWorkoutProgress(currentWord, currentWorkoutName);
                 break;
             case GAME_EVENTS.BuildTask:

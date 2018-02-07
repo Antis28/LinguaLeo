@@ -157,7 +157,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
     public void SetSound(string file)
     {
-        GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file,false));
+        GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file, false));
         if (sayToggle.isOn)
             GameManager.AudioPlayer.SayWord();
     }
@@ -188,11 +188,15 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private void LoadTasks()
     {
         questions = new List<QuestionLeo>(QUEST_COUNT);
-        for (int i = 0; i < QUEST_COUNT; i++)
+        int countwords = GameManager.WordManeger.GetVocabularyGroup_s().Count;
+        for (int i = 0, j = 0; i < QUEST_COUNT; i++)
         {
-            QuestionLeo question = GeneratorTask(i);
-            questions.Add(question);
+            QuestionLeo question = GeneratorTask(i, questions);
+
+            if (question != null)
+                questions.Add(question);
         }
+
     }
 
     private void BuildTask(int current)
@@ -210,7 +214,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
             Debug.LogError(this + "отсутствует или указан неверно идентификатор узла.");
             return;
         }
-        
+
         int toNode = questionID + 1;
         if (QUEST_COUNT == toNode)
         {
@@ -239,22 +243,103 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    private QuestionLeo GeneratorTask(int id)
+    private QuestionLeo GeneratorTask(int id, List<QuestionLeo> exceptWords = null)
     {
         QuestionLeo questionLeo = new QuestionLeo();
         questionLeo.id = id;
 
         //if (words.GroupExist())
-        questionLeo.answers = GameManager.WordManeger.GetWords(ANSWER_COUNT);//words.GetRandomWordsFromGroup(ANSWER_COUNT);
+        if (exceptWords == null)
+        {
+            questionLeo.answers = GameManager.WordManeger.GetWords(ANSWER_COUNT);//words.GetRandomWordsFromGroup(ANSWER_COUNT);
+            int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
+            questionLeo.questWord = questionLeo.answers[indexOfQuestWord];
+        }
+        else//если уже есть слова в списке исключений
+        {
+            int[] numAnswers = { 0, 1, 2, 3, 4 };
+            int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
+            int vocabularyCount = GameManager.WordManeger.GetVocabularyGroup_s().Count;
+
+            List<WordLeo> words = GameManager.WordManeger.GetWords(vocabularyCount);
+            words = RandomiseList(words);
+
+            //Найти слово которого нет в списке
+            foreach (var item in words)
+            {
+                if (!exceptWords.Contains(new QuestionLeo(item)))
+                {
+                    questionLeo.questWord = item;
+                    break;
+                }
+            }
+            if (questionLeo.questWord == null)
+                return null;
+            //
+            Stack<WordLeo> answers = FillRandomStack(words, ANSWER_COUNT);
+            questionLeo.answers = new List<WordLeo>(ANSWER_COUNT);
+            foreach (var item in numAnswers)
+            {
+                if (item == indexOfQuestWord)
+                {
+                    questionLeo.answers.Add(questionLeo.questWord);
+                    continue;
+                }
+                if (answers.Peek() == questionLeo.questWord)
+                    answers.Pop();
+                questionLeo.answers.Add(answers.Pop());
+            }
+        }
+
         //else {
         //    questionLeo.answers = words.GetRandomWords(ANSWER_COUNT);
         //    Debug.LogWarning("Не загружена группа слов");
         //}
-
-
-        int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
-        questionLeo.questWord = questionLeo.answers[indexOfQuestWord];        
         return questionLeo;
+    }
+    /// <summary>
+    /// перемешать слова
+    /// </summary>
+    /// <param name="words"></param>
+    /// <returns></returns>
+    private List<WordLeo> RandomiseList(List<WordLeo> words)
+    {
+        List<WordLeo> list = new List<WordLeo>();
+        System.Random random = new System.Random();
+        foreach (var item in words)
+        {
+            int randomIndex; 
+            do
+            {
+                randomIndex = random.Next(words.Count);
+            } while (list.Contains(words[randomIndex]));
+            list.Add(words[randomIndex]);
+        }
+        return list;
+    }
+
+    /// <summary>
+    /// Заполнить стек случайным образом
+    /// </summary>
+    /// <param name="words"></param>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    private Stack<WordLeo> FillRandomStack(List<WordLeo> words, int count)
+    {
+        Stack<WordLeo> stack = new Stack<WordLeo>();
+        System.Random random = new System.Random();
+        while (stack.Count < count)
+        {
+            int randomIndex = random.Next(words.Count);
+            if (!stack.Contains(words[randomIndex]))
+            {
+                stack.Push(words[randomIndex]);
+            }
+        }
+
+
+
+        return stack;
     }
 
     /// <summary>
