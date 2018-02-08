@@ -7,7 +7,7 @@ public class ButtonsHandler : MonoBehaviour
 {
     private ButtonComponent[] buttons;
     [SerializeField]
-    private Button RepeatWordButton;
+    private Button RepeatWordButton = null;
 
     private int buttonID;
 
