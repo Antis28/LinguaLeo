@@ -249,52 +249,63 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         questionLeo.id = id;
 
         //if (words.GroupExist())
-        if (exceptWords == null)
-        {
-            //questionLeo.answers = GameManager.WordManeger.GetUntrainedWords(ANSWER_COUNT);//words.GetRandomWordsFromGroup(ANSWER_COUNT);
-            //int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
-            //questionLeo.questWord = questionLeo.answers[indexOfQuestWord];
-        }
-        else//если уже есть слова в списке исключений
-        {
-            int[] numAnswers = { 0, 1, 2, 3, 4 };
-            int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
-            List<WordLeo> words = GameManager.WordManeger.GetUntrainedGroupWords();
-            words = ShuffleList(words);
 
-            //Найти слово которого нет в списке
-            foreach (var item in words)
-            {
-                if (!exceptWords.Contains(new QuestionLeo(item)))
-                {
-                    questionLeo.questWord = item;
-                    break;
-                }
-            }
-            if (questionLeo.questWord == null)
-                return null;
-            //
-            Stack<WordLeo> answers = FillRandomStack(GameManager.WordManeger.GetAllGroupWords(), ANSWER_COUNT);
-            questionLeo.answers = new List<WordLeo>(ANSWER_COUNT);
-            foreach (var item in numAnswers)
-            {
-                if (item == indexOfQuestWord)
-                {
-                    questionLeo.answers.Add(questionLeo.questWord);
-                    continue;
-                }
-                if (answers.Peek() == questionLeo.questWord)
-                    answers.Pop();
-                questionLeo.answers.Add(answers.Pop());
-            }
+        List<WordLeo> words = GameManager.WordManeger.GetUntrainedGroupWords();
+        words = ShuffleList(words);
+        questionLeo.questWord = GetNewWord(exceptWords, words);
+
+        if (questionLeo.questWord == null)
+        {
+            Debug.LogWarning("Уникальных слов нет");
+            return null;
         }
 
-        //else {
-        //    questionLeo.answers = words.GetRandomWords(ANSWER_COUNT);
-        //    Debug.LogWarning("Не загружена группа слов");
-        //}
+        FillInAnswers(questionLeo);
+
         return questionLeo;
     }
+    /// <summary>
+    /// Найти слово которого нет в списке
+    /// </summary>
+    /// <param name="exceptWords"></param>
+    /// <param name="words"></param>
+    /// <returns></returns>
+    private static WordLeo GetNewWord(List<QuestionLeo> exceptWords, List<WordLeo> words)
+    {
+        foreach (var item in words)
+        {
+            if (!exceptWords.Contains(new QuestionLeo(item)))
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// заполнит варианты ответов
+    /// </summary>
+    /// <param name="questionLeo"></param>
+    private void FillInAnswers(QuestionLeo questionLeo)
+    {
+        int[] numAnswers = { 0, 1, 2, 3, 4 };
+        int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
+
+        Stack<WordLeo> answers = FillRandomStack(GameManager.WordManeger.GetAllGroupWords(), ANSWER_COUNT);
+        questionLeo.answers = new List<WordLeo>(ANSWER_COUNT);
+        foreach (var item in numAnswers)
+        {
+            if (item == indexOfQuestWord)
+            {
+                questionLeo.answers.Add(questionLeo.questWord);
+                continue;
+            }
+            if (answers.Peek() == questionLeo.questWord)
+                answers.Pop();
+            questionLeo.answers.Add(answers.Pop());
+        }
+    }
+
     /// <summary>
     /// перемешать слова
     /// </summary>
