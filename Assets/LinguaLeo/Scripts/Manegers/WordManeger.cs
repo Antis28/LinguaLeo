@@ -206,6 +206,7 @@ void Start()
         foreach (WordLeo item in vocabulary.allWords)
         {
             item.progress.Reset();
+            item.progress.license = WordLicenses.Level_0;
         }
     }
 
@@ -219,6 +220,7 @@ void Start()
                 break;
             case GAME_EVENTS.CorrectAnswer:
                 AddWorkoutProgress(currentWord, currentWorkoutName);
+                AddWordLicenses(currentWord);
                 break;
             case GAME_EVENTS.BuildTask:
                 IWorkout workout = sender as IWorkout;
@@ -228,5 +230,11 @@ void Start()
 
 
         }
+    }
+
+    private void AddWordLicenses(WordLeo currentWord)
+    {
+        currentWord.progress.lastRepeat = DateTime.Now;
+        currentWord.progress.license++;
     }
 }

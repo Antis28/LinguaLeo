@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 /// <summary>
 /// Прогресс изучения слова
@@ -22,6 +23,9 @@ public class WorkoutProgress
     public bool word_puzzle;
     //words_cards;
     //phrase_puzzle;
+
+    public DateTime lastRepeat;
+    public WordLicenses license;
 
     public WorkoutProgress() { }
 

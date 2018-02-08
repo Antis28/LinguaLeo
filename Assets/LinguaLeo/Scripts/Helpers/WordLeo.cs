@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 /// <summary>
@@ -39,11 +40,25 @@ public class WordLeo
 
     public WordLeo() { }
 
+    /// <summary>
+    /// Понизить лицензию
+    /// </summary>
+    /// <param name="word"></param>
+    public void ReduceLicense()
+    {
+        if (progress.license == WordLicenses.Level_0)
+            return;
+
+        progress.Reset();
+        progress.license--;
+        progress.lastRepeat = DateTime.Now;
+    }
+
     override
     public string ToString()
     {
         return wordValue;
     }
 
-    
+
 }
