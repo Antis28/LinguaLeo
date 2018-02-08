@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 using URandom = UnityEngine.Random;
 
-public class WordToTranslate : MonoBehaviour, Observer
+public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 {
     [SerializeField]
     private Text questionText = null; // Поле для вопроса
@@ -19,6 +19,8 @@ public class WordToTranslate : MonoBehaviour, Observer
 
     [SerializeField]
     private Image wordImage = null; // Картинка ассоциаци со словом
+    [SerializeField]
+    private Image progressImage = null; // Картинка прогесса изучения слова
 
     [SerializeField]
     private Toggle sayToggle = null; // checkbox для автопроизношения
@@ -44,6 +46,17 @@ public class WordToTranslate : MonoBehaviour, Observer
 
     private ButtonsHandler buttonsHandler;
 
+    WorkoutNames IWorkout.WorkoutName
+    {
+        get
+        {
+            return WorkoutNames.translate;
+            //return "reverse";
+            //return "audio";
+            //return "puzzle";
+        }
+    }
+
 
     // Use this for initialization
     void Awake()
@@ -61,12 +74,14 @@ public class WordToTranslate : MonoBehaviour, Observer
         switch (notificationName)
         {
             case GAME_EVENTS.BuildTask:
+                WordProgressUpdate();
                 ProgeressUpdate();
                 HideImage();
                 break;
             case GAME_EVENTS.LoadedVocabulary:
-                LoadTasks(GameManager.WordManeger.GetVocabulary());
+                LoadTasks();
                 BuildTask(0);
+                FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
             case GAME_EVENTS.ShowResult:
                 ShowContext();
@@ -76,6 +91,34 @@ public class WordToTranslate : MonoBehaviour, Observer
 
         }
     }
+
+    /// <summary>
+    /// показывает прогресс изучения слова
+    /// </summary>
+    private void WordProgressUpdate()
+    {
+        WordLeo word = GetCurrentQuest().questWord;
+        float progress = 0;
+
+        if (word.progress.word_translate)
+        {
+            progress += 0.25f;
+        }
+        if (word.progress.translate_word)
+        {
+            progress += 0.25f;
+        }
+        if (word.progress.audio_word)
+        {
+            progress += 0.25f;
+        }
+        if (word.progress.word_puzzle)
+        {
+            progress += 0.25f;
+        }
+        progressImage.fillAmount = progress;
+    }
+
     private void ProgeressUpdate()
     {
         answersCount++;
@@ -114,7 +157,7 @@ public class WordToTranslate : MonoBehaviour, Observer
 
     public void SetSound(string file)
     {
-        GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file,false));
+        GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file, false));
         if (sayToggle.isOn)
             GameManager.AudioPlayer.SayWord();
     }
@@ -131,7 +174,7 @@ public class WordToTranslate : MonoBehaviour, Observer
     {
         contextPanel.SetActive(true);
     }
-    public void HideContext()
+    private void HideContext()
     {
         contextPanel.SetActive(false);
     }
@@ -142,20 +185,24 @@ public class WordToTranslate : MonoBehaviour, Observer
         return questions[questionID];
     }
 
-    private void LoadTasks(WordCollection words)
+    private void LoadTasks()
     {
         questions = new List<QuestionLeo>(QUEST_COUNT);
+        int countwords = GameManager.WordManeger.GetAllGroupWords().Count;
         for (int i = 0; i < QUEST_COUNT; i++)
         {
-            QuestionLeo question = GeneratorTask(i, words);
-            questions.Add(question);
+            QuestionLeo question = GeneratorTask(i, questions);
+
+            if (question != null)
+                questions.Add(question);
         }
     }
 
     private void BuildTask(int current)
     {
         buttonsHandler.ClearTextInButtons();
-        if (trainingСompleted)
+
+        if (trainingСompleted || questions.Count == 0)
         {
             GameManager.Notifications.PostNotification(this, GAME_EVENTS.WordsEnded);
             return;
@@ -168,49 +215,161 @@ public class WordToTranslate : MonoBehaviour, Observer
             return;
         }
 
-        GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
         int toNode = questionID + 1;
-        if (QUEST_COUNT == toNode)
+        if (questions.Count <= toNode)
         {
             toNode = 0;
             trainingСompleted = true;
         }
 
+        QuestionLeo questionLeo = questions[questionID];
+
         // добавление слова для перевода
-        string questionWord = questions[questionID].questWord.wordValue;
+        string questionWord = questionLeo.questWord.wordValue;
         SetQuestion(questionWord);
-        SetTranscript(questions[questionID].questWord.transcription);
+        SetTranscript(questionLeo.questWord.transcription);
 
         //TODO: заполнять все кнопки одновременно
-        buttonsHandler.FillingButtonsWithOptions(questions[questionID].answers, questionWord);
+        buttonsHandler.FillingButtonsWithOptions(questionLeo.answers, questionWord);
         buttonsHandler.FillingEnterButton(true);
 
-        SetImage(questions[questionID].questWord.pictureURL);
-        SetSound(questions[questionID].questWord.soundURL);
-        SetContext(questions[questionID].questWord.highlightedContext);
+        SetImage(questionLeo.questWord.pictureURL);
+        SetSound(questionLeo.questWord.soundURL);
+        SetContext(questionLeo.questWord.highlightedContext);
         HideContext();
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
+        GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    private QuestionLeo GeneratorTask(int id, WordCollection words)
+    private QuestionLeo GeneratorTask(int id, List<QuestionLeo> exceptWords = null)
     {
         QuestionLeo questionLeo = new QuestionLeo();
         questionLeo.id = id;
 
-        if (words.GroupExist())
-            questionLeo.answers = words.GetRandomWordsFromGroup(ANSWER_COUNT);
-        else {
-            questionLeo.answers = words.GetRandomWords(ANSWER_COUNT);
-            Debug.LogWarning("Не загружена группа слов");
+        //if (words.GroupExist())
+
+        List<WordLeo> words = GameManager.WordManeger.GetUntrainedGroupWords();
+        words = ShuffleList(words);
+        questionLeo.questWord = GetNewWord(exceptWords, words);
+
+        if (questionLeo.questWord == null)
+        {
+            Debug.LogWarning("Уникальных слов нет");
+            return null;
         }
 
-
-        int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
-        questionLeo.questWord = questionLeo.answers[indexOfQuestWord];
+        FillInAnswers(questionLeo);
 
         return questionLeo;
+    }
+    /// <summary>
+    /// Найти слово которого нет в списке
+    /// </summary>
+    /// <param name="exceptWords"></param>
+    /// <param name="words"></param>
+    /// <returns></returns>
+    private static WordLeo GetNewWord(List<QuestionLeo> exceptWords, List<WordLeo> words)
+    {
+        foreach (var item in words)
+        {
+            if (!exceptWords.Contains(new QuestionLeo(item)))
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// заполнит варианты ответов
+    /// </summary>
+    /// <param name="questionLeo"></param>
+    private void FillInAnswers(QuestionLeo questionLeo)
+    {
+        int[] numAnswers = { 0, 1, 2, 3, 4 };
+        int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
+
+        Stack<WordLeo> answers = FillRandomStack(GameManager.WordManeger.GetAllGroupWords(), ANSWER_COUNT);
+        questionLeo.answers = new List<WordLeo>(ANSWER_COUNT);
+        foreach (var item in numAnswers)
+        {
+            if (item == indexOfQuestWord)
+            {
+                questionLeo.answers.Add(questionLeo.questWord);
+                continue;
+            }
+            if (answers.Peek() == questionLeo.questWord)
+                answers.Pop();
+            questionLeo.answers.Add(answers.Pop());
+        }
+    }
+
+    /// <summary>
+    /// перемешать слова
+    /// </summary>
+    /// <param name="words"></param>
+    /// <returns></returns>
+    private List<WordLeo> ShuffleList(List<WordLeo> words)
+    {
+        List<WordLeo> list = new List<WordLeo>(words);
+
+        System.Random random = new System.Random();
+
+        // для избежания зацикливания установлен максимум попыток
+        //int maxAttempts = words.Count * 2;
+        //int numberAttempts = 0;
+
+        //foreach (var item in words)
+        //{
+        //    int randomIndex = 0; 
+        //    do
+        //    {
+        //        numberAttempts++;
+        //        if (numberAttempts > maxAttempts)
+        //            goto ToEndLoop;
+
+        //        randomIndex = random.Next(words.Count); 
+        //    } while (list.Contains(words[randomIndex]));
+
+        //    list[randomIndex] = item;
+        //    continue;
+
+        //    ToEndLoop:
+        //    list.Add(item);
+        //}
+
+        for (int i = list.Count; i > 1; i--)
+        {
+            int j = random.Next(i);
+            list.Add(list[j]);
+            list.RemoveAt(j);
+        }
+        return list;
+    }
+
+    /// <summary>
+    /// Заполнить стек случайным образом
+    /// </summary>
+    /// <param name="words"></param>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    private Stack<WordLeo> FillRandomStack(List<WordLeo> words, int count)
+    {
+        Stack<WordLeo> stack = new Stack<WordLeo>();
+        List<WordLeo> wordsTemp = new List<WordLeo>(words);
+        System.Random random = new System.Random();
+        while (stack.Count < count)
+        {
+            int randomIndex = random.Next(wordsTemp.Count);
+            if (!stack.Contains(wordsTemp[randomIndex]))
+            {
+                stack.Push(wordsTemp[randomIndex]);
+                wordsTemp.RemoveAt(randomIndex);
+            }
+        }
+        return stack;
     }
 
     /// <summary>
@@ -231,5 +390,8 @@ public class WordToTranslate : MonoBehaviour, Observer
         return -1;
     }
 
-
+    WordLeo IWorkout.GetCurrentWord()
+    {
+        return questions[questionID].questWord;
+    }
 }

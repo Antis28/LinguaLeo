@@ -38,7 +38,7 @@ public class NotificationsManager : MonoBehaviour
     /// Function to post a notification to a listener -
     /// Функция отправки уведомлений слушателю
     /// </summary>
-    public void PostNotification(Component sender, GAME_EVENTS notificationName)
+    public void PostNotification(Component sender, GAME_EVENTS notificationName, Object parametr = null)
     {
         //If no key in dictionary exists, then exit
         if (!_listeners.ContainsKey(notificationName))
@@ -136,4 +136,5 @@ public enum GAME_EVENTS
     ShowResult,
     LoadedVocabulary,
     ContinueWorkout,
+    SetQuestWord,
 }

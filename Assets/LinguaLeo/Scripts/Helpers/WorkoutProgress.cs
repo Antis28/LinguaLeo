@@ -11,13 +11,25 @@ using System.IO;
 
 public class WorkoutProgress
 {
-    public bool word_translate,
-     translate_word,
-     //savannah,
-     audio_word,
-     word_puzzle;
-     //words_cards;
-     //phrase_puzzle;
+    [XmlElement("translate")]
+    public bool word_translate;
+    [XmlElement("reverse")]
+    public bool translate_word;
+    //savannah,
+    [XmlElement("audio")]
+    public bool audio_word;
+    [XmlElement("puzzle")]
+    public bool word_puzzle;
+    //words_cards;
+    //phrase_puzzle;
 
     public WorkoutProgress() { }
+
+    public void Reset()
+    {
+        word_translate = false;
+        translate_word = false;
+        audio_word = false;
+        word_puzzle = false;
+    }
 }

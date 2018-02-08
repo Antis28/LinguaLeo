@@ -52,9 +52,4 @@ public class LevelManeger : MonoBehaviour, Observer
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ContinueWorkout);
     }
-
-    public void OnDestroy()
-    {
-        print("OnDestroy");
-    }
 }

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class ButtonsHandler : MonoBehaviour
 {
     private ButtonComponent[] buttons;
+    [SerializeField]
+    private Button RepeatWordButton = null;
 
     private int buttonID;
 
@@ -17,6 +19,7 @@ public class ButtonsHandler : MonoBehaviour
     {
         buttons = FindObjectsOfType<ButtonComponent>();
         System.Array.Sort(buttons, new MyComparer());
+        RepeatWordButton.onClick.AddListener(() => GameManager.AudioPlayer.SayWord());
     }
 
     /// <summary>
@@ -161,7 +164,7 @@ public class ButtonsHandler : MonoBehaviour
         if (istrue)
         {
             SetColors(button, Color.green);
-            GameManager.Notifications.PostNotification(null, GAME_EVENTS.CorrectAnswer);
+            GameManager.Notifications.PostNotification(button, GAME_EVENTS.CorrectAnswer);
         }
         if (!istrue)
         {

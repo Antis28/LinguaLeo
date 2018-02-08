@@ -27,6 +27,7 @@ public class ResultPanel : MonoBehaviour
         int score = GameManager.ScoreKeeper.ScoreValue;
         ShowCaption(score);
         ShowLearn(score);
+        EatingText.text = "100%";
 
         InitButtons();
 
@@ -47,10 +48,17 @@ public class ResultPanel : MonoBehaviour
                     //item.onClick.AddListener();
                     break;
                 case "ContinueWorkoutButton":
-                    //item.onClick.AddListener(GameManager.LevelManeger.LoadLastWorkOut);
-                    item.onClick.AddListener(()=>
-                    GameManager.Notifications.PostNotification(this, GAME_EVENTS.ContinueWorkout)
-                    );
+                    if (GameManager.WordManeger.GetUntrainedGroupWords().Count > 0)
+                    {
+                        item.interactable = true;
+                        item.onClick.AddListener(() =>
+                        GameManager.Notifications.PostNotification(this, GAME_EVENTS.ContinueWorkout)
+                        );
+                    }
+                    else
+                    {
+                        item.interactable = false;
+                    }
                     break;
             }
         }
@@ -84,9 +92,6 @@ public class ResultPanel : MonoBehaviour
             LearnText.text = string.Format("{0} слово изучено, {1} на изучении", score, BEST_RESULT - score);
         else
             LearnText.text = string.Format("{0} слова изучено, {1} на изучении", score, BEST_RESULT - score);
-
-
-
     }
 
 

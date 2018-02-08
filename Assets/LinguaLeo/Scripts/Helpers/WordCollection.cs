@@ -52,6 +52,17 @@ public class WordCollection
         return words;
     }
 
+    public List<WordLeo> GetUntrainedGroupWords()
+    {
+        List<WordLeo> untrainedWords = new List<WordLeo>();
+        foreach (var item in wordsFromGroup)
+        {
+            if (item.progress.word_translate != true)
+                untrainedWords.Add(item);
+        }
+        return untrainedWords;
+    }
+
     public bool GroupExist()
     {
         return wordsFromGroup != null;
