@@ -201,7 +201,8 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private void BuildTask(int current)
     {
         buttonsHandler.ClearTextInButtons();
-        if (trainingСompleted)
+
+        if (trainingСompleted || questions.Count == 0)
         {
             GameManager.Notifications.PostNotification(this, GAME_EVENTS.WordsEnded);
             return;
@@ -215,7 +216,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         }
 
         int toNode = questionID + 1;
-        if (QUEST_COUNT == toNode)
+        if (questions.Count <= toNode)
         {
             toNode = 0;
             trainingСompleted = true;
@@ -250,9 +251,9 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         //if (words.GroupExist())
         if (exceptWords == null)
         {
-            questionLeo.answers = GameManager.WordManeger.GetWords(ANSWER_COUNT);//words.GetRandomWordsFromGroup(ANSWER_COUNT);
-            int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
-            questionLeo.questWord = questionLeo.answers[indexOfQuestWord];
+            //questionLeo.answers = GameManager.WordManeger.GetUntrainedWords(ANSWER_COUNT);//words.GetRandomWordsFromGroup(ANSWER_COUNT);
+            //int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
+            //questionLeo.questWord = questionLeo.answers[indexOfQuestWord];
         }
         else//если уже есть слова в списке исключений
         {
@@ -299,18 +300,40 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     /// </summary>
     /// <param name="words"></param>
     /// <returns></returns>
-    private List<WordLeo> RandomiseList(List<WordLeo> words)
+    private List<WordLeo> ShuffleList(List<WordLeo> words)
     {
-        List<WordLeo> list = new List<WordLeo>();
+        List<WordLeo> list = new List<WordLeo>(words);
+
         System.Random random = new System.Random();
-        foreach (var item in words)
+
+        // для избежания зацикливания установлен максимум попыток
+        //int maxAttempts = words.Count * 2;
+        //int numberAttempts = 0;
+
+        //foreach (var item in words)
+        //{
+        //    int randomIndex = 0; 
+        //    do
+        //    {
+        //        numberAttempts++;
+        //        if (numberAttempts > maxAttempts)
+        //            goto ToEndLoop;
+
+        //        randomIndex = random.Next(words.Count); 
+        //    } while (list.Contains(words[randomIndex]));
+
+        //    list[randomIndex] = item;
+        //    continue;
+
+        //    ToEndLoop:
+        //    list.Add(item);
+        //}
+
+        for (int i = list.Count; i > 1; i--)
         {
-            int randomIndex; 
-            do
-            {
-                randomIndex = random.Next(words.Count);
-            } while (list.Contains(words[randomIndex]));
-            list.Add(words[randomIndex]);
+            int j = random.Next(i);
+            list.Add(list[j]);
+            list.RemoveAt(j);
         }
         return list;
     }
@@ -324,13 +347,15 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private Stack<WordLeo> FillRandomStack(List<WordLeo> words, int count)
     {
         Stack<WordLeo> stack = new Stack<WordLeo>();
+        List<WordLeo> wordsTemp = new List<WordLeo>(words);
         System.Random random = new System.Random();
         while (stack.Count < count)
         {
-            int randomIndex = random.Next(words.Count);
-            if (!stack.Contains(words[randomIndex]))
+            int randomIndex = random.Next(wordsTemp.Count);
+            if (!stack.Contains(wordsTemp[randomIndex]))
             {
-                stack.Push(words[randomIndex]);
+                stack.Push(wordsTemp[randomIndex]);
+                wordsTemp.RemoveAt(randomIndex);
             }
         }
         return stack;
