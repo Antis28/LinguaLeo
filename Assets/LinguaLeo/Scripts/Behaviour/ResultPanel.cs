@@ -48,10 +48,17 @@ public class ResultPanel : MonoBehaviour
                     //item.onClick.AddListener();
                     break;
                 case "ContinueWorkoutButton":
-                    //item.onClick.AddListener(GameManager.LevelManeger.LoadLastWorkOut);
-                    item.onClick.AddListener(()=>
-                    GameManager.Notifications.PostNotification(this, GAME_EVENTS.ContinueWorkout)
-                    );
+                    if (GameManager.WordManeger.GetUntrainedGroupWords().Count > 0)
+                    {
+                        item.interactable = true;
+                        item.onClick.AddListener(() =>
+                        GameManager.Notifications.PostNotification(this, GAME_EVENTS.ContinueWorkout)
+                        );
+                    }
+                    else
+                    {
+                        item.interactable = false;
+                    }
                     break;
             }
         }
