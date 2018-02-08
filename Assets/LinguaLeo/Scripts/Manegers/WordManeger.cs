@@ -87,8 +87,7 @@ void Start()
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
 
         LoadVocabulary();
-        CreateWordGroups();
-
+        //CreateWordGroups();
         //ResetWorkoutProgress();
     }
 
