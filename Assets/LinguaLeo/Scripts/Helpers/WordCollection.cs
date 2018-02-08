@@ -52,24 +52,13 @@ public class WordCollection
         return words;
     }
 
-    public List<WordLeo> GetUntrainedWordsGroup(int Count)
+    public List<WordLeo> GetUntrainedGroupWords()
     {
-        List<WordLeo> untrainedWords = new List<WordLeo>(Count);
-        WordLeo word = null;
-        // неповторяемые слова
-        for (int index = 0, j = 0; index < Count; index++)
+        List<WordLeo> untrainedWords = new List<WordLeo>();
+        foreach (var item in wordsFromGroup)
         {
-            while (j < wordsFromGroup.Count)
-            {
-                word = wordsFromGroup[j];
-                j++;
-                if (word.progress.word_translate != true)
-                    break;
-            }
-
-            if (word == null)
-                break;
-            untrainedWords.Add(word);
+            if (item.progress.word_translate != true)
+                untrainedWords.Add(item);
         }
         return untrainedWords;
     }

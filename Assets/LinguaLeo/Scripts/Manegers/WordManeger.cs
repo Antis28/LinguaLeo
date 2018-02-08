@@ -23,19 +23,22 @@ public class WordManeger : MonoBehaviour, Observer
     private static WorkoutNames currentWorkoutName;
 
     private string folderXml = @"Data/Base";
-
-
     private string fileNameXml = "WordBase.xml";
 
 
-    public WordCollection GetVocabulary()
-    {
-        return vocabulary;
-    }
+    //public WordCollection GetVocabulary()
+    //{
+    //    return vocabulary;
+    //}
 
-    public List<WordLeo> GetWords(int count)
+    public List<WordLeo> GetUntrainedGroupWords()
     {
-        return vocabulary.GetUntrainedWordsGroup(count);
+        return vocabulary.GetUntrainedGroupWords();
+    }    
+
+    public List<WordLeo> GetAllGroupWords()
+    {
+        return vocabulary.wordsFromGroup;
     }
 
     public List<WordGroup> GetGroupNames()
@@ -50,17 +53,34 @@ public class WordManeger : MonoBehaviour, Observer
         return DeserializeGroup(path);
     }
 
-    public List<WordLeo> GetVocabularyGroup_s()
-    {
-        return vocabulary.wordsFromGroup;
-    }
-
     public void LoadGroup(string groupName)
     {
         vocabulary.LoadGroup(groupName);
     }
 
-    void Start()
+    /// <summary>
+    /// Создать xml наборов слов
+    /// </summary>
+    public void CreateWordGroups()
+    {
+        throw new NotImplementedException();
+        //List<string> groupNames = GetGroupNames();
+        //List<WordGroup> groups = new List<WordGroup>();
+        //foreach (string name in groupNames)
+        //{
+        //    LoadGroup(name);
+        //    int count = GameManager.WordManeger.GetVocabulary().wordsFromGroup.Count;
+
+        //    groups.Add(new WordGroup() {
+        //        name = name,
+        //        wordCount = count,
+        //        pictureName = "504"
+        //    });
+        //}
+        //SerializeGroup(groups);
+    }
+
+void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
@@ -69,7 +89,7 @@ public class WordManeger : MonoBehaviour, Observer
         LoadVocabulary();
         CreateWordGroups();
 
-        ResetWorkoutProgress();
+        //ResetWorkoutProgress();
     }
 
     private void LoadVocabulary()
@@ -136,27 +156,6 @@ public class WordManeger : MonoBehaviour, Observer
             xmlSerializer.Serialize(stream, vocabulary);
             stream.Close();
         }
-    }
-
-    /// <summary>
-    /// Создать xml наборов слов
-    /// </summary>
-    public void CreateWordGroups()
-    {
-        //List<string> groupNames = GetGroupNames();
-        //List<WordGroup> groups = new List<WordGroup>();
-        //foreach (string name in groupNames)
-        //{
-        //    LoadGroup(name);
-        //    int count = GameManager.WordManeger.GetVocabulary().wordsFromGroup.Count;
-
-        //    groups.Add(new WordGroup() {
-        //        name = name,
-        //        wordCount = count,
-        //        pictureName = "504"
-        //    });
-        //}
-        //SerializeGroup(groups);
     }
 
     private List<WordGroup> DeserializeGroup(string FileName)

@@ -188,15 +188,14 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private void LoadTasks()
     {
         questions = new List<QuestionLeo>(QUEST_COUNT);
-        int countwords = GameManager.WordManeger.GetVocabularyGroup_s().Count;
-        for (int i = 0, j = 0; i < QUEST_COUNT; i++)
+        int countwords = GameManager.WordManeger.GetAllGroupWords().Count;
+        for (int i = 0; i < QUEST_COUNT; i++)
         {
             QuestionLeo question = GeneratorTask(i, questions);
 
             if (question != null)
                 questions.Add(question);
         }
-
     }
 
     private void BuildTask(int current)
@@ -259,10 +258,8 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         {
             int[] numAnswers = { 0, 1, 2, 3, 4 };
             int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
-            int vocabularyCount = GameManager.WordManeger.GetVocabularyGroup_s().Count;
-
-            List<WordLeo> words = GameManager.WordManeger.GetWords(vocabularyCount);
-            words = RandomiseList(words);
+            List<WordLeo> words = GameManager.WordManeger.GetUntrainedGroupWords();
+            words = ShuffleList(words);
 
             //Найти слово которого нет в списке
             foreach (var item in words)
@@ -276,7 +273,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
             if (questionLeo.questWord == null)
                 return null;
             //
-            Stack<WordLeo> answers = FillRandomStack(words, ANSWER_COUNT);
+            Stack<WordLeo> answers = FillRandomStack(GameManager.WordManeger.GetAllGroupWords(), ANSWER_COUNT);
             questionLeo.answers = new List<WordLeo>(ANSWER_COUNT);
             foreach (var item in numAnswers)
             {
@@ -336,9 +333,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 stack.Push(words[randomIndex]);
             }
         }
-
-
-
         return stack;
     }
 
