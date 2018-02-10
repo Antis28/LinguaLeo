@@ -84,6 +84,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
             case GAME_EVENTS.ShowResult:
+                WordProgressUpdate();
                 ShowContext();
                 buttonsHandler.SetNextQuestion(questions[questionID].answers,
                                                 () => BuildTask(questionID + 1));
