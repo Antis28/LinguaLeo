@@ -57,71 +57,13 @@ public class WordCollection
         List<WordLeo> untrainedWords = new List<WordLeo>();
         foreach (var item in wordsFromGroup)
         {
-            CheckLicense(item);
+            item.CheckingTimeForTraining();
 
             if (item.progress.word_translate != true)
                 untrainedWords.Add(item);
         }
         return untrainedWords;
     }
-
-    private static void CheckLicense(WordLeo word)
-    {   
-        WordLicenses license = word.progress.license;
-        TimeSpan interval = DateTime.Now - word.progress.lastRepeat;
-        switch (license)
-        {
-            case WordLicenses.Level_0:
-                word.progress.Reset();
-                break;
-            case WordLicenses.Level_1:
-                //лицензия на 20 минут
-                if (interval.Minutes > 20)
-                    word.ReduceLicense();                
-                break;
-            case WordLicenses.Level_2:
-                //лицензия на 1 час
-                if (interval.Minutes > 60)
-                    word.ReduceLicense();
-                break;
-            case WordLicenses.Level_3:
-                //лицензия на  3 часа
-                if (interval.Hours > 180)
-                    word.ReduceLicense();
-                break;
-            case WordLicenses.Level_4:
-                //лицензия на 1 сутки
-                if (interval.Days > 1)
-                    word.ReduceLicense();
-                break;
-            case WordLicenses.Level_5:
-                //лицензия на 2 суток
-                if (interval.Days > 2)
-                    word.ReduceLicense();
-                break;
-            case WordLicenses.Level_6:
-                //лицензия на 3 суток
-                if (interval.Days > 3)
-                    word.ReduceLicense();
-                break;
-            case WordLicenses.Level_7:
-                //лицензия на 1 неделю
-                if (interval.Days > 7)
-                    word.ReduceLicense();
-                break;
-            case WordLicenses.Level_8:
-                //лицензия на 1 месяц
-                if (interval.Days > 28)
-                    word.ReduceLicense();
-                break;
-            case WordLicenses.Level_9:
-                //лицензия на 6 месяцев
-                if (interval.Days > 180)
-                    word.ReduceLicense();
-                break;
-        }
-    }
-    
 
     public bool GroupExist()
     {
