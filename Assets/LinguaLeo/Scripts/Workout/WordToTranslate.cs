@@ -46,6 +46,8 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
     private ButtonsHandler buttonsHandler;
 
+    List<WordLeo> untrainedWords;
+
     WorkoutNames IWorkout.WorkoutName
     {
         get
@@ -190,12 +192,14 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     {
         questions = new List<QuestionLeo>(QUEST_COUNT);
         int countwords = GameManager.WordManeger.GetAllGroupWords().Count;
+        untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords();
         for (int i = 0; i < QUEST_COUNT; i++)
         {
             QuestionLeo question = GeneratorTask(i, questions);
 
-            if (question != null)
-                questions.Add(question);
+            if (question == null)
+                break;
+            questions.Add(question);
         }
     }
 
@@ -244,16 +248,14 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    private QuestionLeo GeneratorTask(int id, List<QuestionLeo> exceptWords = null)
+    private QuestionLeo GeneratorTask(int id, List<QuestionLeo> exceptWords)
     {
         QuestionLeo questionLeo = new QuestionLeo();
         questionLeo.id = id;
 
         //if (words.GroupExist())
-
-        List<WordLeo> words = GameManager.WordManeger.GetUntrainedGroupWords();
-        words = ShuffleList(words);
-        questionLeo.questWord = GetNewWord(exceptWords, words);
+        untrainedWords = ShuffleList(untrainedWords);
+        questionLeo.questWord = GetNewWord(exceptWords, untrainedWords);
 
         if (questionLeo.questWord == null)
         {
