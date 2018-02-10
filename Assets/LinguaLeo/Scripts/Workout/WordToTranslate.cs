@@ -69,6 +69,7 @@ public class WordToTranslate : MonoBehaviour, Observer
                 BuildTask(0);
                 break;
             case GAME_EVENTS.ShowResult:
+                WordProgressUpdate();
                 ShowContext();
                 buttonsHandler.SetNextQuestion(questions[questionID].answers,
                                                 () => BuildTask(questionID + 1));
