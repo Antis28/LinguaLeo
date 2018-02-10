@@ -26,21 +26,33 @@ public class WordManeger : MonoBehaviour, Observer
     private string fileNameXml = "WordBase.xml";
 
 
-    //public WordCollection GetVocabulary()
-    //{
-    //    return vocabulary;
-    //}
+    public List<WordLeo> GetAllWords()
+    {
+        return vocabulary.allWords;
+    }
 
+    /// <summary>
+    /// получить нетринерованые слова из набора
+    /// </summary>
+    /// <returns>нетринерованые слова из набора</returns>
     public List<WordLeo> GetUntrainedGroupWords()
     {
         return vocabulary.GetUntrainedGroupWords();
-    }    
+    }
 
+    /// <summary>
+    /// Возвращает все слова из набора
+    /// </summary>
+    /// <returns></returns>
     public List<WordLeo> GetAllGroupWords()
     {
         return vocabulary.wordsFromGroup;
     }
 
+    /// <summary>
+    /// получить описание наборов слов
+    /// </summary>
+    /// <returns>описание наборов слов</returns>
     public List<WordGroup> GetGroupNames()
     {
         //return vocabulary.FilterGroup();
@@ -53,6 +65,10 @@ public class WordManeger : MonoBehaviour, Observer
         return DeserializeGroup(path);
     }
 
+    /// <summary>
+    /// Загружает набор слов из словаря
+    /// </summary>
+    /// <param name="groupName"></param>
     public void LoadGroup(string groupName)
     {
         vocabulary.LoadGroup(groupName);
@@ -80,12 +96,12 @@ public class WordManeger : MonoBehaviour, Observer
         //SerializeGroup(groups);
     }
 
-void Start()
+    IEnumerator Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-
+        yield return new WaitForSeconds(1);
         LoadVocabulary();
         //CreateWordGroups();
         //ResetWorkoutProgress();
@@ -205,9 +221,14 @@ void Start()
     {
         foreach (WordLeo item in vocabulary.allWords)
         {
-            item.progress.Reset();
-            item.progress.license = WordLicenses.Level_0;
+            item.ResetLicense();
         }
+    }
+
+    private void AddWordLicenses(WordLeo currentWord)
+    {
+        currentWord.progress.lastRepeat = DateTime.Now;
+        currentWord.progress.license++;
     }
 
     void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
@@ -227,14 +248,6 @@ void Start()
                 currentWorkoutName = workout.WorkoutName;
                 currentWord = workout.GetCurrentWord();
                 break;
-
-
         }
-    }
-
-    private void AddWordLicenses(WordLeo currentWord)
-    {
-        currentWord.progress.lastRepeat = DateTime.Now;
-        currentWord.progress.license++;
     }
 }
