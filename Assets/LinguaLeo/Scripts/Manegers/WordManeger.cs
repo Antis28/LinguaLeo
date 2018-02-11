@@ -62,7 +62,9 @@ public class WordManeger : MonoBehaviour, Observer
             Debug.LogError("File not found");
             return null;
         }
-        return DeserializeGroup(path);
+        var groups = DeserializeGroup(path);
+        //SerializeGroup(groups, path);
+        return groups;
     }
 
     /// <summary>
@@ -176,26 +178,29 @@ public class WordManeger : MonoBehaviour, Observer
     private List<WordGroup> DeserializeGroup(string FileName)
     {
         //string FileName = "WordGroup.xml";
-        FileStream stream = new FileStream(FileName, FileMode.Open);
 
-        XmlSerializer Serializer = new XmlSerializer(typeof(List<WordGroup>));
-
-        TextReader reader = new StreamReader(stream);
-        List<WordGroup> result = Serializer.Deserialize(reader) as List<WordGroup>;
-        reader.Close();
-        Debug.Log("DeserializeGroup");
-        return result;
+        using (TextReader stream = new StreamReader(FileName, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
+        {
+            XmlSerializer Serializer = new XmlSerializer(typeof(List<WordGroup>));
+            List<WordGroup> result = Serializer.Deserialize(stream) as List<WordGroup>;
+            stream.Close();
+            if (result == null)
+                Debug.LogError("Do not Deserialize Group");
+            else
+                Debug.Log("Deserialize Group");
+            return result;
+        }
     }
 
-    private void SerializeGroup(List<WordGroup> list)
+    private void SerializeGroup(List<WordGroup> list, string fileName = "WordGroup.xml")
     {
-        string FileName = "WordGroup.xml";
-
-        XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
-        FileStream Stream = new FileStream(FileName, FileMode.Create);
-        xmlSerializer.Serialize(Stream, list);
-        Stream.Close();
-        Debug.Log("SerializeGroup");
+        using (TextWriter stream = new StreamWriter(fileName,false, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
+            xmlSerializer.Serialize(stream, list);
+            stream.Close();
+            Debug.Log("SerializeGroup");
+        }
     }
 
     public void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
