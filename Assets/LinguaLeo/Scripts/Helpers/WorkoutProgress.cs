@@ -25,11 +25,11 @@ public class WorkoutProgress
     //phrase_puzzle;
 
     public DateTime lastRepeat;
-    public WordLicenses license;
+    public LicenseLevels license;
 
     public WorkoutProgress() { }
 
-    public void Reset()
+    public void ResetWorkouts()
     {
         word_translate = false;
         translate_word = false;

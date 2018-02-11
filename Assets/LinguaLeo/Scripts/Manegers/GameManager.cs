@@ -12,11 +12,12 @@ using UnityEditor;
 using UnityEngine.UI;
 
 //Component for sending and receiving  
-[RequireComponent(typeof(NotificationsManager))]
+[RequireComponent(typeof(WordManeger))]
+[RequireComponent(typeof(LevelManeger))]
 [RequireComponent(typeof(ScoreKeeper))]
 [RequireComponent(typeof(AudioPlayer))]
-[RequireComponent(typeof(LevelManeger))]
-[RequireComponent(typeof(WordManeger))]
+[RequireComponent(typeof(NotificationsManager))]
+[RequireComponent(typeof(LicensesManager))]
 
 public class GameManager : MonoBehaviour
 {
