@@ -101,7 +101,7 @@ public class WordManeger : MonoBehaviour, Observer
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
         LoadVocabulary();
         //CreateWordGroups();
         //ResetWorkoutProgress();
