@@ -22,6 +22,8 @@ public class WordManeger : MonoBehaviour, Observer
     private static WordLeo currentWord = null;
     private static WorkoutNames currentWorkoutName;
 
+    private static List<WordGroup> groupNames;
+
     private string folderXml = @"Data/Base";
     private string fileNameXml = "WordBase.xml";
 
@@ -55,16 +57,18 @@ public class WordManeger : MonoBehaviour, Observer
     /// <returns>описание наборов слов</returns>
     public List<WordGroup> GetGroupNames()
     {
-        //return vocabulary.FilterGroup();
+        if (groupNames != null)
+            return groupNames;
+
         string path = folderXml + "/" + "WordGroup.xml";
         if (!File.Exists(path))
         {
             Debug.LogError("File not found");
             return null;
         }
-        var groups = DeserializeGroup(path);
-        //SerializeGroup(groups, path);
-        return groups;
+        groupNames = DeserializeGroup(path);
+        //SerializeGroup(GroupNames, path);
+        return groupNames;
     }
 
     /// <summary>
@@ -98,12 +102,12 @@ public class WordManeger : MonoBehaviour, Observer
         //SerializeGroup(groups);
     }
 
-    IEnumerator Start()
+    void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-        yield return new WaitForSeconds(0.1f);
+        
         LoadVocabulary();
         //CreateWordGroups();
         //ResetWorkoutProgress();
@@ -120,10 +124,16 @@ public class WordManeger : MonoBehaviour, Observer
         //vocabulary.LoadGroup(wordGroups[66]);
         vocabulary.LoadGroup(wordGroups[1]);
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-        GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
+        StartCoroutine(LoadedVocalubary());
     }
     private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
+        StartCoroutine(LoadedVocalubary());
+    }
+
+    IEnumerator LoadedVocalubary()
+    {
+        yield return null;
         if (vocabulary != null)
             GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
     }
