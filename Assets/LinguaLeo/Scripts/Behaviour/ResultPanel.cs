@@ -45,7 +45,9 @@ public class ResultPanel : MonoBehaviour
                     //item.onClick.AddListener();
                     break;
                 case "ListWorkoutButton":
-                    //item.onClick.AddListener();
+                    item.onClick.AddListener(() =>
+                        GameManager.LevelManeger.LoadLevel("trainingСhoice")
+                        );
                     break;
                 case "ContinueWorkoutButton":
                     if (GameManager.WordManeger.GetUntrainedGroupWords().Count > 0)
