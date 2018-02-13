@@ -31,25 +31,24 @@ public class SelectGroup : MonoBehaviour, Observer
         {
             case GAME_EVENTS.LoadedVocabulary:
                 Debug.Log("Start Size");
-                CreatePanels();
-                CalulateContentHight();
+                StartCoroutine(CreatePanels());
                 break;
         }
     }
 
-    private void CreatePanels() //int spriteName
+    private IEnumerator CreatePanels() //int spriteName
     {
-       List<WordGroup> group = GameManager.WordManeger.GetGroupNames();
+        List<WordGroup> group = GameManager.WordManeger.GetGroupNames();
         foreach (var item in group)
         {
             string path = "Data/Covers" + "/" + item.pictureName + ".png";
 
             Sprite sprite = Utilities.LoadSpriteFromFile(path);
             CreateCard(sprite, item.name, item.wordCount);
+            CalulateContentHight();
+            yield return null;
         }
     }
-
-    
 
     private void CreateCard(Sprite sprite, string caption, int count)
     {

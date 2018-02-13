@@ -22,6 +22,8 @@ public class WordManeger : MonoBehaviour, Observer
     private static WordLeo currentWord = null;
     private static WorkoutNames currentWorkoutName;
 
+    private static List<WordGroup> groupNames;
+
     private string folderXml = @"Data/Base";
     private string fileNameXml = "WordBase.xml";
 
@@ -55,14 +57,18 @@ public class WordManeger : MonoBehaviour, Observer
     /// <returns>описание наборов слов</returns>
     public List<WordGroup> GetGroupNames()
     {
-        //return vocabulary.FilterGroup();
+        if (groupNames != null)
+            return groupNames;
+
         string path = folderXml + "/" + "WordGroup.xml";
         if (!File.Exists(path))
         {
             Debug.LogError("File not found");
             return null;
         }
-        return DeserializeGroup(path);
+        groupNames = DeserializeGroup(path);
+        //SerializeGroup(GroupNames, path);
+        return groupNames;
     }
 
     /// <summary>
@@ -96,12 +102,12 @@ public class WordManeger : MonoBehaviour, Observer
         //SerializeGroup(groups);
     }
 
-    IEnumerator Start()
+    void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-        yield return new WaitForSeconds(0.1f);
+        
         LoadVocabulary();
         //CreateWordGroups();
         //ResetWorkoutProgress();
@@ -118,10 +124,16 @@ public class WordManeger : MonoBehaviour, Observer
         //vocabulary.LoadGroup(wordGroups[66]);
         vocabulary.LoadGroup(wordGroups[1]);
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-        GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
+        StartCoroutine(LoadedVocalubary());
     }
     private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
+        StartCoroutine(LoadedVocalubary());
+    }
+
+    IEnumerator LoadedVocalubary()
+    {
+        yield return null;
         if (vocabulary != null)
             GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
     }
@@ -176,26 +188,29 @@ public class WordManeger : MonoBehaviour, Observer
     private List<WordGroup> DeserializeGroup(string FileName)
     {
         //string FileName = "WordGroup.xml";
-        FileStream stream = new FileStream(FileName, FileMode.Open);
 
-        XmlSerializer Serializer = new XmlSerializer(typeof(List<WordGroup>));
-
-        TextReader reader = new StreamReader(stream);
-        List<WordGroup> result = Serializer.Deserialize(reader) as List<WordGroup>;
-        reader.Close();
-        Debug.Log("DeserializeGroup");
-        return result;
+        using (TextReader stream = new StreamReader(FileName, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
+        {
+            XmlSerializer Serializer = new XmlSerializer(typeof(List<WordGroup>));
+            List<WordGroup> result = Serializer.Deserialize(stream) as List<WordGroup>;
+            stream.Close();
+            if (result == null)
+                Debug.LogError("Do not Deserialize Group");
+            else
+                Debug.Log("Deserialize Group");
+            return result;
+        }
     }
 
-    private void SerializeGroup(List<WordGroup> list)
+    private void SerializeGroup(List<WordGroup> list, string fileName = "WordGroup.xml")
     {
-        string FileName = "WordGroup.xml";
-
-        XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
-        FileStream Stream = new FileStream(FileName, FileMode.Create);
-        xmlSerializer.Serialize(Stream, list);
-        Stream.Close();
-        Debug.Log("SerializeGroup");
+        using (TextWriter stream = new StreamWriter(fileName,false, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
+            xmlSerializer.Serialize(stream, list);
+            stream.Close();
+            Debug.Log("SerializeGroup");
+        }
     }
 
     public void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
