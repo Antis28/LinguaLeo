@@ -30,7 +30,7 @@ public class ResultPanel : MonoBehaviour
         EatingText.text = "100%";
 
         InitButtons();
-
+        GameManager.ScoreKeeper.ScoreValue = 0;
         print("lastWorkout = " + GameManager.LevelManeger.lastWorkout);
     }
 
