@@ -45,9 +45,14 @@ public class AnswerResult : MonoBehaviour, Observer
 
     private void FillSamleText(ButtonComponent button)
     {
-        if (!button)
+        WordToTranslate wordToTranslate = FindObjectOfType<WordToTranslate>();
+        if (!button || !wordToTranslate)
+        {
+            Debug.LogWarning("Не найден WordToTranslate");
             return;
-        QuestionLeo quest = FindObjectOfType<WordToTranslate>().GetCurrentQuest();
+        }
+
+        QuestionLeo quest = wordToTranslate.GetCurrentQuest();
         WordLeo word = null;
         foreach (var item in quest.answers)
         {
