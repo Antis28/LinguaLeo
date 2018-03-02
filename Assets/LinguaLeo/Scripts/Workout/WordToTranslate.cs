@@ -191,10 +191,11 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private void LoadTasks()
     {
         questions = new List<QuestionLeo>(QUEST_COUNT);
-        int countwords = GameManager.WordManeger.GetAllGroupWords().Count;
         untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords();
+
         for (int i = 0; i < QUEST_COUNT; i++)
         {
+            untrainedWords = ShuffleList(untrainedWords);
             QuestionLeo question = GeneratorTask(i, questions);
 
             if (question == null)
@@ -254,7 +255,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         questionLeo.id = id;
 
         //if (words.GroupExist())
-        untrainedWords = ShuffleList(untrainedWords);
+        
         questionLeo.questWord = GetNewWord(exceptWords, untrainedWords);
 
         if (questionLeo.questWord == null)
@@ -307,6 +308,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 answers.Pop();
             questionLeo.answers.Add(answers.Pop());
         }
+        questionLeo.answers = ShuffleList(questionLeo.answers);
     }
 
     /// <summary>

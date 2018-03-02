@@ -43,12 +43,31 @@ public class WordManeger : MonoBehaviour, Observer
     }
 
     /// <summary>
-    /// Возвращает все слова из набора
+    /// получить все слова из набора
     /// </summary>
     /// <returns></returns>
     public List<WordLeo> GetAllGroupWords()
     {
         return vocabulary.wordsFromGroup;
+    }
+
+    public List<WordLeo> GetWordsLicense()
+    {
+        List<WordLeo> allWords = GameManager.WordManeger.GetAllWords();
+        List<WordLeo> wordsByLicense = new List<WordLeo>();
+
+        foreach (var word in allWords)
+        {
+            word.CheckingTimeForTraining();
+            bool AllWorkoutDone = word.progress.AllWorkoutDone();
+            bool license = word.progress.license >= LicenseLevels.Level_1;
+
+            //if (!word.CanbeRepeated())
+            if(AllWorkoutDone || !license)
+                continue;
+            wordsByLicense.Add(word);
+        }
+        return wordsByLicense;
     }
 
     /// <summary>
@@ -107,7 +126,7 @@ public class WordManeger : MonoBehaviour, Observer
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-        
+
         LoadVocabulary();
         //CreateWordGroups();
         //ResetWorkoutProgress();
@@ -204,7 +223,7 @@ public class WordManeger : MonoBehaviour, Observer
 
     private void SerializeGroup(List<WordGroup> list, string fileName = "WordGroup.xml")
     {
-        using (TextWriter stream = new StreamWriter(fileName,false, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
+        using (TextWriter stream = new StreamWriter(fileName, false, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
             xmlSerializer.Serialize(stream, list);
