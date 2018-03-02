@@ -8,4 +8,5 @@ public enum WorkoutNames
     reverse,
     audio,
     puzzle,
+    reiteration,
 }

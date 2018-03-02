@@ -41,12 +41,31 @@ public class WordManeger : MonoBehaviour, Observer
     }
 
     /// <summary>
-    /// Возвращает все слова из набора
+    /// получить все слова из набора
     /// </summary>
     /// <returns></returns>
     public List<WordLeo> GetAllGroupWords()
     {
         return vocabulary.wordsFromGroup;
+    }
+
+    public List<WordLeo> GetWordsLicense()
+    {
+        List<WordLeo> allWords = GameManager.WordManeger.GetAllWords();
+        List<WordLeo> wordsByLicense = new List<WordLeo>();
+
+        foreach (var word in allWords)
+        {
+            word.CheckingTimeForTraining();
+            bool AllWorkoutDone = word.progress.AllWorkoutDone();
+            bool license = word.progress.license >= LicenseLevels.Level_1;
+
+            //if (!word.CanbeRepeated())
+            if(AllWorkoutDone || !license)
+                continue;
+            wordsByLicense.Add(word);
+        }
+        return wordsByLicense;
     }
 
     /// <summary>
@@ -96,12 +115,12 @@ public class WordManeger : MonoBehaviour, Observer
         //SerializeGroup(groups);
     }
 
-    IEnumerator Start()
+    void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-        yield return new WaitForSeconds(0.1f);
+
         LoadVocabulary();
         //CreateWordGroups();
         //ResetWorkoutProgress();
@@ -189,13 +208,13 @@ public class WordManeger : MonoBehaviour, Observer
 
     private void SerializeGroup(List<WordGroup> list)
     {
-        string FileName = "WordGroup.xml";
-
-        XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
-        FileStream Stream = new FileStream(FileName, FileMode.Create);
-        xmlSerializer.Serialize(Stream, list);
-        Stream.Close();
-        Debug.Log("SerializeGroup");
+        using (TextWriter stream = new StreamWriter(fileName, false, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
+            xmlSerializer.Serialize(stream, list);
+            stream.Close();
+            Debug.Log("SerializeGroup");
+        }
     }
 
     public void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
