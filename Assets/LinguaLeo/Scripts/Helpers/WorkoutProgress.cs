@@ -36,4 +36,13 @@ public class WorkoutProgress
         audio_word = false;
         word_puzzle = false;
     }
+
+    public bool AllWorkoutDone()
+    {
+        return word_translate;
+       //return word_translate &&
+       // translate_word &&
+       // audio_word &&
+       // word_puzzle;
+    }
 }
