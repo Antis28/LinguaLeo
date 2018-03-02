@@ -67,12 +67,15 @@ public class WordLeo
         progress.lastRepeat = DateTime.Now;
     }
 
-
-public void UnlockWorkouts()
+    public void UnlockWorkouts()
     {
         progress.ResetWorkouts();
     }
 
+    /// <summary>
+    /// Проверка не истекла ли еще лицензия.
+    /// Если истекла, то понижается уровень лицензии.
+    /// </summary>
     public void LicenseValidityCheck()
     {
         LicenseLevels license = progress.license;
@@ -131,14 +134,18 @@ public void UnlockWorkouts()
         }
     }
 
+    /// <summary>
+    /// Проверка можно ли уже повторять слово.
+    /// Если можно, то сбрасываются все тренировки.
+    /// </summary>
     public void CheckingTimeForTraining()
     {
-        LicenseLevels license = progress.license;
         TimeSpan interval = DateTime.Now - progress.lastRepeat;
         double minutes = interval.TotalMinutes;
 
         if (minutes > LicenseTimeout.Level_1)
             LicenseValidityCheck();
+        LicenseLevels license = progress.license;
 
         switch (license)
         {
@@ -188,6 +195,13 @@ public void UnlockWorkouts()
                     UnlockWorkouts();
                 break;
         }
+    }
+
+    public bool CanbeRepeated()
+    {
+        bool canbeRepeated = !progress.AllWorkoutDone();
+        canbeRepeated &= progress.license >= LicenseLevels.Level_1;
+        return canbeRepeated;
     }
 
     override
