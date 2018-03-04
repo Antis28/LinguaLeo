@@ -83,6 +83,7 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
                 FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
             case GAME_EVENTS.ShowResult:
+                ShowImage();
                 WordProgressUpdate();
                 ShowContext();
                 buttonsHandler.SetNextQuestion(questions[questionID].answers,
@@ -142,7 +143,11 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
 
     public void HideImage()
     {
-        wordImage.sprite = null;
+        wordImage.enabled = false;
+    }
+    public void ShowImage()
+    {
+        wordImage.enabled = true;
     }
 
     public void SetImage(string fileName)
