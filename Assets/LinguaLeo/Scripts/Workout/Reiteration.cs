@@ -261,7 +261,7 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
             return null;
         }
 
-        FillInAnswers(questionLeo);
+        FillAnswersForQuestion(questionLeo);
 
         return questionLeo;
     }
@@ -284,28 +284,70 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
     }
 
     /// <summary>
-    /// заполнит варианты ответов
+    /// заполнить варианты ответов
     /// </summary>
     /// <param name="questionLeo"></param>
-    private void FillInAnswers(QuestionLeo questionLeo)
+    private void FillAnswersForQuestion(QuestionLeo questionLeo)
+    {
+        List<WordLeo> words = GameManager.WordManeger.GetWordsLicense();
+        Stack<WordLeo> answers = null;
+
+        if (words.Count <= ANSWER_COUNT * 2)
+        {
+            words = AddWordsForAnswers(words);
+            //words = GameManager.WordManeger.GetAllWords();
+        }
+
+        answers = PrepareAnswers(words, ANSWER_COUNT);
+        FillAnswers(questionLeo, answers);
+        questionLeo.answers = ShuffleList(questionLeo.answers);
+    }
+    /// <summary>
+    /// Добавляет слова к существующему списку слов
+    /// до ANSWER_COUNT * 2
+    /// </summary>
+    /// <param name="words"></param>
+    /// <returns></returns>
+    private List<WordLeo> AddWordsForAnswers(List<WordLeo> words)
+    {
+        List<WordLeo> TempWords = new List<WordLeo>(ANSWER_COUNT * 2);
+        if (words != null)
+            TempWords.AddRange(words);
+        List<WordLeo> allWords = GameManager.WordManeger.GetAllWords();
+
+        //TODO: Заменить на случайный индекс
+        allWords = ShuffleList(allWords);
+        int index = 0;
+        while (TempWords.Count < ANSWER_COUNT * 2)
+        {
+            TempWords.Add(allWords[index++]);
+        }
+        return TempWords;
+    }
+
+    private static void FillAnswers(QuestionLeo questionLeo, Stack<WordLeo> answers)
     {
         int[] numAnswers = { 0, 1, 2, 3, 4 };
         int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
-
-        Stack<WordLeo> answers = FillRandomStack(GameManager.WordManeger.GetWordsLicense(), ANSWER_COUNT);
         questionLeo.answers = new List<WordLeo>(ANSWER_COUNT);
+
         foreach (var item in numAnswers)
         {
+            // номер совпал с индексом для ответа
             if (item == indexOfQuestWord)
             {
                 questionLeo.answers.Add(questionLeo.questWord);
                 continue;
             }
-            if (answers.Peek() == questionLeo.questWord)
+
+            // пропустить повтор ответа для задания
+            if (answers.Count != 0 && answers.Peek() == questionLeo.questWord)
                 answers.Pop();
-            questionLeo.answers.Add(answers.Pop());
+
+            //TODO: заполнять варианты ответов из общего словаря
+            if (answers.Count != 0)
+                questionLeo.answers.Add(answers.Pop());
         }
-        questionLeo.answers = ShuffleList(questionLeo.answers);
     }
 
     /// <summary>
@@ -357,12 +399,13 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
     /// <param name="words"></param>
     /// <param name="count"></param>
     /// <returns></returns>
-    private Stack<WordLeo> FillRandomStack(List<WordLeo> words, int count)
+    private Stack<WordLeo> PrepareAnswers(List<WordLeo> words, int count)
     {
         Stack<WordLeo> stack = new Stack<WordLeo>();
         List<WordLeo> wordsTemp = new List<WordLeo>(words);
+
         System.Random random = new System.Random();
-        while (stack.Count < count)
+        while (stack.Count < count && stack.Count < wordsTemp.Count)
         {
             int randomIndex = random.Next(wordsTemp.Count);
             if (!stack.Contains(wordsTemp[randomIndex]))
