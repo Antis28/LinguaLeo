@@ -36,6 +36,9 @@ public class Utilities
 
     public static AudioClip LoadMusicFromFile(string path)
     {
+        if (!File.Exists(path))
+            return null;
+
         WWW www = new WWW("file://" + path);// задаем ссылку на файл
         //Debug.Log("file://" + path);
 
