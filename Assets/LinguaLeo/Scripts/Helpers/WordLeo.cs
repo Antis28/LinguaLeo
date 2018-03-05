@@ -83,14 +83,14 @@ public class WordLeo
         double minutes = interval.TotalMinutes;
         switch (license)
         {
-            case LicenseLevels.Level_0:
-                progress.ResetWorkouts();
-                break;
-            case LicenseLevels.Level_1:
-                //лицензия на 20 минут
-                if (minutes > LicenseTimeout.Level_1)
-                    ReduceLicense();
-                break;
+            //case LicenseLevels.Level_0:
+            //    progress.ResetWorkouts();
+            //    break;
+            //case LicenseLevels.Level_1:
+            //    //лицензия на 20 минут
+            //    if (minutes > LicenseTimeout.Level_1)
+                    //ReduceLicense();                    
+                //break;
             case LicenseLevels.Level_2:
                 //лицензия на 1 час
                 if (minutes > LicenseTimeout.Level_2)
@@ -140,12 +140,18 @@ public class WordLeo
     /// </summary>
     public void CheckingTimeForTraining()
     {
+        LicenseLevels license = progress.license;
+        if (license == LicenseLevels.Level_0)
+        {
+            progress.ResetWorkouts();
+            return;
+        }
+
         TimeSpan interval = DateTime.Now - progress.lastRepeat;
         double minutes = interval.TotalMinutes;
 
         if (minutes > LicenseTimeout.Level_1)
             LicenseValidityCheck();
-        LicenseLevels license = progress.license;
 
         switch (license)
         {
