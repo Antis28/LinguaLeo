@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 /// в проекте Обучение/CSVReader
 /// </summary>
 
-public class WordLeo
+public class WordLeo : IEquatable<WordLeo>
 {
     [XmlAttribute]
     public string wordValue;
@@ -209,6 +209,52 @@ public class WordLeo
         canbeRepeated &= progress.license >= LicenseLevels.Level_1;
         return canbeRepeated;
     }
+
+    #region сравнение в методе Contains
+    public bool Equals(WordLeo other)
+    {
+        if (other == null)
+            return false;
+
+        if (this.wordValue == other.wordValue)
+            return true;
+        else
+            return false;
+    }
+
+    public override bool Equals(Object obj)
+    {
+        if (obj == null)
+            return false;
+
+        WordLeo wordLeo = obj as WordLeo;
+        if (wordLeo == null)
+            return false;
+        else
+            return Equals(wordLeo);
+    }
+
+    public override int GetHashCode()
+    {
+        return this.wordValue.GetHashCode();
+    }
+
+    public static bool operator ==(WordLeo wordLeo1, WordLeo wordLeo2)
+    {
+        if (((object)wordLeo1) == null || ((object)wordLeo2) == null)
+            return Object.Equals(wordLeo1, wordLeo2);
+
+        return wordLeo1.Equals(wordLeo2);
+    }
+
+    public static bool operator !=(WordLeo wordLeo1, WordLeo wordLeo2)
+    {
+        if (((object)wordLeo1) == null || ((object)wordLeo2) == null)
+            return !Object.Equals(wordLeo1, wordLeo2);
+
+        return !(wordLeo1.Equals(wordLeo2));
+    }
+    #endregion    
 
     override
     public string ToString()
