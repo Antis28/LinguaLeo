@@ -37,9 +37,9 @@ public class WordManeger : MonoBehaviour, Observer
     /// получить нетринерованые слова из набора
     /// </summary>
     /// <returns>нетринерованые слова из набора</returns>
-    public List<WordLeo> GetUntrainedGroupWords()
+    public List<WordLeo> GetUntrainedGroupWords(WorkoutNames workoutName)
     {
-        return vocabulary.GetUntrainedGroupWords();
+        return vocabulary.GetUntrainedGroupWords(workoutName);
     }
 
     /// <summary>
@@ -68,6 +68,11 @@ public class WordManeger : MonoBehaviour, Observer
             wordsByLicense.Add(word);
         }
         return wordsByLicense;
+    }
+
+    internal int CountWordInGroup()
+    {
+        return GetUntrainedGroupWords(currentWorkoutName).Count;
     }
 
     /// <summary>

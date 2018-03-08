@@ -196,7 +196,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private void LoadTasks()
     {
         questions = new List<QuestionLeo>(QUEST_COUNT);
-        untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords();
+        untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords(WorkoutName);
 
         for (int i = 0; i < QUEST_COUNT; i++)
         {

@@ -50,7 +50,7 @@ public class ResultPanel : MonoBehaviour
                         );
                     break;
                 case "ContinueWorkoutButton":
-                    if (GameManager.WordManeger.GetUntrainedGroupWords().Count > 0)
+                    if (GameManager.WordManeger.CountWordInGroup() > 0)
                     {
                         item.interactable = true;
                         item.onClick.AddListener(() =>
