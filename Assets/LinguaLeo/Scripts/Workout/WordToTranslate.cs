@@ -87,6 +87,8 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
             case GAME_EVENTS.ShowResult:
+                if (isReverse && sayToggle.isOn)
+                    GameManager.AudioPlayer.SayWord();
                 ShowImage();
                 WordProgressUpdate();
                 ShowContext();
@@ -295,8 +297,22 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     /// <param name="questionWord"></param>
     private void FillingButtons(QuestionLeo questionLeo, string questionWord)
     {
-        //TODO: заполнять кнопки ответов и незнаю одновременно
-        buttonsHandler.FillingButtonsWithOptions(questionLeo.answers, questionWord);
+        List<string> answers = new List<string>(ANSWER_COUNT);
+        if (isReverse)
+        {
+            foreach (WordLeo item in questionLeo.answers)
+            {
+                answers.Add(item.wordValue);
+            }
+        }
+        else
+        {
+            foreach (WordLeo item in questionLeo.answers)
+            {
+                answers.Add(item.translations);
+            }
+        }
+        buttonsHandler.FillingButtonsWithOptions(answers, questionWord);
         buttonsHandler.FillingEnterButton(true);
     }
 
