@@ -63,7 +63,7 @@ public class WordManeger : MonoBehaviour, Observer
             bool license = word.progress.license >= LicenseLevels.Level_1;
 
             //if (!word.CanbeRepeated())
-            if(AllWorkoutDone || !license)
+            if (AllWorkoutDone || !license)
                 continue;
             wordsByLicense.Add(word);
         }
@@ -237,6 +237,7 @@ public class WordManeger : MonoBehaviour, Observer
         switch (workout)
         {
             case WorkoutNames.translate:
+            case WorkoutNames.reiteration:
                 word.progress.word_translate = true;
                 break;
             case WorkoutNames.reverse:
@@ -275,7 +276,9 @@ public class WordManeger : MonoBehaviour, Observer
                 break;
             case GAME_EVENTS.CorrectAnswer:
                 AddWorkoutProgress(currentWord, currentWorkoutName);
-                AddWordLicenses(currentWord);
+                if (currentWord.progress.AllWorkoutDone())
+                    AddWordLicenses(currentWord);
+
                 break;
             case GAME_EVENTS.BuildTask:
                 IWorkout workout = sender as IWorkout;
