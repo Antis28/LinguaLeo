@@ -11,6 +11,8 @@ using URandom = UnityEngine.Random;
 
 public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 {
+    public bool isReverse = false;
+
     [SerializeField]
     private Text questionText = null; // Поле для вопроса
 
@@ -217,6 +219,9 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         }
 
         trainingСompleted = CheckTrainingСompleted();
+        if (isReverse)
+            BuildUiToTranslateWord();
+        else
             BuildUiToWordTranslate();
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
@@ -260,6 +265,28 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         HideContext();
     }
 
+    /// <summary>
+    /// Перевод-Слово
+    /// </summary>
+    private void BuildUiToTranslateWord()
+    {
+        QuestionLeo questionLeo = questions[questionID];
+        // добавление слова для перевода
+        string translations = questionLeo.questWord.translations;
+        string questionWord = translations.Split(',')[0];
+
+        SetQuestion(questionWord);
+        SetTranscript(questionLeo.questWord.transcription);
+
+        FillingButtons(questionLeo, questionLeo.questWord.wordValue);
+
+        SetImage(questionLeo.questWord.pictureURL);
+        ShowImage();
+
+        SetSound(questionLeo.questWord.soundURL);
+        SetContext(questionLeo.questWord.highlightedContext);
+        //HideContext();
+    }
 
     /// <summary>
     /// Заполнить кнопки вариантами ответов
