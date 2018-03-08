@@ -78,7 +78,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
             case GAME_EVENTS.BuildTask:
                 WordProgressUpdate();
                 ProgeressUpdate();
-                HideImage();
                 break;
             case GAME_EVENTS.LoadedVocabulary:
                 LoadTasks();
@@ -166,8 +165,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     public void SetSound(string file)
     {
         GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file, false));
-        if (sayToggle.isOn)
-            GameManager.AudioPlayer.SayWord();
     }
 
     public void SetContext(string context)
@@ -213,45 +210,88 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     {
         buttonsHandler.ClearTextInButtons();
 
-        if (trainingСompleted || questions.Count == 0)
+        if (!AvaiableBuilding(current))
         {
             GameManager.Notifications.PostNotification(this, GAME_EVENTS.WordsEnded);
             return;
         }
 
-        questionID = FindNodeByID(current);
-        if (questionID < 0)
-        {
-            Debug.LogError(this + "отсутствует или указан неверно идентификатор узла.");
-            return;
-        }
-
-        int toNode = questionID + 1;
-        if (questions.Count <= toNode)
-        {
-            toNode = 0;
-            trainingСompleted = true;
-        }
-
-        QuestionLeo questionLeo = questions[questionID];
-
-        // добавление слова для перевода
-        string questionWord = questionLeo.questWord.wordValue;
-        SetQuestion(questionWord);
-        SetTranscript(questionLeo.questWord.transcription);
-
-        //TODO: заполнять все кнопки одновременно
-        buttonsHandler.FillingButtonsWithOptions(questionLeo.answers, questionWord);
-        buttonsHandler.FillingEnterButton(true);
-
-        SetImage(questionLeo.questWord.pictureURL);
-        SetSound(questionLeo.questWord.soundURL);
-        SetContext(questionLeo.questWord.highlightedContext);
-        HideContext();
+        trainingСompleted = CheckTrainingСompleted();
+            BuildUiToWordTranslate();
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
+    }
+
+    private bool CheckTrainingСompleted()
+    {
+        int toNode = questionID + 1;
+        if (questions.Count <= toNode)
+        {
+            toNode = 0;
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Слово-Перевод
+    /// </summary>
+    private void BuildUiToWordTranslate()
+    {
+        QuestionLeo questionLeo = questions[questionID];
+        // добавление слова для перевода
+        string questionWord = questionLeo.questWord.wordValue;
+
+        SetQuestion(questionWord);
+        SetTranscript(questionLeo.questWord.transcription);
+
+        FillingButtons(questionLeo, questionWord);
+
+        SetImage(questionLeo.questWord.pictureURL);
+        HideImage();
+
+        SetSound(questionLeo.questWord.soundURL);
+        if (sayToggle.isOn)
+            GameManager.AudioPlayer.SayWord();
+
+        SetContext(questionLeo.questWord.highlightedContext);
+        HideContext();
+    }
+
+
+    /// <summary>
+    /// Заполнить кнопки вариантами ответов
+    /// </summary>
+    /// <param name="questionLeo"></param>
+    /// <param name="questionWord"></param>
+    private void FillingButtons(QuestionLeo questionLeo, string questionWord)
+    {
+        //TODO: заполнять кнопки ответов и незнаю одновременно
+        buttonsHandler.FillingButtonsWithOptions(questionLeo.answers, questionWord);
+        buttonsHandler.FillingEnterButton(true);
+    }
+
+    /// <summary>
+    /// Построение задания доступно?
+    /// </summary>
+    /// <param name="current"></param>
+    /// <returns></returns>
+    private bool AvaiableBuilding(int current)
+    {
+        if (trainingСompleted || questions.Count == 0)
+        {
+            return false;
+        }
+        questionID = FindNodeByID(current);
+        if (questionID < 0)
+        {
+            Debug.LogError(this + "отсутствует или указан неверно идентификатор узла.");
+            return false;
+        }
+
+        return true;
     }
 
     private QuestionLeo GeneratorTask(int id, List<QuestionLeo> exceptWords)
