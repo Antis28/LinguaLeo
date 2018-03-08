@@ -51,13 +51,13 @@ public class WorkoutProgress
         {
             case WorkoutNames.WordTranslate:
             case WorkoutNames.reiteration:
-                return word_translate;
+                return !word_translate;
             case WorkoutNames.TranslateWord:
-                return translate_word;
+                return !translate_word;
             case WorkoutNames.Audio:
-                return audio_word;
+                return !audio_word;
             case WorkoutNames.Puzzle:
-                return word_puzzle;
+                return !word_puzzle;
             default:
                 return false;
         }
