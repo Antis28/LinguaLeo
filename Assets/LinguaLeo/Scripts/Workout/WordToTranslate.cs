@@ -248,13 +248,12 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private void BuildUiToWordTranslate()
     {
         QuestionLeo questionLeo = questions[questionID];
-        // добавление слова для перевода
-        string questionWord = questionLeo.questWord.wordValue;
 
-        SetQuestion(questionWord);
+        // добавление слова для перевода
+        SetQuestion(questionLeo.questWord.wordValue);
         SetTranscript(questionLeo.questWord.transcription);
 
-        FillingButtons(questionLeo, questionWord);
+        FillingButtons(questionLeo, questionLeo.questWord);
 
         SetImage(questionLeo.questWord.pictureURL);
         HideImage();
@@ -280,7 +279,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         SetQuestion(questionWord);
         SetTranscript(questionLeo.questWord.transcription);
 
-        FillingButtons(questionLeo, questionLeo.questWord.wordValue);
+        FillingButtons(questionLeo, questionLeo.questWord);
 
         SetImage(questionLeo.questWord.pictureURL);
         ShowImage();
@@ -295,24 +294,24 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     /// </summary>
     /// <param name="questionLeo"></param>
     /// <param name="questionWord"></param>
-    private void FillingButtons(QuestionLeo questionLeo, string questionWord)
+    private void FillingButtons(QuestionLeo questionLeo, WordLeo questionWord)
     {
         List<string> answers = new List<string>(ANSWER_COUNT);
         if (isReverse)
         {
             foreach (WordLeo item in questionLeo.answers)
-            {
                 answers.Add(item.wordValue);
-            }
+
+            buttonsHandler.FillingButtonsWithOptions(answers, questionWord.wordValue);
         }
         else
         {
             foreach (WordLeo item in questionLeo.answers)
-            {
                 answers.Add(item.translations);
-            }
+
+            buttonsHandler.FillingButtonsWithOptions(answers, questionWord.translations);
         }
-        buttonsHandler.FillingButtonsWithOptions(answers, questionWord);
+        
         buttonsHandler.FillingEnterButton(true);
     }
 
