@@ -236,17 +236,17 @@ public class WordManeger : MonoBehaviour, Observer
     {
         switch (workout)
         {
-            case WorkoutNames.translate:
+            case WorkoutNames.WordTranslate:
             case WorkoutNames.reiteration:
                 word.progress.word_translate = true;
                 break;
-            case WorkoutNames.reverse:
+            case WorkoutNames.TranslateWord:
                 word.progress.translate_word = true;
                 break;
-            case WorkoutNames.audio:
+            case WorkoutNames.Audio:
                 word.progress.audio_word = true;
                 break;
-            case WorkoutNames.puzzle:
+            case WorkoutNames.Puzzle:
                 word.progress.word_puzzle = true;
                 break;
         }

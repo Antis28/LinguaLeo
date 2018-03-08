@@ -4,9 +4,9 @@ using UnityEngine;
 
 public enum WorkoutNames
 {
-    translate,
-    reverse,
-    audio,
-    puzzle,
+    WordTranslate,
+    TranslateWord,
+    Audio,
+    Puzzle,
     reiteration,
 }

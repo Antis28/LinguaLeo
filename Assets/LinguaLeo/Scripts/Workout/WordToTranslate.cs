@@ -14,6 +14,17 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     public bool isReverse = false;
 
     [SerializeField]
+    WorkoutNames WorkoutName;
+
+    WorkoutNames IWorkout.WorkoutName
+    {
+        get
+        {
+            return WorkoutName;
+        }
+    }
+
+    [SerializeField]
     private Text questionText = null; // Поле для вопроса
 
     [SerializeField]
@@ -49,18 +60,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private ButtonsHandler buttonsHandler;
 
     List<WordLeo> untrainedWords;
-
-    WorkoutNames IWorkout.WorkoutName
-    {
-        get
-        {
-            return WorkoutNames.translate;
-            //return "reverse";
-            //return "audio";
-            //return "puzzle";
-        }
-    }
-
 
     // Use this for initialization
     void Awake()
