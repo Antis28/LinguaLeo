@@ -17,6 +17,8 @@ public class ResultPanel : MonoBehaviour
     [SerializeField]
     Button[] buttons;
 
+   
+
     const int BED_RESULT = 0;
     const int GOOD_RESULT = 9;
     const int BEST_RESULT = 10;
@@ -37,33 +39,41 @@ public class ResultPanel : MonoBehaviour
     private void InitButtons()
     {
         buttons = transform.GetComponentsInChildren<Button>();
-        foreach (var item in buttons)
+        foreach (var button in buttons)
         {
-            switch (item.name)
+            switch (button.name)
             {
                 case "NextWorkoutButton":
                     //item.onClick.AddListener();
                     break;
                 case "ListWorkoutButton":
-                    item.onClick.AddListener(() =>
+                    button.onClick.AddListener(() =>
                         GameManager.LevelManeger.LoadLevel("trainingСhoice")
                         );
                     break;
                 case "ContinueWorkoutButton":
-                    if (GameManager.WordManeger.CountWordInGroup() > 0)
-                    {
-                        item.interactable = true;
-                        item.onClick.AddListener(() =>
-                        GameManager.Notifications.PostNotification(this, GAME_EVENTS.ContinueWorkout)
-                        );
-                    }
-                    else
-                    {
-                        item.interactable = false;
-                    }
+                    CheckContinueWorkout(button);
                     break;
             }
         }
+    }
+
+    private void CheckContinueWorkout(Button button)
+    {
+        int score = GameManager.ScoreKeeper.ScoreValue;
+        if (GameManager.WordManeger.CountWordInGroup() - score > 0)
+        {
+            button.interactable = true;
+            button.onClick.AddListener(() =>
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.ContinueWorkout)
+            );
+            button.gameObject.SetActive(true);
+        }
+        else
+        {
+            button.interactable = false;
+            button.gameObject.SetActive(false);
+        }        
     }
 
     private void ShowCaption(int score)
@@ -89,11 +99,17 @@ public class ResultPanel : MonoBehaviour
     private void ShowLearn(int score)
     {
         if (score == 0 || score > 4)
-            LearnText.text = string.Format("{0} слов изучено, {1} на изучении", score, BEST_RESULT - score);
+            LearnText.text = string.Format("{0} слов изучено, ", score);
         else if (score == 1)
-            LearnText.text = string.Format("{0} слово изучено, {1} на изучении", score, BEST_RESULT - score);
+            LearnText.text = string.Format("{0} слово изучено, ", score);
         else
-            LearnText.text = string.Format("{0} слова изучено, {1} на изучении", score, BEST_RESULT - score);
+            LearnText.text = string.Format("{0} слова изучено, ", score);
+
+        int countAllWords = GameManager.WordManeger.CountWordInGroup();
+        if (BEST_RESULT > countAllWords)
+            LearnText.text += string.Format("{0} на изучении", countAllWords - score);
+        else
+            LearnText.text += string.Format("{0} на изучении", BEST_RESULT - score);
     }
 
 
