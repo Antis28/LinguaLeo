@@ -79,14 +79,15 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     {
         switch (notificationName)
         {
+            case GAME_EVENTS.LoadedVocabulary:
+                LoadTasks();
+                InitWordCountBar();
+                BuildTask(0);
+                FindObjectOfType<DebugUI>().FillPanel(questions);
+                break;
             case GAME_EVENTS.BuildTask:
                 WordProgressUpdate();
                 ProgeressUpdate();
-                break;
-            case GAME_EVENTS.LoadedVocabulary:
-                LoadTasks();
-                BuildTask(0);
-                FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
             case GAME_EVENTS.ShowResult:
                 if (isReverse && sayToggle.isOn)
@@ -101,6 +102,14 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 break;
 
         }
+    }
+
+    private void InitWordCountBar()
+    {
+        if (QUEST_COUNT < GameManager.WordManeger.CountWordInGroup())
+            scoreSlider.maxValue = QUEST_COUNT;
+        else
+            scoreSlider.maxValue = GameManager.WordManeger.CountWordInGroup();
     }
 
     private void HideRepeatWordButton()
@@ -305,7 +314,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         SetButtons(questionLeo, questionLeo.questWord);
 
         SetImage(questionLeo.questWord.pictureURL);
-       
+
         SetSound(questionLeo.questWord.soundURL);
         SetContext(questionLeo.questWord.highlightedContext);
 
@@ -337,7 +346,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
             buttonsHandler.FillingButtonsWithOptions(answers, questionWord.translations);
         }
-        
+
         buttonsHandler.FillingEnterButton(true);
     }
 
