@@ -36,7 +36,10 @@ public class WorkoutProgress
         audio_word = false;
         word_puzzle = false;
     }
-
+    /// <summary>
+    /// Все тренировки пройдены
+    /// </summary>
+    /// <returns></returns>
     public bool AllWorkoutDone()
     {
         return word_translate &&
@@ -54,10 +57,10 @@ public class WorkoutProgress
                 return !word_translate;
             case WorkoutNames.TranslateWord:
                 return !translate_word;
-            case WorkoutNames.Audio:
-                return !audio_word;
-            case WorkoutNames.Puzzle:
-                return !word_puzzle;
+            //case WorkoutNames.Audio:
+            //    return !audio_word;
+            //case WorkoutNames.Puzzle:
+            //    return !word_puzzle;
             default:
                 return false;
         }

@@ -19,6 +19,7 @@ public class WordManeger : MonoBehaviour, Observer
     private static WordCollection vocabulary = null; // полный словарь
     private static List<string> wordGroups = null; // названия наборов слов
 
+    private static List<WordLeo> currentWordGroups = null;
     private static WordLeo currentWord = null;
     private static WorkoutNames currentWorkoutName;
 
@@ -39,7 +40,8 @@ public class WordManeger : MonoBehaviour, Observer
     /// <returns>нетринерованые слова из набора</returns>
     public List<WordLeo> GetUntrainedGroupWords(WorkoutNames workoutName)
     {
-        return vocabulary.GetUntrainedGroupWords(workoutName);
+        currentWordGroups = vocabulary.GetUntrainedGroupWords(workoutName);
+        return currentWordGroups;
     }
 
     /// <summary>
@@ -72,7 +74,7 @@ public class WordManeger : MonoBehaviour, Observer
 
     internal int CountWordInGroup()
     {
-        return GetUntrainedGroupWords(currentWorkoutName).Count;
+        return currentWordGroups.Count;
     }
 
     /// <summary>
