@@ -30,6 +30,8 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     [SerializeField]
     private Text transcriptText = null; // Поле для транскрипции
 
+    private GameObject RepeatWordButton = null;
+
     [SerializeField]
     private Image wordImage = null; // Картинка ассоциаци со словом
     [SerializeField]
@@ -70,6 +72,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
         contextPanel = contextText.transform.parent.gameObject;
         buttonsHandler = FindObjectOfType<ButtonsHandler>();
+        RepeatWordButton = GameObject.Find("RepeatWordButton");
     }
 
     void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
@@ -89,6 +92,8 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 if (isReverse && sayToggle.isOn)
                     GameManager.AudioPlayer.SayWord();
                 ShowImage();
+                ShowTranscript();
+                ShowRepeatWordButton();
                 WordProgressUpdate();
                 ShowContext();
                 buttonsHandler.SetNextQuestion(questions[questionID].answers,
@@ -96,6 +101,25 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 break;
 
         }
+    }
+
+    private void HideRepeatWordButton()
+    {
+        RepeatWordButton.SetActive(false);
+    }
+
+    private void HideTranscript()
+    {
+        transcriptText.enabled = false;
+    }
+    private void ShowRepeatWordButton()
+    {
+        RepeatWordButton.SetActive(true);
+    }
+
+    private void ShowTranscript()
+    {
+        transcriptText.enabled = true;
     }
 
     /// <summary>
@@ -252,7 +276,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         SetQuestion(questionLeo.questWord.wordValue);
         SetTranscript(questionLeo.questWord.transcription);
 
-        FillingButtons(questionLeo, questionLeo.questWord);
+        SetButtons(questionLeo, questionLeo.questWord);
 
         SetImage(questionLeo.questWord.pictureURL);
         HideImage();
@@ -278,14 +302,17 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         SetQuestion(questionWord);
         SetTranscript(questionLeo.questWord.transcription);
 
-        FillingButtons(questionLeo, questionLeo.questWord);
+        SetButtons(questionLeo, questionLeo.questWord);
 
         SetImage(questionLeo.questWord.pictureURL);
-        ShowImage();
-
+       
         SetSound(questionLeo.questWord.soundURL);
         SetContext(questionLeo.questWord.highlightedContext);
-        //HideContext();
+
+        HideImage();  //ShowImage();
+        HideContext();
+        HideTranscript();
+        HideRepeatWordButton();
     }
 
     /// <summary>
@@ -293,7 +320,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     /// </summary>
     /// <param name="questionLeo"></param>
     /// <param name="questionWord"></param>
-    private void FillingButtons(QuestionLeo questionLeo, WordLeo questionWord)
+    private void SetButtons(QuestionLeo questionLeo, WordLeo questionWord)
     {
         List<string> answers = new List<string>(ANSWER_COUNT);
         if (isReverse)
