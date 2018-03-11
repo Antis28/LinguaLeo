@@ -9,4 +9,5 @@ public enum WorkoutNames
     Audio,
     Puzzle,
     reiteration,
+    savah,
 }

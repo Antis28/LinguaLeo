@@ -141,7 +141,7 @@ public class ButtonsHandler : MonoBehaviour
         //print("событие, для перенаправления на другой узел диалога");
     }
 
-    public void SetNextQuestion(List<WordLeo> answers, UnityAction action)
+    public void SetNextQuestion(UnityAction action)
     {
         print("SetNextQuestion");
         ClearListeners();
