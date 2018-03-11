@@ -141,9 +141,8 @@ public class WordLeo : IEquatable<WordLeo>
     public void CheckingTimeForTraining()
     {
         LicenseLevels license = progress.license;
-        if (license == LicenseLevels.Level_0)
-        {
-            progress.ResetWorkouts();
+        if (!progress.AllWorkoutDone() || license == LicenseLevels.Level_0)
+        {   
             return;
         }
 

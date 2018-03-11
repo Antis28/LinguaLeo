@@ -42,16 +42,16 @@ public class ButtonsHandler : MonoBehaviour
     /// Заполнение кнопок с ответами
     /// </summary>
     /// <param name="toNode"></param>
-    public void FillingButtonsWithOptions(List<WordLeo> listWords, string questionWord)
+    public void FillingButtonsWithOptions(List<string> listWords, string questionWord)
     {
         ClearListeners();
-        foreach (var item in listWords)
+        foreach (string word in listWords)
         {
-            bool answerIsCorrect = item.wordValue.Contains(questionWord);
+            bool answerIsCorrect = word.Contains(questionWord);
             if (answerIsCorrect)
                 correctButton = buttons[buttonID].button;
 
-            buttons[buttonID].text.text = item.translations;
+            buttons[buttonID].text.text = word;
             JoinShowResult(buttons[buttonID].button, answerIsCorrect);
             buttonID++;
         }

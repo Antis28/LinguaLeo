@@ -36,13 +36,38 @@ public class WorkoutProgress
         audio_word = false;
         word_puzzle = false;
     }
-
+    /// <summary>
+    /// Все тренировки пройдены
+    /// </summary>
+    /// <returns></returns>
     public bool AllWorkoutDone()
     {
-        return word_translate;
-       //return word_translate &&
-       // translate_word &&
-       // audio_word &&
-       // word_puzzle;
+        return word_translate &&
+                 translate_word;
+        // audio_word &&
+        // word_puzzle;
+    }
+
+    public bool CanTraining(WorkoutNames workoutName)
+    {
+        switch (workoutName)
+        {
+            case WorkoutNames.WordTranslate:
+            case WorkoutNames.reiteration:
+                return !word_translate;
+            case WorkoutNames.TranslateWord:
+                return !translate_word;
+            //case WorkoutNames.Audio:
+            //    return !audio_word;
+            //case WorkoutNames.Puzzle:
+            //    return !word_puzzle;
+            default:
+                return false;
+        }
+
+
+        
+        
+        
     }
 }

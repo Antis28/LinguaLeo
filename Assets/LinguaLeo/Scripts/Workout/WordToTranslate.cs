@@ -11,11 +11,26 @@ using URandom = UnityEngine.Random;
 
 public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 {
+    public bool isReverse = false;
+
+    [SerializeField]
+    WorkoutNames WorkoutName;
+
+    WorkoutNames IWorkout.WorkoutName
+    {
+        get
+        {
+            return WorkoutName;
+        }
+    }
+
     [SerializeField]
     private Text questionText = null; // Поле для вопроса
 
     [SerializeField]
     private Text transcriptText = null; // Поле для транскрипции
+
+    private GameObject RepeatWordButton = null;
 
     [SerializeField]
     private Image wordImage = null; // Картинка ассоциаци со словом
@@ -48,18 +63,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
     List<WordLeo> untrainedWords;
 
-    WorkoutNames IWorkout.WorkoutName
-    {
-        get
-        {
-            return WorkoutNames.translate;
-            //return "reverse";
-            //return "audio";
-            //return "puzzle";
-        }
-    }
-
-
     // Use this for initialization
     void Awake()
     {
@@ -69,24 +72,29 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
         contextPanel = contextText.transform.parent.gameObject;
         buttonsHandler = FindObjectOfType<ButtonsHandler>();
+        RepeatWordButton = GameObject.Find("RepeatWordButton");
     }
 
     void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
-            case GAME_EVENTS.BuildTask:
-                WordProgressUpdate();
-                ProgeressUpdate();
-                HideImage();
-                break;
             case GAME_EVENTS.LoadedVocabulary:
                 LoadTasks();
+                InitWordCountBar();
                 BuildTask(0);
                 FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
+            case GAME_EVENTS.BuildTask:
+                WordProgressUpdate();
+                ProgeressUpdate();
+                break;
             case GAME_EVENTS.ShowResult:
+                if (isReverse && sayToggle.isOn)
+                    GameManager.AudioPlayer.SayWord();
                 ShowImage();
+                ShowTranscript();
+                ShowRepeatWordButton();
                 WordProgressUpdate();
                 ShowContext();
                 buttonsHandler.SetNextQuestion(questions[questionID].answers,
@@ -94,6 +102,33 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 break;
 
         }
+    }
+
+    private void InitWordCountBar()
+    {
+        if (QUEST_COUNT < GameManager.WordManeger.CountWordInGroup())
+            scoreSlider.maxValue = QUEST_COUNT;
+        else
+            scoreSlider.maxValue = GameManager.WordManeger.CountWordInGroup();
+    }
+
+    private void HideRepeatWordButton()
+    {
+        RepeatWordButton.SetActive(false);
+    }
+
+    private void HideTranscript()
+    {
+        transcriptText.enabled = false;
+    }
+    private void ShowRepeatWordButton()
+    {
+        RepeatWordButton.SetActive(true);
+    }
+
+    private void ShowTranscript()
+    {
+        transcriptText.enabled = true;
     }
 
     /// <summary>
@@ -166,8 +201,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     public void SetSound(string file)
     {
         GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file, false));
-        if (sayToggle.isOn)
-            GameManager.AudioPlayer.SayWord();
     }
 
     public void SetContext(string context)
@@ -196,7 +229,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private void LoadTasks()
     {
         questions = new List<QuestionLeo>(QUEST_COUNT);
-        untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords();
+        untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords(WorkoutName);
 
         for (int i = 0; i < QUEST_COUNT; i++)
         {
@@ -213,45 +246,129 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     {
         buttonsHandler.ClearTextInButtons();
 
-        if (trainingСompleted || questions.Count == 0)
+        if (!AvaiableBuilding(current))
         {
             GameManager.Notifications.PostNotification(this, GAME_EVENTS.WordsEnded);
             return;
         }
 
-        questionID = FindNodeByID(current);
-        if (questionID < 0)
-        {
-            Debug.LogError(this + "отсутствует или указан неверно идентификатор узла.");
-            return;
-        }
-
-        int toNode = questionID + 1;
-        if (questions.Count <= toNode)
-        {
-            toNode = 0;
-            trainingСompleted = true;
-        }
-
-        QuestionLeo questionLeo = questions[questionID];
-
-        // добавление слова для перевода
-        string questionWord = questionLeo.questWord.wordValue;
-        SetQuestion(questionWord);
-        SetTranscript(questionLeo.questWord.transcription);
-
-        //TODO: заполнять все кнопки одновременно
-        buttonsHandler.FillingButtonsWithOptions(questionLeo.answers, questionWord);
-        buttonsHandler.FillingEnterButton(true);
-
-        SetImage(questionLeo.questWord.pictureURL);
-        SetSound(questionLeo.questWord.soundURL);
-        SetContext(questionLeo.questWord.highlightedContext);
-        HideContext();
+        trainingСompleted = CheckTrainingСompleted();
+        if (isReverse)
+            BuildUiToTranslateWord();
+        else
+            BuildUiToWordTranslate();
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
+    }
+
+    private bool CheckTrainingСompleted()
+    {
+        int toNode = questionID + 1;
+        if (questions.Count <= toNode)
+        {
+            toNode = 0;
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Слово-Перевод
+    /// </summary>
+    private void BuildUiToWordTranslate()
+    {
+        QuestionLeo questionLeo = questions[questionID];
+
+        // добавление слова для перевода
+        SetQuestion(questionLeo.questWord.wordValue);
+        SetTranscript(questionLeo.questWord.transcription);
+
+        SetButtons(questionLeo, questionLeo.questWord);
+
+        SetImage(questionLeo.questWord.pictureURL);
+        HideImage();
+
+        SetSound(questionLeo.questWord.soundURL);
+        if (sayToggle.isOn)
+            GameManager.AudioPlayer.SayWord();
+
+        SetContext(questionLeo.questWord.highlightedContext);
+        HideContext();
+    }
+
+    /// <summary>
+    /// Перевод-Слово
+    /// </summary>
+    private void BuildUiToTranslateWord()
+    {
+        QuestionLeo questionLeo = questions[questionID];
+        // добавление слова для перевода
+        string translations = questionLeo.questWord.translations;
+        string questionWord = translations.Split(',')[0];
+
+        SetQuestion(questionWord);
+        SetTranscript(questionLeo.questWord.transcription);
+
+        SetButtons(questionLeo, questionLeo.questWord);
+
+        SetImage(questionLeo.questWord.pictureURL);
+
+        SetSound(questionLeo.questWord.soundURL);
+        SetContext(questionLeo.questWord.highlightedContext);
+
+        HideImage();  //ShowImage();
+        HideContext();
+        HideTranscript();
+        HideRepeatWordButton();
+    }
+
+    /// <summary>
+    /// Заполнить кнопки вариантами ответов
+    /// </summary>
+    /// <param name="questionLeo"></param>
+    /// <param name="questionWord"></param>
+    private void SetButtons(QuestionLeo questionLeo, WordLeo questionWord)
+    {
+        List<string> answers = new List<string>(ANSWER_COUNT);
+        if (isReverse)
+        {
+            foreach (WordLeo item in questionLeo.answers)
+                answers.Add(item.wordValue);
+
+            buttonsHandler.FillingButtonsWithOptions(answers, questionWord.wordValue);
+        }
+        else
+        {
+            foreach (WordLeo item in questionLeo.answers)
+                answers.Add(item.translations);
+
+            buttonsHandler.FillingButtonsWithOptions(answers, questionWord.translations);
+        }
+
+        buttonsHandler.FillingEnterButton(true);
+    }
+
+    /// <summary>
+    /// Построение задания доступно?
+    /// </summary>
+    /// <param name="current"></param>
+    /// <returns></returns>
+    private bool AvaiableBuilding(int current)
+    {
+        if (trainingСompleted || questions.Count == 0)
+        {
+            return false;
+        }
+        questionID = FindNodeByID(current);
+        if (questionID < 0)
+        {
+            Debug.LogError(this + "отсутствует или указан неверно идентификатор узла.");
+            return false;
+        }
+
+        return true;
     }
 
     private QuestionLeo GeneratorTask(int id, List<QuestionLeo> exceptWords)

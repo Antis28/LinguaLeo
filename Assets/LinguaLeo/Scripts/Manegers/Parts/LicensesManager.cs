@@ -36,7 +36,7 @@ public class LicensesManager : MonoBehaviour,Observer
         {            
             case GAME_EVENTS.LoadedVocabulary:
                 StopCoroutine(ChekLoop());
-                StartCoroutine(ChekLoop());
+                //StartCoroutine(ChekLoop());
                 break;
         }
     }

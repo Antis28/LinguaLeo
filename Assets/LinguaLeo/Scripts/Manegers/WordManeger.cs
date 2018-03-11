@@ -19,6 +19,7 @@ public class WordManeger : MonoBehaviour, Observer
     private static WordCollection vocabulary = null; // полный словарь
     private static List<string> wordGroups = null; // названия наборов слов
 
+    private static List<WordLeo> currentWordGroups = null;
     private static WordLeo currentWord = null;
     private static WorkoutNames currentWorkoutName;
 
@@ -37,9 +38,10 @@ public class WordManeger : MonoBehaviour, Observer
     /// получить нетринерованые слова из набора
     /// </summary>
     /// <returns>нетринерованые слова из набора</returns>
-    public List<WordLeo> GetUntrainedGroupWords()
+    public List<WordLeo> GetUntrainedGroupWords(WorkoutNames workoutName)
     {
-        return vocabulary.GetUntrainedGroupWords();
+        currentWordGroups = vocabulary.GetUntrainedGroupWords(workoutName);
+        return currentWordGroups;
     }
 
     /// <summary>
@@ -68,6 +70,11 @@ public class WordManeger : MonoBehaviour, Observer
             wordsByLicense.Add(word);
         }
         return wordsByLicense;
+    }
+
+    internal int CountWordInGroup()
+    {
+        return currentWordGroups.Count;
     }
 
     /// <summary>
@@ -236,17 +243,17 @@ public class WordManeger : MonoBehaviour, Observer
     {
         switch (workout)
         {
-            case WorkoutNames.translate:
+            case WorkoutNames.WordTranslate:
             case WorkoutNames.reiteration:
                 word.progress.word_translate = true;
                 break;
-            case WorkoutNames.reverse:
+            case WorkoutNames.TranslateWord:
                 word.progress.translate_word = true;
                 break;
-            case WorkoutNames.audio:
+            case WorkoutNames.Audio:
                 word.progress.audio_word = true;
                 break;
-            case WorkoutNames.puzzle:
+            case WorkoutNames.Puzzle:
                 word.progress.word_puzzle = true;
                 break;
         }

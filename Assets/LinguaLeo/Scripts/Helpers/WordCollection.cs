@@ -52,14 +52,15 @@ public class WordCollection
         return words;
     }
 
-    public List<WordLeo> GetUntrainedGroupWords()
+    public List<WordLeo> GetUntrainedGroupWords(WorkoutNames workoutName)
     {
         List<WordLeo> untrainedWords = new List<WordLeo>();
         foreach (var item in wordsFromGroup)
         {
             item.CheckingTimeForTraining();
 
-            if (item.progress.word_translate != true)
+            //if (item.progress.word_translate != true)
+            if (item.progress.CanTraining(workoutName))
                 untrainedWords.Add(item);
         }
         return untrainedWords;

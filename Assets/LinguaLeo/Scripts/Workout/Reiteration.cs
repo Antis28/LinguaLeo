@@ -238,7 +238,11 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
         SetTranscript(questionLeo.questWord.transcription);
 
         //TODO: заполнять все кнопки одновременно
-        buttonsHandler.FillingButtonsWithOptions(questionLeo.answers, questionWord);
+        List<string> answers = new List<string>(ANSWER_COUNT);
+        foreach (WordLeo item in questionLeo.answers)
+            answers.Add(item.wordValue);
+
+        buttonsHandler.FillingButtonsWithOptions(answers, questionWord);
         buttonsHandler.FillingEnterButton(true);
 
         SetImage(questionLeo.questWord.pictureURL);
