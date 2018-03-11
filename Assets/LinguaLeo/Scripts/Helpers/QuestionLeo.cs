@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using URandom = UnityEngine.Random;
 
 public class QuestionLeo : IEquatable<QuestionLeo>
 {
@@ -13,6 +13,55 @@ public class QuestionLeo : IEquatable<QuestionLeo>
     {
         questWord = word;
     }
+
+    /// <summary>
+    /// заполнит варианты ответов
+    /// </summary>
+    public void FillInAnswers(int answerCount)
+    {
+        int[] numAnswers = { 0, 1, 2, 3, 4 };
+        int indexOfQuestWord = URandom.Range(0, answerCount);
+
+        List<WordLeo> GroupWords = GameManager.WordManeger.GetAllGroupWords();
+        Stack<WordLeo> tempAnswers = FillRandomStack(GroupWords, answerCount);
+        answers = new List<WordLeo>(answerCount);
+        foreach (var item in numAnswers)
+        {
+            if (item == indexOfQuestWord)
+            {
+                answers.Add(questWord);
+                continue;
+            }
+            if (tempAnswers.Peek() == questWord)
+                tempAnswers.Pop();
+            answers.Add(tempAnswers.Pop());
+        }
+        answers = Utilities.ShuffleList(answers);
+    }
+
+    /// <summary>
+    /// Заполнить стек случайным образом
+    /// </summary>
+    /// <param name="words"></param>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    private Stack<WordLeo> FillRandomStack(List<WordLeo> words, int count)
+    {
+        Stack<WordLeo> stack = new Stack<WordLeo>();
+        List<WordLeo> wordsTemp = new List<WordLeo>(words);
+        System.Random random = new System.Random();
+        while (stack.Count < count)
+        {
+            int randomIndex = random.Next(wordsTemp.Count);
+            if (!stack.Contains(wordsTemp[randomIndex]))
+            {
+                stack.Push(wordsTemp[randomIndex]);
+                wordsTemp.RemoveAt(randomIndex);
+            }
+        }
+        return stack;
+    }
+
     #region сравнение в методе Contains
     public bool Equals(QuestionLeo other)
     {
