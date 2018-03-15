@@ -17,6 +17,9 @@ public class Savah : MonoBehaviour, Observer, IWorkout
     [SerializeField]
     private int questCount = 30;
 
+    [SerializeField]
+    private Text questionText = null;
+
     WorkoutNames IWorkout.WorkoutName
     {
         get
@@ -24,7 +27,7 @@ public class Savah : MonoBehaviour, Observer, IWorkout
             return WorkoutName;
         }
     }
-    
+
 
     private Workout core;
 
@@ -34,14 +37,20 @@ public class Savah : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
-                
+
         core = new Workout(WorkoutName, questCount);
         core.DrawTask += Core_DrawTask;
     }
 
     private void Core_DrawTask()
     {
-        
+
+        QuestionLeo questionLeo = core.GetCurrentQuest();
+
+        // добавление слова для перевода
+        SetQuestion(questionLeo.questWord.wordValue);
+        SetButtons(questionLeo, questionLeo.questWord);
+
         //Выше заполнить GUI
         ResetSelection();
     }
@@ -59,21 +68,39 @@ public class Savah : MonoBehaviour, Observer, IWorkout
         {
             case GAME_EVENTS.LoadedVocabulary:
                 core.LoadVocabulary();
-                //FindObjectOfType<DebugUI>().FillPanel(questions);
-                break;            
-            case GAME_EVENTS.ShowResult:
                 core.SetNextQuestion();
+                //FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
         }
     }
-    
+
     public QuestionLeo GetCurrentQuest()
     {
         return core.GetCurrentQuest();
     }
-        
+
     WordLeo IWorkout.GetCurrentWord()
     {
         return core.GetCurrentWord();
+    }
+
+    private void SetQuestion(string quest)
+    {
+        questionText.text = quest;
+    }
+    /// <summary>
+    /// Заполнить кнопки вариантами ответов
+    /// </summary>
+    /// <param name="questionLeo"></param>
+    /// <param name="questionWord"></param>
+    private void SetButtons(QuestionLeo questionLeo, WordLeo questionWord)
+    {
+        List<string> answers = new List<string>(Workout.ANSWER_COUNT);
+
+        foreach (WordLeo item in questionLeo.answers)
+            answers.Add(item.translations);
+
+        core.SetButtons(answers, questionWord.translations);
+
     }
 }
