@@ -60,7 +60,7 @@ public class WorkoutProgress
                 return !word_translate;
             case WorkoutNames.TranslateWord:
                 return !translate_word;
-            case WorkoutNames.savah:
+            case WorkoutNames.savanna:
                 return !savah;
             //case WorkoutNames.Audio:
             //    return !audio_word;

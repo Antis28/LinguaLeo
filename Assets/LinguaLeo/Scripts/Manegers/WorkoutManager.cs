@@ -79,7 +79,7 @@ public class WorkoutManager : MonoBehaviour, Observer
 
         for (int i = 0; i < QUEST_COUNT; i++)
         {
-            untrainedWords = ShuffleList(untrainedWords);
+            untrainedWords = Utilities.ShuffleList(untrainedWords);
             QuestionLeo question = GeneratorTask(i, questions);
 
             if (question == null)
