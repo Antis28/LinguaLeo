@@ -18,6 +18,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(AudioPlayer))]
 [RequireComponent(typeof(NotificationsManager))]
 [RequireComponent(typeof(LicensesManager))]
+[RequireComponent(typeof(WorkoutManager))]
 
 public class GameManager : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour
     private static LevelManeger levelManeger = null;
 
     private static WordManeger wordManeger = null;
+
+    private static WorkoutManager workoutManager = null;
 
     //--------------------------------------------------------------------------------------
     //C# property to retrieve currently active instance of object, if any
@@ -141,6 +144,20 @@ public class GameManager : MonoBehaviour
                 wordManeger = instance.GetComponent<WordManeger>();
             }
             return wordManeger;
+
+        }
+    }
+
+    public static WorkoutManager WorkoutManager
+    {
+        get
+        {
+            if (workoutManager == null)
+            {
+                CheckManyInstance<WorkoutManager>();
+                workoutManager = instance.GetComponent<WorkoutManager>();
+            }
+            return workoutManager;
 
         }
     }
