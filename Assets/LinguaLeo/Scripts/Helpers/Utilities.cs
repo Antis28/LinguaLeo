@@ -84,6 +84,26 @@ public class Utilities
     }
 
     /// <summary>
+    /// перемешать слова
+    /// </summary>
+    /// <param name="words"></param>
+    /// <returns></returns>
+    public static List<WordLeo> ShuffleList(List<WordLeo> words)
+    {
+        List<WordLeo> list = new List<WordLeo>(words);
+
+        System.Random random = new System.Random();
+        
+        for (int i = list.Count; i > 1; i--)
+        {
+            int j = random.Next(i);
+            list.Add(list[j]);
+            list.RemoveAt(j);
+        }
+        return list;
+    }
+
+    /// <summary>
     /// Интерполяционный поиск
     ///  Возвращает индекс элемента со значением toFind или -1, 
     ///  если такого элемента не существует
@@ -117,6 +137,7 @@ public class Utilities
             return -1; // Not found
     }
 }
+
 public class MyComparer : IComparer
 {
     public int Compare(object x, object y)

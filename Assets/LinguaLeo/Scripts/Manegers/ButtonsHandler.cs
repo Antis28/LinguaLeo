@@ -19,7 +19,9 @@ public class ButtonsHandler : MonoBehaviour
     {
         buttons = FindObjectsOfType<ButtonComponent>();
         System.Array.Sort(buttons, new MyComparer());
-        RepeatWordButton.onClick.AddListener(() => GameManager.AudioPlayer.SayWord());
+
+        if (RepeatWordButton)
+            RepeatWordButton.onClick.AddListener(() => GameManager.AudioPlayer.SayWord());
     }
 
     /// <summary>
@@ -64,6 +66,9 @@ public class ButtonsHandler : MonoBehaviour
     /// <param name="isFirst"></param>
     public void FillingEnterButton(bool isFirst)
     {
+        if (buttons.Length <= buttonID)
+            return;
+
         ButtonComponent extraB = buttons[buttonID];
         if (isFirst)
         {
@@ -141,7 +146,7 @@ public class ButtonsHandler : MonoBehaviour
         //print("событие, для перенаправления на другой узел диалога");
     }
 
-    public void SetNextQuestion(List<WordLeo> answers, UnityAction action)
+    public void SetNextQuestion(UnityAction action)
     {
         print("SetNextQuestion");
         ClearListeners();

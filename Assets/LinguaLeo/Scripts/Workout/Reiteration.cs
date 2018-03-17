@@ -86,8 +86,7 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
                 ShowImage();
                 WordProgressUpdate();
                 ShowContext();
-                buttonsHandler.SetNextQuestion(questions[questionID].answers,
-                                                () => BuildTask(questionID + 1));
+                buttonsHandler.SetNextQuestion(() => BuildTask(questionID + 1));
                 break;
 
         }
