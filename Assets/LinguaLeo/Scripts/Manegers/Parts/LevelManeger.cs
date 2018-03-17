@@ -30,16 +30,16 @@ public class LevelManeger : MonoBehaviour, Observer
         else
             print("lastWorkout == -1");
     }
+    public void LoadWorkOut(string nameScene)
+    {
+        lastWorkout = SceneManager.GetActiveScene().buildIndex;
+        LoadLevel(nameScene);
+    }
 
     void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
-            case GAME_EVENTS.WordsEnded:
-                print("ScoreValue = " + GameManager.ScoreKeeper.ScoreValue);
-                lastWorkout = SceneManager.GetActiveScene().buildIndex;
-                LoadLevel("result");
-                break;
             case GAME_EVENTS.ContinueWorkout:
                 LoadLastWorkOut();
                 break;
