@@ -9,4 +9,6 @@ public enum WorkoutNames
     Audio,
     Puzzle,
     reiteration,
+    brainStorm,
+    savanna,
 }
