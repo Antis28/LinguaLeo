@@ -8,7 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Workout : IWorkout
+public class Workout : UnityEngine.Object, IWorkout
 {
     public int questCount = 10;
     public const int ANSWER_COUNT = 5;
@@ -52,10 +52,9 @@ public class Workout : IWorkout
     }
 
     #region Handlers
-    public void LoadVocabulary()
+    public void LoadQuestions()
     {
         LoadTasks();
-        BuildTask(0);
         GameObject.FindObjectOfType<DebugUI>().FillPanel(questions);
     }
     public void SetNextQuestion()
@@ -84,7 +83,7 @@ public class Workout : IWorkout
         }
     }
 
-    private void BuildTask(int current)
+    public void BuildTask(int current)
     {
         buttonsHandler.ClearTextInButtons();
 
@@ -187,5 +186,10 @@ public class Workout : IWorkout
     {
         buttonsHandler.FillingButtonsWithOptions(answers, questWord);
         buttonsHandler.FillingEnterButton(true);
+    }
+
+    public Workout GetCore()
+    {
+        return this;
     }
 }

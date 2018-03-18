@@ -2,4 +2,5 @@
 {
     WordLeo GetCurrentWord();
     WorkoutNames WorkoutName { get; }
+    Workout GetCore();
 }

@@ -68,7 +68,7 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
         buttonsHandler = FindObjectOfType<ButtonsHandler>();
     }
 
-    void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
+    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
@@ -446,5 +446,10 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
     WordLeo IWorkout.GetCurrentWord()
     {
         return questions[questionID].questWord;
+    }
+
+    Workout IWorkout.GetCore()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -15,9 +15,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private WorkoutNames WorkoutName = WorkoutNames.WordTranslate;
 
     [SerializeField]
-    private int questCount = 10;
-
-    [SerializeField]
     private bool isReverse = false;
 
     WorkoutNames IWorkout.WorkoutName
@@ -63,13 +60,11 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
 
         contextPanel = contextText.transform.parent.gameObject;
         RepeatWordButton = GameObject.Find("RepeatWordButton");
-
-        core = new Workout(WorkoutName, questCount);
-        core.DrawTask += Core_DrawTask;
+        GameManager.Notifications.PostNotification(this, GAME_EVENTS.WorkoutLoaded);
     }
 
     private void Core_DrawTask()
@@ -87,12 +82,14 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
+    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
-            case GAME_EVENTS.LoadedVocabulary:
-                core.LoadVocabulary();
+            case GAME_EVENTS.CoreBuild:
+                core = parametr as Workout;
+                core.DrawTask += Core_DrawTask;
+                core.BuildTask(0);
                 InitWordCountBar();
                 //FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
@@ -298,5 +295,10 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     WordLeo IWorkout.GetCurrentWord()
     {
         return core.GetCurrentWord();
+    }
+
+    Workout IWorkout.GetCore()
+    {
+        return core;
     }
 }

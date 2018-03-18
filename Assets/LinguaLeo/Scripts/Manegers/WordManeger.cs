@@ -273,7 +273,7 @@ public class WordManeger : MonoBehaviour, Observer
         currentWord.progress.license++;
     }
 
-    void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
+    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
     {
 
         switch (notificationName)
@@ -288,7 +288,7 @@ public class WordManeger : MonoBehaviour, Observer
 
                 break;
             case GAME_EVENTS.BuildTask:
-                IWorkout workout = sender as IWorkout;
+                IWorkout workout = parametr as IWorkout;
                 currentWorkoutName = workout.WorkoutName;
                 currentWord = workout.GetCurrentWord();
                 break;

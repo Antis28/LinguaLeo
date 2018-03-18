@@ -18,11 +18,11 @@ public class AnswerResult : MonoBehaviour, Observer
                                                 38 / 255f,
                                                 29 / 255f);
 
-    public void OnNotify(Component sender, GAME_EVENTS notificationName)
+    public void OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
     {
         ButtonComponent button = null;
-        if (sender)
-            button = sender.GetComponent<ButtonComponent>();
+        if (parametr)
+            button = ((Component)parametr).GetComponent<ButtonComponent>();
         if (ResultText == null)
             return;
         switch (notificationName)

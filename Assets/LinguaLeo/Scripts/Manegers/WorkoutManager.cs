@@ -7,7 +7,11 @@ public class WorkoutManager : MonoBehaviour, Observer
 {
     LevelManeger levelManeger;
     WorkoutNames currentWorkout;
-    List<WordLeo> untrainedWords;
+    List<WordLeo> untrainedWords = null;
+    Workout core;
+
+    public int questCount = 10;
+    public const int ANSWER_COUNT = 5;
 
     private int stage;
 
@@ -15,6 +19,9 @@ public class WorkoutManager : MonoBehaviour, Observer
     void Start()
     {
         levelManeger = FindObjectOfType<LevelManeger>();
+
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.ButtonHandlerLoaded);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
     }
 
     // Update is called once per frame
@@ -25,7 +32,7 @@ public class WorkoutManager : MonoBehaviour, Observer
     public void RunWorkOut(WorkoutNames name)
     {
         currentWorkout = name;
-
+        stage = -1;
         string sceneName = string.Empty;
         switch (name)
         {
@@ -59,43 +66,86 @@ public class WorkoutManager : MonoBehaviour, Observer
 
     private void RunBrainStorm()
     {
+        string sceneName = string.Empty;
+        stage++;
         switch (stage)
         {
-            case 0:
-                
-                stage++;
+            case -1:
+                throw new Exception();
+            case 0:               
+                currentWorkout = WorkoutNames.WordTranslate;
+                sceneName = GetSceneName(currentWorkout);
+                break;
+            case 1:                
+                CoreInitialization();
+                break;
+            case 2:
+                currentWorkout = WorkoutNames.TranslateWord;
+                sceneName = GetSceneName(currentWorkout);
+                break;
+            case 3:
+                CoreInitialization();
                 break;
             case 10:
+                stage = -1;
                 GameManager.LevelManeger.LoadWorkOut("result");
                 break;
-                
         }
-    }
-
-    private void LoadTasks(int QUEST_COUNT)
-    {
-        List<QuestionLeo> questions = new List<QuestionLeo>(QUEST_COUNT);
-        untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords(currentWorkout);
-
-        for (int i = 0; i < QUEST_COUNT; i++)
+        if (sceneName != string.Empty)
         {
-            untrainedWords = Utilities.ShuffleList(untrainedWords);
-            QuestionLeo question = GeneratorTask(i, questions);
-
-            if (question == null)
-                break;
-            questions.Add(question);
+            levelManeger.LoadLevel(sceneName);
         }
+            
     }
 
-    void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
+    private void CoreInitialization()
+    {
+        core = new Workout(currentWorkout, questCount);
+        core.LoadQuestions();
+        GameManager.Notifications.PostNotification(core, GAME_EVENTS.CoreBuild);
+        stage++;
+    }
+
+    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
+            case GAME_EVENTS.ButtonHandlerLoaded:
+                RunBrainStorm();
+                break;
             case GAME_EVENTS.WordsEnded:
                 print("ScoreValue = " + GameManager.ScoreKeeper.ScoreValue);
                 RunBrainStorm();
                 break;
         }
+    }
+    public string GetSceneName(WorkoutNames name)
+    {
+        string sceneName = string.Empty;
+        switch (name)
+        {
+            case WorkoutNames.WordTranslate:
+                sceneName = "worldTranslate";
+                break;
+            case WorkoutNames.TranslateWord:
+                sceneName = "translateWorld";
+                break;
+            case WorkoutNames.Audio:
+                sceneName = "translateWorld";
+                break;
+            case WorkoutNames.Puzzle:
+                sceneName = "translateWorld";
+                break;
+            case WorkoutNames.reiteration:
+                sceneName = "translateWorld";
+                break;
+            case WorkoutNames.brainStorm:
+                sceneName = "translateWorld";
+                break;
+            case WorkoutNames.savanna:
+                sceneName = "translateWorld";
+                break;
+        }
+        return sceneName;
     }
 }
