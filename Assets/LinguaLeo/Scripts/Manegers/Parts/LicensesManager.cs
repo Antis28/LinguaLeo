@@ -30,7 +30,7 @@ public class LicensesManager : MonoBehaviour,Observer
         }
     }
 
-    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {            

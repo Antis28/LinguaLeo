@@ -62,7 +62,7 @@ public class Savah : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

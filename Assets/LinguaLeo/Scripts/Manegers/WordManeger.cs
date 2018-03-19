@@ -148,7 +148,7 @@ public class WordManeger : MonoBehaviour, Observer
 
         wordGroups = vocabulary.FilterGroup();
         //vocabulary.LoadGroup(wordGroups[66]);
-        vocabulary.LoadGroup(wordGroups[1]);
+        vocabulary.LoadGroup(wordGroups[23]);
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
         StartCoroutine(LoadedVocalubary());
     }
@@ -273,7 +273,7 @@ public class WordManeger : MonoBehaviour, Observer
         currentWord.progress.license++;
     }
 
-    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
 
         switch (notificationName)

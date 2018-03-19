@@ -36,7 +36,7 @@ public class LevelManeger : MonoBehaviour, Observer
         LoadLevel(nameScene);
     }
 
-    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

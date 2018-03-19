@@ -16,7 +16,7 @@ public class ButtonsHandler : MonoBehaviour
     private const string NEXT_WORD = "Следующее →";
     private Button correctButton = null;
 
-    void Awake()
+    void Start()
     {
         buttons = FindObjectsOfType<ButtonComponent>();
         System.Array.Sort(buttons, new MyComparer());

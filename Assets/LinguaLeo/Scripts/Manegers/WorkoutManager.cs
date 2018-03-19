@@ -72,16 +72,22 @@ public class WorkoutManager : MonoBehaviour, Observer
         {
             case -1:
                 throw new Exception();
-            case 0:               
-                currentWorkout = WorkoutNames.WordTranslate;
-                sceneName = GetSceneName(currentWorkout);
+            case 0:
+                sceneName = PrepareWorkout(WorkoutNames.WordTranslate);
+                if (sceneName != string.Empty)
+                    break;
+                stage++;
+                RunBrainStorm();
                 break;
-            case 1:                
+            case 1:
                 CoreInitialization();
                 break;
             case 2:
-                currentWorkout = WorkoutNames.TranslateWord;
-                sceneName = GetSceneName(currentWorkout);
+                sceneName = PrepareWorkout(WorkoutNames.TranslateWord);
+                if (sceneName != string.Empty)
+                    break;
+                stage++;
+                RunBrainStorm();
                 break;
             case 3:
                 CoreInitialization();
@@ -95,18 +101,29 @@ public class WorkoutManager : MonoBehaviour, Observer
         {
             levelManeger.LoadLevel(sceneName);
         }
-            
+
+    }
+
+    private string PrepareWorkout(WorkoutNames currentWorkout)
+    {
+        core = new Workout(currentWorkout, questCount);
+        core.LoadQuestions();
+        if (!core.TaskExists())
+        {
+            Debug.Log("Нет доступных слов для тренировки" + currentWorkout);
+            GameManager.Notifications.PostNotification(null, GAME_EVENTS.NotUntrainedWords);
+            return string.Empty;
+        }
+        return GetSceneName(currentWorkout);
     }
 
     private void CoreInitialization()
     {
-        core = new Workout(currentWorkout, questCount);
-        core.LoadQuestions();
         GameManager.Notifications.PostNotification(core, GAME_EVENTS.CoreBuild);
         stage++;
     }
 
-    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
@@ -116,6 +133,9 @@ public class WorkoutManager : MonoBehaviour, Observer
             case GAME_EVENTS.WordsEnded:
                 print("ScoreValue = " + GameManager.ScoreKeeper.ScoreValue);
                 RunBrainStorm();
+                break;
+            case GAME_EVENTS.NotUntrainedWords:
+                
                 break;
         }
     }

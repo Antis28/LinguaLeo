@@ -68,7 +68,7 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
         buttonsHandler = FindObjectOfType<ButtonsHandler>();
     }
 
-    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

@@ -38,7 +38,7 @@ public class NotificationsManager : MonoBehaviour
     /// Function to post a notification to a listener -
     /// Функция отправки уведомлений слушателю
     /// </summary>
-    public void PostNotification(UnityEngine.Object parametr, GAME_EVENTS notificationName)
+    public void PostNotification(object parametr, GAME_EVENTS notificationName)
     {
         //If no key in dictionary exists, then exit
         if (!_listeners.ContainsKey(notificationName))
@@ -140,4 +140,5 @@ public enum GAME_EVENTS
     SetQuestWord,
     CoreBuild,
     ButtonHandlerLoaded,
+    NotUntrainedWords,
 }

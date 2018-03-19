@@ -8,17 +8,17 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Workout : UnityEngine.Object, IWorkout
+public class Workout : IWorkout
 {
-    public int questCount = 10;
+    public int maxQuestCount = 10;
     public const int ANSWER_COUNT = 5;
 
-    private List<QuestionLeo> questions;
+    private List<QuestionLeo> tasks;
     private int questionID;
 
     private bool trainingСompleted;
 
-    private ButtonsHandler buttonsHandler;
+    public ButtonsHandler buttonsHandler;
 
     private List<WordLeo> untrainedWords;
 
@@ -34,28 +34,33 @@ public class Workout : UnityEngine.Object, IWorkout
         }
     }
 
+    public bool TaskExists()
+    {
+        return tasks !=null && tasks.Count > 0;
+    }
+
     // Use this for initialization
     public Workout(WorkoutNames WorkoutName, int questCount)
     {
-        this.workoutName = WorkoutName;
-        this.buttonsHandler = GameObject.FindObjectOfType<ButtonsHandler>();
-        this.questCount = questCount;
+        this.workoutName = WorkoutName;        
+        this.maxQuestCount = questCount;
     }
 
     public WordLeo GetCurrentWord()
     {
-        return questions[questionID].questWord;
+        return tasks[questionID].questWord;
     }
     public QuestionLeo GetCurrentQuest()
     {
-        return questions[questionID];
+        return tasks[questionID];
     }
 
     #region Handlers
     public void LoadQuestions()
     {
-        LoadTasks();
-        GameObject.FindObjectOfType<DebugUI>().FillPanel(questions);
+        tasks = LoadTasks();
+        //if (tasks != null && tasks.Count > 0)
+            //GameObject.FindObjectOfType<DebugUI>().FillPanel(tasks);
     }
     public void SetNextQuestion()
     {
@@ -67,20 +72,34 @@ public class Workout : UnityEngine.Object, IWorkout
         GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file, false));
     }
 
-    private void LoadTasks()
+    public void SetButtons(List<string> answers, string questWord)
     {
-        questions = new List<QuestionLeo>(questCount);
-        untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords(workoutName);
+        buttonsHandler.FillingButtonsWithOptions(answers, questWord);
+        buttonsHandler.FillingEnterButton(true);
+    }
 
-        for (int i = 0; i < questCount; i++)
+    public Workout GetCore()
+    {
+        return this;
+    }
+
+    private List<QuestionLeo> LoadTasks()
+    {
+        List<QuestionLeo> questionsTemp = new List<QuestionLeo>(maxQuestCount);
+        untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords(workoutName);
+        if (untrainedWords.Count == 0)
+            return questionsTemp;
+
+        for (int i = 0; i < maxQuestCount; i++)
         {
             untrainedWords = Utilities.ShuffleList(untrainedWords);
-            QuestionLeo question = GeneratorTask(i, questions);
+            QuestionLeo question = GeneratorTask(i, questionsTemp);
 
             if (question == null)
                 break;
-            questions.Add(question);
+            questionsTemp.Add(question);
         }
+        return questionsTemp;
     }
 
     public void BuildTask(int current)
@@ -99,7 +118,7 @@ public class Workout : UnityEngine.Object, IWorkout
     private bool CheckTrainingСompleted()
     {
         int toNode = questionID + 1;
-        if (questions.Count <= toNode)
+        if (tasks.Count <= toNode)
         {
             toNode = 0;
             return true;
@@ -114,7 +133,7 @@ public class Workout : UnityEngine.Object, IWorkout
     /// <returns></returns>
     private bool AvaiableBuilding(int current)
     {
-        if (trainingСompleted || questions.Count == 0)
+        if (trainingСompleted || tasks.Count == 0)
         {
             return false;
         }
@@ -172,7 +191,7 @@ public class Workout : UnityEngine.Object, IWorkout
     int FindNodeByID(int i)
     {
         int j = 0;
-        foreach (var quest in questions)
+        foreach (var quest in tasks)
         {
             if (quest.id == i)
                 return j;
@@ -180,16 +199,5 @@ public class Workout : UnityEngine.Object, IWorkout
         }
 
         return -1;
-    }
-
-    public void SetButtons(List<string> answers, string questWord)
-    {
-        buttonsHandler.FillingButtonsWithOptions(answers, questWord);
-        buttonsHandler.FillingEnterButton(true);
-    }
-
-    public Workout GetCore()
-    {
-        return this;
     }
 }

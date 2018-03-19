@@ -56,7 +56,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private Workout core;
 
     // Use this for initialization
-    void Awake()
+    void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
@@ -82,12 +82,13 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    void Observer.OnNotify(UnityEngine.Object parametr, GAME_EVENTS notificationName)
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
             case GAME_EVENTS.CoreBuild:
                 core = parametr as Workout;
+                core.buttonsHandler = GameObject.FindObjectOfType<ButtonsHandler>();
                 core.DrawTask += Core_DrawTask;
                 core.BuildTask(0);
                 InitWordCountBar();
@@ -109,8 +110,8 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
     private void InitWordCountBar()
     {
-        if (core.questCount < GameManager.WordManeger.CountWordInGroup())
-            scoreSlider.maxValue = core.questCount;
+        if (core.maxQuestCount < GameManager.WordManeger.CountWordInGroup())
+            scoreSlider.maxValue = core.maxQuestCount;
         else
             scoreSlider.maxValue = GameManager.WordManeger.CountWordInGroup();
     }
