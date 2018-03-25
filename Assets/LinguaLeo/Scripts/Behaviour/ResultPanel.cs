@@ -17,7 +17,7 @@ public class ResultPanel : MonoBehaviour
     [SerializeField]
     Button[] buttons;
 
-   
+
 
     const int BED_RESULT = 0;
     const int GOOD_RESULT = 9;
@@ -73,7 +73,7 @@ public class ResultPanel : MonoBehaviour
         {
             button.interactable = false;
             button.gameObject.SetActive(false);
-        }        
+        }
     }
 
     private void ShowCaption(int score)

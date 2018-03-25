@@ -62,12 +62,12 @@ public class Savah : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
             case GAME_EVENTS.LoadedVocabulary:
-                core.LoadVocabulary();
+                core.LoadQuestions();
                 core.SetNextQuestion();
                 //FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
@@ -102,5 +102,10 @@ public class Savah : MonoBehaviour, Observer, IWorkout
 
         core.SetButtons(answers, questionWord.translations);
 
+    }
+
+    public Workout GetCore()
+    {
+        return core.GetCore();
     }
 }

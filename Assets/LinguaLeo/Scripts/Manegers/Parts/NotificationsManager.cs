@@ -38,7 +38,7 @@ public class NotificationsManager : MonoBehaviour
     /// Function to post a notification to a listener -
     /// Функция отправки уведомлений слушателю
     /// </summary>
-    public void PostNotification(Component sender, GAME_EVENTS notificationName, Object parametr = null)
+    public void PostNotification(object parametr, GAME_EVENTS notificationName)
     {
         //If no key in dictionary exists, then exit
         if (!_listeners.ContainsKey(notificationName))
@@ -48,7 +48,7 @@ public class NotificationsManager : MonoBehaviour
         {
             if (listener != null)
                 //listener.SendMessage(notificationName, sender, SendMessageOptions.DontRequireReceiver);
-                listener.OnNotify(sender, notificationName);
+                listener.OnNotify(parametr, notificationName);
             else
                 Debug.LogError("listener == null");
         }
@@ -129,6 +129,7 @@ public enum GAME_EVENTS
     LoadGameComplete,
     SaveGamePrepare,
 
+    WorkoutLoaded,
     CorrectAnswer,
     NonCorrectAnswer,
     BuildTask,
@@ -137,4 +138,7 @@ public enum GAME_EVENTS
     LoadedVocabulary,
     ContinueWorkout,
     SetQuestWord,
+    CoreBuild,
+    ButtonHandlerLoaded,
+    NotUntrainedWords,
 }

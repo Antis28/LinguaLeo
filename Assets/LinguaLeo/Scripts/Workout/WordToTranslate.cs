@@ -15,9 +15,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private WorkoutNames WorkoutName = WorkoutNames.WordTranslate;
 
     [SerializeField]
-    private int questCount = 10;
-
-    [SerializeField]
     private bool isReverse = false;
 
     WorkoutNames IWorkout.WorkoutName
@@ -59,17 +56,15 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     private Workout core;
 
     // Use this for initialization
-    void Awake()
+    void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
 
         contextPanel = contextText.transform.parent.gameObject;
         RepeatWordButton = GameObject.Find("RepeatWordButton");
-
-        core = new Workout(WorkoutName, questCount);
-        core.DrawTask += Core_DrawTask;
+        GameManager.Notifications.PostNotification(this, GAME_EVENTS.WorkoutLoaded);
     }
 
     private void Core_DrawTask()
@@ -81,18 +76,22 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
         WordProgressUpdate();
         WorkoutProgeressUpdate();
+        GameObject.FindObjectOfType<DebugUI>().FillPanel(core.tasks);
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    void Observer.OnNotify(Component sender, GAME_EVENTS notificationName)
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
-            case GAME_EVENTS.LoadedVocabulary:
-                core.LoadVocabulary();
+            case GAME_EVENTS.CoreBuild:
+                core = parametr as Workout;
+                core.buttonsHandler = GameObject.FindObjectOfType<ButtonsHandler>();
+                core.DrawTask += Core_DrawTask;
+                core.BuildTask(0);
                 InitWordCountBar();
                 //FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
@@ -106,16 +105,16 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 ShowContext();
                 core.SetNextQuestion();
                 break;
-
         }
     }
 
     private void InitWordCountBar()
     {
-        if (core.questCount < GameManager.WordManeger.CountWordInGroup())
-            scoreSlider.maxValue = core.questCount;
+        if (core.maxQuestCount < GameManager.WordManeger.CountWordInGroup())
+            scoreSlider.maxValue = core.maxQuestCount;
         else
             scoreSlider.maxValue = GameManager.WordManeger.CountWordInGroup();
+        scoreText.text = answersCount + "/" + scoreSlider.maxValue;
     }
 
     private void HideRepeatWordButton()
@@ -298,5 +297,10 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     WordLeo IWorkout.GetCurrentWord()
     {
         return core.GetCurrentWord();
+    }
+
+    Workout IWorkout.GetCore()
+    {
+        return core;
     }
 }

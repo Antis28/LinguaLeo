@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ButtonsHandler : MonoBehaviour
 {
+    [SerializeField]
     private ButtonComponent[] buttons;
     [SerializeField]
     private Button RepeatWordButton = null;
@@ -15,13 +16,15 @@ public class ButtonsHandler : MonoBehaviour
     private const string NEXT_WORD = "Следующее →";
     private Button correctButton = null;
 
-    void Awake()
+    void Start()
     {
         buttons = FindObjectsOfType<ButtonComponent>();
         System.Array.Sort(buttons, new MyComparer());
 
         if (RepeatWordButton)
             RepeatWordButton.onClick.AddListener(() => GameManager.AudioPlayer.SayWord());
+
+        GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
     }
 
     /// <summary>
@@ -50,11 +53,13 @@ public class ButtonsHandler : MonoBehaviour
         foreach (string word in listWords)
         {
             bool answerIsCorrect = word.Contains(questionWord);
-            if (answerIsCorrect)
-                correctButton = buttons[buttonID].button;
+            ButtonComponent bc = buttons[buttonID];
 
-            buttons[buttonID].text.text = word;
-            JoinShowResult(buttons[buttonID].button, answerIsCorrect);
+            if (answerIsCorrect)
+                correctButton = bc.button;
+
+            bc.text.text = word;
+            JoinShowResult(bc.button, answerIsCorrect);
             buttonID++;
         }
     }

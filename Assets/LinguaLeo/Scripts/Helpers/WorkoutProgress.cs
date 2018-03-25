@@ -22,8 +22,8 @@ public class WorkoutProgress
     [XmlElement("puzzle")]
     public bool word_puzzle;
 
-    [XmlElement("savah")]
-    public bool savah;
+    [XmlElement("savanna")]
+    public bool savanna;
     //words_cards;
     //phrase_puzzle;
 
@@ -60,8 +60,8 @@ public class WorkoutProgress
                 return !word_translate;
             case WorkoutNames.TranslateWord:
                 return !translate_word;
-            case WorkoutNames.savah:
-                return !savah;
+            case WorkoutNames.savanna:
+                return !savanna;
             //case WorkoutNames.Audio:
             //    return !audio_word;
             //case WorkoutNames.Puzzle:

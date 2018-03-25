@@ -6,9 +6,9 @@ public class LicenseTimeout
 {
     public static int
      Level_0 = 0,// нет лицензии
-     Level_1 = 20,// на 20 минут
-     Level_2 = 60,// на 1 час
-     Level_3 = 180,// на 3 часа
+     Level_1 = 1440,// 20,// на 20 минут
+     Level_2 = 1440,// 60,// на 1 час
+     Level_3 = 1440,//180,// на 3 часа
      Level_4 = 1440,// на 1 сутки
      Level_5 = 2880,// на 2 суток
      Level_6 = 4320,// на 3 суток

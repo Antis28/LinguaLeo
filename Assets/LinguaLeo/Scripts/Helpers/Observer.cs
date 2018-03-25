@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-
+﻿
 interface Observer
 {
-    void OnNotify(Component sender, GAME_EVENTS notificationName);
+    void OnNotify(object parametr, GAME_EVENTS notificationName);
 }
 

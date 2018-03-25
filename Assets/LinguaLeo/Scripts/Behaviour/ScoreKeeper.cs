@@ -35,7 +35,7 @@ public class ScoreKeeper : MonoBehaviour, Observer {
         ScoreValue = 0;
     }
 
-    public void OnNotify(Component sender, GAME_EVENTS notificationName)
+    public void OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
