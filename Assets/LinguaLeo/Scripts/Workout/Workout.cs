@@ -36,13 +36,13 @@ public class Workout : IWorkout
 
     public bool TaskExists()
     {
-        return tasks !=null && tasks.Count > 0;
+        return tasks != null && tasks.Count > 0;
     }
 
     // Use this for initialization
     public Workout(WorkoutNames WorkoutName, int questCount)
     {
-        this.workoutName = WorkoutName;        
+        this.workoutName = WorkoutName;
         this.maxQuestCount = questCount;
     }
 
@@ -60,11 +60,15 @@ public class Workout : IWorkout
     {
         tasks = LoadTasks();
         //if (tasks != null && tasks.Count > 0)
-            //GameObject.FindObjectOfType<DebugUI>().FillPanel(tasks);
+        //GameObject.FindObjectOfType<DebugUI>().FillPanel(tasks);
     }
     public void SetNextQuestion()
     {
-        buttonsHandler.SetNextQuestion(() => BuildTask(questionID + 1));
+        buttonsHandler.SetNextQuestion(RunNextQuestion);
+    }
+    public void RunNextQuestion()
+    {
+        BuildTask(questionID + 1);
     }
     #endregion 
     public void SetSound(string file)
@@ -104,7 +108,8 @@ public class Workout : IWorkout
 
     public void BuildTask(int current)
     {
-        buttonsHandler.ClearTextInButtons();
+        if (buttonsHandler)
+            buttonsHandler.ClearTextInButtons();
 
         if (!AvaiableBuilding(current))
         {
