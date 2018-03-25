@@ -76,6 +76,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
 
         WordProgressUpdate();
         WorkoutProgeressUpdate();
+        GameObject.FindObjectOfType<DebugUI>().FillPanel(core.tasks);
 
         // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
         EventSystem.current.SetSelectedGameObject(this.gameObject);
@@ -104,7 +105,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
                 ShowContext();
                 core.SetNextQuestion();
                 break;
-
         }
     }
 
@@ -114,6 +114,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
             scoreSlider.maxValue = core.maxQuestCount;
         else
             scoreSlider.maxValue = GameManager.WordManeger.CountWordInGroup();
+        scoreText.text = answersCount + "/" + scoreSlider.maxValue;
     }
 
     private void HideRepeatWordButton()
