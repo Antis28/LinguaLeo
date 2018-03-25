@@ -6,8 +6,8 @@ using UnityEngine;
 public class WorkoutManager : MonoBehaviour, Observer
 {
     LevelManeger levelManeger;
-    WorkoutNames currentWorkout;
     List<WordLeo> untrainedWords = null;
+    WorkoutNames currentWorkout;
     Workout core;
 
     public int questCount = 10;
@@ -33,6 +33,7 @@ public class WorkoutManager : MonoBehaviour, Observer
     {
         currentWorkout = name;
         stage = -1;
+        questCount = 10;
         string sceneName = string.Empty;
         switch (name)
         {
@@ -52,6 +53,7 @@ public class WorkoutManager : MonoBehaviour, Observer
                 sceneName = "reiteration";
                 break;
             case WorkoutNames.brainStorm:
+                questCount = 5;
                 RunBrainStorm();
                 break;
         }
@@ -73,8 +75,9 @@ public class WorkoutManager : MonoBehaviour, Observer
             case -1:
                 throw new Exception();
             case 0:
-                sceneName = PrepareWorkout(WorkoutNames.WordTranslate);
-                if (sceneName != string.Empty)
+                core = PrepareWorkout(WorkoutNames.WordTranslate);
+                sceneName = GetSceneName(currentWorkout);
+                if (core != null)
                     break;
                 stage++;
                 RunBrainStorm();
@@ -83,8 +86,9 @@ public class WorkoutManager : MonoBehaviour, Observer
                 CoreInitialization();
                 break;
             case 2:
-                sceneName = PrepareWorkout(WorkoutNames.TranslateWord);
-                if (sceneName != string.Empty)
+                core = PrepareWorkout(WorkoutNames.TranslateWord);
+                sceneName = GetSceneName(currentWorkout);
+                if (core != null)
                     break;
                 stage++;
                 RunBrainStorm();
@@ -92,7 +96,7 @@ public class WorkoutManager : MonoBehaviour, Observer
             case 3:
                 CoreInitialization();
                 break;
-            case 10:
+            case 4:
                 stage = -1;
                 GameManager.LevelManeger.LoadWorkOut("result");
                 break;
@@ -103,24 +107,28 @@ public class WorkoutManager : MonoBehaviour, Observer
         }
 
     }
-
-    private string PrepareWorkout(WorkoutNames currentWorkout)
+    /// <summary>
+    /// Подготавливает ядро для тренировки
+    /// </summary>
+    /// <param name="currentWorkout"></param>
+    /// <returns></returns>
+    private Workout PrepareWorkout(WorkoutNames currentWorkout)
     {
-        core = new Workout(currentWorkout, questCount);
+        Workout core = new Workout(currentWorkout, questCount);
         core.LoadQuestions();
         if (!core.TaskExists())
         {
-            Debug.Log("Нет доступных слов для тренировки" + currentWorkout);
+            Debug.LogError("Нет доступных слов для тренировки" + currentWorkout);
             GameManager.Notifications.PostNotification(null, GAME_EVENTS.NotUntrainedWords);
-            return string.Empty;
+            return null;
         }
-        return GetSceneName(currentWorkout);
+        return core;
     }
 
     private void CoreInitialization()
     {
+        core.maxQuestCount = questCount;
         GameManager.Notifications.PostNotification(core, GAME_EVENTS.CoreBuild);
-        stage++;
     }
 
     void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
@@ -132,7 +140,11 @@ public class WorkoutManager : MonoBehaviour, Observer
                 break;
             case GAME_EVENTS.WordsEnded:
                 print("ScoreValue = " + GameManager.ScoreKeeper.ScoreValue);
-                RunBrainStorm();
+
+                if (currentWorkout == WorkoutNames.brainStorm)
+                    RunBrainStorm();
+                else
+                    GameManager.LevelManeger.LoadWorkOut("result");
                 break;
             case GAME_EVENTS.NotUntrainedWords:
                 
