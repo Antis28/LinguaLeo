@@ -13,7 +13,7 @@ public class Workout : IWorkout
     public int maxQuestCount = 10;
     public const int ANSWER_COUNT = 5;
 
-    private List<QuestionLeo> tasks;
+    public List<QuestionLeo> tasks;
     private int questionID;
 
     private bool trainingСompleted;
