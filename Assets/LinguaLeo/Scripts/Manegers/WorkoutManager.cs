@@ -63,27 +63,26 @@ public class WorkoutManager : MonoBehaviour, Observer
                 throw new Exception();
             case 0:
                 core = PrepareWorkout(WorkoutNames.WordTranslate);
-                sceneName = GetSceneName(currentWorkout);
-                if (core != null)
-                    break;
-                stage++;
-                RunBrainStorm();
+                sceneName = GetSceneName(WorkoutNames.WordTranslate);
+                if (core == null)
+                    RunBrainStorm();
                 break;
             case 1:
                 CoreInitialization();
                 break;
             case 2:
                 core = PrepareWorkout(WorkoutNames.TranslateWord);
-                sceneName = GetSceneName(currentWorkout);
-                if (core != null)
-                    break;
-                stage++;
-                RunBrainStorm();
+                sceneName = GetSceneName(WorkoutNames.TranslateWord);
+                if (core == null)
+                    RunBrainStorm();
                 break;
             case 3:
                 CoreInitialization();
+
+                //Завершает тренировку на следующей итерации
+                stage = 9; 
                 break;
-            case 4:
+            case 10:
                 stage = -1;
                 GameManager.LevelManeger.LoadWorkOut("result");
                 break;
@@ -114,7 +113,6 @@ public class WorkoutManager : MonoBehaviour, Observer
 
     private void CoreInitialization()
     {
-        core.maxQuestCount = questCount;
         GameManager.Notifications.PostNotification(core, GAME_EVENTS.CoreBuild);
     }
 
@@ -123,15 +121,11 @@ public class WorkoutManager : MonoBehaviour, Observer
         switch (notificationName)
         {
             case GAME_EVENTS.ButtonHandlerLoaded:
-                SelectBehaviour();                
+                StartBehaviour();
                 break;
             case GAME_EVENTS.WordsEnded:
                 print("ScoreValue = " + GameManager.ScoreKeeper.ScoreValue);
-
-                if (currentWorkout == WorkoutNames.brainStorm)
-                    RunBrainStorm();
-                else
-                    GameManager.LevelManeger.LoadWorkOut("result");
+                WordsEndedBehaviour();
                 break;
             case GAME_EVENTS.NotUntrainedWords:
 
@@ -139,16 +133,39 @@ public class WorkoutManager : MonoBehaviour, Observer
         }
     }
 
-    private void SelectBehaviour()
+    private void WordsEndedBehaviour()
     {
         switch (currentWorkout)
         {
-            case WorkoutNames.WordTranslate:                
+            case WorkoutNames.WordTranslate:
+            case WorkoutNames.TranslateWord:
+            case WorkoutNames.savanna:
+            case WorkoutNames.Audio:
+            case WorkoutNames.Puzzle:
+                GameManager.LevelManeger.LoadWorkOut("result");
+                break;
+            case WorkoutNames.reiteration:
+                break;
+            case WorkoutNames.brainStorm:
+                RunBrainStorm();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void StartBehaviour()
+    {
+        switch (currentWorkout)
+        {
+            case WorkoutNames.WordTranslate:
             case WorkoutNames.TranslateWord:
                 core = PrepareWorkout(currentWorkout);
                 CoreInitialization();
                 break;
             case WorkoutNames.Audio:
+                core = PrepareWorkout(currentWorkout);
+                CoreInitialization();
                 break;
             case WorkoutNames.Puzzle:
                 break;
