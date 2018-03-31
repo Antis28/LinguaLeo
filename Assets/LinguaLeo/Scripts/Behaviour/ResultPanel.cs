@@ -32,7 +32,7 @@ public class ResultPanel : MonoBehaviour
         EatingText.text = "100%";
 
         InitButtons();
-        GameManager.ScoreKeeper.ScoreValue = 0;
+        GameManager.ScoreKeeper.ResetScore();
         print("lastWorkout = " + GameManager.LevelManeger.lastWorkout);
     }
 
@@ -98,6 +98,12 @@ public class ResultPanel : MonoBehaviour
 
     private void ShowLearn(int score)
     {
+        if (score < 0)
+        {
+            Debug.LogError("score = " + score);
+            score = 0;
+        }
+
         if (score == 0 || score > 4)
             LearnText.text = string.Format("{0} слов изучено, ", score);
         else if (score == 1)
