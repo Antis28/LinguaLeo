@@ -21,6 +21,8 @@ public class AudioPlayer : MonoBehaviour
     private string resFolder = @"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\OGG\";
     private string resExt = ".ogg";
 
+    private string lastPath = null;
+
     public AudioSource Music
     {
         get
@@ -38,14 +40,15 @@ public class AudioPlayer : MonoBehaviour
     {
         //sayClip = Resources.Load<AudioClip>(folder + "/" + fileName);
         //sayClip = ExtractFromBundle();
-        string path = resFolder + fileName + resExt;
-        sayClip = Utilities.LoadMusicFromFile(path);
+        lastPath = resFolder + fileName + resExt;
+        sayClip = Utilities.LoadMusicFromFile(lastPath);
     }
     public void SayWord()
     {
         if (sayClip == null)
         {
             Debug.Log("Clip not loaded");
+            sayClip = Utilities.LoadMusicFromFile(lastPath);
             return;
         }
         StartCoroutine(WaitLoadingAudio());
