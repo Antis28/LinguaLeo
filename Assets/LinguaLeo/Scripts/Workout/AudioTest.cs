@@ -42,7 +42,7 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
     private bool isAnswerCorrect;
     private Text mistakeText;
     private Text translateText;
-    
+
 
     WorkoutNames IWorkout.WorkoutName
     {
@@ -118,7 +118,6 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
             mistakeText.text = AnswerInputField.text;
             mistakeText.color = wrongColor;
         }
-
     }
 
     // Use this for initialization
@@ -143,7 +142,12 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
 
         if (repeatWordButton)
-            repeatWordButton.onClick.AddListener(() => GameManager.AudioPlayer.SayWord());
+            repeatWordButton.onClick.AddListener(
+                () => {
+                    GameManager.AudioPlayer.SayWord();
+                    //передать фокус полю ввода
+                    AnswerInputField.ActivateInputField();
+                    });
 
         GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
     }
@@ -154,9 +158,7 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
         if (Input.GetKeyUp(KeyCode.Return))
         {
             EnterButtonEvent();
-            EventSystem.current.SetSelectedGameObject(AnswerInputField.gameObject);
         }
-
     }
 
     private void Core_DrawTask()
@@ -178,6 +180,9 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
         WordProgressUpdate();
         ProgeressBarUpdate();
         GameObject.FindObjectOfType<DebugUI>().FillPanel(core.tasks);
+
+        //передать фокус полю ввода
+        AnswerInputField.ActivateInputField();
 
         // выбор элемента как активного
         EventSystem.current.SetSelectedGameObject(AnswerInputField.gameObject);
@@ -259,6 +264,4 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
         wordImage.sprite = sprite;
         wordImage.preserveAspect = true;
     }
-
-
 }
