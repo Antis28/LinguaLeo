@@ -77,9 +77,6 @@ public class WorkoutManager : MonoBehaviour, Observer
                 sceneName = GetSceneName(nextWorkout);
                 break;
             case 1:
-                CoreInitialization();
-                break;
-            case 2:
                 nextWorkout = WorkoutNames.TranslateWord;
                 core = PrepareWorkout(nextWorkout);
                 if (core == null)
@@ -90,8 +87,27 @@ public class WorkoutManager : MonoBehaviour, Observer
                 }
                 sceneName = GetSceneName(nextWorkout);
                 break;
+            case 2:
+                nextWorkout = WorkoutNames.Audio;
+                core = PrepareWorkout(nextWorkout);
+                if (core == null)
+                {
+                    stage++;
+                    RunBrainStorm();
+                    break;
+                }
+                sceneName = GetSceneName(nextWorkout);
+                break;
             case 3:
-                CoreInitialization();
+                nextWorkout = WorkoutNames.WordTranslate;
+                core = PrepareWorkout(nextWorkout);
+                if (core == null)
+                {
+                    stage++;
+                    RunBrainStorm();
+                    break;
+                }
+                sceneName = GetSceneName(nextWorkout);
                 break;
             case 4:
                 nextWorkout = WorkoutNames.Audio;
@@ -105,37 +121,7 @@ public class WorkoutManager : MonoBehaviour, Observer
                 sceneName = GetSceneName(nextWorkout);
                 break;
             case 5:
-                CoreInitialization();
-                break;
             case 6:
-                nextWorkout = WorkoutNames.WordTranslate;
-                core = PrepareWorkout(nextWorkout);
-                if (core == null)
-                {
-                    stage++;
-                    RunBrainStorm();
-                    break;
-                }
-                sceneName = GetSceneName(nextWorkout);
-                break;
-            case 7:
-                CoreInitialization();
-                break;
-            case 8:
-                nextWorkout = WorkoutNames.Audio;
-                core = PrepareWorkout(nextWorkout);
-                if (core == null)
-                {
-                    stage++;
-                    RunBrainStorm();
-                    break;
-                }
-                sceneName = GetSceneName(nextWorkout);
-                break;
-            case 9:
-            case 10:
-                CoreInitialization();
-
                 //Завершает тренировку на следующей итерации
                 stage = 99;
                 break;
@@ -235,7 +221,7 @@ public class WorkoutManager : MonoBehaviour, Observer
             case WorkoutNames.reiteration:
                 break;
             case WorkoutNames.brainStorm:
-                RunBrainStorm();
+                CoreInitialization();
                 break;
             case WorkoutNames.savanna:
                 break;
