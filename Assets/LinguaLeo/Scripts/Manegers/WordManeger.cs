@@ -60,7 +60,7 @@ public class WordManeger : MonoBehaviour, Observer
 
         foreach (var word in allWords)
         {
-            word.CheckingTimeForTraining();
+            word.LicenseExpirationCheck();
             bool AllWorkoutDone = word.progress.AllWorkoutDone();
             bool license = word.progress.license >= LicenseLevels.Level_1;
 

@@ -10,7 +10,7 @@ public class LicensesManager : MonoBehaviour,Observer
 
     void Start()
     {
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+        //GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
     }
 
     // Use this for initialization
@@ -22,7 +22,7 @@ public class LicensesManager : MonoBehaviour,Observer
         {
             foreach (var word in allWords)
             {
-                word.CheckingTimeForTraining();
+                word.LicenseExpirationCheck();
                 yield return null;
             }
 

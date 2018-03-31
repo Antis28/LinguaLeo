@@ -197,26 +197,7 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
     /// </summary>
     private void WordProgressUpdate()
     {
-        WordLeo word = GetCurrentQuest().questWord;
-        float progress = 0;
-
-        if (word.progress.word_translate)
-        {
-            progress += 0.25f;
-        }
-        if (word.progress.translate_word)
-        {
-            progress += 0.25f;
-        }
-        if (word.progress.audio_word)
-        {
-            progress += 0.25f;
-        }
-        if (word.progress.word_puzzle)
-        {
-            progress += 0.25f;
-        }
-        progressImage.fillAmount = progress;
+        progressImage.fillAmount = GetCurrentQuest().questWord.GetProgressCount();
     }
 
     private void ProgeressBarUpdate()
