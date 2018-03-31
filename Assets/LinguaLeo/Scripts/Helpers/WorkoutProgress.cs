@@ -46,8 +46,8 @@ public class WorkoutProgress
     public bool AllWorkoutDone()
     {
         return word_translate &&
-                 translate_word;
-        // audio_word &&
+                 translate_word &&
+                 audio_word;
         // word_puzzle;
     }
 
@@ -62,17 +62,13 @@ public class WorkoutProgress
                 return !translate_word;
             case WorkoutNames.savanna:
                 return !savanna;
-            //case WorkoutNames.Audio:
-            //    return !audio_word;
+            case WorkoutNames.Audio:
+                return !audio_word;
             //case WorkoutNames.Puzzle:
             //    return !word_puzzle;
             default:
+                Debug.LogError("Тренировка не найдена");
                 return false;
         }
-
-
-        
-        
-        
     }
 }
