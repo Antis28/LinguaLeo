@@ -75,10 +75,9 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
                 //FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
             case GAME_EVENTS.ShowResult:
+                SetupEnterButton(core.RunNextQuestion);
                 CheckAnswer();
                 ShowQuestion();
-                SetupEnterButton(core.RunNextQuestion);
-
                 ShowImage();
                 WordProgressUpdate();
 
@@ -88,10 +87,13 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
 
     private void SetupEnterButton(UnityAction action)
     {
+        // очистить ui кнопку от подписчиков
         checkButton.onClick.RemoveAllListeners();
-        checkButton.onClick.AddListener(action);
+        // очистить кнопку return от подписчиков
         EnterButtonEvent = null;
+
         EnterButtonEvent += action;
+        checkButton.onClick.AddListener(action);
     }
 
     public QuestionLeo GetCurrentQuest()
@@ -143,11 +145,12 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
 
         if (repeatWordButton)
             repeatWordButton.onClick.AddListener(
-                () => {
+                () =>
+                {
                     GameManager.AudioPlayer.SayWord();
                     //передать фокус полю ввода
                     AnswerInputField.ActivateInputField();
-                    });
+                });
 
         GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
     }
