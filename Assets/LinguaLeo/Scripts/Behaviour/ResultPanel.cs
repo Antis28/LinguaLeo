@@ -61,7 +61,8 @@ public class ResultPanel : MonoBehaviour
     private void CheckContinueWorkout(Button button)
     {
         int score = GameManager.ScoreKeeper.ScoreValue;
-        if (GameManager.WordManeger.CountWordInGroup() - score > 0)
+        int WordInGroupRemain = GameManager.WordManeger.CountWordInGroup() - score;
+        if (WordInGroupRemain > 0)
         {
             button.interactable = true;
             button.onClick.AddListener(() =>
