@@ -57,7 +57,6 @@ public class WorkoutManager : MonoBehaviour, Observer
     private void RunBrainStorm(bool isEnd = false)
     {
         string sceneName = string.Empty;
-        WorkoutNames nextWorkout = WorkoutNames.TranslateWord;
         stage++;
         if (isEnd)
             stage = 100;
@@ -66,59 +65,19 @@ public class WorkoutManager : MonoBehaviour, Observer
             case -1:
                 throw new Exception();
             case 0:
-                nextWorkout = WorkoutNames.WordTranslate;
-                core = PrepareWorkout(nextWorkout);
-                if (core == null)
-                {
-                    stage++;
-                    RunBrainStorm();
-                    break;
-                }
-                sceneName = GetSceneName(nextWorkout);
+                sceneName = PrepareWordTranslate();
                 break;
             case 1:
-                nextWorkout = WorkoutNames.TranslateWord;
-                core = PrepareWorkout(nextWorkout);
-                if (core == null)
-                {
-                    stage++;
-                    RunBrainStorm();
-                    break;
-                }
-                sceneName = GetSceneName(nextWorkout);
+                sceneName = PrepareTranslateWord();
                 break;
             case 2:
-                nextWorkout = WorkoutNames.Audio;
-                core = PrepareWorkout(nextWorkout);
-                if (core == null)
-                {
-                    stage++;
-                    RunBrainStorm();
-                    break;
-                }
-                sceneName = GetSceneName(nextWorkout);
+                sceneName = PrepareAudioTest();
                 break;
             case 3:
-                nextWorkout = WorkoutNames.WordTranslate;
-                core = PrepareWorkout(nextWorkout);
-                if (core == null)
-                {
-                    stage++;
-                    RunBrainStorm();
-                    break;
-                }
-                sceneName = GetSceneName(nextWorkout);
+                sceneName = PrepareWordTranslate();
                 break;
             case 4:
-                nextWorkout = WorkoutNames.Audio;
-                core = PrepareWorkout(nextWorkout);
-                if (core == null)
-                {
-                    stage++;
-                    RunBrainStorm();
-                    break;
-                }
-                sceneName = GetSceneName(nextWorkout);
+                sceneName = PrepareAudioTest();
                 break;
             case 5:
             case 6:
@@ -136,6 +95,51 @@ public class WorkoutManager : MonoBehaviour, Observer
         }
 
     }
+
+    private bool CoreValid()
+    {
+        if (core == null)
+        {
+            RunBrainStorm();
+            return false;
+        }
+        return true;
+    }
+
+    private string PrepareWordTranslate()
+    {
+        WorkoutNames nextWorkout = WorkoutNames.WordTranslate;
+        core = PrepareWorkout(nextWorkout);
+
+        if (CoreValid())
+            return GetSceneName(nextWorkout);
+        else
+            return string.Empty;
+    }
+
+    private string PrepareTranslateWord()
+    {
+        WorkoutNames nextWorkout = WorkoutNames.TranslateWord;
+        core = PrepareWorkout(nextWorkout);
+
+        if (CoreValid())
+            return GetSceneName(nextWorkout);
+        else
+            return string.Empty;
+    }
+
+    private string PrepareAudioTest()
+    {
+        WorkoutNames nextWorkout = WorkoutNames.Audio;
+        core = PrepareWorkout(nextWorkout);
+
+        if (CoreValid())
+            return GetSceneName(nextWorkout);
+        else
+            return string.Empty;
+    }
+
+
     /// <summary>
     /// Подготавливает ядро для тренировки
     /// </summary>
