@@ -112,11 +112,11 @@ public class ResultPanel : MonoBehaviour
         else
             LearnText.text = string.Format("{0} слова изучено, ", score);
 
-        int countAllWords = GameManager.WorkoutManager.QuestCompletedCount;
-        if (BEST_RESULT > countAllWords)
-            LearnText.text += string.Format("{0} на изучении", countAllWords - score);
-        else
-            LearnText.text += string.Format("{0} на изучении", BEST_RESULT - score);
+        int questCount = GameManager.WorkoutManager.QuestCompletedCount;
+        //if (BEST_RESULT > questCount)
+            LearnText.text += string.Format("{0} на изучении", questCount - score);
+        //else
+        //    LearnText.text += string.Format("{0} на изучении", BEST_RESULT - score);
     }
 
 

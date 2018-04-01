@@ -47,8 +47,8 @@ public class WorkoutProgress
     {
         return word_translate &&
                  translate_word &&
-                 audio_word;
-        // word_puzzle;
+                 audio_word &&
+                 word_puzzle;
     }
 
     public bool CanTraining(WorkoutNames workoutName)
@@ -56,16 +56,19 @@ public class WorkoutProgress
         switch (workoutName)
         {
             case WorkoutNames.WordTranslate:
-            case WorkoutNames.reiteration:
                 return !word_translate;
             case WorkoutNames.TranslateWord:
                 return !translate_word;
-            case WorkoutNames.Savanna:
-                return !savanna;
             case WorkoutNames.Audio:
                 return !audio_word;
-            //case WorkoutNames.Puzzle:
-            //    return !word_puzzle;
+            case WorkoutNames.Puzzle:
+                return !word_puzzle;
+
+            case WorkoutNames.reiteration:
+                return !word_translate;
+            case WorkoutNames.Savanna:
+                return !savanna;
+            
             default:
                 Debug.LogError("Тренировка не найдена");
                 return false;
