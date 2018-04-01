@@ -59,8 +59,6 @@ public class Workout : IWorkout
     public void LoadQuestions()
     {
         tasks = LoadTasks();
-        //if (tasks != null && tasks.Count > 0)
-        //GameObject.FindObjectOfType<DebugUI>().FillPanel(tasks);
     }
     public void SetNextQuestion()
     {
@@ -94,9 +92,9 @@ public class Workout : IWorkout
         if (untrainedWords.Count == 0)
             return questionsTemp;
 
+        untrainedWords = Utilities.SortWordsByProgress(untrainedWords);
         for (int i = 0; i < maxQuestCount; i++)
         {
-            untrainedWords = Utilities.ShuffleList(untrainedWords);
             QuestionLeo question = GeneratorTask(i, questionsTemp);
 
             if (question == null)
