@@ -61,7 +61,7 @@ public class ResultPanel : MonoBehaviour
     private void CheckContinueWorkout(Button button)
     {
         int score = GameManager.ScoreKeeper.ScoreValue;
-        int WordInGroupRemain = GameManager.WordManeger.CountWordInGroup() - score;
+        int WordInGroupRemain = GameManager.WordManeger.CountUntrainWordInGroup() - score;
         if (WordInGroupRemain > 0)
         {
             button.interactable = true;
@@ -112,7 +112,7 @@ public class ResultPanel : MonoBehaviour
         else
             LearnText.text = string.Format("{0} слова изучено, ", score);
 
-        int countAllWords = GameManager.WordManeger.CountWordInGroup();
+        int countAllWords = GameManager.WorkoutManager.QuestCompletedCount;
         if (BEST_RESULT > countAllWords)
             LearnText.text += string.Format("{0} на изучении", countAllWords - score);
         else
