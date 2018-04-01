@@ -1,11 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine;
+using System;
 using System.IO;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using System.Xml.Serialization;
+
 
 using URandom = UnityEngine.Random;
+
 
 public class Utilities
 {
@@ -84,6 +87,19 @@ public class Utilities
     }
 
     /// <summary>
+    /// Выбрать слова которые не полностью изучены
+    /// </summary>
+    /// <param name="wordsFromGroup"></param>
+    /// <returns></returns>
+    internal static List<WordLeo> SelectNotDoneWords(List<WordLeo> wordsFromGroup)
+    {
+        var remainList = from word in wordsFromGroup
+                         where !word.progress.AllWorkoutDone()
+                         select word;
+        return remainList.ToList();
+    }
+
+    /// <summary>
     /// перемешать слова
     /// </summary>
     /// <param name="words"></param>
@@ -101,6 +117,16 @@ public class Utilities
             list.RemoveAt(j);
         }
         return list;
+    }
+    public static List<WordLeo> SortWordsByProgress(List<WordLeo> words)
+    {
+    var result = from word in words
+                 orderby word.GetProgressCount() descending,
+                         word.wordValue
+                 select word;
+
+        List<WordLeo> sortedWordGroups = result.ToList();
+        return sortedWordGroups;
     }
 
     /// <summary>
@@ -180,54 +206,4 @@ class UniqRandom
 }
 
 
-[XmlRoot("Dictionary")]
-public class XmlSerializableDictionary<TKey, TValue>
-    : Dictionary<TKey, TValue>, IXmlSerializable
-{
-    public System.Xml.Schema.XmlSchema GetSchema()
-    {
-        return null;
-    }
 
-    public void ReadXml(System.Xml.XmlReader reader)
-    {
-        XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
-        XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
-        bool wasEmpty = reader.IsEmptyElement;
-        reader.Read();
-        if (wasEmpty)
-            return;
-        while (reader.NodeType != System.Xml.XmlNodeType.EndElement)
-        {
-            reader.ReadStartElement("item");
-            reader.ReadStartElement("key");
-            TKey key = (TKey)keySerializer.Deserialize(reader);
-            reader.ReadEndElement();
-            reader.ReadStartElement("value");
-            TValue value = (TValue)valueSerializer.Deserialize(reader);
-            reader.ReadEndElement();
-            this.Add(key, value);
-            reader.ReadEndElement();
-            reader.MoveToContent();
-        }
-        reader.ReadEndElement();
-    }
-
-    public void WriteXml(System.Xml.XmlWriter writer)
-    {
-        XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
-        XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
-        foreach (TKey key in this.Keys)
-        {
-            writer.WriteStartElement("item");
-            writer.WriteStartElement("key");
-            keySerializer.Serialize(writer, key);
-            writer.WriteEndElement();
-            writer.WriteStartElement("value");
-            TValue value = this[key];
-            valueSerializer.Serialize(writer, value);
-            writer.WriteEndElement();
-            writer.WriteEndElement();
-        }
-    }
-}
