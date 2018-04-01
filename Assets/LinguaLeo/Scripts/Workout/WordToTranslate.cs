@@ -59,7 +59,6 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
 
         contextPanel = contextText.transform.parent.gameObject;
@@ -143,7 +142,9 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
     {
         progressImage.fillAmount = GetCurrentQuest().questWord.GetProgressCount();
     }
-
+    /// <summary>
+    /// Обновить шкалу колличества пройденых слов
+    /// </summary>
     private void WorkoutProgeressUpdate()
     {
         answersCount++;
