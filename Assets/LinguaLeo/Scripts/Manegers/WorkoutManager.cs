@@ -212,7 +212,7 @@ public class WorkoutManager : MonoBehaviour, Observer
         {
             case WorkoutNames.WordTranslate:
             case WorkoutNames.TranslateWord:
-            case WorkoutNames.savanna:
+            case WorkoutNames.Savanna:
             case WorkoutNames.Audio:
             case WorkoutNames.Puzzle:
                 GameManager.LevelManeger.LoadWorkOut("result");
@@ -240,14 +240,16 @@ public class WorkoutManager : MonoBehaviour, Observer
                 core = PrepareWorkout(currentWorkout);
                 CoreInitialization();
                 break;
-            case WorkoutNames.Puzzle:
-                break;
-            case WorkoutNames.reiteration:
+            case WorkoutNames.Savanna:
+                core = PrepareWorkout(currentWorkout);
+                CoreInitialization();
                 break;
             case WorkoutNames.brainStorm:
                 CoreInitialization();
                 break;
-            case WorkoutNames.savanna:
+            case WorkoutNames.Puzzle:
+                break;
+            case WorkoutNames.reiteration:
                 break;
             default:
                 break;
@@ -277,8 +279,8 @@ public class WorkoutManager : MonoBehaviour, Observer
             case WorkoutNames.brainStorm:
                 sceneName = string.Empty;
                 break;
-            case WorkoutNames.savanna:
-                sceneName = string.Empty;
+            case WorkoutNames.Savanna:
+                sceneName = "savanna";
                 break;
         }
         return sceneName;

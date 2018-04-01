@@ -10,5 +10,5 @@ public enum WorkoutNames
     Puzzle,
     reiteration,
     brainStorm,
-    savanna,
+    Savanna,
 }
