@@ -32,14 +32,10 @@ public class Savah : MonoBehaviour, Observer, IWorkout
     private Workout core;
 
     // Use this for initialization
-    void Awake()
+    void Start()
     {
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
-
-        core = new Workout(WorkoutName, questCount);
-        core.DrawTask += Core_DrawTask;
     }
 
     private void Core_DrawTask()
@@ -66,10 +62,15 @@ public class Savah : MonoBehaviour, Observer, IWorkout
     {
         switch (notificationName)
         {
-            case GAME_EVENTS.LoadedVocabulary:
-                core.LoadQuestions();
-                core.SetNextQuestion();
+            case GAME_EVENTS.CoreBuild:
+                core = parametr as Workout;
+                core.buttonsHandler = GameObject.FindObjectOfType<ButtonsHandler>();
+                core.DrawTask += Core_DrawTask;
+                core.BuildTask(0);
                 //FindObjectOfType<DebugUI>().FillPanel(questions);
+                break;
+            case GAME_EVENTS.ShowResult:
+                core.RunNextQuestion();
                 break;
         }
     }
