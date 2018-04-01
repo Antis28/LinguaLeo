@@ -57,9 +57,8 @@ public class WordCollection
         List<WordLeo> untrainedWords = new List<WordLeo>();
         foreach (var item in wordsFromGroup)
         {
-            item.CheckingTimeForTraining();
+            item.LicenseExpirationCheck();
 
-            //if (item.progress.word_translate != true)
             if (item.progress.CanTraining(workoutName))
                 untrainedWords.Add(item);
         }

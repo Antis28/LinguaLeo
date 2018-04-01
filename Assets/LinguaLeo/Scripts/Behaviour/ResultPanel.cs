@@ -32,7 +32,7 @@ public class ResultPanel : MonoBehaviour
         EatingText.text = "100%";
 
         InitButtons();
-        GameManager.ScoreKeeper.ScoreValue = 0;
+        GameManager.ScoreKeeper.ResetScore();
         print("lastWorkout = " + GameManager.LevelManeger.lastWorkout);
     }
 
@@ -61,7 +61,8 @@ public class ResultPanel : MonoBehaviour
     private void CheckContinueWorkout(Button button)
     {
         int score = GameManager.ScoreKeeper.ScoreValue;
-        if (GameManager.WordManeger.CountWordInGroup() - score > 0)
+        int WordInGroupRemain = GameManager.WordManeger.CountUntrainWordInGroup() - score;
+        if (WordInGroupRemain > 0)
         {
             button.interactable = true;
             button.onClick.AddListener(() =>
@@ -98,6 +99,12 @@ public class ResultPanel : MonoBehaviour
 
     private void ShowLearn(int score)
     {
+        if (score < 0)
+        {
+            Debug.LogError("score = " + score);
+            score = 0;
+        }
+
         if (score == 0 || score > 4)
             LearnText.text = string.Format("{0} слов изучено, ", score);
         else if (score == 1)
@@ -105,7 +112,7 @@ public class ResultPanel : MonoBehaviour
         else
             LearnText.text = string.Format("{0} слова изучено, ", score);
 
-        int countAllWords = GameManager.WordManeger.CountWordInGroup();
+        int countAllWords = GameManager.WorkoutManager.QuestCompletedCount;
         if (BEST_RESULT > countAllWords)
             LearnText.text += string.Format("{0} на изучении", countAllWords - score);
         else

@@ -11,11 +11,6 @@ public class ScoreKeeper : MonoBehaviour, Observer {
         {
             return score;
         }
-
-        set
-        {
-            score = value;
-        }
     }
 
     // Use this for initialization
@@ -27,12 +22,12 @@ public class ScoreKeeper : MonoBehaviour, Observer {
 
     public void AddScore(int points)
     {
-        ScoreValue += points;
+        score += points;
     }
 
     public void ResetScore()
     {
-        ScoreValue = 0;
+        score = 0;
     }
 
     public void OnNotify(object parametr, GAME_EVENTS notificationName)

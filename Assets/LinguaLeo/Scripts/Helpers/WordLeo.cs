@@ -138,7 +138,7 @@ public class WordLeo : IEquatable<WordLeo>
     /// Проверка можно ли уже повторять слово.
     /// Если можно, то сбрасываются все тренировки.
     /// </summary>
-    public void CheckingTimeForTraining()
+    public void LicenseExpirationCheck()
     {
         LicenseLevels license = progress.license;
         if (license == LicenseLevels.Level_0 || !progress.AllWorkoutDone())
@@ -209,6 +209,32 @@ public class WordLeo : IEquatable<WordLeo>
         return canbeRepeated;
     }
 
+    /// <summary>
+    /// показывает прогресс изучения слова
+    /// </summary>
+    public float GetProgressCount()
+    {
+        float progressCount = 0;
+
+        if (progress.word_translate)
+        {
+            progressCount += 0.25f;
+        }
+        if (progress.translate_word)
+        {
+            progressCount += 0.25f;
+        }
+        if (progress.audio_word)
+        {
+            progressCount += 0.25f;
+        }
+        if (progress.word_puzzle)
+        {
+            progressCount += 0.25f;
+        }
+        return progressCount;
+    }
+
     #region сравнение в методе Contains
     public bool Equals(WordLeo other)
     {
@@ -258,7 +284,7 @@ public class WordLeo : IEquatable<WordLeo>
     override
     public string ToString()
     {
-        return wordValue;
+        return wordValue + " " + GetProgressCount();
     }
 
 

@@ -1,14 +1,11 @@
-﻿using System;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
+using System.IO;
+using System.Text;
+using System.Xml.Serialization;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Xml.Serialization;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.Text;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -60,7 +57,7 @@ public class WordManeger : MonoBehaviour, Observer
 
         foreach (var word in allWords)
         {
-            word.CheckingTimeForTraining();
+            word.LicenseExpirationCheck();
             bool AllWorkoutDone = word.progress.AllWorkoutDone();
             bool license = word.progress.license >= LicenseLevels.Level_1;
 
@@ -75,6 +72,13 @@ public class WordManeger : MonoBehaviour, Observer
     internal int CountWordInGroup()
     {
         return currentWordGroups.Count;
+    }
+
+    internal int CountUntrainWordInGroup()
+    {
+        List<WordLeo> remainWord = Utilities.SelectNotDoneWords(
+                                                    vocabulary.wordsFromGroup);
+        return remainWord.Count;
     }
 
     /// <summary>
