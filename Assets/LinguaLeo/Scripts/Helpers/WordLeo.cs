@@ -284,7 +284,7 @@ public class WordLeo : IEquatable<WordLeo>
     override
     public string ToString()
     {
-        return wordValue;
+        return wordValue + " " + GetProgressCount();
     }
 
 
