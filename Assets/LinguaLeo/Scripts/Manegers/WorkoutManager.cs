@@ -159,6 +159,16 @@ public class WorkoutManager : MonoBehaviour, Observer
             return string.Empty;
     }
 
+    private string PrepareWordPuzzle()
+    {
+        WorkoutNames nextWorkout = WorkoutNames.Puzzle;
+        core = PrepareWorkout(nextWorkout);
+
+        if (CoreValid())
+            return GetSceneName(nextWorkout);
+        else
+            return string.Empty;
+    }
 
     /// <summary>
     /// Подготавливает ядро для тренировки
@@ -174,6 +184,7 @@ public class WorkoutManager : MonoBehaviour, Observer
             Debug.LogError("Нет доступных слов для тренировки" + currentWorkout);
             return null;
         }
+        questsPassedCount += core.tasks.Count;
         return core;
     }
 
@@ -248,6 +259,8 @@ public class WorkoutManager : MonoBehaviour, Observer
                 CoreInitialization();
                 break;
             case WorkoutNames.Puzzle:
+                core = PrepareWorkout(currentWorkout);
+                CoreInitialization();
                 break;
             case WorkoutNames.reiteration:
                 break;
@@ -271,7 +284,7 @@ public class WorkoutManager : MonoBehaviour, Observer
                 sceneName = "audioTest";
                 break;
             case WorkoutNames.Puzzle:
-                sceneName = string.Empty;
+                sceneName = "wordPuzzle";
                 break;
             case WorkoutNames.reiteration:
                 sceneName = string.Empty;
