@@ -41,7 +41,7 @@ public class WorkoutManager : MonoBehaviour, Observer
     public void RunWorkOut(WorkoutNames name)
     {
         currentWorkout = name;
-        stage = -1;
+        ResetStage();
         questsPassedCount = 0;
         questMaxCount = 10;
 
@@ -58,6 +58,11 @@ public class WorkoutManager : MonoBehaviour, Observer
             levelManeger.LoadLevel(sceneName);
     }
 
+    private void ResetStage()
+    {
+        stage = 0;
+    }
+
     private void RunBrainStorm(bool isEnd = false)
     {
         string sceneName = string.Empty;
@@ -66,26 +71,35 @@ public class WorkoutManager : MonoBehaviour, Observer
             stage = 100;
         switch (stage)
         {
-            case -1:
-                throw new Exception();
             case 0:
-                sceneName = PrepareWordTranslate();
-                break;
+                throw new Exception();
             case 1:
-                sceneName = PrepareTranslateWord();
+                sceneName = PrepareWordTranslate();
                 break;
             case 2:
-                sceneName = PrepareAudioTest();
+                sceneName = PrepareTranslateWord();
                 break;
             case 3:
-                sceneName = PrepareWordTranslate();
+                sceneName = PrepareAudioTest();
                 break;
             case 4:
+                sceneName = PrepareWordPuzzle();
+                break;
+            case 5:
+                sceneName = PrepareWordTranslate();
+                break;
+            case 6:
+                sceneName = PrepareTranslateWord();
+                break;
+            case 7:
+                sceneName = PrepareWordPuzzle();
+                break;
+            case 8:
                 sceneName = PrepareAudioTest();
                 TerminateBrainStorm(sceneName);
                 break;
             case 100:
-                stage = -1;
+                ResetStage();
                 GameManager.LevelManeger.LoadWorkOut("result");
                 break;
         }
@@ -120,7 +134,6 @@ public class WorkoutManager : MonoBehaviour, Observer
             RunBrainStorm();
             return false;
         }
-        questsPassedCount += core.tasks.Count;
         return true;
     }
 
