@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class WorkoutManager : MonoBehaviour, Observer
 {
+    private static WordLeo currentWord = null;
+
     LevelManeger levelManeger;
     WorkoutNames currentWorkout;
+    WorkoutNames subWorkout;
     Workout core;
 
     public int questMaxCount = 10;
@@ -31,6 +34,9 @@ public class WorkoutManager : MonoBehaviour, Observer
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ButtonHandlerLoaded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.NotUntrainedWords);
+
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
     }
 
     // Update is called once per frame
@@ -38,6 +44,12 @@ public class WorkoutManager : MonoBehaviour, Observer
     {
 
     }
+
+    public void ResetQuestCompletedCount()
+    {
+        questsPassedCount = 0;
+    }
+
     public void RunWorkOut(WorkoutNames name)
     {
         currentWorkout = name;
@@ -77,10 +89,10 @@ public class WorkoutManager : MonoBehaviour, Observer
                 sceneName = PrepareWordTranslate();
                 break;
             case 2:
-                sceneName = PrepareTranslateWord();
+                sceneName = PrepareAudioTest();
                 break;
             case 3:
-                sceneName = PrepareAudioTest();
+                sceneName = PrepareTranslateWord();
                 break;
             case 4:
                 sceneName = PrepareWordPuzzle();
@@ -89,10 +101,10 @@ public class WorkoutManager : MonoBehaviour, Observer
                 sceneName = PrepareWordTranslate();
                 break;
             case 6:
-                sceneName = PrepareTranslateWord();
+                sceneName = PrepareWordPuzzle();
                 break;
             case 7:
-                sceneName = PrepareWordPuzzle();
+                sceneName = PrepareTranslateWord();
                 break;
             case 8:
                 sceneName = PrepareAudioTest();
@@ -139,12 +151,12 @@ public class WorkoutManager : MonoBehaviour, Observer
 
     private string PrepareWordTranslate()
     {
-        WorkoutNames nextWorkout = WorkoutNames.WordTranslate;
-        core = PrepareWorkout(nextWorkout);
+        subWorkout = WorkoutNames.WordTranslate;
+        core = PrepareWorkout(subWorkout);
 
         if (CoreValid())
         {
-            return GetSceneName(nextWorkout);
+            return GetSceneName(subWorkout);
         }
         else
             return string.Empty;
@@ -152,33 +164,33 @@ public class WorkoutManager : MonoBehaviour, Observer
 
     private string PrepareTranslateWord()
     {
-        WorkoutNames nextWorkout = WorkoutNames.TranslateWord;
-        core = PrepareWorkout(nextWorkout);
+        subWorkout = WorkoutNames.TranslateWord;
+        core = PrepareWorkout(subWorkout);
 
         if (CoreValid())
-            return GetSceneName(nextWorkout);
+            return GetSceneName(subWorkout);
         else
             return string.Empty;
     }
 
     private string PrepareAudioTest()
     {
-        WorkoutNames nextWorkout = WorkoutNames.Audio;
-        core = PrepareWorkout(nextWorkout);
+        subWorkout = WorkoutNames.Audio;
+        core = PrepareWorkout(subWorkout);
 
         if (CoreValid())
-            return GetSceneName(nextWorkout);
+            return GetSceneName(subWorkout);
         else
             return string.Empty;
     }
 
     private string PrepareWordPuzzle()
     {
-        WorkoutNames nextWorkout = WorkoutNames.Puzzle;
-        core = PrepareWorkout(nextWorkout);
+        subWorkout = WorkoutNames.Puzzle;
+        core = PrepareWorkout(subWorkout);
 
         if (CoreValid())
-            return GetSceneName(nextWorkout);
+            return GetSceneName(subWorkout);
         else
             return string.Empty;
     }
@@ -227,11 +239,21 @@ public class WorkoutManager : MonoBehaviour, Observer
                 if (currentWorkout == WorkoutNames.brainStorm)
                     RunBrainStorm();
                 break;
+            case GAME_EVENTS.CorrectAnswer:
+                AddWorkoutProgress(currentWord, subWorkout);
+                if (currentWord.AllWorkoutDone())
+                    currentWord.AddLicenseLevel();
+                break;
+            case GAME_EVENTS.BuildTask:
+                IWorkout workout = parametr as IWorkout;
+                subWorkout = workout.WorkoutName;
+                currentWord = workout.GetCurrentWord();
+                break;
         }
     }
 
     private void WordsEndedBehaviour()
-    {
+    {   
         switch (currentWorkout)
         {
             case WorkoutNames.WordTranslate:
@@ -311,4 +333,26 @@ public class WorkoutManager : MonoBehaviour, Observer
         }
         return sceneName;
     }
+
+    public void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
+    {
+        switch (workout)
+        {
+            case WorkoutNames.WordTranslate:
+            case WorkoutNames.reiteration:
+                word.LearnWordTranslate();
+                break;
+            case WorkoutNames.TranslateWord:
+                word.LearnTranslateWord();
+                break;
+            case WorkoutNames.Audio:
+                word.LearnAudio();
+                break;
+            case WorkoutNames.Puzzle:
+                word.LearnPuzzle();
+                break;
+        }
+    }
+
+    
 }
