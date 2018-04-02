@@ -92,6 +92,7 @@ public class Workout : IWorkout
         if (untrainedWords.Count == 0)
             return questionsTemp;
 
+        untrainedWords = Utilities.ShuffleList(untrainedWords);
         untrainedWords = Utilities.SortWordsByProgress(untrainedWords);
         for (int i = 0; i < maxQuestCount; i++)
         {

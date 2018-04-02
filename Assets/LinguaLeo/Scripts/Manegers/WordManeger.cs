@@ -17,8 +17,6 @@ public class WordManeger : MonoBehaviour, Observer
     private static List<string> wordGroups = null; // названия наборов слов
 
     private static List<WordLeo> currentWordGroups = null;
-    private static WordLeo currentWord = null;
-    private static WorkoutNames currentWorkoutName;
 
     private static List<WordGroup> groupNames;
 
@@ -50,7 +48,7 @@ public class WordManeger : MonoBehaviour, Observer
         return vocabulary.wordsFromGroup;
     }
 
-    public List<WordLeo> GetWordsLicense()
+    public List<WordLeo> GetWordsWithLicense()
     {
         List<WordLeo> allWords = GameManager.WordManeger.GetAllWords();
         List<WordLeo> wordsByLicense = new List<WordLeo>();
@@ -58,8 +56,8 @@ public class WordManeger : MonoBehaviour, Observer
         foreach (var word in allWords)
         {
             word.LicenseExpirationCheck();
-            bool AllWorkoutDone = word.progress.AllWorkoutDone();
-            bool license = word.progress.license >= LicenseLevels.Level_1;
+            bool AllWorkoutDone = word.AllWorkoutDone();
+            bool license = word.LicenseExists();
 
             //if (!word.CanbeRepeated())
             if (AllWorkoutDone || !license)
@@ -135,12 +133,10 @@ public class WordManeger : MonoBehaviour, Observer
     void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
 
         LoadVocabulary();
         //CreateWordGroups();
-        //ResetWorkoutProgress();
+        //ResetLicense();
     }
 
     private void LoadVocabulary()
@@ -243,38 +239,13 @@ public class WordManeger : MonoBehaviour, Observer
         }
     }
 
-    public void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
-    {
-        switch (workout)
-        {
-            case WorkoutNames.WordTranslate:
-            case WorkoutNames.reiteration:
-                word.progress.word_translate = true;
-                break;
-            case WorkoutNames.TranslateWord:
-                word.progress.translate_word = true;
-                break;
-            case WorkoutNames.Audio:
-                word.progress.audio_word = true;
-                break;
-            case WorkoutNames.Puzzle:
-                word.progress.word_puzzle = true;
-                break;
-        }
-    }
 
-    public void ResetWorkoutProgress()
+    public void ResetLicense()
     {
         foreach (WordLeo item in vocabulary.allWords)
         {
             item.ResetLicense();
         }
-    }
-
-    private void AddWordLicenses(WordLeo currentWord)
-    {
-        currentWord.progress.lastRepeat = DateTime.Now;
-        currentWord.progress.license++;
     }
 
     void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
@@ -284,17 +255,6 @@ public class WordManeger : MonoBehaviour, Observer
         {
             case GAME_EVENTS.WordsEnded:
                 SaveToXml();
-                break;
-            case GAME_EVENTS.CorrectAnswer:
-                AddWorkoutProgress(currentWord, currentWorkoutName);
-                if (currentWord.progress.AllWorkoutDone())
-                    AddWordLicenses(currentWord);
-
-                break;
-            case GAME_EVENTS.BuildTask:
-                IWorkout workout = parametr as IWorkout;
-                currentWorkoutName = workout.WorkoutName;
-                currentWord = workout.GetCurrentWord();
                 break;
         }
     }

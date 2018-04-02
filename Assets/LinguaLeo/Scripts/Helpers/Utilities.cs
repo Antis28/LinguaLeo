@@ -94,7 +94,7 @@ public class Utilities
     internal static List<WordLeo> SelectNotDoneWords(List<WordLeo> wordsFromGroup)
     {
         var remainList = from word in wordsFromGroup
-                         where !word.progress.AllWorkoutDone()
+                         where !word.AllWorkoutDone()
                          select word;
         return remainList.ToList();
     }
@@ -120,10 +120,10 @@ public class Utilities
     }
     public static List<WordLeo> SortWordsByProgress(List<WordLeo> words)
     {
-    var result = from word in words
-                 orderby word.GetProgressCount() descending,
-                         word.wordValue
-                 select word;
+        var result = from word in words
+                     orderby word.GetProgressCount() descending,
+                            word.GetLicense() descending
+                     select word;
 
         List<WordLeo> sortedWordGroups = result.ToList();
         return sortedWordGroups;

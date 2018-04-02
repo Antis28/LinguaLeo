@@ -59,7 +59,7 @@ public class WordCollection
         {
             item.LicenseExpirationCheck();
 
-            if (item.progress.CanTraining(workoutName))
+            if (item.CanTraining(workoutName))
                 untrainedWords.Add(item);
         }
         return untrainedWords;
