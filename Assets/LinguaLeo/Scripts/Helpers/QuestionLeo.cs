@@ -49,6 +49,7 @@ public class QuestionLeo : IEquatable<QuestionLeo>
     {
         Stack<WordLeo> stack = new Stack<WordLeo>();
         List<WordLeo> wordsTemp = new List<WordLeo>(words);
+        wordsTemp = Utilities.ShuffleList(wordsTemp);
         System.Random random = new System.Random();
         while (stack.Count < count)
         {
