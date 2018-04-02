@@ -49,7 +49,7 @@ public class WordLeo : IEquatable<WordLeo>
         if (progress.license == LicenseLevels.Level_0)
             return;
 
-        progress.ResetWorkouts();
+        progress.ResetAllWorkouts();
         progress.license--;
         progress.lastRepeat = DateTime.Now;
     }
@@ -58,18 +58,18 @@ public class WordLeo : IEquatable<WordLeo>
     {
         if (progress.license == LicenseLevels.Level_0)
         {
-            progress.ResetWorkouts();
+            progress.ResetAllWorkouts();
             return;
         }
 
-        progress.ResetWorkouts();
+        progress.ResetAllWorkouts();
         progress.license = LicenseLevels.Level_0;
         progress.lastRepeat = DateTime.Now;
     }
 
     public void UnlockWorkouts()
     {
-        progress.ResetWorkouts();
+        progress.ResetAllWorkouts();
     }
 
     /// <summary>
@@ -132,6 +132,11 @@ public class WordLeo : IEquatable<WordLeo>
                     ReduceLicense();
                 break;
         }
+    }
+
+    internal LicenseLevels GetLicense()
+    {
+        return progress.license;
     }
 
     /// <summary>
@@ -205,7 +210,7 @@ public class WordLeo : IEquatable<WordLeo>
     public bool CanbeRepeated()
     {
         bool canbeRepeated = !progress.AllWorkoutDone();
-        canbeRepeated &= progress.license >= LicenseLevels.Level_1;
+        //canbeRepeated &= progress.license >= LicenseLevels.Level_1;
         return canbeRepeated;
     }
 
@@ -233,6 +238,47 @@ public class WordLeo : IEquatable<WordLeo>
             progressCount += 0.25f;
         }
         return progressCount;
+    }
+
+    public bool CanTraining(WorkoutNames workoutName)
+    {
+        return progress.CanTraining(workoutName);
+    }
+
+    public bool AllWorkoutDone()
+    {
+        return progress.AllWorkoutDone();
+    }
+
+    public void AddLicenseLevel()
+    {
+        progress.lastRepeat = DateTime.Now;
+        progress.license++;
+    }
+
+    public void LearnWordTranslate()
+    {
+        progress.word_translate = true;
+    }
+
+    public void LearnTranslateWord()
+    {
+        progress.translate_word = true;
+    }
+    
+    internal void LearnAudio()
+    {
+        progress.audio_word = true;
+    }
+
+    internal void LearnPuzzle()
+    {
+        progress.word_puzzle = true;
+    }
+
+    public bool LicenseExists()
+    {
+        return progress.license >= LicenseLevels.Level_1;
     }
 
     #region сравнение в методе Contains
@@ -284,8 +330,6 @@ public class WordLeo : IEquatable<WordLeo>
     override
     public string ToString()
     {
-        return wordValue + " " + GetProgressCount();
+        return wordValue + " - " + GetProgressCount() + "% - " + progress.license;
     }
-
-
 }

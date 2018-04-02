@@ -32,7 +32,7 @@ public class WorkoutProgress
 
     public WorkoutProgress() { }
 
-    public void ResetWorkouts()
+    public void ResetAllWorkouts()
     {
         word_translate = false;
         translate_word = false;
