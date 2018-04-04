@@ -14,8 +14,8 @@ public class Savah : MonoBehaviour, Observer, IWorkout
     [SerializeField]
     private WorkoutNames WorkoutName = WorkoutNames.WordTranslate;
 
-    [SerializeField]
-    private int questCount = 30;
+    //[SerializeField]
+    //private int questCount = 30;
 
     [SerializeField]
     private Text questionText = null;
