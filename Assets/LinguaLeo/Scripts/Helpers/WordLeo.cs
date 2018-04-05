@@ -89,8 +89,8 @@ public class WordLeo : IEquatable<WordLeo>
             //case LicenseLevels.Level_1:
             //    //лицензия на 20 минут
             //    if (minutes > LicenseTimeout.Level_1)
-                    //ReduceLicense();                    
-                //break;
+            //ReduceLicense();
+            //break;
             case LicenseLevels.Level_2:
                 //лицензия на 1 час
                 if (minutes > LicenseTimeout.Level_2)
@@ -147,12 +147,11 @@ public class WordLeo : IEquatable<WordLeo>
     {
         LicenseLevels license = progress.license;
         if (license == LicenseLevels.Level_0 || !progress.AllWorkoutDone())
-        {   
+        {
             return;
         }
 
-        TimeSpan interval = DateTime.Now - progress.lastRepeat;
-        double minutes = interval.TotalMinutes;
+        double minutes = GetLicenseTime();
 
         if (minutes > LicenseTimeout.Level_1)
             LicenseValidityCheck();
@@ -205,6 +204,111 @@ public class WordLeo : IEquatable<WordLeo>
                     UnlockWorkouts();
                 break;
         }
+    }
+
+    public double GetLicenseExpiration()
+    {
+        LicenseLevels license = progress.license;
+        if (license == LicenseLevels.Level_0)
+        {
+            return 0;
+        }
+
+        double minutes = GetLicenseTime();
+        double minutesLeft = 0;
+
+        switch (license)
+        {
+            case LicenseLevels.Level_1:
+                minutesLeft = LicenseTimeTraining.Level_1 - minutes;
+                break;
+            case LicenseLevels.Level_2:
+                minutesLeft = LicenseTimeTraining.Level_2 - minutes;
+                break;
+            case LicenseLevels.Level_3:
+                minutesLeft = LicenseTimeTraining.Level_3 - minutes;
+                break;
+            case LicenseLevels.Level_4:
+                minutesLeft = LicenseTimeTraining.Level_4 - minutes;
+                break;
+            case LicenseLevels.Level_5:
+                minutesLeft = LicenseTimeTraining.Level_5 - minutes;
+                break;
+            case LicenseLevels.Level_6:
+                minutesLeft = LicenseTimeTraining.Level_6 - minutes;
+                break;
+            case LicenseLevels.Level_7:
+                minutesLeft = LicenseTimeTraining.Level_7 - minutes;
+                break;
+            case LicenseLevels.Level_8:
+                //лицензия на 1 месяц
+                minutesLeft = LicenseTimeTraining.Level_8 - minutes;
+                break;
+            case LicenseLevels.Level_9:
+                //лицензия на 6 месяцев
+                minutesLeft = LicenseTimeTraining.Level_9 - minutes;
+                break;
+        }
+        if (minutesLeft < 0)
+        {
+            return 0;
+        }
+
+        if (minutesLeft > 60)
+            minutesLeft = minutesLeft / 60;
+
+        return UnityEngine.Mathf.Round((float)minutesLeft);
+    }
+
+    public TimeSpan GetLicenseValidityTime()
+    {
+        LicenseLevels license = progress.license;
+        double minutes = GetLicenseTime();
+        double minutesLeft = 0;
+
+        switch (license)
+        {
+            case LicenseLevels.Level_1:
+                minutesLeft = LicenseTimeout.Level_1 - minutes;
+                break;
+            case LicenseLevels.Level_2:
+                minutesLeft = LicenseTimeout.Level_2 - minutes;
+                break;
+            case LicenseLevels.Level_3:
+                minutesLeft = LicenseTimeout.Level_3 - minutes;
+                break;
+            case LicenseLevels.Level_4:
+                minutesLeft = LicenseTimeout.Level_4 - minutes;
+                break;
+            case LicenseLevels.Level_5:
+                minutesLeft = LicenseTimeout.Level_5 - minutes;
+                break;
+            case LicenseLevels.Level_6:
+                minutesLeft = LicenseTimeout.Level_6 - minutes;
+                break;
+            case LicenseLevels.Level_7:
+                minutesLeft = LicenseTimeout.Level_7 - minutes;
+                break;
+            case LicenseLevels.Level_8:
+                //лицензия на 1 месяц
+                minutesLeft = LicenseTimeout.Level_8 - minutes;
+                break;
+            case LicenseLevels.Level_9:
+                //лицензия на 6 месяцев
+                minutesLeft = LicenseTimeout.Level_9 - minutes;
+                break;
+        }
+        if (minutesLeft < 0)
+        {
+            minutesLeft = 0;
+        }
+        return TimeSpan.FromMinutes(minutesLeft);
+    }
+
+    private double GetLicenseTime()
+    {
+        TimeSpan interval = DateTime.Now - progress.lastRepeat;
+        return interval.TotalMinutes; ;
     }
 
     public bool CanbeRepeated()
@@ -265,7 +369,7 @@ public class WordLeo : IEquatable<WordLeo>
     {
         progress.translate_word = true;
     }
-    
+
     internal void LearnAudio()
     {
         progress.audio_word = true;

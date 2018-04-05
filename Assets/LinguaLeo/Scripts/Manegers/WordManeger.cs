@@ -130,6 +130,25 @@ public class WordManeger : MonoBehaviour, Observer
         //SerializeGroup(groups);
     }
 
+    public void ResetLicense()
+    {
+        foreach (WordLeo item in vocabulary.allWords)
+        {
+            item.ResetLicense();
+        }
+    }
+
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    {
+
+        switch (notificationName)
+        {
+            case GAME_EVENTS.WordsEnded:
+                SaveToXml();
+                break;
+        }
+    }
+
     void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
@@ -240,22 +259,5 @@ public class WordManeger : MonoBehaviour, Observer
     }
 
 
-    public void ResetLicense()
-    {
-        foreach (WordLeo item in vocabulary.allWords)
-        {
-            item.ResetLicense();
-        }
-    }
-
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
-    {
-
-        switch (notificationName)
-        {
-            case GAME_EVENTS.WordsEnded:
-                SaveToXml();
-                break;
-        }
-    }
+   
 }

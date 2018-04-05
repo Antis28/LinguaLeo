@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WorkoutManager : MonoBehaviour, Observer
 {
@@ -11,6 +12,16 @@ public class WorkoutManager : MonoBehaviour, Observer
     WorkoutNames currentWorkout;
     WorkoutNames subWorkout;
     Workout core;
+
+    public int GetBrainTasks()
+    {
+        return 16;
+    }
+
+    public int GetCorrectAnswers()
+    {
+        return GameManager.ScoreKeeper.ScoreValue;
+    }
 
     public int questMaxCount = 10;
     private int questsPassedCount = 0;
@@ -67,7 +78,42 @@ public class WorkoutManager : MonoBehaviour, Observer
         string sceneName = GetSceneName(name);
 
         if (sceneName != string.Empty)
+        {
             levelManeger.LoadLevel(sceneName);
+        }
+    }
+
+    public Workout GetWorkout()
+    {
+        return core;
+    }
+
+    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    {
+        switch (notificationName)
+        {
+            case GAME_EVENTS.ButtonHandlerLoaded:
+                StartBehaviour();
+                break;
+            case GAME_EVENTS.WordsEnded:
+                print("ScoreValue = " + GetCorrectAnswers());
+                WordsEndedBehaviour();
+                break;
+            case GAME_EVENTS.NotUntrainedWords:
+                if (currentWorkout == WorkoutNames.brainStorm)
+                    RunBrainStorm();
+                break;
+            case GAME_EVENTS.CorrectAnswer:
+                AddWorkoutProgress(currentWord, subWorkout);
+                if (currentWord.AllWorkoutDone())
+                    currentWord.AddLicenseLevel();
+                break;
+            case GAME_EVENTS.BuildTask:
+                IWorkout workout = parametr as IWorkout;
+                subWorkout = workout.WorkoutName;
+                currentWord = workout.GetCurrentWord();
+                break;
+        }
     }
 
     private void ResetStage()
@@ -224,36 +270,8 @@ public class WorkoutManager : MonoBehaviour, Observer
         }
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
-    {
-        switch (notificationName)
-        {
-            case GAME_EVENTS.ButtonHandlerLoaded:
-                StartBehaviour();
-                break;
-            case GAME_EVENTS.WordsEnded:
-                print("ScoreValue = " + GameManager.ScoreKeeper.ScoreValue);
-                WordsEndedBehaviour();
-                break;
-            case GAME_EVENTS.NotUntrainedWords:
-                if (currentWorkout == WorkoutNames.brainStorm)
-                    RunBrainStorm();
-                break;
-            case GAME_EVENTS.CorrectAnswer:
-                AddWorkoutProgress(currentWord, subWorkout);
-                if (currentWord.AllWorkoutDone())
-                    currentWord.AddLicenseLevel();
-                break;
-            case GAME_EVENTS.BuildTask:
-                IWorkout workout = parametr as IWorkout;
-                subWorkout = workout.WorkoutName;
-                currentWord = workout.GetCurrentWord();
-                break;
-        }
-    }
-
     private void WordsEndedBehaviour()
-    {   
+    {
         switch (currentWorkout)
         {
             case WorkoutNames.WordTranslate:
@@ -275,6 +293,8 @@ public class WorkoutManager : MonoBehaviour, Observer
 
     private void StartBehaviour()
     {
+         SceneManager.LoadSceneAsync("wordinfo", LoadSceneMode.Additive);
+
         switch (currentWorkout)
         {
             case WorkoutNames.WordTranslate:
@@ -291,6 +311,7 @@ public class WorkoutManager : MonoBehaviour, Observer
                 CoreInitialization();
                 break;
             case WorkoutNames.brainStorm:
+                SceneManager.LoadSceneAsync("brainInfo", LoadSceneMode.Additive);
                 CoreInitialization();
                 break;
             case WorkoutNames.Puzzle:
@@ -304,7 +325,7 @@ public class WorkoutManager : MonoBehaviour, Observer
         }
     }
 
-    public string GetSceneName(WorkoutNames name)
+    private string GetSceneName(WorkoutNames name)
     {
         string sceneName = string.Empty;
         switch (name)
@@ -334,7 +355,7 @@ public class WorkoutManager : MonoBehaviour, Observer
         return sceneName;
     }
 
-    public void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
+    private void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
     {
         switch (workout)
         {
@@ -353,6 +374,4 @@ public class WorkoutManager : MonoBehaviour, Observer
                 break;
         }
     }
-
-    
 }
