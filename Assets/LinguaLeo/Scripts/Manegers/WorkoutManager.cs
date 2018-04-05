@@ -13,6 +13,16 @@ public class WorkoutManager : MonoBehaviour, Observer
     WorkoutNames subWorkout;
     Workout core;
 
+    public int GetBrainTasks()
+    {
+        return 16;
+    }
+
+    public int GetCorrectAnswers()
+    {
+        return GameManager.ScoreKeeper.ScoreValue;
+    }
+
     public int questMaxCount = 10;
     private int questsPassedCount = 0;
     public const int ANSWER_COUNT = 5;
@@ -86,7 +96,7 @@ public class WorkoutManager : MonoBehaviour, Observer
                 StartBehaviour();
                 break;
             case GAME_EVENTS.WordsEnded:
-                print("ScoreValue = " + GameManager.ScoreKeeper.ScoreValue);
+                print("ScoreValue = " + GetCorrectAnswers());
                 WordsEndedBehaviour();
                 break;
             case GAME_EVENTS.NotUntrainedWords:
@@ -283,9 +293,7 @@ public class WorkoutManager : MonoBehaviour, Observer
 
     private void StartBehaviour()
     {
-        //SceneManager.MergeScenes(SceneManager.GetSceneByName("wordinfo")
-        //, SceneManager.GetActiveScene());
-       var sc =  SceneManager.LoadSceneAsync("wordinfo", LoadSceneMode.Additive);
+         SceneManager.LoadSceneAsync("wordinfo", LoadSceneMode.Additive);
 
         switch (currentWorkout)
         {
@@ -303,6 +311,7 @@ public class WorkoutManager : MonoBehaviour, Observer
                 CoreInitialization();
                 break;
             case WorkoutNames.brainStorm:
+                SceneManager.LoadSceneAsync("brainInfo", LoadSceneMode.Additive);
                 CoreInitialization();
                 break;
             case WorkoutNames.Puzzle:
