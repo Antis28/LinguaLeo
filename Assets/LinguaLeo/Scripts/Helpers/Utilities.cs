@@ -109,7 +109,7 @@ public class Utilities
         List<WordLeo> list = new List<WordLeo>(words);
 
         System.Random random = new System.Random();
-        
+
         for (int i = list.Count; i > 1; i--)
         {
             int j = random.Next(i);
@@ -122,6 +122,7 @@ public class Utilities
     {
         var result = from word in words
                      orderby word.GetProgressCount() descending,
+                            word.GetLicenseValidityTime(),
                             word.GetLicense() descending
                      select word;
 
