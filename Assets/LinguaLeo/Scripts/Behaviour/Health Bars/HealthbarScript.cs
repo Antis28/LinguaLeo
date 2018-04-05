@@ -9,6 +9,9 @@ public class HealthbarScript : MonoBehaviour, Observer
     public int maxHealth = 100;
     [SerializeField]
     private Text PercentText;
+    [SerializeField]
+    Animator addbrainvalue;
+
     private Image healthbarFilling;
     private int health;
 
@@ -18,6 +21,11 @@ public class HealthbarScript : MonoBehaviour, Observer
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
         healthbarFilling = this.GetComponent<Image>();
         maxHealth = GameManager.WorkoutManager.GetBrainTasks();
+        UpdateBrain();
+    }
+
+    private void UpdateBrain()
+    {
         updateHealth(GameManager.WorkoutManager.GetCorrectAnswers());
     }
 
@@ -26,6 +34,8 @@ public class HealthbarScript : MonoBehaviour, Observer
         if (Input.GetKeyDown(KeyCode.Q))
         {
             AddHealth(1);
+            addbrainvalue.Play("Add to Brain");
+            Invoke("UpdateBrain", 2);
             return;
         }
         if (Input.GetKeyDown(KeyCode.W))
@@ -54,6 +64,7 @@ public class HealthbarScript : MonoBehaviour, Observer
         updateHealth();
         return false;
     }
+    
     private void updateHealth()
     {
         var fillingAmount = 1f * health / maxHealth;
@@ -67,12 +78,14 @@ public class HealthbarScript : MonoBehaviour, Observer
         PercentText.text = (int)(fillingAmount * 100) + " %";
     }
 
+
     void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
             case GAME_EVENTS.CorrectAnswer:
-                updateHealth(GameManager.WorkoutManager.GetCorrectAnswers());
+                addbrainvalue.Play("addingBrainValue");
+                Invoke("UpdateBrain", 1);
                 break;
         }
     }
