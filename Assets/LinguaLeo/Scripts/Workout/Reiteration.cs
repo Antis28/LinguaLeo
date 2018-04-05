@@ -173,7 +173,7 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
     private void LoadTasks()
     {
         questions = new List<QuestionLeo>(QUEST_COUNT);
-        untrainedWords = GameManager.WordManeger.GetWordsLicense();
+        untrainedWords = GameManager.WordManeger.GetWordsWithLicense();
 
         for (int i = 0; i < QUEST_COUNT; i++)
         {
@@ -278,7 +278,7 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
     /// <param name="questionLeo"></param>
     private void FillAnswersForQuestion(QuestionLeo questionLeo)
     {
-        List<WordLeo> words = GameManager.WordManeger.GetWordsLicense();
+        List<WordLeo> words = GameManager.WordManeger.GetWordsWithLicense();
         Stack<WordLeo> answers = null;
 
         if (words.Count <= ANSWER_COUNT * 2)
