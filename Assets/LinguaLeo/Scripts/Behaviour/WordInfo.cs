@@ -19,6 +19,9 @@ public class WordInfo : MonoBehaviour, Observer
     void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.UpdatedLicenseLevel);
+
+
         LevelText = GameObject.Find("LevelText").GetComponent<Text>();
         //TimeRepeatText = GameObject.Find("TimeRepeatText").GetComponent<Text>();
         TimeReduceText = GameObject.Find("TimeReduceText").GetComponent<Text>();
@@ -35,10 +38,10 @@ public class WordInfo : MonoBehaviour, Observer
         //TimeRepeatText.text = word.GetLicenseExpiration().ToString();
 
         var time = word.GetLicenseValidityTime();
-        TimeReduceText.text = StringTime(time);
+        TimeReduceText.text = TimeSpanToString(time);
     }
 
-    private string StringTime(TimeSpan time)
+    private string TimeSpanToString(TimeSpan time)
     {
         if (time.TotalDays > 1)
             return (int)time.TotalDays + " дн. " + (int)time.Hours + " ч.";
@@ -52,8 +55,8 @@ public class WordInfo : MonoBehaviour, Observer
     {
         switch (notificationName)
         {
-            case GAME_EVENTS.BuildTask:
-                ;
+            case GAME_EVENTS.UpdatedLicenseLevel:
+                UpdateInfoWord();
                 break;
         }
     }
