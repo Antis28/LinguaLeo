@@ -39,13 +39,13 @@ public class SelectGroup : MonoBehaviour, Observer
     private IEnumerator CreatePanels() //int spriteName
     {
         List<WordGroup> group = GameManager.WordManeger.GetGroupNames();
+        CalulateContentHight(group.Count);
         foreach (var item in group)
         {
             string path = "Data/Covers" + "/" + item.pictureName + ".png";
 
             Sprite sprite = Utilities.LoadSpriteFromFile(path);
             CreateCard(sprite, item.name, item.wordCount);
-            CalulateContentHight();
             yield return null;
         }
     }
@@ -59,16 +59,34 @@ public class SelectGroup : MonoBehaviour, Observer
     private void CalulateContentHight()
     {
         //TODO: вычислять колличество строк динамически
-        float rowCount = 3;
+        float clumnCount = 3;
         float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
         float panelCount = content.transform.childCount;
 
         Vector2 size = new Vector2();
         RectTransform rectContent = content.GetComponent<RectTransform>();
-        size.y = (PANEL_HEIGHT + panelYSpace) * panelCount / rowCount;
+        size.y = (PANEL_HEIGHT + panelYSpace) * panelCount / clumnCount;
         rectContent.sizeDelta = size;
 
         //обнуляем значения позиции(глюк в unity?)
+        //rectContent.localPosition = Vector3.zero;
+    }
+
+    /// <summary>
+    ///  Вычисляет высоту всех панелей в 3 колонки
+    /// </summary>
+    /// <param name="panelCount">колличество панелей</param>
+    private void CalulateContentHight(float panelCount, float columnCount = 3)
+    {
+        // Растояние между панелями сверху и снизу
+        float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
+        float fullHeightPanel = (PANEL_HEIGHT + panelYSpace);
+        // Расчет высоты контейнера карточек
+        Vector2 size = new Vector2();
+        size.y = fullHeightPanel * panelCount / columnCount - fullHeightPanel;
+
+        RectTransform rectContent = content.GetComponent<RectTransform>();
+        rectContent.sizeDelta = size;
         rectContent.localPosition = Vector3.zero;
     }
 }
