@@ -91,7 +91,7 @@ public class WordManeger : MonoBehaviour, Observer
         string path = folderXml + "/" + "WordGroup.xml";
         if (!File.Exists(path))
         {
-            Debug.LogError("File not found");
+            Debug.LogError("File not found. Path: " + path);
             return null;
         }
         groupNames = DeserializeGroup(path);
@@ -259,5 +259,5 @@ public class WordManeger : MonoBehaviour, Observer
     }
 
 
-   
+
 }
