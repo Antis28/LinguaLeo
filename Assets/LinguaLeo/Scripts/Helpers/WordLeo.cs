@@ -358,6 +358,7 @@ public class WordLeo : IEquatable<WordLeo>
     {
         progress.lastRepeat = DateTime.Now;
         progress.license++;
+        GameManager.Notifications.PostNotification(null, GAME_EVENTS.UpdatedLicenseLevel);
     }
 
     public void LearnWordTranslate()

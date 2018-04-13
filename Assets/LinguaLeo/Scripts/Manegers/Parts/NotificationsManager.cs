@@ -141,4 +141,5 @@ public enum GAME_EVENTS
     CoreBuild,
     ButtonHandlerLoaded,
     NotUntrainedWords,
+    UpdatedLicenseLevel,
 }
