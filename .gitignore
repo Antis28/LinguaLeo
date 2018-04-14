@@ -38,8 +38,8 @@ obj/
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
-
+[Tt]humbs.db
+[Tt]humbs.db.meta
 # ============ #
 # OS generated #
 # ============ #
@@ -48,7 +48,8 @@ ehthumbs.db
 .Spotlight-V100
 .Trashes
 Icon?
-ehthumbs.db
+thumbs.db
+[Tt]humbs.db[.meta]
 [Tt]humbs.db
 
 # ======= #
