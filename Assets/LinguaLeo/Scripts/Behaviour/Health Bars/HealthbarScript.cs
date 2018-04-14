@@ -8,9 +8,9 @@ public class HealthbarScript : MonoBehaviour, Observer
 {
     public int maxHealth = 100;
     [SerializeField]
-    private Text PercentText;
+    private Text PercentText = null;
     [SerializeField]
-    Animator addbrainvalue;
+    Animator addbrainvalue = null;
 
     private Image healthbarFilling;
     private int health;

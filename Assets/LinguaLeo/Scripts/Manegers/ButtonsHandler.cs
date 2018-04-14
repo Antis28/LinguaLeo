@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -16,9 +17,14 @@ public class ButtonsHandler : MonoBehaviour
     private const string NEXT_WORD = "Следующее →";
     private Button correctButton = null;
 
+    private UnityAction[] ButtonsEvent;
+
     void Start()
     {
         buttons = FindObjectsOfType<ButtonComponent>();
+        ButtonsEvent = new UnityAction[buttons.Length];
+
+
         System.Array.Sort(buttons, new MyComparer());
 
         if (RepeatWordButton)
@@ -135,7 +141,9 @@ public class ButtonsHandler : MonoBehaviour
     /// <param name="istrue"></param>
     private void JoinShowResult(Button button, bool istrue)
     {
-        button.onClick.AddListener(() => ShowResult(button, istrue));
+        UnityAction runShowResult = () => ShowResult(button, istrue);
+        button.onClick.AddListener(runShowResult);
+        ReplaceKeyEvent(runShowResult);
     }
 
     /// <summary>
@@ -146,9 +154,14 @@ public class ButtonsHandler : MonoBehaviour
     /// <param name="questionID">ID для следующей ноды</param>
     private void JoinNextNode(Button button, UnityAction action)//int questionID) 
     {
-        //ToDo: событие, для перенаправления на другой узел диалога
         button.onClick.AddListener(action);
-        //print("событие, для перенаправления на другой узел диалога");
+        ReplaceKeyEvent(action);
+    }
+
+    private void ReplaceKeyEvent(UnityAction action)
+    {
+        ButtonsEvent[buttonID] = null;
+        ButtonsEvent[buttonID] += action;
     }
 
     public void SetNextQuestion(UnityAction action)
@@ -191,5 +204,52 @@ public class ButtonsHandler : MonoBehaviour
         GameManager.Notifications.PostNotification(null, GAME_EVENTS.ShowResult);
     }
 
+    void Update()
+    {
+        RunKeyHandler();
+    }
 
+    private void RunKeyHandler()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+        {
+            RunKeyAction(5);
+
+        }
+        else
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            RunKeyAction(0);
+        }
+        else
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            RunKeyAction(1);
+        }
+        else
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            RunKeyAction(2);
+        }
+        else
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            RunKeyAction(3);
+        }
+        else
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            RunKeyAction(4);
+        }
+    }
+
+    private UnityAction RunKeyAction(int numberKey)
+    {
+        UnityAction action = ButtonsEvent[numberKey];
+        if (action != null)
+        {
+            action();
+        } 
+        return action;
+    }
 }
