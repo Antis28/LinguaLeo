@@ -31,11 +31,6 @@ public class WordSetPanel : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public void PanelClick()
     {
         Debug.Log("Test = " + groupName);
@@ -52,21 +47,8 @@ public class WordSetPanel : MonoBehaviour
         Debug.Log("OnMouseDown");
     }
 
-    // OnMouseUp is called when the user has released the mouse button
-    public void OnMouseUp()
+    public string GetName()
     {
-        Debug.Log("OnMouseUp");
-    }
-
-    // OnMouseExit is called when the mouse is not any longer over the GUIElement or Collider
-    public void OnMouseExit()
-    {
-
-    }
-
-    // OnMouseEnter is called when the mouse entered the GUIElement or Collider
-    public void OnMouseEnter()
-    {
-
+        return CaptionText.text;
     }
 }

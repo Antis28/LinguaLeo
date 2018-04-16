@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class WorkoutManager : MonoBehaviour, Observer
+public class WorkoutManager : MonoBehaviour, IObserver
 {
     private static WordLeo currentWord = null;
 
@@ -88,7 +88,7 @@ public class WorkoutManager : MonoBehaviour, Observer
         return core;
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

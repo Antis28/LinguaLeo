@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 using URandom = UnityEngine.Random;
 
-public class WordToTranslate : MonoBehaviour, Observer, IWorkout
+public class WordToTranslate : MonoBehaviour, IObserver, IWorkout
 {
     [SerializeField]
     private WorkoutNames WorkoutName = WorkoutNames.WordTranslate;
@@ -24,17 +24,13 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
             return WorkoutName;
         }
     }
-
-    [SerializeField]
+    
     private Text questionText = null; // Поле для вопроса
-
-    [SerializeField]
     private Text transcriptText = null; // Поле для транскрипции
+    private Image wordImage = null; // Картинка ассоциаци со словом
 
     private GameObject RepeatWordButton = null;
-
-    [SerializeField]
-    private Image wordImage = null; // Картинка ассоциаци со словом
+   
     [SerializeField]
     private Image progressImage = null; // Картинка прогесса изучения слова
 
@@ -61,6 +57,10 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
 
+        questionText = GameObject.Find("QuestionText").GetComponent<Text>();
+        transcriptText = GameObject.Find("TranscriptText").GetComponent<Text>();
+        wordImage = GameObject.Find("WordImage").GetComponent<Image>();
+
         contextPanel = contextText.transform.parent.gameObject;
         RepeatWordButton = GameObject.Find("RepeatWordButton");
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.WorkoutLoaded);
@@ -82,7 +82,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

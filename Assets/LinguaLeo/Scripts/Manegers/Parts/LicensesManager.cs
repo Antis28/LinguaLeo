@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LicensesManager : MonoBehaviour,Observer
+public class LicensesManager : MonoBehaviour,IObserver
 {
 
     const float CHECK_INTERVAL = 900f;
@@ -30,7 +30,7 @@ public class LicensesManager : MonoBehaviour,Observer
         }
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {            

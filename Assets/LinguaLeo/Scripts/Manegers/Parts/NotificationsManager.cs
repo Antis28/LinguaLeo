@@ -44,7 +44,7 @@ public class NotificationsManager : MonoBehaviour
         if (!_listeners.ContainsKey(notificationName))
             return;
         //Else post notification to all matching listener‘s -  Уведомлять о новых сообщениях всем соответствующим слушателям
-        foreach (Observer listener in _listeners[notificationName])
+        foreach (IObserver listener in _listeners[notificationName])
         {
             if (listener != null)
                 //listener.SendMessage(notificationName, sender, SendMessageOptions.DontRequireReceiver);
@@ -141,4 +141,5 @@ public enum GAME_EVENTS
     CoreBuild,
     ButtonHandlerLoaded,
     NotUntrainedWords,
+    UpdatedLicenseLevel,
 }

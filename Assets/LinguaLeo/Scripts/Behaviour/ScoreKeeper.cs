@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ScoreKeeper : MonoBehaviour, Observer {
+public class ScoreKeeper : MonoBehaviour, IObserver {
     [SerializeField]
     private int score;
     private readonly int currentScore = 1;

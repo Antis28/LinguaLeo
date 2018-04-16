@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class WordPuzzle : MonoBehaviour, Observer, IWorkout
+public class WordPuzzle : MonoBehaviour, IObserver, IWorkout
 {
     private event UnityAction EnterButtonEvent;
 
@@ -105,7 +105,7 @@ public class WordPuzzle : MonoBehaviour, Observer, IWorkout
     }
 
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

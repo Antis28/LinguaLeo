@@ -260,6 +260,10 @@ public class WordLeo : IEquatable<WordLeo>
         return UnityEngine.Mathf.Round((float)minutesLeft);
     }
 
+    /// <summary>
+    /// Минут до окончания лицензии
+    /// </summary>
+    /// <returns></returns>
     public TimeSpan GetLicenseValidityTime()
     {
         LicenseLevels license = progress.license;
@@ -304,7 +308,10 @@ public class WordLeo : IEquatable<WordLeo>
         }
         return TimeSpan.FromMinutes(minutesLeft);
     }
-
+    /// <summary>
+    /// минут с последнего повторения слова 
+    /// </summary>
+    /// <returns></returns>
     private double GetLicenseTime()
     {
         TimeSpan interval = DateTime.Now - progress.lastRepeat;
@@ -358,6 +365,7 @@ public class WordLeo : IEquatable<WordLeo>
     {
         progress.lastRepeat = DateTime.Now;
         progress.license++;
+        GameManager.Notifications.PostNotification(null, GAME_EVENTS.UpdatedLicenseLevel);
     }
 
     public void LearnWordTranslate()

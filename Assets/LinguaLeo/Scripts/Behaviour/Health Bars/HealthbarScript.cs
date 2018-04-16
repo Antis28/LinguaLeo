@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthbarScript : MonoBehaviour, Observer
+public class HealthbarScript : MonoBehaviour, IObserver
 {
     public int maxHealth = 100;
     [SerializeField]
-    private Text PercentText;
+    private Text PercentText = null;
     [SerializeField]
-    Animator addbrainvalue;
+    Animator addbrainvalue = null;
 
     private Image healthbarFilling;
     private int health;
@@ -79,7 +79,7 @@ public class HealthbarScript : MonoBehaviour, Observer
     }
 
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

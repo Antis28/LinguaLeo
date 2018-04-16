@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManeger : MonoBehaviour, Observer
+public class LevelManeger : MonoBehaviour, IObserver
 {
     public int lastWorkout = -1;
 
@@ -36,7 +36,7 @@ public class LevelManeger : MonoBehaviour, Observer
         LoadLevel(nameScene);
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
