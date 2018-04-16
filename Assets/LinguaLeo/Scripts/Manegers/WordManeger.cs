@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-public class WordManeger : MonoBehaviour, Observer
+public class WordManeger : MonoBehaviour, IObserver
 {
     private static WordCollection vocabulary = null; // полный словарь
     private static List<string> wordGroups = null; // названия наборов слов
@@ -138,7 +138,7 @@ public class WordManeger : MonoBehaviour, Observer
         }
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
 
         switch (notificationName)

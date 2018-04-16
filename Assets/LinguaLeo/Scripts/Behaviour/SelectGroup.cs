@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectGroup : MonoBehaviour, Observer
+public class SelectGroup : MonoBehaviour, IObserver
 {
     public const int PANEL_HEIGHT = 500;
 
@@ -25,7 +25,7 @@ public class SelectGroup : MonoBehaviour, Observer
     {
 
     }
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

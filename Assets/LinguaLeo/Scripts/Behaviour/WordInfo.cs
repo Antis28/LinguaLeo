@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WordInfo : MonoBehaviour, Observer
+public class WordInfo : MonoBehaviour, IObserver
 {
     [SerializeField]
     Text LevelText = null;
@@ -51,7 +51,7 @@ public class WordInfo : MonoBehaviour, Observer
         return  (int)time.TotalMinutes + " мин.";
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 using URandom = UnityEngine.Random;
 
-public class WordToTranslate : MonoBehaviour, Observer, IWorkout
+public class WordToTranslate : MonoBehaviour, IObserver, IWorkout
 {
     [SerializeField]
     private WorkoutNames WorkoutName = WorkoutNames.WordTranslate;
@@ -82,7 +82,7 @@ public class WordToTranslate : MonoBehaviour, Observer, IWorkout
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

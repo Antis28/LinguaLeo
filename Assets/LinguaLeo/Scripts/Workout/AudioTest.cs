@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AudioTest : MonoBehaviour, Observer, IWorkout
+public class AudioTest : MonoBehaviour, IObserver, IWorkout
 {
     private event UnityAction EnterButtonEvent;
 
@@ -62,7 +62,7 @@ public class AudioTest : MonoBehaviour, Observer, IWorkout
         return core.GetCurrentWord();
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 using URandom = UnityEngine.Random;
 
-public class Reiteration : MonoBehaviour, Observer, IWorkout
+public class Reiteration : MonoBehaviour, IObserver, IWorkout
 {
     [SerializeField]
     private Text questionText = null; // Поле для вопроса
@@ -68,7 +68,7 @@ public class Reiteration : MonoBehaviour, Observer, IWorkout
         buttonsHandler = FindObjectOfType<ButtonsHandler>();
     }
 
-    void Observer.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {

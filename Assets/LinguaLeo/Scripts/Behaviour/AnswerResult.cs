@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AnswerResult : MonoBehaviour, Observer
+public class AnswerResult : MonoBehaviour, IObserver
 {
     [SerializeField]
     private Text ResultText = null;
