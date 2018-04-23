@@ -12,6 +12,9 @@ public class WordSetPanel : MonoBehaviour
     [SerializeField]
     Text WordCountText = null;
 
+    string sceneName = "trainingСhoice";
+    Button learnButton;
+
     string groupName = string.Empty;
 
     public void Init(Sprite sprite, string caption, int count)
@@ -28,12 +31,16 @@ public class WordSetPanel : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        learnButton = transform.Find("LearnButton").GetComponent<Button>();
+        LevelManeger levelManeger = FindObjectOfType<LevelManeger>();
 
+        learnButton.onClick.AddListener(() => levelManeger.LoadLevel(sceneName));
+        learnButton.onClick.AddListener(PanelClick);
     }
 
     public void PanelClick()
     {
-        Debug.Log("Test = " + groupName);
+        Debug.Log("LoadGroup = " + groupName);
         GameManager.WordManeger.LoadGroup(groupName);
         foreach (WordLeo item in GameManager.WordManeger.GetAllGroupWords())
         {
