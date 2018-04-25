@@ -68,7 +68,9 @@ public class WorkoutProgress
                 return !word_translate;
             case WorkoutNames.Savanna:
                 return !savanna;
-            
+
+            case WorkoutNames.brainStorm:
+                return !AllWorkoutDone();
             default:
                 Debug.LogError("Тренировка не найдена");
                 return false;
