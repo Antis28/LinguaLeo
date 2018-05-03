@@ -11,8 +11,6 @@ public class WordSetPanel : MonoBehaviour
     Text CaptionText = null;
     [SerializeField]
     Text WordCountText = null;
-
-    string sceneName = "trainingСhoice";
     Button learnButton;
 
     string groupName = string.Empty;
@@ -34,7 +32,7 @@ public class WordSetPanel : MonoBehaviour
         learnButton = transform.Find("LearnButton").GetComponent<Button>();
         LevelManeger levelManeger = FindObjectOfType<LevelManeger>();
 
-        learnButton.onClick.AddListener(() => levelManeger.LoadLevel(sceneName));
+        learnButton.onClick.AddListener(() => levelManeger.LoadLevel(SceneNames.trainingСhoice));
         learnButton.onClick.AddListener(PanelClick);
     }
 

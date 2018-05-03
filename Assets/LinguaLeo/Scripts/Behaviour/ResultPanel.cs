@@ -48,7 +48,7 @@ public class ResultPanel : MonoBehaviour
                     break;
                 case "ListWorkoutButton":
                     button.onClick.AddListener(() =>
-                        GameManager.LevelManeger.LoadLevel("trainingСhoice")
+                        GameManager.LevelManeger.LoadLevel(SceneNames.trainingСhoice)
                         );
                     break;
                 case "ContinueWorkoutButton":
