@@ -58,6 +58,7 @@ public class SelectGroup : MonoBehaviour, IObserver
 
     private void CalulateContentHight()
     {
+        float PANEL_HEIGHT = 500;
         //TODO: вычислять колличество колонок динамически
         float clumnCount = 3;
         float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
@@ -94,7 +95,8 @@ public class SelectGroup : MonoBehaviour, IObserver
     public void SetHeigtContent(float height)
     {
         Vector2 size = new Vector2();
-        size.y = height;
+        float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+        size.y = height - tileHeight;
         RectTransform rectContent = content.GetComponent<RectTransform>();
         rectContent.localPosition = size;
     }
@@ -107,11 +109,18 @@ public class SelectGroup : MonoBehaviour, IObserver
     /// <returns></returns>
     public float CalulateHightContainer(float panelCount, float columnCount = 3)
     {
-        // Растояние между панелями сверху и снизу
-        float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
-        float fullHeightPanel = (PANEL_HEIGHT + panelYSpace);
+        float tileHeight = CalcTileHeight();
         // Расчет высоты контейнера до последней карточки
-        float height = fullHeightPanel * panelCount / columnCount - fullHeightPanel;
+        float height = tileHeight * panelCount / columnCount - tileHeight;
         return height;
+    }
+
+    private float CalcTileHeight()
+    {
+        // Растояние между плитками сверху и снизу
+        float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+        float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
+        float fullHeightPanel = (tileHeight + panelYSpace);
+        return fullHeightPanel;
     }
 }
