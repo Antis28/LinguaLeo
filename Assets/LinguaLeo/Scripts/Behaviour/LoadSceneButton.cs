@@ -12,6 +12,7 @@ public class LoadSceneButton : MonoBehaviour {
     // Use this for initialization
     void Start () {
         levelManeger = FindObjectOfType<LevelManeger>();
-        GetComponent<Button>().onClick.AddListener(() => levelManeger.LoadLevel(sceneName));
+        GetComponent<Button>().onClick.AddListener(() => GameManager.LevelManeger.LoadLevel(sceneName));
+        
     }
 }

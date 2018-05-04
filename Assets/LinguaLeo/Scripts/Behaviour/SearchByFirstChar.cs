@@ -22,7 +22,7 @@ public class SearchByFirstChar : MonoBehaviour
     {
         FindSubString();
     }
-    
+
     private void FindSubString()
     {
         foreach (char c in Input.inputString)
@@ -50,7 +50,8 @@ public class SearchByFirstChar : MonoBehaviour
         int index = allWordSetPanel.ToList().FindIndex((x) => panel.GetName() == x.GetName());
 
         float high = selectGroup.CalulateHightContainer(index + 1);
-        selectGroup.SetHeigtContent(high ); //- SelectGroup.PANEL_HEIGHT/2);
+        selectGroup.SetHeigtContent(high);
+        selectGroup.HighLightTile(index);
     }
 
     private WordSetPanel FindPanelByCaption(string substring)
