@@ -1,4 +1,4 @@
-#https://unity3d.com/learn/tutorials/topics/production/mastering-unity-project-folder-structure-version-control-systems?playlist=17117
+﻿#https://unity3d.com/learn/tutorials/topics/production/mastering-unity-project-folder-structure-version-control-systems?playlist=17117
 #=============== 
 #Unity generated
 #===============
@@ -38,8 +38,8 @@ obj/
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
-
+[Tt]humbs.db
+[Tt]humbs.db.meta
 # ============ #
 # OS generated #
 # ============ #
@@ -48,7 +48,8 @@ ehthumbs.db
 .Spotlight-V100
 .Trashes
 Icon?
-ehthumbs.db
+thumbs.db
+[Tt]humbs.db[.meta]
 [Tt]humbs.db
 
 # ======= #
@@ -89,3 +90,18 @@ LICENSE.txt
 Assets/NULLcode Studio/
 /Assets/1/
 
+/Assets/Resources/
+/packages
+/Assets/*.*
+/*.*
+
+/Data/
+/Builds/
+/Temp_Resurses/
+
+!LICENSE.MD
+!CODE_OF_CONDUCT.md
+!CONTRIBUTING.md
+!ISSUE_TEMPLATE.md
+!Pull Request template.md
+!README.md
