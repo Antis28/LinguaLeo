@@ -31,18 +31,18 @@ public class HealthbarScript : MonoBehaviour, IObserver
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            AddHealth(1);
-            addbrainvalue.Play("Add to Brain");
-            Invoke("UpdateBrain", 2);
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            RemoveHealth(1);
-            return;
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    AddHealth(1);
+        //    addbrainvalue.Play("Add to Brain");
+        //    Invoke("UpdateBrain", 2);
+        //    return;
+        //}
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    RemoveHealth(1);
+        //    return;
+        //}
     }
 
     public void AddHealth(int value)

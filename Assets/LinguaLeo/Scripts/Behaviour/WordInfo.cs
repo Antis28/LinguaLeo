@@ -20,8 +20,7 @@ public class WordInfo : MonoBehaviour, IObserver
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.UpdatedLicenseLevel);
-
-
+        
         LevelText = GameObject.Find("LevelText").GetComponent<Text>();
         //TimeRepeatText = GameObject.Find("TimeRepeatText").GetComponent<Text>();
         TimeReduceText = GameObject.Find("TimeReduceText").GetComponent<Text>();
