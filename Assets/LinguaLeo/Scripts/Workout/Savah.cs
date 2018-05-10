@@ -66,7 +66,7 @@ public class Savah : MonoBehaviour, IObserver, IWorkout
                 core = parametr as Workout;
                 core.buttonsHandler = GameObject.FindObjectOfType<ButtonsHandler>();
                 core.DrawTask += Core_DrawTask;
-                core.BuildTask(0);
+                core.BuildFirstTask();
                 //FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
             case GAME_EVENTS.ShowResult:
