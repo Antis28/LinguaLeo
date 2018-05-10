@@ -136,7 +136,7 @@ class BrainStorm : IObserver
 
     private bool CoreValid(Workout workout)
     {
-        if (workout == null)
+        if (workout == null || workout.tasks.Count == 0)
         {
             //перейти к следующей тренировке
             Run();
