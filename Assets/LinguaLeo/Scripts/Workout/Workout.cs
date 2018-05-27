@@ -26,6 +26,12 @@ public class Workout : IWorkout
 
     public event UnityAction DrawTask;
 
+    void OnDrawTask()
+    {
+        if (DrawTask != null)
+            DrawTask();
+    }
+
     public WorkoutNames WorkoutName
     {
         get
@@ -131,7 +137,7 @@ public class Workout : IWorkout
             return;
         }
         // Отрисовать GUI
-        DrawTask();
+        OnDrawTask();
     }
 
     private bool CheckTrainingСompleted()

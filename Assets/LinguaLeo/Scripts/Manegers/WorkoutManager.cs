@@ -85,7 +85,10 @@ public class WorkoutManager : MonoBehaviour, IObserver
 
     public Workout GetWorkout()
     {
-        return core;
+        if (brainStorm == null)
+            return core;
+        else
+            return brainStorm.GetsSubCore();
     }
 
     void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
