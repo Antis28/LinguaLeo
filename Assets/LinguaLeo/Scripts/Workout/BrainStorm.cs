@@ -65,6 +65,11 @@ class BrainStorm : IObserver
 
     }
 
+    public Workout GetsSubCore()
+    {
+        return subCore;
+    }
+
     public void CoreInitialization()
     {
         if (subCore != null)
