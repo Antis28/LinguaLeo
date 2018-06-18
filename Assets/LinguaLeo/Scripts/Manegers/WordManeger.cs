@@ -67,12 +67,12 @@ public class WordManeger : MonoBehaviour, IObserver
         return wordsByLicense;
     }
 
-    internal int CountWordInGroup()
+    public int CountWordInGroup()
     {
         return currentWordGroups.Count;
     }
 
-    internal int CountUntrainWordInGroup()
+    public int CountUntrainWordInGroup()
     {
         List<WordLeo> remainWord = Utilities.SelectNotDoneWords(
                                                     vocabulary.wordsFromGroup);
@@ -144,7 +144,8 @@ public class WordManeger : MonoBehaviour, IObserver
         switch (notificationName)
         {
             case GAME_EVENTS.WordsEnded:
-                SaveToXml();
+                string path = folderXml + "/" + fileNameXml;
+                vocabulary.SaveToXml(path);
                 break;
         }
     }
@@ -162,7 +163,8 @@ public class WordManeger : MonoBehaviour, IObserver
     {
         if (vocabulary == null)
         {
-            vocabulary = LoadFromXml();
+            string path = folderXml + "/" + fileNameXml;
+            vocabulary = WordCollection.BuildFromXml(path);
         }
 
         wordGroups = vocabulary.FilterGroup();
@@ -171,6 +173,7 @@ public class WordManeger : MonoBehaviour, IObserver
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
         StartCoroutine(LoadedVocalubary());
     }
+    
     private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
         StartCoroutine(LoadedVocalubary());
@@ -181,53 +184,6 @@ public class WordManeger : MonoBehaviour, IObserver
         yield return null;
         if (vocabulary != null)
             GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
-    }
-
-    private WordCollection LoadFromXml()
-    {
-        string path = folderXml + "/" + fileNameXml;
-        if (!File.Exists(path))
-        {
-            Debug.LogError("File not found");
-            return null;
-        }
-        using (TextReader Stream = new StreamReader(path, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
-        {
-            XmlSerializer Serializer = new XmlSerializer(typeof(WordCollection));
-            WordCollection result = Serializer.Deserialize(Stream) as WordCollection;
-            Stream.Close();
-            if (result == null)
-                Debug.LogError("File not Serialize");
-            return result;
-        }
-    }
-
-    private WordCollection LoadFromXml(string xmlString)
-    {
-        XmlSerializer Serializer = new XmlSerializer(typeof(WordCollection));
-        TextReader reader = new StringReader(xmlString);
-        WordCollection result = Serializer.Deserialize(reader) as WordCollection;
-        reader.Close();
-        return result;
-    }
-
-    private void SaveToXml()
-    {
-        string path = folderXml + "/" + fileNameXml;
-        if (!File.Exists(path))
-        {
-            Debug.LogError("File not found");
-            return;
-        }
-        using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
-        {
-
-            //Now save game data
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
-
-            xmlSerializer.Serialize(stream, vocabulary);
-            stream.Close();
-        }
     }
 
     private List<WordGroup> DeserializeGroup(string FileName)
@@ -257,7 +213,5 @@ public class WordManeger : MonoBehaviour, IObserver
             Debug.Log("SerializeGroup");
         }
     }
-
-
-
+    
 }
