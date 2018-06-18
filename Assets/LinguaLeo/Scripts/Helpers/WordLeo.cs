@@ -83,14 +83,6 @@ public class WordLeo : IEquatable<WordLeo>
         double minutes = interval.TotalMinutes;
         switch (license)
         {
-            //case LicenseLevels.Level_0:
-            //    progress.ResetWorkouts();
-            //    break;
-            //case LicenseLevels.Level_1:
-            //    //лицензия на 20 минут
-            //    if (minutes > LicenseTimeout.Level_1)
-            //ReduceLicense();
-            //break;
             case LicenseLevels.Level_2:
                 //лицензия на 1 час
                 if (minutes > LicenseTimeout.Level_2)
@@ -133,8 +125,7 @@ public class WordLeo : IEquatable<WordLeo>
                 break;
         }
     }
-
-    internal LicenseLevels GetLicense()
+    public LicenseLevels GetLicense()
     {
         return progress.license;
     }
@@ -378,12 +369,12 @@ public class WordLeo : IEquatable<WordLeo>
         progress.translate_word = true;
     }
 
-    internal void LearnAudio()
+    public void LearnAudio()
     {
         progress.audio_word = true;
     }
 
-    internal void LearnPuzzle()
+    public void LearnPuzzle()
     {
         progress.word_puzzle = true;
     }
