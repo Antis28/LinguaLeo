@@ -1,0 +1,1047 @@
+fileFormatVersion: 2
+guid: be68bea9a615ee44d92b269c6eaa0982
+timeCreated: 1525952206
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: asteroids-sprite_0
+    21300002: asteroids-sprite_1
+    21300004: asteroids-sprite_2
+    21300006: asteroids-sprite_3
+    21300008: asteroids-sprite_4
+    21300010: asteroids-sprite_5
+    21300012: asteroids-sprite_6
+    21300014: asteroids-sprite_7
+    21300016: asteroids-sprite_8
+    21300018: asteroids-sprite_9
+    21300020: asteroids-sprite_10
+    21300022: asteroids-sprite_11
+    21300024: asteroids-sprite_12
+    21300026: asteroids-sprite_13
+    21300028: asteroids-sprite_14
+    21300030: asteroids-sprite_15
+    21300032: asteroids-sprite_16
+    21300034: asteroids-sprite_17
+    21300036: asteroids-sprite_18
+    21300038: asteroids-sprite_19
+    21300040: asteroids-sprite_20
+    21300042: asteroids-sprite_21
+    21300044: asteroids-sprite_22
+    21300046: asteroids-sprite_23
+    21300048: asteroids-sprite_24
+    21300050: asteroids-sprite_25
+    21300052: asteroids-sprite_26
+    21300054: asteroids-sprite_27
+    21300056: asteroids-sprite_28
+    21300058: asteroids-sprite_29
+    21300060: asteroids-sprite_30
+    21300062: asteroids-sprite_31
+    21300064: asteroids-sprite_32
+    21300066: asteroids-sprite_33
+    21300068: asteroids-sprite_34
+    21300070: asteroids-sprite_35
+    21300072: asteroids-sprite_36
+    21300074: asteroids-sprite_37
+    21300076: asteroids-sprite_38
+    21300078: asteroids-sprite_39
+    21300080: asteroids-sprite_40
+    21300082: asteroids-sprite_41
+    21300084: asteroids-sprite_42
+    21300086: asteroids-sprite_43
+    21300088: asteroids-sprite_44
+    21300090: asteroids-sprite_45
+    21300092: asteroids-sprite_46
+    21300094: asteroids-sprite_47
+    21300096: asteroids-sprite_48
+    21300098: asteroids-sprite_49
+    21300100: asteroids-sprite_50
+    21300102: asteroids-sprite_51
+    21300104: asteroids-sprite_52
+    21300106: asteroids-sprite_53
+    21300108: asteroids-sprite_54
+    21300110: asteroids-sprite_55
+    21300112: asteroids-sprite_56
+    21300114: asteroids-sprite_57
+    21300116: asteroids-sprite_58
+    21300118: asteroids-sprite_59
+    21300120: asteroids-sprite_60
+    21300122: asteroids-sprite_61
+    21300124: asteroids-sprite_62
+    21300126: asteroids-sprite_63
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: asteroids-sprite_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 788
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_1
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 788
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_2
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 788
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_3
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 788
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_4
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 788
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_5
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 788
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_6
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 788
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_7
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 788
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 676
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_9
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 676
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_10
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 676
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_11
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 676
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_12
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 676
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_13
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 676
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_14
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 676
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_15
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 676
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 564
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_17
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 564
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_18
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 564
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_19
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 564
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_20
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 564
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_21
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 564
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_22
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 564
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_23
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 564
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 452
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_25
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 452
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_26
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 452
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_27
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 452
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_28
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 452
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_29
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 452
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_30
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 452
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_31
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 452
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 340
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_33
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 340
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_34
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 340
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_35
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 340
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_36
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 340
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_37
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 340
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_38
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 340
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_39
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 340
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 228
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_41
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 228
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_42
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 228
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_43
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 228
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_44
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 228
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_45
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 228
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_46
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 228
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_47
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 228
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 116
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_49
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 116
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_50
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 116
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_51
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 116
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_52
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 116
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_53
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 116
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_54
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 116
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_55
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 116
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_57
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 4
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_58
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 4
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_59
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 4
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_60
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 4
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_61
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 4
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_62
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 4
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: asteroids-sprite_63
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 4
+        width: 112
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
