@@ -24,13 +24,13 @@ public class WordToTranslate : MonoBehaviour, IObserver, IWorkout
             return WorkoutName;
         }
     }
-    
+
     private Text questionText = null; // Поле для вопроса
     private Text transcriptText = null; // Поле для транскрипции
     private Image wordImage = null; // Картинка ассоциаци со словом
 
     private GameObject RepeatWordButton = null;
-   
+
     [SerializeField]
     private Image progressImage = null; // Картинка прогесса изучения слова
 
@@ -63,6 +63,13 @@ public class WordToTranslate : MonoBehaviour, IObserver, IWorkout
 
         contextPanel = contextText.transform.parent.gameObject;
         RepeatWordButton = GameObject.Find("RepeatWordButton");
+
+        if (RepeatWordButton)
+        {
+            RepeatWordButton.GetComponent<Button>().onClick.AddListener(
+                                () => GameManager.AudioPlayer.SayWord());
+        }
+
         GameManager.Notifications.PostNotification(this, GAME_EVENTS.WorkoutLoaded);
     }
 
@@ -196,7 +203,7 @@ public class WordToTranslate : MonoBehaviour, IObserver, IWorkout
     {
         contextPanel.SetActive(false);
     }
-    
+
     public QuestionLeo GetCurrentQuest()
     {
         return core.GetCurrentQuest();
@@ -275,7 +282,7 @@ public class WordToTranslate : MonoBehaviour, IObserver, IWorkout
             core.SetButtons(answers, questionWord.translations);
         }
     }
-    
+
     WordLeo IWorkout.GetCurrentWord()
     {
         return core.GetCurrentWord();
