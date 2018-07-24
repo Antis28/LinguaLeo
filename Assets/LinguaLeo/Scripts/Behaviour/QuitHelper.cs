@@ -6,6 +6,6 @@ public class QuitHelper : MonoBehaviour {
 
     public void QuitGame()
     {
-        Application.Quit();
+        GameManager.ExitGame();
     }
 }

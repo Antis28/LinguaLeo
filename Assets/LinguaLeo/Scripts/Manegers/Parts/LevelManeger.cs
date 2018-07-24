@@ -1,40 +1,53 @@
 ﻿using System;
+using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 
 public class LevelManeger : MonoBehaviour, IObserver
 {
     public int lastWorkout = -1;
 
-    public void LoadLevel(string name)
-    {
-        SceneManager.LoadScene(name);
-    }
-    public void QuitGame(string name)
+    public void QuitGame()
     {
         Application.Quit();
+
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#endif
+    }
+
+    public void LoadLevel(string name)
+    {
+        SceneManagerAdapt.LoadScene(name);
+    }
+
+    public void LoadResultWorkOut()
+    {
+        const string nameScene = "result";
+        lastWorkout = SceneManagerAdapt.GetActiveScene().buildIndex;
+        LoadLevel(nameScene);
     }
 
     public void LoadNextLevel()
     {
         //Application.loadedLevel
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        int buildIndex = SceneManagerAdapt.GetActiveScene().buildIndex + 1;
+        SceneManagerAdapt.LoadScene(buildIndex);
     }
 
-    public void LoadLastWorkOut()
+    void LoadLastWorkOut()
     {
         if (lastWorkout != -1)
-            SceneManager.LoadScene(lastWorkout);
+            SceneManagerAdapt.LoadScene(lastWorkout);
         else
             print("lastWorkout == -1");
     }
-    public void LoadWorkOut(string nameScene)
-    {
-        lastWorkout = SceneManager.GetActiveScene().buildIndex;
-        LoadLevel(nameScene);
-    }
+
 
     void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
@@ -44,10 +57,10 @@ public class LevelManeger : MonoBehaviour, IObserver
                 LoadLastWorkOut();
                 break;
         }
-
     }
 
-    public void Start()
+
+    void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.ContinueWorkout);
