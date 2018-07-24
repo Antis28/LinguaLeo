@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using System;
 using System.IO;
 using System.Text;
@@ -7,9 +6,6 @@ using System.Xml.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 public class WordManeger : MonoBehaviour, IObserver
 {
@@ -170,11 +166,11 @@ public class WordManeger : MonoBehaviour, IObserver
         wordGroups = vocabulary.FilterGroup();
         //vocabulary.LoadGroup(wordGroups[66]);
         vocabulary.LoadGroup(wordGroups[23]);
-        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+        SceneManagerAdapt.AddSceneLoaded(SceneManager_sceneLoaded);
         StartCoroutine(LoadedVocalubary());
     }
-    
-    private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
+
+    private void SceneManager_sceneLoaded()
     {
         StartCoroutine(LoadedVocalubary());
     }

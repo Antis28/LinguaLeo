@@ -138,7 +138,7 @@ public class WorkoutManager : MonoBehaviour, IObserver
             case WorkoutNames.Audio:
             case WorkoutNames.Puzzle:
             case WorkoutNames.reiteration:
-                GameManager.LevelManeger.LoadWorkOut("result");
+                GameManager.LevelManeger.LoadResultWorkOut();
                 break;
             case WorkoutNames.brainStorm:
                 brainStorm.Run();
@@ -150,7 +150,7 @@ public class WorkoutManager : MonoBehaviour, IObserver
 
     private void StartBehaviour()
     {
-        SceneManager.LoadSceneAsync("wordinfo", LoadSceneMode.Additive);
+        SceneManagerAdapt.LoadSceneAsync("wordinfo", LoadSceneMode.Additive);
 
         switch (currentWorkout)
         {

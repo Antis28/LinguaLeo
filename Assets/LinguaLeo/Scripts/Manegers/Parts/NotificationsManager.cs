@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
 
 /// <summary>
 /// EVENTS MANAGER CLASS - for receiving notifications and notifying listeners -
@@ -117,9 +115,9 @@ public class NotificationsManager : MonoBehaviour
         _listeners.Clear();
     }
 
-    public void Awake()
+    private void Awake()
     {
-        SceneManager.sceneLoaded += (s, mode) => RemoveRedundancies();
+        SceneManagerAdapt.AddSceneLoaded(RemoveRedundancies);
     }
 }
 
