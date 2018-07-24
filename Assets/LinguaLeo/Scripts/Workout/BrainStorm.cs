@@ -86,7 +86,7 @@ class BrainStorm : IObserver
     private void ShowResult()
     {
         ResetStage();
-        GameManager.LevelManeger.LoadWorkOut("result");
+        GameManager.LevelManeger.LoadResultWorkOut();
     }
 
     public void ResetStage()
