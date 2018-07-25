@@ -54,15 +54,16 @@ public class WordLeoTests
     [Test]
     public void LicenseValidityCheck()
     {
+        _word.LicenseValidityCheck();
         Assert.Fail();
     }
 
     [Test]
     public void GetLicense()
     {
-        Assert.IsInstanceOf<LicenseLevels>(_word.GetLicense());
+        LicenseLevels level = _word.GetLicense();
+        Assert.IsInstanceOf<LicenseLevels>(level);
     }
-
 
     [Test]
     public void LicenseExpirationCheck()
@@ -138,30 +139,6 @@ public class WordLeoTests
 
     [Test]
     public void LicenseExists()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    public void Equals()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    public void EqualsTest1()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    public void GetHashCode()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    public void ToString()
     {
         Assert.Fail();
     }
