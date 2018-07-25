@@ -9,29 +9,50 @@ using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using System.Xml;
 
+
+/// Правила именования Unit тестов:
+/// {UnitOfWorkName}_{Scenario}_{ExpectedBehaviour}
+/// 
+/// UnitOfWorkName  - имя метода, группы методов или класса, который тестируется.
+/// Scenario        - условие под котором тестируется, такое как: 
+///                   "неправильный логин", "правильный пароль";
+///                   или состояние системы: "нет пользователей", "пользователь существует"
+/// ExpectedBehaviour - что ожидается от метода под этими условиями:
+///                     вернуть значение как результат(правильное или exception), изменить состояние системы
+
+///  [Category("Fast Tests")]
+///  [Category("Slow Tests")]
+/// 
+/// [OneTimeSetUp] - запуск один раз перед всеми тестами
+/// 
+
 [TestFixture]
 public class WordCollectionsTest
 {
-    private WordCollection wordCollection;
-    private string nameGroup = "Цитатник_7";
-    private int countWordsInGroup = 49;
-    string path = @"Data/Base/WordBase.xml";
+    private WordCollection _wordCollection;
+    private const string NameGroup = "Цитатник_7";
+    private int _countWordsInGroup = 49;
+    private const string Path = @"Data/Base/WordBase.xml";
 
     [OneTimeSetUp]
     public void PrepareBase()
     {
-        wordCollection = WordCollection.BuildFromXml(path);
+        _wordCollection = WordCollection.BuildFromXml(Path);
     }
 
     [Test]
-    public void BuildFromXml()
+    [Category("Slow Tests")]
+    public void BuildFromXml_IsNull_ReturnWordCollection()
     {
-        Assert.IsNotNull(wordCollection);
-        Assert.IsInstanceOf<WordCollection>(wordCollection);
+        _wordCollection = WordCollection.BuildFromXml(Path);
+
+        Assert.IsNotNull(_wordCollection);
+        Assert.IsInstanceOf<WordCollection>(_wordCollection);
     }
 
     [Test]
-    public void BuildFromXml_XmlException()
+    [Category("Fast Tests")]
+    public void BuildFromXml_BadXML_throwXmlException()
     {
         string pathToBug = @"Data/Base/WordBase_BUG.xml";
 
@@ -41,81 +62,87 @@ public class WordCollectionsTest
     }
 
     [Test]
-    public void SaveToXml()
+    [Category("Slow Tests")]
+    public void SaveToXml_ValidPath_PathExists()
     {
-        wordCollection.SaveToXml(path);
-        FileAssert.Exists(path);
-
-        wordCollection = WordCollection.BuildFromXml(path);
+        _wordCollection.SaveToXml(Path);
+        FileAssert.Exists(Path);
     }
 
     [Test]
-    public void LoadGroup()
+    [Category("Fast Tests")]
+    public void LoadGroup_ValidNameGroup_ReturnListWordLeo()
     {
-        wordCollection.LoadGroup(nameGroup);
-        Assert.IsNotNull(wordCollection.wordsFromGroup);
+        _wordCollection.LoadGroup(NameGroup);
+        Assert.IsInstanceOf<List<WordLeo>>(_wordCollection.wordsFromGroup);
     }
 
     [Test]
-    public void GetRandomWord()
+    [Category("Fast Tests")]
+    public void GetRandomWord_ValidState_RetunWordLeo()
     {
-        WordLeo randomWord = wordCollection.GetRandomWord();
+        WordLeo randomWord = _wordCollection.GetRandomWord();
         Assert.IsInstanceOf<WordLeo>(randomWord);
     }
 
     [Test]
-    public void GetRandomWords()
+    [Category("Fast Tests")]
+    public void GetRandomWords_CountWordsFive_RetunListWithFiveWordLeo()
     {
         int countWords = 5;
-        List<WordLeo> words = wordCollection.GetRandomWords(countWords);
+        List<WordLeo> words = _wordCollection.GetRandomWords(countWords);
 
         Assert.IsInstanceOf<List<WordLeo>>(words);
         Assert.AreEqual(words.Count, countWords);
     }
 
     [Test]
-    public void GetRandomWordFromGroup()
+    [Category("Fast Tests")]
+    public void GetRandomWordFromGroup_ValidGroup_ReturnWordLeo()
     {
-        wordCollection.LoadGroup(nameGroup);
+        _wordCollection.LoadGroup(NameGroup);
 
-        WordLeo word = wordCollection.GetRandomWordFromGroup();
+        WordLeo word = _wordCollection.GetRandomWordFromGroup();
         Assert.IsInstanceOf<WordLeo>(word);
     }
 
     [Test]
-    public void GetRandomWordsFromGroup()
+    [Category("Fast Tests")]
+    public void GetRandomWordsFromGroup_ValidGroup_RetunListWithFiveWordLeo()
     {
         int countWords = 5;
-        wordCollection.LoadGroup(nameGroup);
+        _wordCollection.LoadGroup(NameGroup);
         
-        List<WordLeo> words = wordCollection.GetRandomWordsFromGroup(countWords);
+        List<WordLeo> words = _wordCollection.GetRandomWordsFromGroup(countWords);
         Assert.IsInstanceOf<List<WordLeo>>(words);
     }
 
     [Test]
-    public void GetUntrainedGroupWords()
+    [Category("Fast Tests")]
+    public void GetUntrainedGroupWords_AudioWorkout_RetunListWordLeo()
     {
-        wordCollection.LoadGroup(nameGroup);
+        _wordCollection.LoadGroup(NameGroup);
         WorkoutNames workoutName = WorkoutNames.Audio;
         
-        List<WordLeo> words = wordCollection.GetUntrainedGroupWords(workoutName);
-        Assert.Fail();
+        List<WordLeo> words = _wordCollection.GetUntrainedGroupWords(workoutName);
+        Assert.IsInstanceOf<List<WordLeo>>(words);
     }
 
     [Test]
-    public void GroupExist()
+    [Category("Fast Tests")]
+    public void GroupExist_ValidNameGroup_ReturnTrue()
     {
-        wordCollection.LoadGroup(nameGroup);
-        bool isGroupExist = wordCollection.GroupExist();
+        _wordCollection.LoadGroup(NameGroup);
+        bool isGroupExist = _wordCollection.GroupExist();
         Assert.IsTrue(isGroupExist);
     }
 
     [Test]
-    public void FilterGroup()
+    [Category("Fast Tests")]
+    public void FilterGroup_WordsLoaded_ReturnListGroupName()
     {
-        wordCollection.LoadGroup(nameGroup);
-        List<string> listGroupName = wordCollection.FilterGroup();
-        Assert.IsNotNull(listGroupName);
+        List<string> listGroupName = _wordCollection.FilterGroup();
+        Assert.IsInstanceOf<List<string>>(listGroupName);
     }
 
 
