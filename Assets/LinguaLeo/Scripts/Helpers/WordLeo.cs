@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
 /// <summary>
@@ -43,7 +42,6 @@ public class WordLeo : IEquatable<WordLeo>
     /// <summary>
     /// Понизить лицензию
     /// </summary>
-    /// <param name="word"></param>
     public void ReduceLicense()
     {
         if (progress.license == LicenseLevels.Level_0)
@@ -306,7 +304,7 @@ public class WordLeo : IEquatable<WordLeo>
     private double GetLicenseTime()
     {
         TimeSpan interval = DateTime.Now - progress.lastRepeat;
-        return interval.TotalMinutes; ;
+        return interval.TotalMinutes;
     }
 
     public bool CanbeRepeated()
@@ -390,10 +388,7 @@ public class WordLeo : IEquatable<WordLeo>
         if (other == null)
             return false;
 
-        if (this.wordValue == other.wordValue)
-            return true;
-        else
-            return false;
+        return this.wordValue == other.wordValue;
     }
 
     public override bool Equals(Object obj)
