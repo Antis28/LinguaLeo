@@ -6,6 +6,31 @@ namespace Tests
     public class WordLeoTests
     {
         [Test]
+        [TestCase(WorkoutNames.Audio)]
+        [TestCase(WorkoutNames.Puzzle)]
+        [TestCase(WorkoutNames.Savanna)]
+        [TestCase(WorkoutNames.TranslateWord)]
+        [TestCase(WorkoutNames.WordTranslate)]
+        [TestCase(WorkoutNames.brainStorm)]
+        [TestCase(WorkoutNames.reiteration)]
+        public void CanTraining_AllWorkoutFalse_ReturnTrue(WorkoutNames WorkoutName)
+        {
+            WordLeo word = CreateWordLeo(LicenseLevels.Level_3);
+            bool expectedValue = word.CanTraining(WorkoutName);
+
+            Assert.AreEqual(expectedValue, true);
+        }
+
+        [Test]
+        public void CanbeRepeated_AllWorkoutFalse_ReturnTrue()
+        {
+            WordLeo word = CreateWordLeo(LicenseLevels.Level_3);
+            bool expectedValue = word.CanbeRepeated();
+
+            Assert.AreEqual(expectedValue,true);
+        }
+
+        [Test]
         [TestCase(LicenseLevels.Level_2)]
         [TestCase(LicenseLevels.Level_3)]
         [TestCase(LicenseLevels.Level_4)]
@@ -154,17 +179,6 @@ namespace Tests
         }
 
         [Test]
-        public void AddLicenseLevel()
-        {
-            WordLeo word = CreateWordLeo(LicenseLevels.Level_5);
-            word.AddLicenseLevel();
-            var snapTime = DateTime.Now;
-
-            Assert.AreEqual(word.progress.license, LicenseLevels.Level_6);
-            Assert.AreEqual(word.progress.lastRepeat.Second, snapTime.Second);
-        }
-
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void AllWorkoutDone(bool workoutIsDone)
@@ -173,19 +187,6 @@ namespace Tests
             bool result = word.AllWorkoutDone();
             Assert.AreEqual(result, workoutIsDone);
         }
-
-        //[Test]
-        //public void CanbeRepeated()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[Test]
-        //public void CanTraining()
-        //{
-        //    Assert.Fail();
-        //}
-
 
         //[Test]
         //public void GetLicenseExpiration()
@@ -235,7 +236,17 @@ namespace Tests
         //    Assert.Fail();
         //}
 
+        // Отложено до рефакторига
+        //[Test]
+        //public void AddLicenseLevel()
+        //{
+        //    WordLeo word = CreateWordLeo(LicenseLevels.Level_5);
+        //    word.AddLicenseLevel();
+        //    var snapTime = DateTime.Now;
 
+        //    Assert.AreEqual(word.progress.license, LicenseLevels.Level_6);
+        //    Assert.AreEqual(word.progress.lastRepeat.Second, snapTime.Second);
+        //}
 
 
         #region Utils
