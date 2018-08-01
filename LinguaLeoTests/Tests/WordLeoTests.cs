@@ -1,10 +1,44 @@
 ﻿using System;
 using NUnit.Framework;
+
 namespace Tests
 {
     [TestFixture]
     public class WordLeoTests
     {
+        // добавить fake для DateTime
+        [Test]
+        public void GetLicenseExpiration_LevelBiggestZero_ReturnExpectedValue()
+        {
+            LicenseLevels level = LicenseLevels.Level_3;
+            int levelTime = LicenseTimeTraining.Level_3;
+            int timeExpiries = levelTime - 20;
+
+            WordLeo word = CreateWordLeo(level);
+            word.progress.lastRepeat = DateTime.Now - new TimeSpan(0, timeExpiries, 0);
+
+            TimeSpan interval = DateTime.Now - word.progress.lastRepeat;
+            double expectedValue = levelTime - interval.TotalMinutes;
+            if (expectedValue > 60)
+                expectedValue /= 60;
+
+            expectedValue = UnityEngine.Mathf.Round((float) expectedValue);
+            double resultValue = word.GetLicenseExpiration();
+
+            Assert.AreEqual(resultValue, expectedValue);
+        }
+
+        [Test]
+        public void GetLicenseExpiration_Level0_ReturnZero()
+        {
+            double expectedValue = 0;
+
+            WordLeo word = CreateWordLeo(LicenseLevels.Level_0);
+            double resultValue = word.GetLicenseExpiration();
+
+            Assert.AreEqual(resultValue, expectedValue);
+        }
+
         [Test]
         [TestCase(WorkoutNames.Audio)]
         [TestCase(WorkoutNames.Puzzle)]
@@ -15,19 +49,23 @@ namespace Tests
         [TestCase(WorkoutNames.reiteration)]
         public void CanTraining_AllWorkoutFalse_ReturnTrue(WorkoutNames WorkoutName)
         {
-            WordLeo word = CreateWordLeo(LicenseLevels.Level_3);
-            bool expectedValue = word.CanTraining(WorkoutName);
+            bool expectedValue = true;
 
-            Assert.AreEqual(expectedValue, true);
+            WordLeo word = CreateWordLeo(LicenseLevels.Level_3);
+            bool resultValue = word.CanTraining(WorkoutName);
+
+            Assert.AreEqual(resultValue, expectedValue);
         }
 
         [Test]
         public void CanbeRepeated_AllWorkoutFalse_ReturnTrue()
         {
-            WordLeo word = CreateWordLeo(LicenseLevels.Level_3);
-            bool expectedValue = word.CanbeRepeated();
+            bool expectedValue = true;
 
-            Assert.AreEqual(expectedValue,true);
+            WordLeo word = CreateWordLeo(LicenseLevels.Level_3);
+            bool resultValue = word.CanbeRepeated();
+
+            Assert.AreEqual(resultValue, expectedValue);
         }
 
         [Test]
@@ -188,11 +226,6 @@ namespace Tests
             Assert.AreEqual(result, workoutIsDone);
         }
 
-        //[Test]
-        //public void GetLicenseExpiration()
-        //{
-        //    Assert.Fail();
-        //}
 
         //[Test]
         //public void GetLicenseValidityTime()
