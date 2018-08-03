@@ -6,6 +6,23 @@ namespace Tests
     [TestFixture]
     public class WordLeoTests
     {
+        [Test]
+        public void GetLicenseValidityTime()
+        {
+            LicenseLevels level = LicenseLevels.Level_3;
+            int levelTime = LicenseTimeTraining.Level_3;
+            int timeExpiries = levelTime - 20;
+            TimeSpan expectedValue = new TimeSpan(0, timeExpiries, 0);
+
+            WordLeo word = CreateWordLeo(level);
+            word.progress.lastRepeat = DateTime.Now - new TimeSpan(0, timeExpiries, 0);
+
+            TimeSpan resultValue = word.GetLicenseValidityTime();
+            
+
+            Assert.AreEqual(expectedValue, resultValue );
+        }
+
         // добавить fake для DateTime
         [Test]
         public void GetLicenseExpiration_LevelBiggestZero_ReturnExpectedValue()
@@ -25,7 +42,7 @@ namespace Tests
             expectedValue = UnityEngine.Mathf.Round((float) expectedValue);
             double resultValue = word.GetLicenseExpiration();
 
-            Assert.AreEqual(resultValue, expectedValue);
+            Assert.AreEqual(expectedValue, resultValue);
         }
 
         [Test]
@@ -33,10 +50,10 @@ namespace Tests
         {
             double expectedValue = 0;
 
-            WordLeo word = CreateWordLeo(LicenseLevels.Level_0);
+            WordLeo word = CreateWordLeo();
             double resultValue = word.GetLicenseExpiration();
 
-            Assert.AreEqual(resultValue, expectedValue);
+            Assert.AreEqual(expectedValue, resultValue);
         }
 
         [Test]
@@ -54,7 +71,7 @@ namespace Tests
             WordLeo word = CreateWordLeo(LicenseLevels.Level_3);
             bool resultValue = word.CanTraining(WorkoutName);
 
-            Assert.AreEqual(resultValue, expectedValue);
+            Assert.AreEqual(expectedValue, resultValue);
         }
 
         [Test]
@@ -65,7 +82,7 @@ namespace Tests
             WordLeo word = CreateWordLeo(LicenseLevels.Level_3);
             bool resultValue = word.CanbeRepeated();
 
-            Assert.AreEqual(resultValue, expectedValue);
+            Assert.AreEqual(expectedValue, resultValue);
         }
 
         [Test]
@@ -138,7 +155,7 @@ namespace Tests
             WordLeo word = CreateWordLeo(expectedLevel);
             word.progress.lastRepeat = DateTime.Now - new TimeSpan(0, 1, 0);
             word.LicenseValidityCheck();
-            Assert.AreEqual(word.progress.license, expectedLevel);
+            Assert.AreEqual(expectedLevel, word.progress.license);
         }
 
         [Test] /// лицензия истекла
@@ -150,12 +167,12 @@ namespace Tests
         [TestCase(LicenseLevels.Level_7)]
         [TestCase(LicenseLevels.Level_8)]
         [TestCase(LicenseLevels.Level_9)]
-        public void LicenseValidityCheck_LicenseExpiries_ExpectedReducedLevelByOne(LicenseLevels expectedLevel)
+        public void LicenseValidityCheck_LicenseExpiries_ExpectedReducedLevelByOne(LicenseLevels actualLevel)
         {
-            WordLeo word = CreateWordLeo(expectedLevel);
+            WordLeo word = CreateWordLeo(actualLevel);
             word.progress.lastRepeat = DateTime.Now - new TimeSpan(0, LicenseTimeout.Level_9 + 5, 0);
             word.LicenseValidityCheck();
-            Assert.AreEqual(word.progress.license, expectedLevel - 1);
+            Assert.AreEqual(actualLevel - 1, word.progress.license);
         }
 
         [Test]
@@ -168,8 +185,8 @@ namespace Tests
             word.ReduceLicense();
             var resultLevel = word.GetLicense();
 
-            Assert.AreEqual(resultLevel, expextedLevel);
-            Assert.AreEqual(word.progress.lastRepeat.Second, expextedTime.Second);
+            Assert.AreEqual(expextedLevel, resultLevel);
+            Assert.AreEqual(expextedTime.Second, word.progress.lastRepeat.Second);
         }
         [Test]
         public void ReduceLicense_LicenseLevelEqualsZero_StateNotChange()
@@ -226,12 +243,6 @@ namespace Tests
             Assert.AreEqual(result, workoutIsDone);
         }
 
-
-        //[Test]
-        //public void GetLicenseValidityTime()
-        //{
-        //    Assert.Fail();
-        //}
 
         //[Test]
         //public void GetProgressCount()
