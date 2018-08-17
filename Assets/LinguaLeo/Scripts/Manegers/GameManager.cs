@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour
     //Exit Game
     public static void ExitGame()
     {
-        levelManeger.QuitGame();
+        LevelManeger.QuitGame();
     }
     
 }
