@@ -1,7 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
 
-
 [TestFixture]
 public class WordLeoTests
 {
@@ -16,59 +15,34 @@ public class WordLeoTests
     }
 
     [Test]
-    public void ReduceLicense()
+    public void AddLicenseLevel()
     {
-        LicenseLevels beforeLevel = _word.GetLicense();
-        _word.ReduceLicense();
-        LicenseLevels afterLevel = _word.GetLicense();
-        Assert.AreNotEqual(beforeLevel, afterLevel);
+        Assert.Fail();
     }
 
     [Test]
-    public void ResetLicense()
+    public void AllWorkoutDone()
     {
-        _word.ResetLicense();
-        DateTime snapTime = DateTime.Now;
-
-        Assert.AreEqual(_word.GetLicense(), LicenseLevels.Level_0);
-        Assert.AreEqual(_word.progress.lastRepeat, snapTime);
-
+        Assert.Fail();
     }
 
     [Test]
-    public void UnlockWorkouts()
+    public void CanbeRepeated()
     {
-        _word.progress.word_translate = true;
-        _word.progress.translate_word = true;
-        _word.progress.audio_word = true;
-        _word.progress.word_puzzle = true;
-
-        _word.UnlockWorkouts();
-
-        Assert.AreEqual(_word.progress.word_translate, false);
-        Assert.AreEqual(_word.progress.translate_word, false);
-        Assert.AreEqual(_word.progress.audio_word, false);
-        Assert.AreEqual(_word.progress.word_puzzle, false);
+        Assert.Fail();
     }
 
     [Test]
-    public void LicenseValidityCheck()
+    public void CanTraining()
     {
-        _word.LicenseValidityCheck();
         Assert.Fail();
     }
 
     [Test]
     public void GetLicense()
     {
-        LicenseLevels level = _word.GetLicense();
+        var level = _word.GetLicense();
         Assert.IsInstanceOf<LicenseLevels>(level);
-    }
-
-    [Test]
-    public void LicenseExpirationCheck()
-    {
-        Assert.Fail();
     }
 
     [Test]
@@ -84,43 +58,7 @@ public class WordLeoTests
     }
 
     [Test]
-    public void CanbeRepeated()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
     public void GetProgressCount()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    public void CanTraining()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    public void AllWorkoutDone()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    public void AddLicenseLevel()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    public void LearnWordTranslate()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    public void LearnTranslateWord()
     {
         Assert.Fail();
     }
@@ -138,8 +76,68 @@ public class WordLeoTests
     }
 
     [Test]
+    public void LearnTranslateWord()
+    {
+        Assert.Fail();
+    }
+
+    [Test]
+    public void LearnWordTranslate()
+    {
+        Assert.Fail();
+    }
+
+    [Test]
     public void LicenseExists()
     {
         Assert.Fail();
+    }
+
+    [Test]
+    public void LicenseExpirationCheck()
+    {
+        Assert.Fail();
+    }
+
+    [Test]
+    public void LicenseValidityCheck()
+    {
+        _word.LicenseValidityCheck();
+        Assert.Fail();
+    }
+
+    [Test]
+    public void ReduceLicense()
+    {
+        var beforeLevel = _word.GetLicense();
+        _word.ReduceLicense();
+        var afterLevel = _word.GetLicense();
+        Assert.AreNotEqual(beforeLevel, afterLevel);
+    }
+
+    [Test]
+    public void ResetLicense()
+    {
+        _word.ResetLicense();
+        var snapTime = DateTime.Now;
+
+        Assert.AreEqual(_word.GetLicense(), LicenseLevels.Level_0);
+        Assert.AreEqual(_word.progress.lastRepeat, snapTime);
+    }
+
+    [Test]
+    public void UnlockWorkouts()
+    {
+        _word.progress.word_translate = true;
+        _word.progress.translate_word = true;
+        _word.progress.audio_word = true;
+        _word.progress.word_puzzle = true;
+
+        _word.UnlockWorkouts();
+
+        Assert.AreEqual(_word.progress.word_translate, false);
+        Assert.AreEqual(_word.progress.translate_word, false);
+        Assert.AreEqual(_word.progress.audio_word, false);
+        Assert.AreEqual(_word.progress.word_puzzle, false);
     }
 }
