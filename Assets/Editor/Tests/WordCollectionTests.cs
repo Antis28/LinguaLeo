@@ -12,22 +12,22 @@ using System.Xml;
 [TestFixture]
 public class WordCollectionsTest
 {
-    private WordCollection wordCollection;
-    private string nameGroup = "Цитатник_7";
-    private int countWordsInGroup = 49;
-    string path = @"Data/Base/WordBase.xml";
+    private WordCollection _wordCollection;
+    private const string NameGroup = "Цитатник_7";
+    private int _countWordsInGroup = 49;
+    private const string Path = @"Data/Base/WordBase.xml";
 
     [OneTimeSetUp]
     public void PrepareBase()
     {
-        wordCollection = WordCollection.BuildFromXml(path);
+        _wordCollection = WordCollection.BuildFromXml(Path);
     }
 
     [Test]
     public void BuildFromXml()
     {
-        Assert.IsNotNull(wordCollection);
-        Assert.IsInstanceOf<WordCollection>(wordCollection);
+        Assert.IsNotNull(_wordCollection);
+        Assert.IsInstanceOf<WordCollection>(_wordCollection);
     }
 
     [Test]
@@ -43,23 +43,23 @@ public class WordCollectionsTest
     [Test]
     public void SaveToXml()
     {
-        wordCollection.SaveToXml(path);
-        FileAssert.Exists(path);
+        _wordCollection.SaveToXml(Path);
+        FileAssert.Exists(Path);
 
-        wordCollection = WordCollection.BuildFromXml(path);
+        _wordCollection = WordCollection.BuildFromXml(Path);
     }
 
     [Test]
     public void LoadGroup()
     {
-        wordCollection.LoadGroup(nameGroup);
-        Assert.IsNotNull(wordCollection.wordsFromGroup);
+        _wordCollection.LoadGroup(NameGroup);
+        Assert.IsNotNull(_wordCollection.wordsFromGroup);
     }
 
     [Test]
     public void GetRandomWord()
     {
-        WordLeo randomWord = wordCollection.GetRandomWord();
+        WordLeo randomWord = _wordCollection.GetRandomWord();
         Assert.IsInstanceOf<WordLeo>(randomWord);
     }
 
@@ -67,7 +67,7 @@ public class WordCollectionsTest
     public void GetRandomWords()
     {
         int countWords = 5;
-        List<WordLeo> words = wordCollection.GetRandomWords(countWords);
+        List<WordLeo> words = _wordCollection.GetRandomWords(countWords);
 
         Assert.IsInstanceOf<List<WordLeo>>(words);
         Assert.AreEqual(words.Count, countWords);
@@ -76,9 +76,9 @@ public class WordCollectionsTest
     [Test]
     public void GetRandomWordFromGroup()
     {
-        wordCollection.LoadGroup(nameGroup);
+        _wordCollection.LoadGroup(NameGroup);
 
-        WordLeo word = wordCollection.GetRandomWordFromGroup();
+        WordLeo word = _wordCollection.GetRandomWordFromGroup();
         Assert.IsInstanceOf<WordLeo>(word);
     }
 
@@ -86,35 +86,35 @@ public class WordCollectionsTest
     public void GetRandomWordsFromGroup()
     {
         int countWords = 5;
-        wordCollection.LoadGroup(nameGroup);
+        _wordCollection.LoadGroup(NameGroup);
         
-        List<WordLeo> words = wordCollection.GetRandomWordsFromGroup(countWords);
+        List<WordLeo> words = _wordCollection.GetRandomWordsFromGroup(countWords);
         Assert.IsInstanceOf<List<WordLeo>>(words);
     }
 
     [Test]
     public void GetUntrainedGroupWords()
     {
-        wordCollection.LoadGroup(nameGroup);
+        _wordCollection.LoadGroup(NameGroup);
         WorkoutNames workoutName = WorkoutNames.Audio;
         
-        List<WordLeo> words = wordCollection.GetUntrainedGroupWords(workoutName);
-        Assert.Fail();
+        List<WordLeo> words = _wordCollection.GetUntrainedGroupWords(workoutName);
+        Assert.IsInstanceOf<List<WordLeo>>(words);
     }
 
     [Test]
     public void GroupExist()
     {
-        wordCollection.LoadGroup(nameGroup);
-        bool isGroupExist = wordCollection.GroupExist();
+        _wordCollection.LoadGroup(NameGroup);
+        bool isGroupExist = _wordCollection.GroupExist();
         Assert.IsTrue(isGroupExist);
     }
 
     [Test]
     public void FilterGroup()
     {
-        wordCollection.LoadGroup(nameGroup);
-        List<string> listGroupName = wordCollection.FilterGroup();
+        _wordCollection.LoadGroup(NameGroup);
+        List<string> listGroupName = _wordCollection.FilterGroup();
         Assert.IsNotNull(listGroupName);
     }
 

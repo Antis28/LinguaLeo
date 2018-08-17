@@ -79,6 +79,8 @@ ParticleSpiralEffect.cs
 *.7z
 *.rar
 *.svg
+*.htm
+*.dotsettings
 #*.xml
 #*.txt
 #*.cd
@@ -86,18 +88,20 @@ ParticleSpiralEffect.cs
 LICENSE.txt
 [Ll]icense*.txt
 
-
-Assets/NULLcode Studio/
-/Assets/1/
-
+/Assets/*.*
 /Assets/Resources/
 /packages
-/Assets/*.*
-/*.*
+
+/_ReSharper.Caches
+/.vs
 
 /Data/
 /Builds/
 /Temp_Resurses/
+
+/LinguaLeoTests/*
+!/LinguaLeoTests/Tests/
+
 
 !LICENSE.MD
 !CODE_OF_CONDUCT.md
