@@ -12,6 +12,7 @@ public class WordSetPanel : MonoBehaviour
     [SerializeField]
     Text WordCountText = null;
     Button learnButton;
+    Button viewButton;
 
     string groupName = string.Empty;
 
@@ -30,10 +31,14 @@ public class WordSetPanel : MonoBehaviour
     void Start()
     {
         learnButton = transform.Find("LearnButton").GetComponent<Button>();
-        LevelManeger levelManeger = FindObjectOfType<LevelManeger>();
+        viewButton = transform.Find("ViewButton").GetComponent<Button>();
 
-        learnButton.onClick.AddListener(() => levelManeger.LoadLevel(SceneNames.trainingСhoice));
         learnButton.onClick.AddListener(PanelClick);
+        learnButton.onClick.AddListener(() => GameManager.LevelManeger.LoadLevel(SceneNames.trainingСhoice));
+
+        viewButton.onClick.AddListener(PanelClick);
+        viewButton.onClick.AddListener(() => GameManager.LevelManeger.LoadLevel(SceneNames.wordView));
+
     }
 
     public void PanelClick()
@@ -46,6 +51,7 @@ public class WordSetPanel : MonoBehaviour
     public void OnMouseDown()
     {
         Debug.Log("OnMouseDown");
+        PanelClick();
     }
 
     public string GetName()
