@@ -70,7 +70,7 @@ public class AudioTest : MonoBehaviour, IObserver, IWorkout
                 core = parametr as Workout;
                 core.buttonsHandler = GameObject.FindObjectOfType<ButtonsHandler>();
                 core.DrawTask += Core_DrawTask;
-                core.BuildTask(0);
+                core.BuildFirstTask();
                 InitWordCountBar();
                 //FindObjectOfType<DebugUI>().FillPanel(questions);
                 break;
@@ -107,6 +107,7 @@ public class AudioTest : MonoBehaviour, IObserver, IWorkout
     }
     private void CheckAnswer()
     {
+        AnswerInputField.text = AnswerInputField.text.Replace("'", "’");
         isAnswerCorrect = AnswerInputField.text == core.GetCurrentWord().wordValue;
         questionText.text = core.GetCurrentWord().wordValue;
         translateText.text = core.GetCurrentWord().translations;

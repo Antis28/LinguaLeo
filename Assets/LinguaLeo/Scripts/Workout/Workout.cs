@@ -13,18 +13,24 @@ public class Workout : IWorkout
     public int maxQuestCount = 10;
     public const int ANSWER_COUNT = 5;
 
+    public ButtonsHandler buttonsHandler;
+
     public List<QuestionLeo> tasks;
     private int questionID;
 
     private bool trainingСompleted;
-
-    public ButtonsHandler buttonsHandler;
 
     private List<WordLeo> untrainedWords;
 
     WorkoutNames workoutName;
 
     public event UnityAction DrawTask;
+
+    void OnDrawTask()
+    {
+        if (DrawTask != null)
+            DrawTask();
+    }
 
     public WorkoutNames WorkoutName
     {
@@ -44,6 +50,16 @@ public class Workout : IWorkout
     {
         this.workoutName = WorkoutName;
         this.maxQuestCount = questCount;
+    }
+
+    public bool TrainingDone()
+    {
+        bool trainingDone = true;
+        foreach (var task in tasks)
+        {
+            trainingDone = trainingDone && task.questWord.AllWorkoutDone();
+        }
+        return trainingDone;
     }
 
     public WordLeo GetCurrentWord()
@@ -85,6 +101,11 @@ public class Workout : IWorkout
         return this;
     }
 
+    public void BuildFirstTask()
+    {
+        BuildTask(0);
+    }
+
     private List<QuestionLeo> LoadTasks()
     {
         List<QuestionLeo> questionsTemp = new List<QuestionLeo>(maxQuestCount);
@@ -105,7 +126,7 @@ public class Workout : IWorkout
         return questionsTemp;
     }
 
-    public void BuildTask(int current)
+    private void BuildTask(int current)
     {
         if (buttonsHandler)
             buttonsHandler.ClearTextInButtons();
@@ -116,7 +137,7 @@ public class Workout : IWorkout
             return;
         }
         // Отрисовать GUI
-        DrawTask();
+        OnDrawTask();
     }
 
     private bool CheckTrainingСompleted()

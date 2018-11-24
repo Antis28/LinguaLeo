@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 
@@ -15,6 +17,55 @@ public class WordCollection
     public List<WordLeo> wordsFromGroup; // словарь для набора слов
 
     private Random random = new Random();
+
+    public static WordCollection BuildFromXml(string path)
+    {
+        if (!File.Exists(path))
+            throw new IOException("File not found");
+
+        WordCollection result = null;
+
+        using (TextReader Stream = new StreamReader(path, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
+        {
+            XmlSerializer Serializer = new XmlSerializer(typeof(WordCollection));
+            result = Serializer.Deserialize(Stream) as WordCollection;
+            Stream.Close();
+
+            if (result == null)
+                throw new Exception("File not Deserialize");
+        }
+        return result;
+    }
+
+    public void SaveToXml(string path)
+    { 
+        if (!File.Exists(path))
+            throw new Exception("File not founded");
+
+        using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
+        {
+
+            //Now save game data
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
+
+            xmlSerializer.Serialize(stream, this);
+            stream.Close();
+        }
+    }
+
+    /// <summary>
+    /// Загрука слов из набора слов
+    /// </summary>
+    /// <param name="groupName">название набора слов</param>
+    public void LoadGroup(string groupName)
+    {
+        wordsFromGroup = new List<WordLeo>();
+        foreach (var word in allWords)
+        {
+            if (word.groups.Contains(groupName))
+                wordsFromGroup.Add(word);
+        }
+    }
 
     public WordLeo GetRandomWord()
     {
@@ -90,18 +141,6 @@ public class WordCollection
         return groups;
     }
 
-    /// <summary>
-    /// Загрука слов из набора слов
-    /// </summary>
-    /// <param name="groupName">название набора слов</param>
-    public void LoadGroup(string groupName)
-    {
-        wordsFromGroup = new List<WordLeo>();
-        foreach (var word in allWords)
-        {
-            if (word.groups.Contains(groupName))
-                wordsFromGroup.Add(word);
-        }
-    }
+    
 }
 

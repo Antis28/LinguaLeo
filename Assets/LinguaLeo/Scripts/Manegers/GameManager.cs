@@ -1,15 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-
-
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 //Component for sending and receiving  
 [RequireComponent(typeof(WordManeger))]
@@ -198,16 +187,12 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         //Load first level        
-        SceneManager.LoadScene(0);
+        SceneManagerAdapt.LoadScene(0);
     }
     //Exit Game
-    public void ExitGame()
+    public static void ExitGame()
     {
-#if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
-#else
-		    Application.Quit();
-#endif
+        LevelManeger.QuitGame();
     }
     
 }

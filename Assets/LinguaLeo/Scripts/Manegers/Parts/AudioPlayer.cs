@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioPlayer : MonoBehaviour
@@ -73,7 +73,8 @@ public class AudioPlayer : MonoBehaviour
         //string path = Path.GetFullPath(folder + "/" + fileName);
         string path = bundleFolder + bundleName;
         Debug.Log(path);
-        voiceBundle = AssetBundle.LoadFromFile(path);
+
+        voiceBundle = AssetBundleAdapt.LoadFromFile(path);
 
         foreach (var item in voiceBundle.GetAllAssetNames())
         {

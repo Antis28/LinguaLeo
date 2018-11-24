@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
 /// <summary>
@@ -43,7 +42,6 @@ public class WordLeo : IEquatable<WordLeo>
     /// <summary>
     /// Понизить лицензию
     /// </summary>
-    /// <param name="word"></param>
     public void ReduceLicense()
     {
         if (progress.license == LicenseLevels.Level_0)
@@ -83,14 +81,6 @@ public class WordLeo : IEquatable<WordLeo>
         double minutes = interval.TotalMinutes;
         switch (license)
         {
-            //case LicenseLevels.Level_0:
-            //    progress.ResetWorkouts();
-            //    break;
-            //case LicenseLevels.Level_1:
-            //    //лицензия на 20 минут
-            //    if (minutes > LicenseTimeout.Level_1)
-            //ReduceLicense();
-            //break;
             case LicenseLevels.Level_2:
                 //лицензия на 1 час
                 if (minutes > LicenseTimeout.Level_2)
@@ -133,8 +123,7 @@ public class WordLeo : IEquatable<WordLeo>
                 break;
         }
     }
-
-    internal LicenseLevels GetLicense()
+    public LicenseLevels GetLicense()
     {
         return progress.license;
     }
@@ -315,7 +304,7 @@ public class WordLeo : IEquatable<WordLeo>
     private double GetLicenseTime()
     {
         TimeSpan interval = DateTime.Now - progress.lastRepeat;
-        return interval.TotalMinutes; ;
+        return interval.TotalMinutes;
     }
 
     public bool CanbeRepeated()
@@ -378,12 +367,12 @@ public class WordLeo : IEquatable<WordLeo>
         progress.translate_word = true;
     }
 
-    internal void LearnAudio()
+    public void LearnAudio()
     {
         progress.audio_word = true;
     }
 
-    internal void LearnPuzzle()
+    public void LearnPuzzle()
     {
         progress.word_puzzle = true;
     }
@@ -399,10 +388,7 @@ public class WordLeo : IEquatable<WordLeo>
         if (other == null)
             return false;
 
-        if (this.wordValue == other.wordValue)
-            return true;
-        else
-            return false;
+        return this.wordValue == other.wordValue;
     }
 
     public override bool Equals(Object obj)

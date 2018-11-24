@@ -39,6 +39,15 @@ public class Utilities
         return sprite;
     }
 
+    public static Sprite GetSprite(string fileName)
+    {
+        string folder = "Data/Picture/";
+        //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + Utilities.ConverterUrlToName(fileName));
+        Sprite sprite = LoadSpriteFromFile(folder + ConverterUrlToName(fileName));
+        return sprite;
+
+    }
+
     public static AudioClip LoadMusicFromFile(string path)
     {
         if (!File.Exists(path))
@@ -64,6 +73,29 @@ public class Utilities
 
         return Path.GetFileNameWithoutExtension(mat.Value);
 
+    }
+
+    public static string GetFirstTranslate(WordLeo questWord)
+    {
+        return questWord.translations.Split(',')[0];
+    }
+    public static string[] GetTranslates(WordLeo questWord)
+    {
+        return questWord.translations.Split(',');
+    }
+
+    public static string FormatTime(TimeSpan timeLeft)
+    {
+        string result = string.Empty;
+        if (timeLeft.Days > 0)
+            result += timeLeft.Days + "д. ";
+        if (timeLeft.Hours > 0)
+            result += timeLeft.Hours + "ч. ";
+        if (timeLeft.Minutes > 0)
+            result += timeLeft.Minutes + "м. ";
+        if (result == string.Empty)
+            result = "сейчас";
+        return result;
     }
 
     public int GetINT(string text)
@@ -118,6 +150,26 @@ public class Utilities
         }
         return list;
     }
+    /// <summary>
+    /// перетосовать колоду
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="cards"></param>
+    public static void ShuffleDeck<T>(List<T> cards)
+    {
+        System.Random generator = new System.Random();
+        int n = cards.Count;
+        while (n > 1)
+        {
+            int rndValue = generator.Next(n);
+            --n;
+            T temp = cards[n];
+            cards[n] = cards[rndValue];
+            cards[rndValue] = temp;
+        }
+    }
+
+
     public static List<WordLeo> SortWordsByProgress(List<WordLeo> words)
     {
         var result = from word in words

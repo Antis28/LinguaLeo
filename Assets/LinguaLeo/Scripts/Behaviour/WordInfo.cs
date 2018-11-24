@@ -8,8 +8,8 @@ public class WordInfo : MonoBehaviour, IObserver
 {
     [SerializeField]
     Text LevelText = null;
-    //[SerializeField]
-    //Text TimeRepeatText = null;
+    [SerializeField]
+    Text TimeRepeatText = null;
     [SerializeField]
     Text TimeReduceText = null;
 
@@ -21,13 +21,18 @@ public class WordInfo : MonoBehaviour, IObserver
         GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
         GameManager.Notifications.AddListener(this, GAME_EVENTS.UpdatedLicenseLevel);
 
+        ComponentsInit();
 
-        LevelText = GameObject.Find("LevelText").GetComponent<Text>();
-        //TimeRepeatText = GameObject.Find("TimeRepeatText").GetComponent<Text>();
-        TimeReduceText = GameObject.Find("TimeReduceText").GetComponent<Text>();
         coreWorkout = GameManager.WorkoutManager.GetWorkout();
         coreWorkout.DrawTask += UpdateInfoWord;
         UpdateInfoWord();
+    }
+
+    private void ComponentsInit()
+    {
+        LevelText = GameObject.Find("LevelCountText").GetComponent<Text>();
+        TimeRepeatText = GameObject.Find("TimeRepeatCountText").GetComponent<Text>();
+        TimeReduceText = GameObject.Find("TimeReduceCountText").GetComponent<Text>();
     }
 
     private void UpdateInfoWord()
@@ -35,11 +40,14 @@ public class WordInfo : MonoBehaviour, IObserver
         WordLeo word = coreWorkout.GetCurrentWord();
 
         LevelText.text = word.progress.license.ToString();
-        //TimeRepeatText.text = word.GetLicenseExpiration().ToString();
+        TimeSpan timeLeft = word.GetLicenseExpiration();
+        TimeRepeatText.text = Utilities.FormatTime(timeLeft);
 
         var time = word.GetLicenseValidityTime();
         TimeReduceText.text = TimeSpanToString(time);
     }
+
+    
 
     private string TimeSpanToString(TimeSpan time)
     {
@@ -48,7 +56,7 @@ public class WordInfo : MonoBehaviour, IObserver
         if (time.TotalHours > 1)
             return (int)time.TotalHours + " ч. " + (int)time.Minutes + " мин.";
 
-        return  (int)time.TotalMinutes + " мин.";
+        return (int)time.TotalMinutes + " мин.";
     }
 
     void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
