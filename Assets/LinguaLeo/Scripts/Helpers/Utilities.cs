@@ -98,6 +98,12 @@ public class Utilities
         return result;
     }
 
+    public static string FormatTime(double timeLeft)
+    {
+        var span = TimeSpan.FromMinutes(timeLeft);
+        return FormatTime(span);
+    }
+
     public int GetINT(string text)
     {
         int value;
