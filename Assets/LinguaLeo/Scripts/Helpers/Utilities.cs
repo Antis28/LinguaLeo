@@ -88,13 +88,13 @@ public class Utilities
     {
         string result = string.Empty;
         if (timeLeft.Days > 0)
-            result += timeLeft.Days + "д. ";
+            result += timeLeft.Days + "д.";
         if (timeLeft.Hours > 0)
-            result += timeLeft.Hours + "ч. ";
+            result += timeLeft.Hours + " ч.";
         if (timeLeft.Minutes > 0)
-            result += timeLeft.Minutes + "м. ";
+            result += timeLeft.Minutes + " м.";
         if (result == string.Empty)
-            result = "сейчас";
+            result = "0";
         return result;
     }
 
@@ -220,6 +220,13 @@ public class Utilities
             return high;
         else
             return -1; // Not found
+    }
+    public static T FindComponentInGO<T>(string nameGO)
+    {
+        GameObject go = GameObject.Find(nameGO);
+        if (go)
+            return go.GetComponent<T>();
+        return default(T);
     }
 }
 
