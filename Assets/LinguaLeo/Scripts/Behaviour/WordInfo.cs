@@ -40,7 +40,7 @@ public class WordInfo : MonoBehaviour, IObserver
         WordLeo word = coreWorkout.GetCurrentWord();
 
         LevelText.text = word.progress.license.ToString();
-        TimeSpan timeLeft = word.GetLicenseExpiration();
+        double timeLeft = word.GetLicenseExpiration();
         TimeRepeatText.text = Utilities.FormatTime(timeLeft);
 
         var time = word.GetLicenseValidityTime();

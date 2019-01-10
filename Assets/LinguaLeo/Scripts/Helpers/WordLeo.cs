@@ -194,7 +194,11 @@ public class WordLeo : IEquatable<WordLeo>
                 break;
         }
     }
-
+    /// <summary>
+    /// Расчитывает количество минут до 
+    /// конца лицензии.
+    /// </summary>
+    /// <returns>количество минут</returns>
     public double GetLicenseExpiration()
     {
         LicenseLevels license = progress.license;
@@ -242,9 +246,6 @@ public class WordLeo : IEquatable<WordLeo>
         {
             return 0;
         }
-
-        if (minutesLeft > 60)
-            minutesLeft = minutesLeft / 60;
 
         return UnityEngine.Mathf.Round((float)minutesLeft);
     }
