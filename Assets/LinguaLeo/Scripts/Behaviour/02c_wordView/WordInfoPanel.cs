@@ -24,8 +24,13 @@ public class WordInfoPanel : MonoBehaviour {
 
         levelText.text = word.progress.license.ToString();
         wordText.text = word.wordValue + " - " + word.translations;
-        TimeReduceText.text = Utilities.FormatTime(word.GetLicenseValidityTime());
-        TimeUnlockText.text = Utilities.FormatTime(word.GetLicenseExpiration());
+        word.LicenseExpirationCheck();
+
+        TimeSpan time = word.GetLicenseValidityTime();
+        TimeReduceText.text = Utilities.FormatTime(time);
+
+        TimeSpan timeUnlock = word.GetLicenseUnlockForRepeat();
+        TimeUnlockText.text = Utilities.FormatTime(timeUnlock);
 
         GetComponent<Transform>().localScale = Vector3.one;
         GetComponent<Transform>().localPosition = Vector3.zero;

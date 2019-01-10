@@ -194,13 +194,17 @@ public class WordLeo : IEquatable<WordLeo>
                 break;
         }
     }
-
-    public double GetLicenseExpiration()
+    /// <summary>
+    /// Расчитывает количество минут до 
+    /// разблокировки лицензии для повторения.
+    /// </summary>
+    /// <returns>Время</returns>
+    public TimeSpan GetLicenseUnlockForRepeat()
     {
         LicenseLevels license = progress.license;
-        if (license == LicenseLevels.Level_0)
+        if (license == LicenseLevels.Level_0 || !progress.AllWorkoutDone())
         {
-            return 0;
+            return TimeSpan.Zero;
         }
 
         double minutes = GetLicenseTime();
@@ -240,13 +244,10 @@ public class WordLeo : IEquatable<WordLeo>
         }
         if (minutesLeft < 0)
         {
-            return 0;
+            minutesLeft = 0;
         }
 
-        if (minutesLeft > 60)
-            minutesLeft = minutesLeft / 60;
-
-        return UnityEngine.Mathf.Round((float)minutesLeft);
+        return TimeSpan.FromMinutes(minutesLeft);
     }
 
     /// <summary>
