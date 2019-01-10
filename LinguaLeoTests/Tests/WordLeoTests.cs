@@ -10,20 +10,24 @@ namespace Tests
         public void GetLicenseValidityTime()
         {
             LicenseLevels level = LicenseLevels.Level_3;
-            int levelTime = LicenseTimeTraining.Level_3;
+            int levelTime = LicenseTimeout.Level_3;
             int timeExpiries = levelTime - 20;
-            TimeSpan expectedValue = new TimeSpan(0, timeExpiries, 0);
+            double expectedValue = levelTime - timeExpiries;
 
             WordLeo word = CreateWordLeo(level);
-            word.progress.lastRepeat = DateTime.Now - new TimeSpan(0, timeExpiries, 0);
+            word.progress.lastRepeat = DateTime.Now - TimeSpan.FromMinutes(timeExpiries);
 
-            TimeSpan resultValue = word.GetLicenseValidityTime();
-            
+            double resultValue = RoundTofloat(word.GetLicenseValidityTime().TotalMinutes);
 
-            Assert.AreEqual(expectedValue, resultValue );
+            Assert.AreEqual(expectedValue, resultValue);
         }
 
-        // добавить fake для DateTime
+        private static float RoundTofloat(double val)
+        {
+            return UnityEngine.Mathf.Round( (float)val );
+        }
+
+        //ToDO: добавить fake для DateTime
         [Test]
         public void GetLicenseExpiration_LevelBiggestZero_ReturnExpectedValue()
         {
@@ -31,16 +35,15 @@ namespace Tests
             int levelTime = LicenseTimeTraining.Level_3;
             int timeExpiries = levelTime - 20;
 
-            WordLeo word = CreateWordLeo(level);
+            WordLeo word = CreateWordLeo(level, true);
             word.progress.lastRepeat = DateTime.Now - new TimeSpan(0, timeExpiries, 0);
 
             TimeSpan interval = DateTime.Now - word.progress.lastRepeat;
             double expectedValue = levelTime - interval.TotalMinutes;
-            if (expectedValue > 60)
-                expectedValue /= 60;
+            expectedValue = RoundTofloat(expectedValue);
 
-            expectedValue = UnityEngine.Mathf.Round((float) expectedValue);
-            double resultValue = word.GetLicenseExpiration();
+            double resultValue = word.GetLicenseUnlockForRepeat().TotalMinutes;
+            resultValue = RoundTofloat(resultValue);
 
             Assert.AreEqual(expectedValue, resultValue);
         }
@@ -51,7 +54,7 @@ namespace Tests
             double expectedValue = 0;
 
             WordLeo word = CreateWordLeo();
-            double resultValue = word.GetLicenseExpiration();
+            double resultValue = word.GetLicenseUnlockForRepeat().TotalMinutes;
 
             Assert.AreEqual(expectedValue, resultValue);
         }
