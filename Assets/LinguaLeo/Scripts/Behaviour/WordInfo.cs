@@ -30,21 +30,24 @@ public class WordInfo : MonoBehaviour, IObserver
 
     private void ComponentsInit()
     {
-        LevelText = GameObject.Find("LevelCountText").GetComponent<Text>();
-        TimeRepeatText = GameObject.Find("TimeRepeatCountText").GetComponent<Text>();
-        TimeReduceText = GameObject.Find("TimeReduceCountText").GetComponent<Text>();
+        LevelText = Utilities.FindComponentInGO<Text>("LevelText");
+        TimeRepeatText = Utilities.FindComponentInGO<Text>("TimeRepeatText");
+        TimeReduceText = Utilities.FindComponentInGO<Text>("TimeReduceText");
     }
+
+   
 
     private void UpdateInfoWord()
     {
         WordLeo word = coreWorkout.GetCurrentWord();
 
         LevelText.text = word.progress.license.ToString();
-        TimeSpan timeLeft = word.GetLicenseExpiration();
-        TimeRepeatText.text = Utilities.FormatTime(timeLeft);
 
-        var time = word.GetLicenseValidityTime();
-        TimeReduceText.text = TimeSpanToString(time);
+        TimeSpan time = word.GetLicenseValidityTime();
+        TimeReduceText.text = Utilities.FormatTime(time);
+
+        TimeSpan timeUnlock = word.GetLicenseUnlockForRepeat();
+        TimeRepeatText.text = Utilities.FormatTime(timeUnlock);
     }
 
     
