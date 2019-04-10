@@ -44,7 +44,7 @@ public class WordSetPanel : MonoBehaviour
     public void PanelClick()
     {
         Debug.Log("LoadGroup = " + groupName);
-        GameManager.WordManeger.LoadGroup(groupName);
+        GameManager.WordManeger.LoadStartWordGroup(groupName);
     }
 
     // OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider

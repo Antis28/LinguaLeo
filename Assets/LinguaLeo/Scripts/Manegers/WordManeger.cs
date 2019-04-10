@@ -14,6 +14,7 @@ public class WordManeger : MonoBehaviour, IObserver
 
     private static List<WordLeo> currentWordGroups = null;
 
+    private static string currentGroupName;
     private static List<WordGroup> groupNames;
 
     private string folderXml = @"Data/Base";
@@ -99,8 +100,9 @@ public class WordManeger : MonoBehaviour, IObserver
     /// Загружает набор слов из словаря
     /// </summary>
     /// <param name="groupName"></param>
-    public void LoadGroup(string groupName)
+    public void LoadStartWordGroup(string groupName)
     {
+        currentGroupName = groupName;
         vocabulary.LoadGroup(groupName);
     }
 
@@ -143,12 +145,18 @@ public class WordManeger : MonoBehaviour, IObserver
                 string path = folderXml + "/" + fileNameXml;
                 vocabulary.SaveToXml(path);
                 break;
+            case GAME_EVENTS.QuitGame:
+                Settings.Instance.lastWordGroup = currentGroupName;
+                print("save settings");
+                Settings.SaveToXml();
+                break;
         }
     }
 
     void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
+        GameManager.Notifications.AddListener(this, GAME_EVENTS.QuitGame);
 
         LoadVocabulary();
         //CreateWordGroups();
@@ -164,10 +172,30 @@ public class WordManeger : MonoBehaviour, IObserver
         }
 
         wordGroups = vocabulary.FilterGroup();
+
+        // Здесь происходит загрузка стартового набора слов
         //vocabulary.LoadGroup(wordGroups[66]);
-        vocabulary.LoadGroup(wordGroups[23]);
+        //vocabulary.LoadGroup(wordGroups[23]);
+        LoadStartWordGroup();
+
         SceneManagerAdapt.AddSceneLoaded(SceneManager_sceneLoaded);
         StartCoroutine(LoadedVocalubary());
+    }
+
+    private static void LoadStartWordGroup()
+    {
+        Settings.LoadFromXml();
+        string lastWordGroup = Settings.Instance.lastWordGroup;
+        if (lastWordGroup != null)
+        {
+            vocabulary.LoadGroup(lastWordGroup);
+            print(lastWordGroup);
+        }
+        else
+        {
+            vocabulary.LoadGroup(wordGroups[23]);
+            print(wordGroups[23]);
+        }
     }
 
     private void SceneManager_sceneLoaded()
@@ -209,5 +237,5 @@ public class WordManeger : MonoBehaviour, IObserver
             Debug.Log("SerializeGroup");
         }
     }
-    
+
 }
