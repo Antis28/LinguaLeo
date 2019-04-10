@@ -126,7 +126,7 @@ public enum GAME_EVENTS
 {
     LoadGameComplete,
     SaveGamePrepare,
-
+   
     WorkoutLoaded,
     CorrectAnswer,
     NonCorrectAnswer,
@@ -140,4 +140,5 @@ public enum GAME_EVENTS
     ButtonHandlerLoaded,
     NotUntrainedWords,
     UpdatedLicenseLevel,
+    QuitGame,
 }
