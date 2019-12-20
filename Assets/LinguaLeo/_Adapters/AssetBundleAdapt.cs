@@ -6,6 +6,9 @@ public class AssetBundleAdapt {
 
     public static AssetBundle LoadFromFile(string path)
     {
+#if UNITY_2018
+        return AssetBundle.LoadFromFile(path);
+#endif
 #if UNITY_2017
         return AssetBundle.LoadFromFile(path);
 #endif
