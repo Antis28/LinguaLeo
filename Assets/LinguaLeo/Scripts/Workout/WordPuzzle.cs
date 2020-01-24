@@ -155,7 +155,7 @@ public class WordPuzzle : MonoBehaviour, IObserver, IWorkout
 
         ShowRepeatWordButton();
 
-        AnswerInputField.text = AnswerInputField.text.Replace("'", "’");
+        //AnswerInputField.text = AnswerInputField.text.Replace("'", "’");
         isAnswerCorrect = AnswerInputField.text == core.GetCurrentWord().wordValue;
         questionText.text = core.GetCurrentWord().wordValue;
         
