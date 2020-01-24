@@ -48,23 +48,6 @@ public class Utilities
 
     }
 
-    public static AudioClip LoadMusicFromFile(string path)
-    {
-        if (!File.Exists(path))
-            return null;
-
-        WWW www = new WWW("file://" + path);// задаем ссылку на файл
-        //Debug.Log("file://" + path);
-
-        AudioClip clip = www.GetAudioClip(false, false);//[/url] получаем по ссылке аудиоклип       
-
-        using (var uwr = UnityWebRequestMultimedia.GetAudioClip("file://" + path, AudioType.OGGVORBIS))
-        {
-            uwr.SendWebRequest();
-        }
-        return clip;
-    }
-
     public static string ConverterUrlToName(string url, bool withExtension = true)
     {
         //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";

@@ -189,7 +189,7 @@ public class WordManeger : MonoBehaviour, IObserver
         if (lastWordGroup != null)
         {
             vocabulary.LoadGroup(lastWordGroup);
-            print(lastWordGroup);
+            print("LoadGroup = " + lastWordGroup);
         }
         else
         {

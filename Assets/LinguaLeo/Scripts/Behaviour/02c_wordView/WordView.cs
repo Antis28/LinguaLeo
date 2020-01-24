@@ -92,8 +92,10 @@ public class WordView : MonoBehaviour, IObserver
 
     private void SetSizeContent(float height)
     {
-        Vector2 size = new Vector2();
-        size.y = height;
+        Vector2 size = new Vector2
+        {
+            y = height
+        };
         RectTransform rectContent = content.GetComponent<RectTransform>();
         rectContent.sizeDelta = size;
         rectContent.localPosition = Vector3.zero;
@@ -101,10 +103,12 @@ public class WordView : MonoBehaviour, IObserver
 
     public void SetHeigtContent(float height)
     {
-        Vector2 size = new Vector2();
-        float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
-        // отцентрировать плитку вертикально
-        size.y = height;// -tileHeight / 2
+        Vector2 size = new Vector2
+        {
+            // float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+            // отцентрировать плитку вертикально
+            y = height// -tileHeight / 2
+        };
         RectTransform rectContent = content.GetComponent<RectTransform>();
         rectContent.localPosition = size;
     }

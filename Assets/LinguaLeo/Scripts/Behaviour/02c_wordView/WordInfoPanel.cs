@@ -36,10 +36,10 @@ public class WordInfoPanel : MonoBehaviour {
         GetComponent<Transform>().localPosition = Vector3.zero;
     }
 
-    // Use this for initialization
+    
     void Start()
     {
-        LevelManeger levelManeger = FindObjectOfType<LevelManeger>();
+      //  LevelManeger levelManeger = FindObjectOfType<LevelManeger>();
     }
 
     // OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider

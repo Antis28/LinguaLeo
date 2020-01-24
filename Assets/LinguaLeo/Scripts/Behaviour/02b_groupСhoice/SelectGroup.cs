@@ -18,11 +18,6 @@ public class SelectGroup : MonoBehaviour, IObserver
         GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
@@ -95,8 +90,10 @@ public class SelectGroup : MonoBehaviour, IObserver
 
     private void SetSizeContent(float height)
     {
-        Vector2 size = new Vector2();
-        size.y = height;
+        Vector2 size = new Vector2
+        {
+            y = height
+        };
         RectTransform rectContent = content.GetComponent<RectTransform>();
         rectContent.sizeDelta = size;
         rectContent.localPosition = Vector3.zero;
@@ -105,7 +102,7 @@ public class SelectGroup : MonoBehaviour, IObserver
     public void SetHeigtContent(float height)
     {
         Vector2 size = new Vector2();
-        float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+        //float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
         // отцентрировать плитку вертикально
         size.y = height ;// -tileHeight / 2
         RectTransform rectContent = content.GetComponent<RectTransform>();
