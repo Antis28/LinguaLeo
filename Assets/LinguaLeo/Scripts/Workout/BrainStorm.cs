@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-class BrainStorm : IObserver
+public class BrainStorm : IObserver
 {
     private LevelManeger levelManeger;
     private Workout core;
