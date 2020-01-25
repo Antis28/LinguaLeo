@@ -48,10 +48,11 @@ public class BrainStorm : IObserver
             case 5:
                 if (!core.TrainingDone())
                 {
-                    stage = 0;
+                    ResetStage();
                     Run();
                     return;
                 }
+
                 TerminateBrainStorm(sceneName);
                 break;
             case 100:
