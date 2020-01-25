@@ -41,7 +41,7 @@ public class AudioPlayer : MonoBehaviour
         //sayClip = Resources.Load<AudioClip>(folder + "/" + fileName);
         //sayClip = ExtractFromBundle();
         lastPath = resFolder + fileName + resExt;
-        StartCoroutine(LoadMusicFromFile());
+        sayClip = null;
     }
     public void SayWord()
     {
@@ -56,7 +56,6 @@ public class AudioPlayer : MonoBehaviour
     {
         if (!File.Exists(lastPath))
             throw new FileNotFoundException();
-        sayClip = null;
         using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://" + lastPath, AudioType.OGGVORBIS))
         {
             yield return www.SendWebRequest();
