@@ -58,13 +58,13 @@ public class NotificationsManager : MonoBehaviour
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="notificationName"></param>
-    public void RemoveListener(Component sender, GAME_EVENTS notificationName)
+    public void RemoveListener(IObserver sender, GAME_EVENTS notificationName)
     {
         //If no key in dictionary exists, then exit
         if (!_listeners.ContainsKey(notificationName))
             return;
 
-        List<MonoBehaviour> listListeners = _listeners[notificationName];
+        var listListeners = _listeners[notificationName];
         int senderID = sender.GetInstanceID();
 
         //Cycle through listeners and identify component, and then remove 
@@ -85,8 +85,7 @@ public class NotificationsManager : MonoBehaviour
     /// </summary>
     public void RemoveRedundancies()
     {
-        Dictionary<GAME_EVENTS, List<MonoBehaviour>> tmpListeners =
-                               new Dictionary<GAME_EVENTS, List<MonoBehaviour>>();
+        var tmpListeners = new Dictionary<GAME_EVENTS, List<MonoBehaviour>>();
 
         foreach (var item in _listeners)
         {

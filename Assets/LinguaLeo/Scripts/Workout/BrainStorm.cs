@@ -209,10 +209,15 @@ public class BrainStorm : IObserver
     {
         switch (notificationName)
         {
-            case GAME_EVENTS.NotUntrainedWords:                
-                    Run();
+            case GAME_EVENTS.NotUntrainedWords:
+                Run();
                 break;
         }
+    }
+
+    public int GetInstanceID()
+    {
+        return UnityEngine.Random.Range(1000, 999999);
     }
 }
 
