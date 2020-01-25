@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 
-public class LevelManeger : MonoBehaviour, IObserver
+public class LevelManeger : MonoBehaviour
 {
     public int lastWorkout = -1;
 
@@ -40,29 +40,8 @@ public class LevelManeger : MonoBehaviour, IObserver
         SceneManagerAdapt.LoadScene(buildIndex);
     }
 
-    void LoadLastWorkOut()
-    {
-        if (lastWorkout != -1)
-            SceneManagerAdapt.LoadScene(lastWorkout);
-        else
-            print("lastWorkout == -1");
-    }
-
-
-    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
-    {
-        switch (notificationName)
-        {
-            case GAME_EVENTS.ContinueWorkout:
-                LoadLastWorkOut();
-                break;
-        }
-    }
-
-
     void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.ContinueWorkout);
     }
 }

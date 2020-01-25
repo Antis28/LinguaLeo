@@ -30,6 +30,8 @@ public class WorkoutManager : MonoBehaviour, IObserver
     private WorkoutNames currentWorkout;
     private WorkoutNames subWorkout;
     private Workout core;
+    private float scorePaceInBrainStorm = 0.25f;
+    private float scorePaceInSimpleWorkOut = 1f;
 
     public BrainStorm BrainStorm
     {
@@ -50,8 +52,12 @@ public class WorkoutManager : MonoBehaviour, IObserver
         return questMaxCount * workoutCount;
     }
 
-    public int GetCorrectAnswers()
+    public float GetCorrectAnswers()
     {
+        if (true)
+        {
+
+        }
         return GameManager.ScoreKeeper.ScoreValue;
     }
 
@@ -68,14 +74,20 @@ public class WorkoutManager : MonoBehaviour, IObserver
         questsPassedCount = 0;
     }
 
+    /// <summary>
+    /// Запуск новой тренировки.
+    /// </summary>
+    /// <param name="name">Название тренировки</param>
     public void RunWorkOut(WorkoutNames name)
     {
         currentWorkout = name;
         questsPassedCount = 0;
         questMaxCount = simpleQuestCount;
+        GameManager.ScoreKeeper.SetPriceScore(scorePaceInSimpleWorkOut);
 
         if (name == WorkoutNames.brainStorm)
         {
+            GameManager.ScoreKeeper.SetPriceScore(scorePaceInBrainStorm);
             questMaxCount = brainstormQuestCount;
             core = PrepareWorkout(WorkoutNames.brainStorm);
             brainStorm = new BrainStorm(core, levelManeger);
@@ -88,6 +100,14 @@ public class WorkoutManager : MonoBehaviour, IObserver
         {
             levelManeger.LoadLevel(sceneName);
         }
+    }
+
+    /// <summary>
+    /// Перезапуск последней тренировки.
+    /// </summary>
+    public void RestartWorkOut()
+    {
+        RunWorkOut(currentWorkout);
     }
 
     public Workout GetWorkout()
@@ -122,6 +142,7 @@ public class WorkoutManager : MonoBehaviour, IObserver
                 GameManager.LevelManeger.LoadResultWorkOut();
                 break;
             case WorkoutNames.brainStorm:
+
                 brainStorm.Run();
                 break;
             default:
@@ -231,6 +252,17 @@ public class WorkoutManager : MonoBehaviour, IObserver
         }
     }
 
+    private void SubscribeToEvents()
+    {
+        var notification = GameManager.Notifications;
+
+        notification.AddListener(this, GAME_EVENTS.ButtonHandlerLoaded);
+        notification.AddListener(this, GAME_EVENTS.CorrectAnswer);
+        notification.AddListener(this, GAME_EVENTS.WordsEnded);
+        notification.AddListener(this, GAME_EVENTS.BuildTask);
+        notification.AddListener(this, GAME_EVENTS.ContinueWorkout);
+    }
+    
     void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
@@ -238,19 +270,22 @@ public class WorkoutManager : MonoBehaviour, IObserver
             case GAME_EVENTS.ButtonHandlerLoaded:
                 StartBehaviour();
                 break;
-            case GAME_EVENTS.WordsEnded:
-                print("ScoreValue = " + GetCorrectAnswers());
-                WordsEndedBehaviour();
-                break;
             case GAME_EVENTS.CorrectAnswer:
                 AddWorkoutProgress(currentWord, subWorkout);
                 if (currentWord.AllWorkoutDone())
                     currentWord.AddLicenseLevel();
                 break;
+            case GAME_EVENTS.WordsEnded:
+                print("ScoreValue = " + GetCorrectAnswers());
+                WordsEndedBehaviour();
+                break;
             case GAME_EVENTS.BuildTask:
                 IWorkout workout = parametr as IWorkout;
                 subWorkout = workout.WorkoutName;
                 currentWord = workout.GetCurrentWord();
+                break;
+            case GAME_EVENTS.ContinueWorkout:
+                RestartWorkOut();
                 break;
         }
     }
@@ -261,12 +296,7 @@ public class WorkoutManager : MonoBehaviour, IObserver
     private void Start()
     {
         levelManeger = FindObjectOfType<LevelManeger>();
-
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.ButtonHandlerLoaded);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
-
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
+        SubscribeToEvents();
     }
     #endregion
 }
