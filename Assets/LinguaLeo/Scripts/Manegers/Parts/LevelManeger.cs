@@ -39,9 +39,4 @@ public class LevelManeger : MonoBehaviour
         int buildIndex = SceneManagerAdapt.GetActiveScene().buildIndex + 1;
         SceneManagerAdapt.LoadScene(buildIndex);
     }
-
-    void Start()
-    {
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
-    }
 }
