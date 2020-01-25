@@ -1,75 +1,201 @@
 fileFormatVersion: 2
 guid: be68bea9a615ee44d92b269c6eaa0982
-timeCreated: 1525952206
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: asteroids-sprite_0
-    21300002: asteroids-sprite_1
-    21300004: asteroids-sprite_2
-    21300006: asteroids-sprite_3
-    21300008: asteroids-sprite_4
-    21300010: asteroids-sprite_5
-    21300012: asteroids-sprite_6
-    21300014: asteroids-sprite_7
-    21300016: asteroids-sprite_8
-    21300018: asteroids-sprite_9
-    21300020: asteroids-sprite_10
-    21300022: asteroids-sprite_11
-    21300024: asteroids-sprite_12
-    21300026: asteroids-sprite_13
-    21300028: asteroids-sprite_14
-    21300030: asteroids-sprite_15
-    21300032: asteroids-sprite_16
-    21300034: asteroids-sprite_17
-    21300036: asteroids-sprite_18
-    21300038: asteroids-sprite_19
-    21300040: asteroids-sprite_20
-    21300042: asteroids-sprite_21
-    21300044: asteroids-sprite_22
-    21300046: asteroids-sprite_23
-    21300048: asteroids-sprite_24
-    21300050: asteroids-sprite_25
-    21300052: asteroids-sprite_26
-    21300054: asteroids-sprite_27
-    21300056: asteroids-sprite_28
-    21300058: asteroids-sprite_29
-    21300060: asteroids-sprite_30
-    21300062: asteroids-sprite_31
-    21300064: asteroids-sprite_32
-    21300066: asteroids-sprite_33
-    21300068: asteroids-sprite_34
-    21300070: asteroids-sprite_35
-    21300072: asteroids-sprite_36
-    21300074: asteroids-sprite_37
-    21300076: asteroids-sprite_38
-    21300078: asteroids-sprite_39
-    21300080: asteroids-sprite_40
-    21300082: asteroids-sprite_41
-    21300084: asteroids-sprite_42
-    21300086: asteroids-sprite_43
-    21300088: asteroids-sprite_44
-    21300090: asteroids-sprite_45
-    21300092: asteroids-sprite_46
-    21300094: asteroids-sprite_47
-    21300096: asteroids-sprite_48
-    21300098: asteroids-sprite_49
-    21300100: asteroids-sprite_50
-    21300102: asteroids-sprite_51
-    21300104: asteroids-sprite_52
-    21300106: asteroids-sprite_53
-    21300108: asteroids-sprite_54
-    21300110: asteroids-sprite_55
-    21300112: asteroids-sprite_56
-    21300114: asteroids-sprite_57
-    21300116: asteroids-sprite_58
-    21300118: asteroids-sprite_59
-    21300120: asteroids-sprite_60
-    21300122: asteroids-sprite_61
-    21300124: asteroids-sprite_62
-    21300126: asteroids-sprite_63
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: asteroids-sprite_0
+  - first:
+      213: 21300002
+    second: asteroids-sprite_1
+  - first:
+      213: 21300004
+    second: asteroids-sprite_2
+  - first:
+      213: 21300006
+    second: asteroids-sprite_3
+  - first:
+      213: 21300008
+    second: asteroids-sprite_4
+  - first:
+      213: 21300010
+    second: asteroids-sprite_5
+  - first:
+      213: 21300012
+    second: asteroids-sprite_6
+  - first:
+      213: 21300014
+    second: asteroids-sprite_7
+  - first:
+      213: 21300016
+    second: asteroids-sprite_8
+  - first:
+      213: 21300018
+    second: asteroids-sprite_9
+  - first:
+      213: 21300020
+    second: asteroids-sprite_10
+  - first:
+      213: 21300022
+    second: asteroids-sprite_11
+  - first:
+      213: 21300024
+    second: asteroids-sprite_12
+  - first:
+      213: 21300026
+    second: asteroids-sprite_13
+  - first:
+      213: 21300028
+    second: asteroids-sprite_14
+  - first:
+      213: 21300030
+    second: asteroids-sprite_15
+  - first:
+      213: 21300032
+    second: asteroids-sprite_16
+  - first:
+      213: 21300034
+    second: asteroids-sprite_17
+  - first:
+      213: 21300036
+    second: asteroids-sprite_18
+  - first:
+      213: 21300038
+    second: asteroids-sprite_19
+  - first:
+      213: 21300040
+    second: asteroids-sprite_20
+  - first:
+      213: 21300042
+    second: asteroids-sprite_21
+  - first:
+      213: 21300044
+    second: asteroids-sprite_22
+  - first:
+      213: 21300046
+    second: asteroids-sprite_23
+  - first:
+      213: 21300048
+    second: asteroids-sprite_24
+  - first:
+      213: 21300050
+    second: asteroids-sprite_25
+  - first:
+      213: 21300052
+    second: asteroids-sprite_26
+  - first:
+      213: 21300054
+    second: asteroids-sprite_27
+  - first:
+      213: 21300056
+    second: asteroids-sprite_28
+  - first:
+      213: 21300058
+    second: asteroids-sprite_29
+  - first:
+      213: 21300060
+    second: asteroids-sprite_30
+  - first:
+      213: 21300062
+    second: asteroids-sprite_31
+  - first:
+      213: 21300064
+    second: asteroids-sprite_32
+  - first:
+      213: 21300066
+    second: asteroids-sprite_33
+  - first:
+      213: 21300068
+    second: asteroids-sprite_34
+  - first:
+      213: 21300070
+    second: asteroids-sprite_35
+  - first:
+      213: 21300072
+    second: asteroids-sprite_36
+  - first:
+      213: 21300074
+    second: asteroids-sprite_37
+  - first:
+      213: 21300076
+    second: asteroids-sprite_38
+  - first:
+      213: 21300078
+    second: asteroids-sprite_39
+  - first:
+      213: 21300080
+    second: asteroids-sprite_40
+  - first:
+      213: 21300082
+    second: asteroids-sprite_41
+  - first:
+      213: 21300084
+    second: asteroids-sprite_42
+  - first:
+      213: 21300086
+    second: asteroids-sprite_43
+  - first:
+      213: 21300088
+    second: asteroids-sprite_44
+  - first:
+      213: 21300090
+    second: asteroids-sprite_45
+  - first:
+      213: 21300092
+    second: asteroids-sprite_46
+  - first:
+      213: 21300094
+    second: asteroids-sprite_47
+  - first:
+      213: 21300096
+    second: asteroids-sprite_48
+  - first:
+      213: 21300098
+    second: asteroids-sprite_49
+  - first:
+      213: 21300100
+    second: asteroids-sprite_50
+  - first:
+      213: 21300102
+    second: asteroids-sprite_51
+  - first:
+      213: 21300104
+    second: asteroids-sprite_52
+  - first:
+      213: 21300106
+    second: asteroids-sprite_53
+  - first:
+      213: 21300108
+    second: asteroids-sprite_54
+  - first:
+      213: 21300110
+    second: asteroids-sprite_55
+  - first:
+      213: 21300112
+    second: asteroids-sprite_56
+  - first:
+      213: 21300114
+    second: asteroids-sprite_57
+  - first:
+      213: 21300116
+    second: asteroids-sprite_58
+  - first:
+      213: 21300118
+    second: asteroids-sprite_59
+  - first:
+      213: 21300120
+    second: asteroids-sprite_60
+  - first:
+      213: 21300122
+    second: asteroids-sprite_61
+  - first:
+      213: 21300124
+    second: asteroids-sprite_62
+  - first:
+      213: 21300126
+    second: asteroids-sprite_63
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -87,6 +213,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -97,7 +225,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: -1
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -109,18 +237,21 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -130,7 +261,9 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - buildTarget: Standalone
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -140,6 +273,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -157,6 +291,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_1
       rect:
@@ -171,6 +312,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_2
       rect:
@@ -185,6 +333,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_3
       rect:
@@ -199,6 +354,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_4
       rect:
@@ -213,6 +375,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_5
       rect:
@@ -227,6 +396,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_6
       rect:
@@ -241,6 +417,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_7
       rect:
@@ -255,6 +438,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_8
       rect:
@@ -269,6 +459,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_9
       rect:
@@ -283,6 +480,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_10
       rect:
@@ -297,6 +501,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_11
       rect:
@@ -311,6 +522,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_12
       rect:
@@ -325,6 +543,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_13
       rect:
@@ -339,6 +564,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_14
       rect:
@@ -353,6 +585,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_15
       rect:
@@ -367,6 +606,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e3305410000000000800000000000000
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_16
       rect:
@@ -381,6 +627,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_17
       rect:
@@ -395,6 +648,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_18
       rect:
@@ -409,6 +669,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_19
       rect:
@@ -423,6 +690,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_20
       rect:
@@ -437,6 +711,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 84305410000000000800000000000000
+      internalID: 21300040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_21
       rect:
@@ -451,6 +732,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a4305410000000000800000000000000
+      internalID: 21300042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_22
       rect:
@@ -465,6 +753,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c4305410000000000800000000000000
+      internalID: 21300044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_23
       rect:
@@ -479,6 +774,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e4305410000000000800000000000000
+      internalID: 21300046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_24
       rect:
@@ -493,6 +795,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 05305410000000000800000000000000
+      internalID: 21300048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_25
       rect:
@@ -507,6 +816,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 25305410000000000800000000000000
+      internalID: 21300050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_26
       rect:
@@ -521,6 +837,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 45305410000000000800000000000000
+      internalID: 21300052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_27
       rect:
@@ -535,6 +858,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 65305410000000000800000000000000
+      internalID: 21300054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_28
       rect:
@@ -549,6 +879,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 85305410000000000800000000000000
+      internalID: 21300056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_29
       rect:
@@ -563,6 +900,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a5305410000000000800000000000000
+      internalID: 21300058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_30
       rect:
@@ -577,6 +921,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c5305410000000000800000000000000
+      internalID: 21300060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_31
       rect:
@@ -591,6 +942,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e5305410000000000800000000000000
+      internalID: 21300062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_32
       rect:
@@ -605,6 +963,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 06305410000000000800000000000000
+      internalID: 21300064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_33
       rect:
@@ -619,6 +984,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 26305410000000000800000000000000
+      internalID: 21300066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_34
       rect:
@@ -633,6 +1005,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 46305410000000000800000000000000
+      internalID: 21300068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_35
       rect:
@@ -647,6 +1026,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 66305410000000000800000000000000
+      internalID: 21300070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_36
       rect:
@@ -661,6 +1047,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 86305410000000000800000000000000
+      internalID: 21300072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_37
       rect:
@@ -675,6 +1068,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a6305410000000000800000000000000
+      internalID: 21300074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_38
       rect:
@@ -689,6 +1089,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c6305410000000000800000000000000
+      internalID: 21300076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_39
       rect:
@@ -703,6 +1110,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e6305410000000000800000000000000
+      internalID: 21300078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_40
       rect:
@@ -717,6 +1131,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 07305410000000000800000000000000
+      internalID: 21300080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_41
       rect:
@@ -731,6 +1152,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 27305410000000000800000000000000
+      internalID: 21300082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_42
       rect:
@@ -745,6 +1173,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 47305410000000000800000000000000
+      internalID: 21300084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_43
       rect:
@@ -759,6 +1194,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 67305410000000000800000000000000
+      internalID: 21300086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_44
       rect:
@@ -773,6 +1215,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 87305410000000000800000000000000
+      internalID: 21300088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_45
       rect:
@@ -787,6 +1236,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a7305410000000000800000000000000
+      internalID: 21300090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_46
       rect:
@@ -801,6 +1257,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c7305410000000000800000000000000
+      internalID: 21300092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_47
       rect:
@@ -815,6 +1278,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e7305410000000000800000000000000
+      internalID: 21300094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_48
       rect:
@@ -829,6 +1299,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 08305410000000000800000000000000
+      internalID: 21300096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_49
       rect:
@@ -843,6 +1320,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 28305410000000000800000000000000
+      internalID: 21300098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_50
       rect:
@@ -857,6 +1341,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 48305410000000000800000000000000
+      internalID: 21300100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_51
       rect:
@@ -871,6 +1362,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 68305410000000000800000000000000
+      internalID: 21300102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_52
       rect:
@@ -885,6 +1383,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 88305410000000000800000000000000
+      internalID: 21300104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_53
       rect:
@@ -899,6 +1404,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a8305410000000000800000000000000
+      internalID: 21300106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_54
       rect:
@@ -913,6 +1425,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c8305410000000000800000000000000
+      internalID: 21300108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_55
       rect:
@@ -927,6 +1446,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e8305410000000000800000000000000
+      internalID: 21300110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_56
       rect:
@@ -941,6 +1467,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 09305410000000000800000000000000
+      internalID: 21300112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_57
       rect:
@@ -955,6 +1488,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 29305410000000000800000000000000
+      internalID: 21300114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_58
       rect:
@@ -969,6 +1509,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 49305410000000000800000000000000
+      internalID: 21300116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_59
       rect:
@@ -983,6 +1530,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 69305410000000000800000000000000
+      internalID: 21300118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_60
       rect:
@@ -997,6 +1551,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 89305410000000000800000000000000
+      internalID: 21300120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_61
       rect:
@@ -1011,6 +1572,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a9305410000000000800000000000000
+      internalID: 21300122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_62
       rect:
@@ -1025,6 +1593,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c9305410000000000800000000000000
+      internalID: 21300124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: asteroids-sprite_63
       rect:
@@ -1039,9 +1614,26 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e9305410000000000800000000000000
+      internalID: 21300126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

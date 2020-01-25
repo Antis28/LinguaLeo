@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-class BrainStorm : IObserver
+public class BrainStorm : IObserver
 {
     private LevelManeger levelManeger;
     private Workout core;
@@ -48,10 +48,11 @@ class BrainStorm : IObserver
             case 5:
                 if (!core.TrainingDone())
                 {
-                    stage = 0;
+                    ResetStage();
                     Run();
                     return;
                 }
+
                 TerminateBrainStorm(sceneName);
                 break;
             case 100:

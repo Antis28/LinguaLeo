@@ -13,7 +13,7 @@ public class HealthbarScript : MonoBehaviour, IObserver
     Animator addbrainvalue = null;
 
     private Image healthbarFilling;
-    private int health;
+    private float health;
 
     // Use this for initialization
     void Start()
@@ -67,13 +67,13 @@ public class HealthbarScript : MonoBehaviour, IObserver
     
     private void updateHealth()
     {
-        var fillingAmount = 1f * health / maxHealth;
+        var fillingAmount = health / maxHealth;
         healthbarFilling.fillAmount = fillingAmount;
     }
-    private void updateHealth(int value)
+    private void updateHealth(float value)
     {
         health = value;
-        float fillingAmount = 1f * health / maxHealth;
+        float fillingAmount = health / maxHealth;
         healthbarFilling.fillAmount = fillingAmount;
         PercentText.text = (int)(fillingAmount * 100) + " %";
     }

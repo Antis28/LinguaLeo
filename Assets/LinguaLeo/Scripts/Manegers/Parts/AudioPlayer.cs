@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioPlayer : MonoBehaviour
@@ -15,11 +15,11 @@ public class AudioPlayer : MonoBehaviour
 
     AssetBundle voiceBundle;
 
-    private string bundleFolder = @"M:\My_projects\!_Unity\LinguaLeo\Assets\AssetBundles\";//@"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\";//"/Data/Audio";
-    private string bundleName = "voices";
+    private readonly string bundleFolder = @"M:\My_projects\!_Unity\LinguaLeo\Assets\AssetBundles\";//@"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\";//"/Data/Audio";
+    private readonly string bundleName = "voices";
 
-    private string resFolder = @"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\OGG\";
-    private string resExt = ".ogg";
+    private readonly string resFolder = @"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\OGG\";
+    private readonly string resExt = ".ogg";
 
     private string lastPath = null;
 
@@ -41,31 +41,43 @@ public class AudioPlayer : MonoBehaviour
         //sayClip = Resources.Load<AudioClip>(folder + "/" + fileName);
         //sayClip = ExtractFromBundle();
         lastPath = resFolder + fileName + resExt;
-        sayClip = Utilities.LoadMusicFromFile(lastPath);
+        sayClip = null;
     }
     public void SayWord()
     {
         if (sayClip == null)
         {
-            Debug.Log("Clip not loaded");
-            sayClip = Utilities.LoadMusicFromFile(lastPath);
-            return;
+            StartCoroutine(LoadMusicFromFile());
         }
         StartCoroutine(WaitLoadingAudio());
     }
 
+    public IEnumerator LoadMusicFromFile()
+    {
+        if (!File.Exists(lastPath))
+            throw new FileNotFoundException();
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://" + lastPath, AudioType.OGGVORBIS))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                sayClip = DownloadHandlerAudioClip.GetContent(www);
+            }
+        }
+    }
+
     IEnumerator WaitLoadingAudio()
     {
-        while (sayClip.loadState != AudioDataLoadState.Loaded)
+        while (sayClip == null)
         {
             yield return null;
         }
         Music.PlayOneShot(sayClip);
-    }
-
-    public void Start()
-    {
-        //LoadBundle();
     }
 
     private void LoadBundle()

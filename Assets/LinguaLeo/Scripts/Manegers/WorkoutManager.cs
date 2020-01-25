@@ -6,7 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class WorkoutManager : MonoBehaviour, IObserver
 {
-    private int questMaxCount = 10;
+    /// <summary>
+    /// Количество слов которое можно изучать в мозговом штурме.
+    /// </summary>
+    [SerializeField]
+    private int brainstormQuestCount = 5;
+
+    /// <summary>
+    /// Количество слов которое можно в простых тренировках.
+    /// </summary>
+    [SerializeField]
+    private int simpleQuestCount = 10;
+
+    private int questMaxCount = 0;
     private int questsPassedCount = 0;
     private const int ANSWER_COUNT = 5;
 
@@ -18,15 +30,34 @@ public class WorkoutManager : MonoBehaviour, IObserver
     private WorkoutNames currentWorkout;
     private WorkoutNames subWorkout;
     private Workout core;
+    private float scorePaceInBrainStorm = 0.25f;
+    private float scorePaceInSimpleWorkOut = 1f;
 
-
-    public int GetBrainTasks()
+    public BrainStorm BrainStorm
     {
-        return 16;
+        get
+        {
+            throw new System.NotImplementedException();
+        }
+
+        set
+        {
+        }
     }
 
-    public int GetCorrectAnswers()
+    #region Методы
+    public int GetBrainTasks()
     {
+        int workoutCount = 4;
+        return questMaxCount * workoutCount;
+    }
+
+    public float GetCorrectAnswers()
+    {
+        if (true)
+        {
+
+        }
         return GameManager.ScoreKeeper.ScoreValue;
     }
 
@@ -38,38 +69,26 @@ public class WorkoutManager : MonoBehaviour, IObserver
         }
     }
 
-    // Use this for initialization
-    void Start()
-    {
-        levelManeger = FindObjectOfType<LevelManeger>();
-
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.ButtonHandlerLoaded);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
-
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void ResetQuestCompletedCount()
     {
         questsPassedCount = 0;
     }
 
+    /// <summary>
+    /// Запуск новой тренировки.
+    /// </summary>
+    /// <param name="name">Название тренировки</param>
     public void RunWorkOut(WorkoutNames name)
     {
         currentWorkout = name;
         questsPassedCount = 0;
-        questMaxCount = 10;
+        questMaxCount = simpleQuestCount;
+        GameManager.ScoreKeeper.SetPriceScore(scorePaceInSimpleWorkOut);
 
         if (name == WorkoutNames.brainStorm)
         {
-            questMaxCount = 5;
+            GameManager.ScoreKeeper.SetPriceScore(scorePaceInBrainStorm);
+            questMaxCount = brainstormQuestCount;
             core = PrepareWorkout(WorkoutNames.brainStorm);
             brainStorm = new BrainStorm(core, levelManeger);
             return;
@@ -83,6 +102,14 @@ public class WorkoutManager : MonoBehaviour, IObserver
         }
     }
 
+    /// <summary>
+    /// Перезапуск последней тренировки.
+    /// </summary>
+    public void RestartWorkOut()
+    {
+        RunWorkOut(currentWorkout);
+    }
+
     public Workout GetWorkout()
     {
         if (brainStorm == null)
@@ -90,32 +117,6 @@ public class WorkoutManager : MonoBehaviour, IObserver
         else
             return brainStorm.GetsSubCore();
     }
-
-    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
-    {
-        switch (notificationName)
-        {
-            case GAME_EVENTS.ButtonHandlerLoaded:
-                StartBehaviour();
-                break;
-            case GAME_EVENTS.WordsEnded:
-                print("ScoreValue = " + GetCorrectAnswers());
-                WordsEndedBehaviour();
-                break;
-            case GAME_EVENTS.CorrectAnswer:
-                AddWorkoutProgress(currentWord, subWorkout);
-                if (currentWord.AllWorkoutDone())
-                    currentWord.AddLicenseLevel();
-                break;
-            case GAME_EVENTS.BuildTask:
-                IWorkout workout = parametr as IWorkout;
-                subWorkout = workout.WorkoutName;
-                currentWord = workout.GetCurrentWord();
-                break;
-        }
-    }
-
-
 
     private void CoreInitialization()
     {
@@ -141,6 +142,7 @@ public class WorkoutManager : MonoBehaviour, IObserver
                 GameManager.LevelManeger.LoadResultWorkOut();
                 break;
             case WorkoutNames.brainStorm:
+
                 brainStorm.Run();
                 break;
             default:
@@ -250,15 +252,51 @@ public class WorkoutManager : MonoBehaviour, IObserver
         }
     }
 
-    internal BrainStorm BrainStorm
+    private void SubscribeToEvents()
     {
-        get
-        {
-            throw new System.NotImplementedException();
-        }
+        var notification = GameManager.Notifications;
 
-        set
+        notification.AddListener(this, GAME_EVENTS.ButtonHandlerLoaded);
+        notification.AddListener(this, GAME_EVENTS.CorrectAnswer);
+        notification.AddListener(this, GAME_EVENTS.WordsEnded);
+        notification.AddListener(this, GAME_EVENTS.BuildTask);
+        notification.AddListener(this, GAME_EVENTS.ContinueWorkout);
+    }
+    
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+    {
+        switch (notificationName)
         {
+            case GAME_EVENTS.ButtonHandlerLoaded:
+                StartBehaviour();
+                break;
+            case GAME_EVENTS.CorrectAnswer:
+                AddWorkoutProgress(currentWord, subWorkout);
+                if (currentWord.AllWorkoutDone())
+                    currentWord.AddLicenseLevel();
+                break;
+            case GAME_EVENTS.WordsEnded:
+                print("ScoreValue = " + GetCorrectAnswers());
+                WordsEndedBehaviour();
+                break;
+            case GAME_EVENTS.BuildTask:
+                IWorkout workout = parametr as IWorkout;
+                subWorkout = workout.WorkoutName;
+                currentWord = workout.GetCurrentWord();
+                break;
+            case GAME_EVENTS.ContinueWorkout:
+                RestartWorkOut();
+                break;
         }
     }
+    #endregion
+
+    #region Жизненый цикл
+    // Use this for initialization
+    private void Start()
+    {
+        levelManeger = FindObjectOfType<LevelManeger>();
+        SubscribeToEvents();
+    }
+    #endregion
 }

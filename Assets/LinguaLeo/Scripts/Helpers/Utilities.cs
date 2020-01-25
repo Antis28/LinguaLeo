@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 
 using URandom = UnityEngine.Random;
-
+using UnityEngine.Networking;
 
 public class Utilities
 {
@@ -46,18 +46,6 @@ public class Utilities
         Sprite sprite = LoadSpriteFromFile(folder + ConverterUrlToName(fileName));
         return sprite;
 
-    }
-
-    public static AudioClip LoadMusicFromFile(string path)
-    {
-        if (!File.Exists(path))
-            return null;
-
-        WWW www = new WWW("file://" + path);// задаем ссылку на файл
-        //Debug.Log("file://" + path);
-
-        AudioClip clip = www.GetAudioClip(false, false);//[/url] получаем по ссылке аудиоклип        
-        return clip;
     }
 
     public static string ConverterUrlToName(string url, bool withExtension = true)
@@ -226,7 +214,7 @@ public class Utilities
         GameObject go = GameObject.Find(nameGO);
         if (go)
             return go.GetComponent<T>();
-        return default(T);
+        return default;
     }
 }
 

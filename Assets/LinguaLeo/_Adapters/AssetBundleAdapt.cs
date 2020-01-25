@@ -6,7 +6,7 @@ public class AssetBundleAdapt {
 
     public static AssetBundle LoadFromFile(string path)
     {
-#if UNITY_2017
+#if UNITY_2017 || UNITY_2018 || UNITY_2019
         return AssetBundle.LoadFromFile(path);
 #endif
 #if UNITY_5_2

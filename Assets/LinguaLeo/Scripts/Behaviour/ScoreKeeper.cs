@@ -2,10 +2,18 @@
 
 public class ScoreKeeper : MonoBehaviour, IObserver {
     [SerializeField]
-    private int score;
-    private readonly int currentScore = 1;
+    private float score;
+    private float priceScore = 1;
 
-    public  int ScoreValue
+    /// <summary>
+    /// Выставляет цену за выученое слово в тренировке.
+    /// </summary>
+    public void SetPriceScore(float price)
+    {
+        priceScore = price;
+    }
+
+    public float ScoreValue
     {
         get
         {
@@ -20,7 +28,7 @@ public class ScoreKeeper : MonoBehaviour, IObserver {
         ResetScore();
     }
 
-    public void AddScore(int points)
+    public void AddScore(float points)
     {
         score += points;
     }
@@ -35,7 +43,7 @@ public class ScoreKeeper : MonoBehaviour, IObserver {
         switch (notificationName)
         {
             case GAME_EVENTS.CorrectAnswer:
-                AddScore(currentScore);
+                AddScore(priceScore);
                 print("Верный ответ");
                 break;
         }
