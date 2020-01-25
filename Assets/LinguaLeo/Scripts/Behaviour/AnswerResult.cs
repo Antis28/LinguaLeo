@@ -74,8 +74,15 @@ public class AnswerResult : MonoBehaviour, IObserver
     // Use this for initialization
     void Start()
     {
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.NonCorrectAnswer);
-        GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
+        SubscribeToEvents();
+    }
+
+    private void SubscribeToEvents()
+    {
+        var notification = GameManager.Notifications;
+
+        notification.AddListener(this, GAME_EVENTS.CorrectAnswer);
+        notification.AddListener(this, GAME_EVENTS.NonCorrectAnswer);
+        notification.AddListener(this, GAME_EVENTS.BuildTask);
     }
 }

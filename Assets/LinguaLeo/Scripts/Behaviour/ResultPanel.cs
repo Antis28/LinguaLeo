@@ -26,7 +26,7 @@ public class ResultPanel : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        int score = GameManager.ScoreKeeper.ScoreValue;
+        float score = GameManager.ScoreKeeper.ScoreValue;
         ShowCaption(score);
         ShowLearn(score);
         EatingText.text = "100%";
@@ -60,7 +60,7 @@ public class ResultPanel : MonoBehaviour
 
     private void CheckContinueWorkout(Button button)
     {
-        int score = GameManager.ScoreKeeper.ScoreValue;
+        float score = GameManager.ScoreKeeper.ScoreValue;
         int wordInGroupRemain = GameManager.WordManeger.CountUntrainWordInGroup();
         if (wordInGroupRemain > 0)
         {
@@ -77,7 +77,7 @@ public class ResultPanel : MonoBehaviour
         }
     }
 
-    private void ShowCaption(int score)
+    private void ShowCaption(float score)
     {
         if (score == BED_RESULT)
         {
@@ -97,7 +97,7 @@ public class ResultPanel : MonoBehaviour
         }
     }
 
-    private void ShowLearn(int score)
+    private void ShowLearn(float score)
     {
         if (score < 0)
         {
@@ -114,7 +114,7 @@ public class ResultPanel : MonoBehaviour
     /// </summary>
     /// <param name="score"></param>
     /// <returns></returns>
-    private String GetStudiedWordsCount(int score)
+    private String GetStudiedWordsCount(float score)
     {
         if (score == 0 || score > 4)
             return string.Format("{0} слов изучено, ", score);
