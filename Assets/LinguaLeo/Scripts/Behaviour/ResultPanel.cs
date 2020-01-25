@@ -61,7 +61,7 @@ public class ResultPanel : MonoBehaviour
     private void CheckContinueWorkout(Button button)
     {
         int score = GameManager.ScoreKeeper.ScoreValue;
-        int wordInGroupRemain = GameManager.WordManeger.CountUntrainWordInGroup();// - score;
+        int wordInGroupRemain = GameManager.WordManeger.CountUntrainWordInGroup();
         if (wordInGroupRemain > 0)
         {
             button.interactable = true;
@@ -104,20 +104,35 @@ public class ResultPanel : MonoBehaviour
             Debug.LogError("score = " + score);
             score = 0;
         }
+        var resultText = GetStudiedWordsCount(score);
+        resultText += GetWordsCountLeft();
+        LearnText.text = resultText;
+    }
 
+    /// <summary>
+    /// Получить количество изученных слов.
+    /// </summary>
+    /// <param name="score"></param>
+    /// <returns></returns>
+    private String GetStudiedWordsCount(int score)
+    {
         if (score == 0 || score > 4)
-            LearnText.text = string.Format("{0} слов изучено, ", score);
+            return string.Format("{0} слов изучено, ", score);
         else if (score == 1)
-            LearnText.text = string.Format("{0} слово изучено, ", score);
-        else
-            LearnText.text = string.Format("{0} слова изучено, ", score);
+            return string.Format("{0} слово изучено, ", score);
 
-        int questCount = GameManager.WorkoutManager.QuestCompletedCount;
+        return string.Format("{0} слова изучено, ", score);
+    }
+
+    /// <summary>
+    /// Получить количество оставшихся слов на изучении.
+    /// </summary>
+    /// <param name="score"></param>
+    private String GetWordsCountLeft()
+    {
+        int wordsLeft = GameManager.WordManeger.CountUntrainWordInGroup();
         GameManager.WorkoutManager.ResetQuestCompletedCount();
-        //if (BEST_RESULT > questCount)
-            LearnText.text += string.Format("{0} на изучении", questCount - score);
-        //else
-        //    LearnText.text += string.Format("{0} на изучении", BEST_RESULT - score);
+        return string.Format("{0} на изучении", wordsLeft);
     }
 
 
