@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
-//Component for sending and receiving  
+
+/// <summary>
+/// Хранилище ссылок на синглтоны
+/// </summary>
+// Component for sending and receiving  
 [RequireComponent(typeof(WordManeger))]
 [RequireComponent(typeof(LevelManeger))]
 [RequireComponent(typeof(ScoreKeeper))]
@@ -8,11 +12,10 @@
 [RequireComponent(typeof(NotificationsManager))]
 [RequireComponent(typeof(LicensesManager))]
 [RequireComponent(typeof(WorkoutManager))]
-
 public class GameManager : MonoBehaviour
 {
     //public static Scene lastScene = SceneManager.GetActiveScene();
-
+    #region Поля
     //Internal reference to single active instance of object - for singleton behaviour
     private static GameManager instance = null;
     //Internal reference to notifications object
@@ -32,9 +35,12 @@ public class GameManager : MonoBehaviour
     private static WordManeger wordManeger = null;
 
     private static WorkoutManager workoutManager = null;
+    #endregion
 
-    //--------------------------------------------------------------------------------------
-    //C# property to retrieve currently active instance of object, if any
+    #region Свойства
+    /// <summary>
+    /// Экземпляр синглтона GameManager
+    /// </summary>
     public static GameManager Instance
     {
         get
@@ -94,7 +100,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //C# property to retrieve 
+    #region C# property to retrieve 
     public static ScoreKeeper ScoreKeeper
     {
         get
@@ -102,7 +108,7 @@ public class GameManager : MonoBehaviour
             if (scoreKeeper == null)
             {
                 CheckManyInstance<ScoreKeeper>();
-                scoreKeeper = instance.GetComponent<ScoreKeeper>();                
+                scoreKeeper = instance.GetComponent<ScoreKeeper>();
             }
             return scoreKeeper;
 
@@ -150,8 +156,11 @@ public class GameManager : MonoBehaviour
 
         }
     }
+    #endregion
+    #endregion
 
-    private static void CheckManyInstance<T>()where T : Object
+    #region Другие методы
+    private static void CheckManyInstance<T>() where T : Object
     {
 #if UNITY_EDITOR
         var manyInstanceSingleton = FindObjectsOfType<T>();
@@ -166,11 +175,29 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
+    /// <summary>
+    /// Возращает на сцену 0.
+    /// </summary>
+    public void RestartGame()
+    {
+        //Load first level        
+        SceneManagerAdapt.LoadScene(0);
+    }
+    /// <summary>
+    /// Завершает игру.
+    /// </summary>
+    public static void ExitGame()
+    {
+        LevelManeger.QuitGame();
+    }
+    #endregion
+
+    #region Жизненый цикл
     // Called before Start on object creation
     void Awake()
     {
         //Check if there is an existing instance of this object
-        if( (instance) && (instance.GetInstanceID() != GetInstanceID()) )
+        if ((instance) && (instance.GetInstanceID() != GetInstanceID()))
             DestroyImmediate(gameObject); //Delete duplicate
         else
         {
@@ -180,19 +207,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        
+
     }
-    
-    //Restart Game
-    public void RestartGame()
-    {
-        //Load first level        
-        SceneManagerAdapt.LoadScene(0);
-    }
-    //Exit Game
-    public static void ExitGame()
-    {
-        LevelManeger.QuitGame();
-    }
-    
+    #endregion
 }
