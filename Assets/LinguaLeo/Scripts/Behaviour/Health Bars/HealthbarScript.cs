@@ -26,7 +26,9 @@ public class HealthbarScript : MonoBehaviour, IObserver
 
     private void UpdateBrain()
     {
-        updateHealth(GameManager.WorkoutManager.GetCorrectAnswers());
+        //var correctAnswers = GameManager.WorkoutManager.GetCorrectAnswers();
+        var correctAnswers = GameManager.ScoreKeeper.ScoreValue;
+        updateHealth(correctAnswers);
     }
 
     public void Update()
