@@ -58,4 +58,9 @@ public class WordSetPanel : MonoBehaviour
     {
         return CaptionText.text;
     }
+
+    public override string ToString()
+    {
+        return groupName;
+    }
 }

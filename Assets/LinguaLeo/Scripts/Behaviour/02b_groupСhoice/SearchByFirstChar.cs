@@ -6,16 +6,17 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// Поиск в списке по первым набранным буквам.
+/// </summary>
 public class SearchByFirstChar : MonoBehaviour
 {
     public Text gt;
-    WordSetPanel[] allWordSetPanel = null;
     SelectGroup selectGroup = null;
 
     void Start()
     {
         gt = GetComponent<Text>();
-        allWordSetPanel = GetAllWordSetPanel();
         selectGroup = FindObjectOfType<SelectGroup>();
     }
     void Update()
@@ -47,7 +48,7 @@ public class SearchByFirstChar : MonoBehaviour
 
     private void GoToPanel(WordSetPanel panel)
     {
-        int index = allWordSetPanel.ToList().FindIndex((x) => panel.GetName() == x.GetName());
+        int index = selectGroup.GetTiles().ToList().FindIndex((x) => panel.GetName() == x.GetName());
 
         float high = selectGroup.CalulateHightContainer(index + 1);
         selectGroup.SetHeigtContent(high);
@@ -56,37 +57,24 @@ public class SearchByFirstChar : MonoBehaviour
 
     private WordSetPanel FindPanelByCaption(string substring)
     {
-        allWordSetPanel = GetAllWordSetPanel();
+        substring = substring.ToLower();
+        var allWordSetPanel = selectGroup.GetTiles();
 
-        var t = from p in allWordSetPanel
-                orderby p.GetName()
-                select p;
-        allWordSetPanel = t.ToArray();
+        var actualPanels = from p in allWordSetPanel
+                           orderby p.GetName()
+                           where p.GetName().ToLower().StartsWith(substring)
+                           select p;
+        if (actualPanels.Count() == 0)
+        {
+            actualPanels = from p in allWordSetPanel
+                           orderby p.GetName()
+                           where p.GetName().ToLower().Contains(substring)
+                           select p;
+        }
 
-        foreach (WordSetPanel panel in allWordSetPanel)
-        {
-            string panelName = panel.GetName().ToLower();
-            substring = substring.ToLower();
-            if (panelName.StartsWith(substring))
-            {
-                return panel;
-            }
-        }
-        foreach (WordSetPanel panel in allWordSetPanel)
-        {
-            string panelName = panel.GetName().ToLower();
-            substring = substring.ToLower();
-            if (panelName.Contains(substring))
-            {
-                return panel;
-            }
-        }
+        if (actualPanels.Count() > 0)
+            return actualPanels.First();
+
         return null;
-    }
-
-    private WordSetPanel[] GetAllWordSetPanel()
-    {
-        WordSetPanel[] allWordSetPanel = FindObjectsOfType<WordSetPanel>();
-        return allWordSetPanel;
     }
 }

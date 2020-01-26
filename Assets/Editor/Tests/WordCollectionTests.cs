@@ -31,7 +31,7 @@ public class WordCollectionsTest
 {
     private WordCollection _wordCollection;
     private const string NameGroup = "Цитатник_7";
-    private int _countWordsInGroup = 49;
+    private readonly int _countWordsInGroup = 49;
     private const string Path = @"Data/Base/WordBase.xml";
 
     [OneTimeSetUp]

@@ -1,23 +1,44 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Выбор группы слов для изучения.
+/// </summary>
 public class SelectGroup : MonoBehaviour, IObserver
 {
+    /// <summary>
+    /// Родительский объект в который будут складываться карточки группы.
+    /// </summary>
     [SerializeField]
-    GameObject content = null;
-    [SerializeField]
-    WordSetPanel panelPrefab = null;
+    private GameObject content = null;
 
-    // Use this for initialization
-    void Start()
+    /// <summary>
+    /// Образец карточки группы.
+    /// </summary>
+    [SerializeField]
+    private WordSetPanel panelPrefab = null;
+
+    /// <summary>
+    /// Список всех UI панелей групп слов.
+    /// </summary>
+    private WordSetPanel[] wordTiles;
+
+    /// <summary>
+    /// Инициализация
+    /// </summary>
+    private void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
     }
 
+    /// <summary>
+    /// Получает уведомления о игровых событиях.
+    /// </summary>
+    /// <param name="parametr">Параметры</param>
+    /// <param name="notificationName">Тип событя</param>
     void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
@@ -29,7 +50,12 @@ public class SelectGroup : MonoBehaviour, IObserver
         }
     }
 
-    private IEnumerator CreatePanels() //int spriteName
+    /// <summary>
+    /// Генерирует панели групп слов.
+    /// Ооочень медленно.
+    /// </summary>
+    /// <returns>необходимо для корутины</returns>
+    private IEnumerator CreatePanels()
     {
         List<WordGroup> group = GameManager.WordManeger.GetGroupNames();
         UpdateContentHeight(group.Count);
@@ -43,15 +69,26 @@ public class SelectGroup : MonoBehaviour, IObserver
         }
     }
 
+    /// <summary>
+    /// Создает отдельную панель для описания группы слов.
+    /// </summary>
+    /// <param name="sprite">Обложка</param>
+    /// <param name="caption">Название группы</param>
+    /// <param name="count">Количество слов в группе</param>
     private void CreateCard(Sprite sprite, string caption, int count)
     {
         WordSetPanel setPanel = Instantiate(panelPrefab, content.transform);
         setPanel.Init(sprite, caption, count);
     }
 
-    internal void HighLightTile(int index)
+    /// <summary>
+    /// Выделить плитку по индексу
+    /// и снять выделение со всех остальных.
+    /// </summary>
+    /// <param name="index">Индекс плитки</param>
+    public void HighLightTile(int index)
     {
-        WordSetPanel[] tiles = transform.GetComponentsInChildren<WordSetPanel>();
+        WordSetPanel[] tiles = GetTiles();
         foreach (var item in tiles)
         {
             item.GetComponent<Image>().color = Color.white;
@@ -61,33 +98,60 @@ public class SelectGroup : MonoBehaviour, IObserver
         tile.GetComponent<Image>().color = Color.yellow;
     }
 
+    /// <summary>
+    /// Получить все доступные плитки с группами слов.
+    /// </summary>
+    /// <returns>Плитки с группами слов</returns>
+    public WordSetPanel[] GetTiles()
+    {
+        if (wordTiles == null || wordTiles.Length < GameManager.WordManeger.GetGroupNames().Count)
+        {
+            wordTiles = transform.GetComponentsInChildren<WordSetPanel>();
+            var panels = from p in wordTiles
+                         orderby p.GetName()
+                         select p;
+            wordTiles = panels.ToArray();
+        }
+
+        return wordTiles;
+    }
+
+    /// <summary>
+    /// Расчет высоты Content
+    /// </summary>
     private void CalulateContentHight()
     {
-        float PANEL_HEIGHT = 500;
-        //TODO: вычислять колличество колонок динамически
+        float panelHeight = 500;
+
+        // TODO: вычислять колличество колонок динамически
         float clumnCount = 3;
         float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
         float panelCount = content.transform.childCount;
 
         Vector2 size = new Vector2();
         RectTransform rectContent = content.GetComponent<RectTransform>();
-        size.y = (PANEL_HEIGHT + panelYSpace) * panelCount / clumnCount;
+        size.y = (panelHeight + panelYSpace) * panelCount / clumnCount;
         rectContent.sizeDelta = size;
 
-        //обнуляем значения позиции(глюк в unity?)
-        //rectContent.localPosition = Vector3.zero;
+        // обнуляем значения позиции(глюк в unity?)
+        // rectContent.localPosition = Vector3.zero;
     }
 
     /// <summary>
     ///  Вычисляет высоту всех панелей в 3 колонки
     /// </summary>
     /// <param name="panelCount">колличество панелей</param>
+    /// <param name="columnCount">колличество колонок</param>
     private void UpdateContentHeight(float panelCount, float columnCount = 3)
     {
         float height = CalulateHightContainer(panelCount, columnCount);
         SetSizeContent(height);
     }
 
+    /// <summary>
+    /// Перемещает объект Content так, чтобы выбранная плитка была видна.!!!!!!!!!!!!
+    /// </summary>
+    /// <param name="height">Высота</param>
     private void SetSizeContent(float height)
     {
         Vector2 size = new Vector2
@@ -99,12 +163,19 @@ public class SelectGroup : MonoBehaviour, IObserver
         rectContent.localPosition = Vector3.zero;
     }
 
+    /// <summary>
+    /// Выставляет высоту Content так, чтобы все плитки поместились.
+    /// </summary>
+    /// <param name="height">Высота</param>
     public void SetHeigtContent(float height)
     {
-        Vector2 size = new Vector2();
-        //float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+        Vector2 size = new Vector2
+        {
+            y = height // -tileHeight / 2
+        };
+
+        // float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
         // отцентрировать плитку вертикально
-        size.y = height ;// -tileHeight / 2
         RectTransform rectContent = content.GetComponent<RectTransform>();
         rectContent.localPosition = size;
     }
@@ -112,18 +183,18 @@ public class SelectGroup : MonoBehaviour, IObserver
     /// <summary>
     /// Расчет высоты контейнера до последней карточки
     /// </summary>
-    /// <param name="panelCount"></param>
-    /// <param name="columnCount"></param>
-    /// <returns></returns>
+    /// <param name="panelCount">колличество панелей</param>
+    /// <param name="columnCount">колличество колонок</param>
+    /// <returns>Высота контейнера до последней карточки</returns>
     public float CalulateHightContainer(float panelCount, float columnCount = 3)
     {
         SetTileSize();
 
         float tileHeight = CalcTileHeight();
-        // Расчет высоты контейнера до последней карточки
-        float height = tileHeight * panelCount / columnCount - tileHeight;
+        float height = (tileHeight * panelCount / columnCount) - tileHeight;
         return height;
     }
+
     /// <summary>
     /// Меняет размер плитки в зависимости от
     /// ширины панели MainPanel
@@ -139,7 +210,6 @@ public class SelectGroup : MonoBehaviour, IObserver
         float pixelWidth = Camera.main.pixelWidth;
         float pixelHeight = Camera.main.pixelHeight;
         float ratioIndex = pixelWidth / pixelHeight;
-        
 
         if (ratio_16x9 == ratioIndex.ToString("0.0"))
         {
@@ -160,6 +230,7 @@ public class SelectGroup : MonoBehaviour, IObserver
             tileSize.x = 300;
             Debug.Log("ratio_5x4");
         }
+
         tileSize.y = tileSize.x;
         content.GetComponent<GridLayoutGroup>().cellSize = tileSize;
         GetComponent<RectTransform>().sizeDelta = sizeDelta;
@@ -168,12 +239,16 @@ public class SelectGroup : MonoBehaviour, IObserver
         Debug.Log("tileSize = " + tileSize);
     }
 
+    /// <summary>
+    /// Расчитывает высоту плитки.
+    /// </summary>
+    /// <returns>Высота плитки</returns>
     private float CalcTileHeight()
     {
         // Растояние между плитками сверху и снизу
         float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
         float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
-        float fullHeightPanel = (tileHeight + panelYSpace);
+        float fullHeightPanel = tileHeight + panelYSpace;
         return fullHeightPanel;
     }
 }

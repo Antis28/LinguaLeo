@@ -174,22 +174,6 @@ public class GameManager : MonoBehaviour
         }
 #endif
     }
-
-    /// <summary>
-    /// Возращает на сцену 0.
-    /// </summary>
-    public void RestartGame()
-    {
-        //Load first level        
-        SceneManagerAdapt.LoadScene(0);
-    }
-    /// <summary>
-    /// Завершает игру.
-    /// </summary>
-    public static void ExitGame()
-    {
-        LevelManeger.QuitGame();
-    }
     #endregion
 
     #region Жизненый цикл
@@ -204,10 +188,6 @@ public class GameManager : MonoBehaviour
             instance = this; //Make this object the only instance
             DontDestroyOnLoad(gameObject); //Set as do not destroy
         }
-    }
-    void Start()
-    {
-
     }
     #endregion
 }
