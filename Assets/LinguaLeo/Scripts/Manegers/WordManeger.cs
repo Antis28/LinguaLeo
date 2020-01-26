@@ -17,8 +17,8 @@ public class WordManeger : MonoBehaviour, IObserver
     private static string currentGroupName;
     private static List<WordGroup> groupNames;
 
-    private string folderXml = @"Data/Base";
-    private string fileNameXml = "WordBase.xml";
+    private readonly string folderXml = @"Data/Base";
+    private readonly string fileNameXml = "WordBase.xml";
 
 
     public List<WordLeo> GetAllWords()
