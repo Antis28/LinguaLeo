@@ -11,6 +11,7 @@ public class SelectGroup : MonoBehaviour, IObserver
     GameObject content = null;
     [SerializeField]
     WordSetPanel panelPrefab = null;
+    private WordSetPanel[] wordTiles;
 
     // Use this for initialization
     void Start()
@@ -49,9 +50,9 @@ public class SelectGroup : MonoBehaviour, IObserver
         setPanel.Init(sprite, caption, count);
     }
 
-    internal void HighLightTile(int index)
+    public void HighLightTile(int index)
     {
-        WordSetPanel[] tiles = transform.GetComponentsInChildren<WordSetPanel>();
+        WordSetPanel[] tiles = GetTiles();
         foreach (var item in tiles)
         {
             item.GetComponent<Image>().color = Color.white;
@@ -59,6 +60,16 @@ public class SelectGroup : MonoBehaviour, IObserver
 
         WordSetPanel tile = tiles[index];
         tile.GetComponent<Image>().color = Color.yellow;
+    }
+
+    public WordSetPanel[] GetTiles()
+    {
+        if (wordTiles == null)
+        {
+            wordTiles = transform.GetComponentsInChildren<WordSetPanel>();
+        }
+        
+        return wordTiles;
     }
 
     private void CalulateContentHight()
