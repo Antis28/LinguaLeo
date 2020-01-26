@@ -26,7 +26,7 @@ public class ResultPanel : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        float score = GameManager.ScoreKeeper.ScoreValue;
+        float score = GameManager.ScoreKeeper.GetCorrectAnswers();
         ShowCaption(score);
         ShowLearn(score);
         EatingText.text = "100%";
@@ -131,7 +131,6 @@ public class ResultPanel : MonoBehaviour
     private String GetWordsCountLeft()
     {
         int wordsLeft = GameManager.WordManeger.CountUntrainWordInGroup();
-        GameManager.WorkoutManager.ResetQuestCompletedCount();
         return string.Format("{0} на изучении", wordsLeft);
     }
 

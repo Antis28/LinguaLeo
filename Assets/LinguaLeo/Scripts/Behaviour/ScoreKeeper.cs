@@ -4,13 +4,14 @@ public class ScoreKeeper : MonoBehaviour, IObserver {
     [SerializeField]
     private float score;
     private float priceScore = 1;
+    private float scoreFactor;
 
     /// <summary>
     /// Выставляет цену за выученое слово в тренировке.
     /// </summary>
-    public void SetPriceScore(float price)
+    public void SetScoreFactor(float max)
     {
-        priceScore = price;
+        scoreFactor = max;
     }
 
     public float ScoreValue
@@ -19,6 +20,11 @@ public class ScoreKeeper : MonoBehaviour, IObserver {
         {
             return score;
         }
+    }
+
+    public float GetCorrectAnswers()
+    {
+        return scoreFactor * score;
     }
 
     // Use this for initialization

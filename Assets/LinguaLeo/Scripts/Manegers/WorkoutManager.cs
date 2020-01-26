@@ -10,17 +10,29 @@ public class WorkoutManager : MonoBehaviour, IObserver
     /// Количество слов которое можно изучать в мозговом штурме.
     /// </summary>
     [SerializeField]
+    [Header("Количество слов для изучения")]
     private int brainstormQuestCount = 5;
 
     /// <summary>
-    /// Количество слов которое можно в простых тренировках.
+    /// Количество слов которое можно изучать в простых тренировках.
     /// </summary>
     [SerializeField]
     private int simpleQuestCount = 10;
 
+    /// <summary>
+    /// Множитель для перевода в количество изученых слов в мозговом штурме
+    /// </summary>
+    [SerializeField]
+    [Header("Множитель для перевода в количество изученых слов.")]
+    private float factorScoreBrainStorm = 0.25f;
+
+    /// <summary>
+    /// Множитель для перевода в количество изученых слов в одиночных тренировках
+    /// </summary>
+    [SerializeField]
+    private float factorScoreSimpleWorkOut = 1f;
+
     private int questMaxCount = 0;
-    private int questsPassedCount = 0;
-    private const int ANSWER_COUNT = 5;
 
     BrainStorm brainStorm = null;
 
@@ -30,8 +42,6 @@ public class WorkoutManager : MonoBehaviour, IObserver
     private WorkoutNames currentWorkout;
     private WorkoutNames subWorkout;
     private Workout core;
-    private float scorePaceInBrainStorm = 0.25f;
-    private float scorePaceInSimpleWorkOut = 1f;
 
     public BrainStorm BrainStorm
     {
@@ -54,24 +64,12 @@ public class WorkoutManager : MonoBehaviour, IObserver
 
     public float GetCorrectAnswers()
     {
-        if (true)
+        if (currentWorkout == WorkoutNames.brainStorm)
         {
-
+            return GameManager.ScoreKeeper.ScoreValue * factorScoreBrainStorm;
         }
+
         return GameManager.ScoreKeeper.ScoreValue;
-    }
-
-    public int QuestCompletedCount
-    {
-        get
-        {
-            return questsPassedCount;
-        }
-    }
-
-    public void ResetQuestCompletedCount()
-    {
-        questsPassedCount = 0;
     }
 
     /// <summary>
@@ -81,13 +79,12 @@ public class WorkoutManager : MonoBehaviour, IObserver
     public void RunWorkOut(WorkoutNames name)
     {
         currentWorkout = name;
-        questsPassedCount = 0;
         questMaxCount = simpleQuestCount;
-        GameManager.ScoreKeeper.SetPriceScore(scorePaceInSimpleWorkOut);
+        GameManager.ScoreKeeper.SetScoreFactor(factorScoreSimpleWorkOut);
 
         if (name == WorkoutNames.brainStorm)
         {
-            GameManager.ScoreKeeper.SetPriceScore(scorePaceInBrainStorm);
+            GameManager.ScoreKeeper.SetScoreFactor(factorScoreBrainStorm);
             questMaxCount = brainstormQuestCount;
             core = PrepareWorkout(WorkoutNames.brainStorm);
             brainStorm = new BrainStorm(core, levelManeger);
@@ -198,7 +195,6 @@ public class WorkoutManager : MonoBehaviour, IObserver
             Debug.LogError("Нет доступных слов для тренировки" + currentWorkout);
             return null;
         }
-        questsPassedCount += core.tasks.Count;
         return core;
     }
 
@@ -276,7 +272,6 @@ public class WorkoutManager : MonoBehaviour, IObserver
                     currentWord.AddLicenseLevel();
                 break;
             case GAME_EVENTS.WordsEnded:
-                print("ScoreValue = " + GetCorrectAnswers());
                 WordsEndedBehaviour();
                 break;
             case GAME_EVENTS.BuildTask:
