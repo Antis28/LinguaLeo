@@ -12,7 +12,6 @@ using UnityEngine.UI;
 public class SearchByFirstChar : MonoBehaviour
 {
     public Text gt;
-    WordSetPanel[] allWordSetPanel = null;
     SelectGroup selectGroup = null;
 
     void Start()
@@ -59,7 +58,7 @@ public class SearchByFirstChar : MonoBehaviour
     private WordSetPanel FindPanelByCaption(string substring)
     {
         substring = substring.ToLower();
-        allWordSetPanel = GetAllWordSetPanel();
+        var allWordSetPanel = selectGroup.GetTiles();
 
         var actualPanels = from p in allWordSetPanel
                            orderby p.GetName()
@@ -77,15 +76,5 @@ public class SearchByFirstChar : MonoBehaviour
             return actualPanels.First();
 
         return null;
-    }
-
-    private WordSetPanel[] GetAllWordSetPanel()
-    {
-        allWordSetPanel = FindObjectsOfType<WordSetPanel>();
-        var panels = from p in allWordSetPanel
-                     orderby p.GetName()
-                     select p;
-        allWordSetPanel = panels.ToArray();
-        return allWordSetPanel;
     }
 }
