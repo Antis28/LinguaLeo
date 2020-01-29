@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Antis\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="M:\My_projects\!_Unity\LinguaLeo" t="IncludeRecursive">
+      <e p="_ReSharper.Caches\ReSharperHost193.LinguaLeo.00" t="ExcludeRecursive" />
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Editor" t="Include">
+          <e p="Hierarchy" t="Include">
+            <e p="BatchRename.cs" t="Include" />
+          </e>
+          <e p="Tests" t="Include">
+            <e p="WordCollectionTests.cs" t="Include" />
+            <e p="WordLeoTests.cs" t="Include" />
+          </e>
+        </e>
+        <e p="HitGun.cs" t="Include" />
+        <e p="LinguaLeo" t="Include">
+          <e p="_Adapters" t="Include">
+            <e p="AssetBundleAdapt.cs" t="Include" />
+            <e p="SceneManagerAdapt.cs" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Behaviour" t="Include">
+              <e p="02b_groupСhoice" t="Include">
+                <e p="SearchByFirstChar.cs" t="Include" />
+                <e p="SelectGroup.cs" t="Include" />
+                <e p="WordSetPanel.cs" t="Include" />
+              </e>
+              <e p="02c_wordView" t="Include">
+                <e p="SearchWordCardByChar.cs" t="Include" />
+                <e p="WordInfoPanel.cs" t="Include" />
+                <e p="WordView.cs" t="Include" />
+              </e>
+              <e p="AnswerResult.cs" t="Include" />
+              <e p="ButtonComponent.cs" t="Include" />
+              <e p="Health Bars" t="Include">
+                <e p="HealthbarScript.cs" t="Include" />
+              </e>
+              <e p="LoadSceneButton.cs" t="Include" />
+              <e p="QuitHelper.cs" t="Include" />
+              <e p="ResultPanel.cs" t="Include" />
+              <e p="ScoreKeeper.cs" t="Include" />
+              <e p="SelectWorkoutButton.cs" t="Include" />
+              <e p="SymbolicLivesCounter.cs" t="Include" />
+              <e p="WordInfo.cs" t="Include" />
+            </e>
+            <e p="DebugUI.cs" t="Include" />
+            <e p="Helpers" t="Include">
+              <e p="Interfaces" t="Include">
+                <e p="IObserver.cs" t="Include" />
+                <e p="IWorkout.cs" t="Include" />
+              </e>
+              <e p="Licences" t="Include">
+                <e p="LicenseLevels.cs" t="Include" />
+                <e p="LicenseTimeout.cs" t="Include" />
+                <e p="LicenseTimeTraining.cs" t="Include" />
+              </e>
+              <e p="QuestionLeo.cs" t="Include" />
+              <e p="SceneNames.cs" t="Include" />
+              <e p="Settings.cs" t="Include" />
+              <e p="Utilities.cs" t="Include" />
+              <e p="WordCollection.cs" t="Include" />
+              <e p="WordCountInGroup.cs" t="Include" />
+              <e p="WordGroup.cs" t="Include" />
+              <e p="WordLeo.cs" t="Include" />
+              <e p="WorkoutNames.cs" t="Include" />
+              <e p="WorkoutProgress.cs" t="Include" />
+              <e p="XML" t="Include">
+                <e p="XmlSerializableDictionary.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Manegers" t="Include">
+              <e p="ButtonsHandler.cs" t="Include" />
+              <e p="GameManager.cs" t="Include" />
+              <e p="NotificationsManager.cs" t="Include" />
+              <e p="Parts" t="Include">
+                <e p="AudioPlayer.cs" t="Include" />
+                <e p="LevelManeger.cs" t="Include" />
+                <e p="LicensesManager.cs" t="Include" />
+                <e p="LoadSaveManager.cs" t="Include" />
+              </e>
+              <e p="ResolutionMeneger.cs" t="Include" />
+              <e p="WordManeger.cs" t="Include" />
+              <e p="WorkoutManager.cs" t="Include" />
+            </e>
+            <e p="Workout" t="Include">
+              <e p="AudioTest.cs" t="Include" />
+              <e p="BrainStorm.cs" t="Include" />
+              <e p="Reiteration.cs" t="Include" />
+              <e p="Savah.cs" t="Include" />
+              <e p="WordPuzzle.cs" t="Include" />
+              <e p="WordToTranslate.cs" t="Include" />
+              <e p="Workout.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="LinguaLeo.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
