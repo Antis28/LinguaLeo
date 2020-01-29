@@ -167,12 +167,12 @@ public class Utilities
     public static List<WordLeo> SortWordsByProgress(List<WordLeo> words)
     {
         var result = from word in words
-                     orderby word.GetProgressCount() descending,
-                            word.GetLicenseValidityTime(),
-                            word.GetLicense() descending
-                     select word;
+                    orderby word.GetProgressCount() descending,
+                    word.GetLicense() descending,
+                    word.GetLicenseValidityTime()
+                    select word;
 
-        List<WordLeo> sortedWordGroups = result.ToList();
+        var sortedWordGroups = result.ToList();
         return sortedWordGroups;
     }
 

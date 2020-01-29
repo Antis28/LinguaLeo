@@ -429,6 +429,6 @@ public class WordLeo : IEquatable<WordLeo>
     override
     public string ToString()
     {
-        return wordValue + " - " + GetProgressCount() + "% - " + progress.license;
+        return wordValue + " - " + GetProgressCount() + "% " + GetProgressCount() + "мин. " + progress.license;
     }
 }
