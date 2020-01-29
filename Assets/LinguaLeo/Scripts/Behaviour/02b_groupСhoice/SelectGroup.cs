@@ -14,17 +14,17 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
     /// </summary>
     public class SelectGroup : MonoBehaviour, IObserver
     {
+        private const float PanelHeight = 500;
+
         /// <summary>
         /// Родительский объект в который будут складываться карточки группы.
         /// </summary>
-        [SerializeField]
-        private GameObject content = null;
+        [SerializeField] private GameObject content = null;
 
         /// <summary>
         /// Образец карточки группы.
         /// </summary>
-        [SerializeField]
-        private WordSetPanel panelPrefab = null;
+        [SerializeField] private WordSetPanel panelPrefab = null;
 
         /// <summary>
         /// Список всех UI панелей групп слов.
@@ -126,8 +126,6 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// </summary>
         private void CalulateContentHight()
         {
-            float panelHeight = 500;
-
             // TODO: вычислять колличество колонок динамически
             float clumnCount = 3;
             float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
@@ -135,7 +133,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
 
             Vector2 size = new Vector2();
             RectTransform rectContent = content.GetComponent<RectTransform>();
-            size.y = (panelHeight + panelYSpace) * panelCount / clumnCount;
+            size.y = (PanelHeight + panelYSpace) * panelCount / clumnCount;
             rectContent.sizeDelta = size;
 
             // обнуляем значения позиции(глюк в unity?)
@@ -188,15 +186,20 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// <summary>
         /// Расчет высоты контейнера до последней карточки
         /// </summary>
-        /// <param name="panelCount">колличество панелей</param>
+        /// <param name="panelIndex">номер панели</param>
         /// <param name="columnCount">колличество колонок</param>
         /// <returns>Высота контейнера до последней карточки</returns>
-        public float CalulateHightContainer(float panelCount, float columnCount = 3)
+        public float CalulateHightContainer(float panelIndex, float columnCount = 3)
         {
             SetTileSize();
 
-            float tileHeight = CalcTileHeight();
-            float height = (tileHeight * panelCount / columnCount) - tileHeight;
+            var tileHeight = CalcTileHeight();
+            var deltaRow = Mathf.Ceil(panelIndex / columnCount);
+            var deltaContentHeight = tileHeight * deltaRow;
+
+            var deltaTileHeight = tileHeight + (tileHeight / 2) + 15;
+
+            var height = deltaContentHeight - deltaTileHeight;
             return height;
         }
 

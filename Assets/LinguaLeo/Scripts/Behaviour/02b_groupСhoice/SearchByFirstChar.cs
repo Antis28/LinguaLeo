@@ -6,26 +6,27 @@ using UnityEngine.UI;
 namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
 {
     /// <summary>
-    /// Поиск в списке по первым набранным буквам.
+    ///     Поиск в списке по первым набранным буквам.
     /// </summary>
     public class SearchByFirstChar : MonoBehaviour
     {
         public Text gt;
-        SelectGroup selectGroup = null;
+        private SelectGroup selectGroup;
 
-        void Start()
+        private void Start()
         {
             gt = GetComponent<Text>();
             selectGroup = FindObjectOfType<SelectGroup>();
         }
-        void Update()
+
+        private void Update()
         {
             FindSubString();
         }
 
         private void FindSubString()
         {
-            foreach (char c in Input.inputString)
+            foreach (var c in Input.inputString)
             {
                 if (c == "\b"[0])
                 {
@@ -34,10 +35,11 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
                         gt.text = gt.text.Substring(0, gt.text.Length - 1);
                 }
                 else
+                {
                     gt.text += c;
+                }
 
-
-                WordSetPanel panel = FindPanelByCaption(gt.text);
+                var panel = FindPanelByCaption(gt.text);
                 if (panel == null)
                     return;
                 GoToPanel(panel);
@@ -47,9 +49,9 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
 
         private void GoToPanel(WordSetPanel panel)
         {
-            int index = selectGroup.GetTiles().ToList().FindIndex((x) => panel.GetName() == x.GetName());
+            var index = selectGroup.GetTiles().ToList().FindIndex(x => panel.GetName() == x.GetName());
 
-            float high = selectGroup.CalulateHightContainer(index + 1);
+            var high = selectGroup.CalulateHightContainer(index + 1);
             selectGroup.SetHeigtContent(high);
             selectGroup.HighLightTile(index);
         }
@@ -63,18 +65,13 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
                 orderby p.GetName()
                 where p.GetName().ToLower().StartsWith(substring)
                 select p;
-            if (actualPanels.Count() == 0)
-            {
+            if (!actualPanels.Any())
                 actualPanels = from p in allWordSetPanel
                     orderby p.GetName()
                     where p.GetName().ToLower().Contains(substring)
                     select p;
-            }
 
-            if (actualPanels.Count() > 0)
-                return actualPanels.First();
-
-            return null;
+            return actualPanels.Count() > 0 ? actualPanels.First() : null;
         }
     }
 }
