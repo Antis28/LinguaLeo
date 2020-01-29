@@ -51,7 +51,8 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         {
             var index = selectGroup.GetTiles().ToList().FindIndex(x => panel.GetName() == x.GetName());
 
-            var high = selectGroup.CalulateHightContainer(index + 1);
+            var high = selectGroup.GetHightToTile(index);
+            
             selectGroup.SetHeigtContent(high);
             selectGroup.HighLightTile(index);
         }

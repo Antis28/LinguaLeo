@@ -147,7 +147,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// <param name="columnCount">колличество колонок</param>
         private void UpdateContentHeight(float panelCount, float columnCount = 3)
         {
-            float height = CalulateHightContainer(panelCount, columnCount);
+            float height = GetHightContainer(panelCount, columnCount);
             SetSizeContent(height);
         }
 
@@ -184,23 +184,45 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         }
 
         /// <summary>
-        /// Расчет высоты контейнера до последней карточки
+        /// Получить высоту контейнера до последней плитки
         /// </summary>
-        /// <param name="panelIndex">номер панели</param>
+        /// <param name="panelIndex">номер плитки</param>
         /// <param name="columnCount">колличество колонок</param>
         /// <returns>Высота контейнера до последней карточки</returns>
-        public float CalulateHightContainer(float panelIndex, float columnCount = 3)
+        public float GetHightContainer(float panelIndex, float columnCount = 3)
         {
             SetTileSize();
+            return DeltaContentHeight(panelIndex, columnCount);
+        }
 
+        /// <summary>
+        /// Получить высоту контейнера до плитки
+        /// </summary>
+        /// <param name="panelIndex">номер плитки</param>
+        /// <param name="columnCount">колличество колонок</param>
+        /// <returns></returns>
+        public float GetHightToTile(float panelIndex, float columnCount = 3)
+        {
+            var deltaContentHeight = DeltaContentHeight(panelIndex+1, columnCount);
             var tileHeight = CalcTileHeight();
-            var deltaRow = Mathf.Ceil(panelIndex / columnCount);
-            var deltaContentHeight = tileHeight * deltaRow;
-
-            var deltaTileHeight = tileHeight + (tileHeight / 2) + 15;
+            var deltaTileHeight = tileHeight + (tileHeight / 2);
 
             var height = deltaContentHeight - deltaTileHeight;
             return height;
+        }
+
+        /// <summary>
+        /// Расчет высоты контейнера до верхней грани плитки.
+        /// </summary>
+        /// <param name="panelIndex">номер плитки</param>
+        /// <param name="columnCount">количество столбцов</param>
+        /// <returns>Высота до вершины плитки</returns>
+        private float DeltaContentHeight(float panelIndex, float columnCount)
+        {
+            var tileHeight = CalcTileHeight();
+            var deltaRow = Mathf.Ceil(panelIndex / columnCount);
+            var deltaContentHeight = tileHeight * deltaRow;
+            return deltaContentHeight;
         }
 
         /// <summary>
