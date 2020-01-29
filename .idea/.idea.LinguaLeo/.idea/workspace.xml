@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="20984dae-9855-42aa-8264-065f9575104d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LinguaLeo/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LinguaLeo/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Utilities.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Utilities.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/WordLeo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/WordLeo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Licences/LicenseTimeTraining.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Licences/LicenseTimeTraining.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Licences/LicenseTimeout.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Licences/LicenseTimeout.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/Base/WordBase.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Base/WordBase.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,9 +17,13 @@
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Licences/LicenseTimeTraining.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Workout/Workout.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/WordLeo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Licences/LicenseTimeout.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Utilities.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Licences/LicenseLevels.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/WorkoutProgress.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/WorkoutNames.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Manegers/WorkoutManager.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -28,6 +32,8 @@
       <list>
         <option value="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Utilities.cs" />
         <option value="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/WordLeo.cs" />
+        <option value="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Licences/LicenseTimeTraining.cs" />
+        <option value="$PROJECT_DIR$/Assets/LinguaLeo/Scripts/Helpers/Licences/LicenseTimeout.cs" />
       </list>
     </option>
   </component>
@@ -83,7 +89,7 @@
       <option name="presentableId" value="Default" />
       <updated>1580294586740</updated>
       <workItem from="1580294633923" duration="1616000" />
-      <workItem from="1580301390975" duration="778000" />
+      <workItem from="1580301390975" duration="2437000" />
     </task>
     <servers />
   </component>
