@@ -7,23 +7,59 @@ using UnityEngine.UI;
 
 public class WordView : MonoBehaviour, IObserver
 {
+    [SerializeField] GameObject content = null;
+    [SerializeField] WordInfoPanel panelPrefab = null;
+    [SerializeField] private Color unselectWordColor = Color.yellow;
+    [SerializeField] private Color selectWordColor = Color.yellow;
 
-    [SerializeField]
-    GameObject content = null;
-    [SerializeField]
-    WordInfoPanel panelPrefab = null;
-    [SerializeField]
-    private Color unselectWordColor = Color.yellow;
-    [SerializeField]
-    private Color selectWordColor = Color.yellow;
+    public void HighLightTile(int index)
+    {
+        WordInfoPanel[] tiles = transform.GetComponentsInChildren<WordInfoPanel>();
+        foreach (var item in tiles)
+        {
+            item.GetComponent<Image>().color = unselectWordColor;
+        }
+
+        WordInfoPanel tile = tiles[index];
+        tile.GetComponent<Image>().color = selectWordColor;
+    }
+    
+    public void SetHeigtContent(float height)
+    {
+        Vector2 size = new Vector2
+        {
+            // float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+            // отцентрировать плитку вертикально
+            y = height // -tileHeight / 2
+        };
+        RectTransform rectContent = content.GetComponent<RectTransform>();
+        rectContent.localPosition = size;
+    }
+
+    
+    /// <summary>
+    /// Расчет высоты контейнера до последней карточки
+    /// </summary>
+    /// <param name="panelCount"></param>
+    /// <param name="columnCount"></param>
+    /// <returns></returns>
+    public float CalulateHightContainer(float panelCount, float columnCount = 3)
+    {
+        SetTileSize();
+
+        float tileHeight = CalcTileHeight();
+        // Расчет высоты контейнера до последней карточки
+        float height = tileHeight * panelCount / columnCount;
+        return height;
+    }
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
     }
 
-   void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
     {
         switch (notificationName)
         {
@@ -49,18 +85,6 @@ public class WordView : MonoBehaviour, IObserver
     {
         WordInfoPanel setPanel = Instantiate(panelPrefab, content.transform);
         setPanel.Init(word);
-    }
-
-    internal void HighLightTile(int index)
-    {
-        WordInfoPanel[] tiles = transform.GetComponentsInChildren<WordInfoPanel>();
-        foreach (var item in tiles)
-        {
-            item.GetComponent<Image>().color = unselectWordColor;
-        }
-
-        WordInfoPanel tile = tiles[index];
-        tile.GetComponent<Image>().color = selectWordColor;
     }
 
     private void CalulateContentHight()
@@ -101,33 +125,6 @@ public class WordView : MonoBehaviour, IObserver
         rectContent.localPosition = Vector3.zero;
     }
 
-    public void SetHeigtContent(float height)
-    {
-        Vector2 size = new Vector2
-        {
-            // float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
-            // отцентрировать плитку вертикально
-            y = height// -tileHeight / 2
-        };
-        RectTransform rectContent = content.GetComponent<RectTransform>();
-        rectContent.localPosition = size;
-    }
-
-    /// <summary>
-    /// Расчет высоты контейнера до последней карточки
-    /// </summary>
-    /// <param name="panelCount"></param>
-    /// <param name="columnCount"></param>
-    /// <returns></returns>
-    public float CalulateHightContainer(float panelCount, float columnCount = 3)
-    {
-        SetTileSize();
-
-        float tileHeight = CalcTileHeight();
-        // Расчет высоты контейнера до последней карточки
-        float height = tileHeight * panelCount / columnCount;
-        return height;
-    }
     /// <summary>
     /// Меняет размер плитки в зависимости от
     /// ширины панели MainPanel
@@ -164,6 +161,7 @@ public class WordView : MonoBehaviour, IObserver
             tileSize.x = 300;
             Debug.Log("ratio_5x4");
         }
+
         tileSize.y = tileSize.x;
         content.GetComponent<GridLayoutGroup>().cellSize = tileSize;
         GetComponent<RectTransform>().sizeDelta = sizeDelta;
