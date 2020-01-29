@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum WorkoutNames
+﻿namespace LinguaLeo.Scripts.Helpers
 {
-    WordTranslate,
-    TranslateWord,
-    Audio,
-    Puzzle,
-    reiteration,
-    brainStorm,
-    Savanna,
+    public enum WorkoutNames
+    {
+        WordTranslate,
+        TranslateWord,
+        Audio,
+        Puzzle,
+        reiteration,
+        brainStorm,
+        Savanna,
+    }
 }

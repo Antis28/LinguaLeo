@@ -1,193 +1,197 @@
-﻿using UnityEngine;
+﻿using LinguaLeo.Scripts.Behaviour;
+using LinguaLeo.Scripts.Manegers.Parts;
+using UnityEngine;
 
-
-/// <summary>
-/// Хранилище ссылок на синглтоны
-/// </summary>
-// Component for sending and receiving  
-[RequireComponent(typeof(WordManeger))]
-[RequireComponent(typeof(LevelManeger))]
-[RequireComponent(typeof(ScoreKeeper))]
-[RequireComponent(typeof(AudioPlayer))]
-[RequireComponent(typeof(NotificationsManager))]
-[RequireComponent(typeof(LicensesManager))]
-[RequireComponent(typeof(WorkoutManager))]
-public class GameManager : MonoBehaviour
+namespace LinguaLeo.Scripts.Manegers
 {
-    //public static Scene lastScene = SceneManager.GetActiveScene();
-    #region Поля
-    //Internal reference to single active instance of object - for singleton behaviour
-    private static GameManager instance = null;
-    //Internal reference to notifications object
-    private static NotificationsManager notifications = null;
-    //Internal reference to Saveload Game Manager
-    private static LoadSaveManager statemanager = null;
-
-    //Internal reference to notifications object
-    private static AudioPlayer audioPlayer = null;
-
-    //Internal reference to notifications object
-    private static ScoreKeeper scoreKeeper = null;
-
-    //Internal reference to notifications object
-    private static LevelManeger levelManeger = null;
-
-    private static WordManeger wordManeger = null;
-
-    private static WorkoutManager workoutManager = null;
-    #endregion
-
-    #region Свойства
     /// <summary>
-    /// Экземпляр синглтона GameManager
+    /// Хранилище ссылок на синглтоны
     /// </summary>
-    public static GameManager Instance
+// Component for sending and receiving  
+    [RequireComponent(typeof(WordManeger))]
+    [RequireComponent(typeof(LevelManeger))]
+    [RequireComponent(typeof(ScoreKeeper))]
+    [RequireComponent(typeof(AudioPlayer))]
+    [RequireComponent(typeof(NotificationsManager))]
+    [RequireComponent(typeof(LicensesManager))]
+    [RequireComponent(typeof(WorkoutManager))]
+    public class GameManager : MonoBehaviour
     {
-        get
+        //public static Scene lastScene = SceneManager.GetActiveScene();
+        #region Поля
+        //Internal reference to single active instance of object - for singleton behaviour
+        private static GameManager instance = null;
+        //Internal reference to notifications object
+        private static NotificationsManager notifications = null;
+        //Internal reference to Saveload Game Manager
+        private static LoadSaveManager statemanager = null;
+
+        //Internal reference to notifications object
+        private static AudioPlayer audioPlayer = null;
+
+        //Internal reference to notifications object
+        private static ScoreKeeper scoreKeeper = null;
+
+        //Internal reference to notifications object
+        private static LevelManeger levelManeger = null;
+
+        private static WordManeger wordManeger = null;
+
+        private static WorkoutManager workoutManager = null;
+        #endregion
+
+        #region Свойства
+        /// <summary>
+        /// Экземпляр синглтона GameManager
+        /// </summary>
+        public static GameManager Instance
         {
-            if (instance == null)
+            get
             {
-                CheckManyInstance<GameManager>();
-                instance = new GameObject("GameManager").
-                            AddComponent<GameManager>(); //create game manager object if required
+                if (instance == null)
+                {
+                    CheckManyInstance<GameManager>();
+                    instance = new GameObject("GameManager").
+                        AddComponent<GameManager>(); //create game manager object if required
+                }
+                return instance;
+
             }
-            return instance;
-
         }
-    }
 
-    //C# property to retrieve notifications manager
-    public static NotificationsManager Notifications
-    {
-        get
+        //C# property to retrieve notifications manager
+        public static NotificationsManager Notifications
         {
-            if (notifications == null)
+            get
             {
-                CheckManyInstance<NotificationsManager>();
-                notifications = instance.GetComponent<NotificationsManager>();
+                if (notifications == null)
+                {
+                    CheckManyInstance<NotificationsManager>();
+                    notifications = instance.GetComponent<NotificationsManager>();
+                }
+                return notifications;
             }
-            return notifications;
         }
-    }
 
-    //C# property to retrieve save/load manager
-    public static LoadSaveManager StateManager
-    {
-        get
+        //C# property to retrieve save/load manager
+        public static LoadSaveManager StateManager
         {
-            if (statemanager == null)
+            get
             {
-                CheckManyInstance<LoadSaveManager>();
-                statemanager = instance.GetComponent<LoadSaveManager>();
+                if (statemanager == null)
+                {
+                    CheckManyInstance<LoadSaveManager>();
+                    statemanager = instance.GetComponent<LoadSaveManager>();
+                }
+                return statemanager;
+
             }
-            return statemanager;
-
         }
-    }
 
-    //C# property to retrieve 
-    public static AudioPlayer AudioPlayer
-    {
-        get
+        //C# property to retrieve 
+        public static AudioPlayer AudioPlayer
         {
-            if (audioPlayer == null)
+            get
             {
-                CheckManyInstance<AudioPlayer>();
-                audioPlayer = instance.GetComponent<AudioPlayer>();
+                if (audioPlayer == null)
+                {
+                    CheckManyInstance<AudioPlayer>();
+                    audioPlayer = instance.GetComponent<AudioPlayer>();
+                }
+                return audioPlayer;
+
             }
-            return audioPlayer;
-
         }
-    }
 
-    #region C# property to retrieve 
-    public static ScoreKeeper ScoreKeeper
-    {
-        get
+        #region C# property to retrieve 
+        public static ScoreKeeper ScoreKeeper
         {
-            if (scoreKeeper == null)
+            get
             {
-                CheckManyInstance<ScoreKeeper>();
-                scoreKeeper = instance.GetComponent<ScoreKeeper>();
+                if (scoreKeeper == null)
+                {
+                    CheckManyInstance<ScoreKeeper>();
+                    scoreKeeper = instance.GetComponent<ScoreKeeper>();
+                }
+                return scoreKeeper;
+
             }
-            return scoreKeeper;
-
         }
-    }
 
-    public static LevelManeger LevelManeger
-    {
-        get
+        public static LevelManeger LevelManeger
         {
-            if (levelManeger == null)
+            get
             {
-                CheckManyInstance<LevelManeger>();
-                levelManeger = instance.GetComponent<LevelManeger>();
+                if (levelManeger == null)
+                {
+                    CheckManyInstance<LevelManeger>();
+                    levelManeger = instance.GetComponent<LevelManeger>();
+                }
+                return levelManeger;
+
             }
-            return levelManeger;
-
         }
-    }
 
-    public static WordManeger WordManeger
-    {
-        get
+        public static WordManeger WordManeger
         {
-            if (wordManeger == null)
+            get
             {
-                CheckManyInstance<WordManeger>();
-                wordManeger = instance.GetComponent<WordManeger>();
+                if (wordManeger == null)
+                {
+                    CheckManyInstance<WordManeger>();
+                    wordManeger = instance.GetComponent<WordManeger>();
+                }
+                return wordManeger;
+
             }
-            return wordManeger;
-
         }
-    }
 
-    public static WorkoutManager WorkoutManager
-    {
-        get
+        public static WorkoutManager WorkoutManager
         {
-            if (workoutManager == null)
+            get
             {
-                CheckManyInstance<WorkoutManager>();
-                workoutManager = instance.GetComponent<WorkoutManager>();
+                if (workoutManager == null)
+                {
+                    CheckManyInstance<WorkoutManager>();
+                    workoutManager = instance.GetComponent<WorkoutManager>();
+                }
+                return workoutManager;
+
             }
-            return workoutManager;
-
         }
-    }
-    #endregion
-    #endregion
+        #endregion
+        #endregion
 
-    #region Другие методы
-    private static void CheckManyInstance<T>() where T : Object
-    {
+        #region Другие методы
+        private static void CheckManyInstance<T>() where T : Object
+        {
 #if UNITY_EDITOR
-        var manyInstanceSingleton = FindObjectsOfType<T>();
-        if (manyInstanceSingleton.Length > 1)
-        {
-            Debug.LogError("(manyInstanceSingleton)");
-            foreach (var item in manyInstanceSingleton)
+            var manyInstanceSingleton = FindObjectsOfType<T>();
+            if (manyInstanceSingleton.Length > 1)
             {
-                Debug.LogError(item.name);
+                Debug.LogError("(manyInstanceSingleton)");
+                foreach (var item in manyInstanceSingleton)
+                {
+                    Debug.LogError(item.name);
+                }
+            }
+#endif
+        }
+        #endregion
+
+        #region Жизненый цикл
+        // Called before Start on object creation
+        void Awake()
+        {
+            //Check if there is an existing instance of this object
+            if ((instance) && (instance.GetInstanceID() != GetInstanceID()))
+                DestroyImmediate(gameObject); //Delete duplicate
+            else
+            {
+                instance = this; //Make this object the only instance
+                DontDestroyOnLoad(gameObject); //Set as do not destroy
             }
         }
-#endif
+        #endregion
     }
-    #endregion
-
-    #region Жизненый цикл
-    // Called before Start on object creation
-    void Awake()
-    {
-        //Check if there is an existing instance of this object
-        if ((instance) && (instance.GetInstanceID() != GetInstanceID()))
-            DestroyImmediate(gameObject); //Delete duplicate
-        else
-        {
-            instance = this; //Make this object the only instance
-            DontDestroyOnLoad(gameObject); //Set as do not destroy
-        }
-    }
-    #endregion
 }

@@ -1,6 +1,9 @@
-﻿internal interface IWorkout
+﻿namespace LinguaLeo.Scripts.Helpers.Interfaces
 {
-    WordLeo GetCurrentWord();
-    WorkoutNames WorkoutName { get; }
-    Workout GetCore();
+    internal interface IWorkout
+    {
+        WordLeo GetCurrentWord();
+        WorkoutNames WorkoutName { get; }
+        Workout.Workout GetCore();
+    }
 }

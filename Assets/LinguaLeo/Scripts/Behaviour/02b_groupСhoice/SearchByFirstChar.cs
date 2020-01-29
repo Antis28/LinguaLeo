@@ -1,80 +1,80 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/// <summary>
-/// Поиск в списке по первым набранным буквам.
-/// </summary>
-public class SearchByFirstChar : MonoBehaviour
+namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
 {
-    public Text gt;
-    SelectGroup selectGroup = null;
+    /// <summary>
+    /// Поиск в списке по первым набранным буквам.
+    /// </summary>
+    public class SearchByFirstChar : MonoBehaviour
+    {
+        public Text gt;
+        SelectGroup selectGroup = null;
 
-    void Start()
-    {
-        gt = GetComponent<Text>();
-        selectGroup = FindObjectOfType<SelectGroup>();
-    }
-    void Update()
-    {
-        FindSubString();
-    }
-
-    private void FindSubString()
-    {
-        foreach (char c in Input.inputString)
+        void Start()
         {
-            if (c == "\b"[0])
+            gt = GetComponent<Text>();
+            selectGroup = FindObjectOfType<SelectGroup>();
+        }
+        void Update()
+        {
+            FindSubString();
+        }
+
+        private void FindSubString()
+        {
+            foreach (char c in Input.inputString)
             {
-                if (gt.text.Length != 0)
+                if (c == "\b"[0])
+                {
+                    if (gt.text.Length != 0)
 
-                    gt.text = gt.text.Substring(0, gt.text.Length - 1);
+                        gt.text = gt.text.Substring(0, gt.text.Length - 1);
+                }
+                else
+                    gt.text += c;
+
+
+                WordSetPanel panel = FindPanelByCaption(gt.text);
+                if (panel == null)
+                    return;
+                GoToPanel(panel);
+                EventSystem.current.SetSelectedGameObject(panel.gameObject);
             }
-            else
-                gt.text += c;
-
-
-            WordSetPanel panel = FindPanelByCaption(gt.text);
-            if (panel == null)
-                return;
-            GoToPanel(panel);
-            EventSystem.current.SetSelectedGameObject(panel.gameObject);
         }
-    }
 
-    private void GoToPanel(WordSetPanel panel)
-    {
-        int index = selectGroup.GetTiles().ToList().FindIndex((x) => panel.GetName() == x.GetName());
-
-        float high = selectGroup.CalulateHightContainer(index + 1);
-        selectGroup.SetHeigtContent(high);
-        selectGroup.HighLightTile(index);
-    }
-
-    private WordSetPanel FindPanelByCaption(string substring)
-    {
-        substring = substring.ToLower();
-        var allWordSetPanel = selectGroup.GetTiles();
-
-        var actualPanels = from p in allWordSetPanel
-                           orderby p.GetName()
-                           where p.GetName().ToLower().StartsWith(substring)
-                           select p;
-        if (actualPanels.Count() == 0)
+        private void GoToPanel(WordSetPanel panel)
         {
-            actualPanels = from p in allWordSetPanel
-                           orderby p.GetName()
-                           where p.GetName().ToLower().Contains(substring)
-                           select p;
+            int index = selectGroup.GetTiles().ToList().FindIndex((x) => panel.GetName() == x.GetName());
+
+            float high = selectGroup.CalulateHightContainer(index + 1);
+            selectGroup.SetHeigtContent(high);
+            selectGroup.HighLightTile(index);
         }
 
-        if (actualPanels.Count() > 0)
-            return actualPanels.First();
+        private WordSetPanel FindPanelByCaption(string substring)
+        {
+            substring = substring.ToLower();
+            var allWordSetPanel = selectGroup.GetTiles();
 
-        return null;
+            var actualPanels = from p in allWordSetPanel
+                orderby p.GetName()
+                where p.GetName().ToLower().StartsWith(substring)
+                select p;
+            if (actualPanels.Count() == 0)
+            {
+                actualPanels = from p in allWordSetPanel
+                    orderby p.GetName()
+                    where p.GetName().ToLower().Contains(substring)
+                    select p;
+            }
+
+            if (actualPanels.Count() > 0)
+                return actualPanels.First();
+
+            return null;
+        }
     }
 }

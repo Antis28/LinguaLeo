@@ -1,18 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using LinguaLeo.Scripts.Helpers;
+using LinguaLeo.Scripts.Manegers;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectWorkoutButton : MonoBehaviour
-{    
-    [SerializeField]
-    private WorkoutNames workoutName = WorkoutNames.WordTranslate;
+namespace LinguaLeo.Scripts.Behaviour
+{
+    public class SelectWorkoutButton : MonoBehaviour
+    {    
+        [SerializeField]
+        private WorkoutNames workoutName = WorkoutNames.WordTranslate;
 
-    // Use this for initialization
-    void Start()
-    {
+        // Use this for initialization
+        void Start()
+        {
             GetComponent<Button>().onClick.AddListener(
                 () => GameManager.WorkoutManager.RunWorkOut(workoutName)
-                );
+            );
+        }
     }
 }

@@ -1,223 +1,228 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using LinguaLeo.Scripts.Helpers;
+using LinguaLeo.Scripts.Helpers.Interfaces;
+using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Manegers.Parts;
 using UnityEngine;
 
-public class BrainStorm : IObserver
+namespace LinguaLeo.Scripts.Workout
 {
-    private LevelManeger levelManeger;
-    private Workout core;
-    private Workout subCore;
-    private int stage;
-    private WorkoutNames subWorkout;
-
-    public BrainStorm(Workout brainStormCore, LevelManeger levelManeger)
+    public class BrainStorm : IObserver
     {
-        core = brainStormCore;
-        this.levelManeger = levelManeger;
+        private LevelManeger levelManeger;
+        private Workout core;
+        private Workout subCore;
+        private int stage;
+        private WorkoutNames subWorkout;
 
-        ResetStage();
-        Run();
-
-        GameManager.Notifications.AddListener(null, GAME_EVENTS.NotUntrainedWords);
-    }
-    /// <summary>
-    /// Поведение тренировки мозгового штурма
-    /// </summary>
-    public void Run()
-    {
-        string sceneName = string.Empty;
-        stage++;
-        switch (stage)
+        public BrainStorm(Workout brainStormCore, LevelManeger levelManeger)
         {
-            case 0:
-                throw new Exception();
-            case 1:
-                sceneName = PrepareWordTranslate();
-                break;
-            case 2:
-                sceneName = PrepareAudioTest();
-                break;
-            case 3:
-                sceneName = PrepareTranslateWord();
-                break;
-            case 4:
-                sceneName = PrepareWordPuzzle();
-                break;
-            case 5:
-                if (!core.TrainingDone())
-                {
-                    ResetStage();
-                    Run();
-                    return;
-                }
+            core = brainStormCore;
+            this.levelManeger = levelManeger;
 
-                TerminateBrainStorm(sceneName);
-                break;
-            case 100:
-                ShowResult();
-                break;
+            ResetStage();
+            Run();
+
+            GameManager.Notifications.AddListener(null, GAME_EVENTS.NotUntrainedWords);
         }
-        if (sceneName != string.Empty)
+        /// <summary>
+        /// Поведение тренировки мозгового штурма
+        /// </summary>
+        public void Run()
         {
-            levelManeger.LoadLevel(sceneName);
-        }
-
-    }
-
-    public Workout GetsSubCore()
-    {
-        return subCore;
-    }
-
-    public void CoreInitialization()
-    {
-        if (subCore != null)
-        {
-            GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.CoreBuild);
-        }
-        else
-        {
-            Debug.LogError("core == null");
-            GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.NotUntrainedWords);
-        }
-    }
-
-    private void ShowResult()
-    {
-        ResetStage();
-        GameManager.LevelManeger.LoadResultWorkOut();
-    }
-
-    public void ResetStage()
-    {
-        stage = 0;
-    }
-
-    private Workout FilterCore(WorkoutNames currentWorkout)
-    {
-        Workout newCore = new Workout(currentWorkout, core.maxQuestCount);
-        List<QuestionLeo> newTasks = new List<QuestionLeo>();
-        int ID = 0;
-        foreach (var task in core.tasks)
-        {
-            if (task.questWord.CanTraining(currentWorkout))
+            string sceneName = string.Empty;
+            stage++;
+            switch (stage)
             {
-                task.id = ID++;
-                newTasks.Add(task);
+                case 0:
+                    throw new Exception();
+                case 1:
+                    sceneName = PrepareWordTranslate();
+                    break;
+                case 2:
+                    sceneName = PrepareAudioTest();
+                    break;
+                case 3:
+                    sceneName = PrepareTranslateWord();
+                    break;
+                case 4:
+                    sceneName = PrepareWordPuzzle();
+                    break;
+                case 5:
+                    if (!core.TrainingDone())
+                    {
+                        ResetStage();
+                        Run();
+                        return;
+                    }
+
+                    TerminateBrainStorm(sceneName);
+                    break;
+                case 100:
+                    ShowResult();
+                    break;
+            }
+            if (sceneName != string.Empty)
+            {
+                levelManeger.LoadLevel(sceneName);
+            }
+
+        }
+
+        public Workout GetsSubCore()
+        {
+            return subCore;
+        }
+
+        public void CoreInitialization()
+        {
+            if (subCore != null)
+            {
+                GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.CoreBuild);
+            }
+            else
+            {
+                Debug.LogError("core == null");
+                GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.NotUntrainedWords);
             }
         }
-        newCore.tasks = newTasks;
-        return newCore;
-    }
 
-    /// <summary>
-    /// //Завершает тренировку
-    /// </summary>
-    /// <param name="sceneName"></param>
-    private void TerminateBrainStorm(string sceneName)
-    {
-        if (sceneName != string.Empty)
+        private void ShowResult()
         {
-            //Завершает тренировку на следующей итерации
-            stage = 99;
+            ResetStage();
+            GameManager.LevelManeger.LoadResultWorkOut();
         }
-        else
+
+        public void ResetStage()
         {
-            //Завершает тренировку            
-            ShowResult();
+            stage = 0;
         }
-    }
 
-    private string InitSubCore()
-    {
-        subCore = FilterCore(subWorkout);
-
-        if (CoreValid(subCore))
-            return GetSceneName(subWorkout);
-        else
-            return string.Empty;
-    }
-
-    private bool CoreValid(Workout workout)
-    {
-        if (workout == null || workout.tasks.Count == 0)
+        private Workout FilterCore(WorkoutNames currentWorkout)
         {
-            //перейти к следующей тренировке
-            Run();
-            return false;
+            Workout newCore = new Workout(currentWorkout, core.maxQuestCount);
+            List<QuestionLeo> newTasks = new List<QuestionLeo>();
+            int ID = 0;
+            foreach (var task in core.tasks)
+            {
+                if (task.questWord.CanTraining(currentWorkout))
+                {
+                    task.id = ID++;
+                    newTasks.Add(task);
+                }
+            }
+            newCore.tasks = newTasks;
+            return newCore;
         }
-        return true;
-    }
 
-    private string PrepareWordTranslate()
-    {
-        subWorkout = WorkoutNames.WordTranslate;
-        return InitSubCore();
-    }
-
-    private string PrepareTranslateWord()
-    {
-        subWorkout = WorkoutNames.TranslateWord;
-        return InitSubCore();
-    }
-
-    private string PrepareAudioTest()
-    {
-        subWorkout = WorkoutNames.Audio;
-        return InitSubCore();
-    }
-
-    private string PrepareWordPuzzle()
-    {
-        subWorkout = WorkoutNames.Puzzle;
-        return InitSubCore();
-    }
-
-    private string GetSceneName(WorkoutNames name)
-    {
-        string sceneName = string.Empty;
-        switch (name)
+        /// <summary>
+        /// //Завершает тренировку
+        /// </summary>
+        /// <param name="sceneName"></param>
+        private void TerminateBrainStorm(string sceneName)
         {
-            case WorkoutNames.WordTranslate:
-                sceneName = "worldTranslate";
-                break;
-            case WorkoutNames.TranslateWord:
-                sceneName = "translateWorld";
-                break;
-            case WorkoutNames.Audio:
-                sceneName = "audioTest";
-                break;
-            case WorkoutNames.Puzzle:
-                sceneName = "wordPuzzle";
-                break;
-            case WorkoutNames.reiteration:
-                sceneName = string.Empty;
-                break;
-            case WorkoutNames.brainStorm:
-                sceneName = string.Empty;
-                break;
-            case WorkoutNames.Savanna:
-                sceneName = "savanna";
-                break;
+            if (sceneName != string.Empty)
+            {
+                //Завершает тренировку на следующей итерации
+                stage = 99;
+            }
+            else
+            {
+                //Завершает тренировку            
+                ShowResult();
+            }
         }
-        return sceneName;
-    }
 
-    void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
-    {
-        switch (notificationName)
+        private string InitSubCore()
         {
-            case GAME_EVENTS.NotUntrainedWords:
+            subCore = FilterCore(subWorkout);
+
+            if (CoreValid(subCore))
+                return GetSceneName(subWorkout);
+            else
+                return string.Empty;
+        }
+
+        private bool CoreValid(Workout workout)
+        {
+            if (workout == null || workout.tasks.Count == 0)
+            {
+                //перейти к следующей тренировке
                 Run();
-                break;
+                return false;
+            }
+            return true;
         }
-    }
 
-    public int GetInstanceID()
-    {
-        return UnityEngine.Random.Range(1000, 999999);
+        private string PrepareWordTranslate()
+        {
+            subWorkout = WorkoutNames.WordTranslate;
+            return InitSubCore();
+        }
+
+        private string PrepareTranslateWord()
+        {
+            subWorkout = WorkoutNames.TranslateWord;
+            return InitSubCore();
+        }
+
+        private string PrepareAudioTest()
+        {
+            subWorkout = WorkoutNames.Audio;
+            return InitSubCore();
+        }
+
+        private string PrepareWordPuzzle()
+        {
+            subWorkout = WorkoutNames.Puzzle;
+            return InitSubCore();
+        }
+
+        private string GetSceneName(WorkoutNames name)
+        {
+            string sceneName = string.Empty;
+            switch (name)
+            {
+                case WorkoutNames.WordTranslate:
+                    sceneName = "worldTranslate";
+                    break;
+                case WorkoutNames.TranslateWord:
+                    sceneName = "translateWorld";
+                    break;
+                case WorkoutNames.Audio:
+                    sceneName = "audioTest";
+                    break;
+                case WorkoutNames.Puzzle:
+                    sceneName = "wordPuzzle";
+                    break;
+                case WorkoutNames.reiteration:
+                    sceneName = string.Empty;
+                    break;
+                case WorkoutNames.brainStorm:
+                    sceneName = string.Empty;
+                    break;
+                case WorkoutNames.Savanna:
+                    sceneName = "savanna";
+                    break;
+            }
+            return sceneName;
+        }
+
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        {
+            switch (notificationName)
+            {
+                case GAME_EVENTS.NotUntrainedWords:
+                    Run();
+                    break;
+            }
+        }
+
+        public int GetInstanceID()
+        {
+            return UnityEngine.Random.Range(1000, 999999);
+        }
     }
 }
 
