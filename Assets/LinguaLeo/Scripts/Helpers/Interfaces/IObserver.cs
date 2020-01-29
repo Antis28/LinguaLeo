@@ -1,7 +1,12 @@
 ﻿
-public interface IObserver
+using LinguaLeo.Scripts.Manegers;
+
+namespace LinguaLeo.Scripts.Helpers.Interfaces
 {
-    void OnNotify(object parametr, GAME_EVENTS notificationName);
-    int GetInstanceID();
+    public interface IObserver
+    {
+        void OnNotify(object parametr, GAME_EVENTS notificationName);
+        int GetInstanceID();
+    }
 }
 

@@ -4,17 +4,20 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonComponent : MonoBehaviour
+namespace LinguaLeo.Scripts.Behaviour
 {
-
-    public Button button;
-    public Text text;
-    public RectTransform rect;
-
-    public void Awake()
+    public class ButtonComponent : MonoBehaviour
     {
-        button = GetComponent<Button>();
-        text = GetComponentInChildren<Text>();
-        rect = GetComponent<RectTransform>();
+
+        public Button button;
+        public Text text;
+        public RectTransform rect;
+
+        public void Awake()
+        {
+            button = GetComponent<Button>();
+            text = GetComponentInChildren<Text>();
+            rect = GetComponent<RectTransform>();
+        }
     }
 }

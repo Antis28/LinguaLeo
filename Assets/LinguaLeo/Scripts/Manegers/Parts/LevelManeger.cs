@@ -1,42 +1,43 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
-#if UNITY_EDITOR
+﻿using LinguaLeo._Adapters;
 using UnityEditor;
+using UnityEngine;
+#if UNITY_EDITOR
+
 #endif
 
 
-public class LevelManeger : MonoBehaviour
+namespace LinguaLeo.Scripts.Manegers.Parts
 {
-    public int lastWorkout = -1;
-
-    public void QuitGame()
+    public class LevelManeger : MonoBehaviour
     {
-        Application.Quit();
+        public int lastWorkout = -1;
+
+        public void QuitGame()
+        {
+            Application.Quit();
 
 #if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
+            EditorApplication.isPlaying = false;
 #endif
-    }
+        }
 
-    public void LoadLevel(string name)
-    {
-        SceneManagerAdapt.LoadScene(name);
-    }
+        public void LoadLevel(string name)
+        {
+            SceneManagerAdapt.LoadScene(name);
+        }
 
-    public void LoadResultWorkOut()
-    {
-        const string nameScene = "result";
-        lastWorkout = SceneManagerAdapt.GetActiveScene().buildIndex;
-        LoadLevel(nameScene);
-    }
+        public void LoadResultWorkOut()
+        {
+            const string nameScene = "result";
+            lastWorkout = SceneManagerAdapt.GetActiveScene().buildIndex;
+            LoadLevel(nameScene);
+        }
 
-    public void LoadNextLevel()
-    {
-        //Application.loadedLevel
-        int buildIndex = SceneManagerAdapt.GetActiveScene().buildIndex + 1;
-        SceneManagerAdapt.LoadScene(buildIndex);
+        public void LoadNextLevel()
+        {
+            //Application.loadedLevel
+            int buildIndex = SceneManagerAdapt.GetActiveScene().buildIndex + 1;
+            SceneManagerAdapt.LoadScene(buildIndex);
+        }
     }
 }

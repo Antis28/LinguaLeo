@@ -1,3 +1,6 @@
-﻿public class LoadSaveManager : UnityEngine.Object
+﻿namespace LinguaLeo.Scripts.Manegers.Parts
 {
+    public class LoadSaveManager : UnityEngine.Object
+    {
+    }
 }

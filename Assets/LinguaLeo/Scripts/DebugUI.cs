@@ -1,21 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using LinguaLeo.Scripts.Helpers;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugUI : MonoBehaviour
+namespace LinguaLeo.Scripts
 {
-    [SerializeField]
-    Text[] words = null;
-
-
-    public void FillPanel(List<QuestionLeo> list)
+    public class DebugUI : MonoBehaviour
     {
-        for (int i = 0; i < list.Count; i++)
+        [SerializeField]
+        Text[] words = null;
+
+
+        public void FillPanel(List<QuestionLeo> list)
         {
-            if (list[i] != null)
-                words[i].text = list[i].questWord.wordValue;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] != null)
+                    words[i].text = list[i].questWord.wordValue;
+            }
         }
     }
 }
