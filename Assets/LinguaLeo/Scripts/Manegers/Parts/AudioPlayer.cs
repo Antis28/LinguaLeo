@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.IO;
-using LinguaLeo._Adapters;
+using LinguaLeo.Adapters;
 using UnityEngine;
 using UnityEngine.Networking;
 

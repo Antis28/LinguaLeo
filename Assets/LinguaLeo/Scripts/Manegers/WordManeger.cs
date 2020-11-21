@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
-using LinguaLeo._Adapters;
+using LinguaLeo.Adapters;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using UnityEngine;
@@ -75,7 +75,7 @@ namespace LinguaLeo.Scripts.Manegers
 
         public int CountUntrainWordInGroup()
         {
-            List<WordLeo> remainWord = Utilities.SelectNotDoneWords(
+            List<WordLeo> remainWord = MyUtilities.SelectNotDoneWords(
                 vocabulary.wordsFromGroup);
             return remainWord.Count;
         }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using LinguaLeo._Adapters;
+using LinguaLeo.Adapters;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using UnityEngine;
 

@@ -1,9 +1,9 @@
 ﻿using System;
-using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Manegers;
 using UnityEngine;
 using UnityEngine.UI;
+using LinguaLeo.Scripts.Helpers;
 
 namespace LinguaLeo.Scripts.Behaviour
 {
@@ -33,9 +33,9 @@ namespace LinguaLeo.Scripts.Behaviour
 
         private void ComponentsInit()
         {
-            LevelText = Utilities.FindComponentInGO<Text>("LevelText");
-            TimeRepeatText = Utilities.FindComponentInGO<Text>("TimeRepeatText");
-            TimeReduceText = Utilities.FindComponentInGO<Text>("TimeReduceText");
+            LevelText = MyUtilities.FindComponentInGO<Text>("LevelText");
+            TimeRepeatText = MyUtilities.FindComponentInGO<Text>("TimeRepeatText");
+            TimeReduceText = MyUtilities.FindComponentInGO<Text>("TimeReduceText");
         }
 
    
@@ -47,10 +47,10 @@ namespace LinguaLeo.Scripts.Behaviour
             LevelText.text = word.progress.license.ToString();
 
             TimeSpan time = word.GetLicenseValidityTime();
-            TimeReduceText.text = Utilities.FormatTime(time);
+            TimeReduceText.text = MyUtilities.FormatTime(time);
 
             TimeSpan timeUnlock = word.GetLicenseUnlockForRepeat();
-            TimeRepeatText.text = Utilities.FormatTime(timeUnlock);
+            TimeRepeatText.text = MyUtilities.FormatTime(timeUnlock);
         }
 
     

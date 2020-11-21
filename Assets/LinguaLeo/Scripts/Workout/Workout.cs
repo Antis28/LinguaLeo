@@ -86,7 +86,7 @@ namespace LinguaLeo.Scripts.Workout
         #endregion 
         public void SetSound(string file)
         {
-            GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file, false));
+            GameManager.AudioPlayer.SetSound(MyUtilities.ConverterUrlToName(file, false));
         }
 
         public void SetButtons(List<string> answers, string questWord)
@@ -112,8 +112,8 @@ namespace LinguaLeo.Scripts.Workout
             if (untrainedWords.Count == 0)
                 return questionsTemp;
 
-            untrainedWords = Utilities.ShuffleList(untrainedWords);
-            untrainedWords = Utilities.SortWordsByProgress(untrainedWords);
+            untrainedWords = MyUtilities.ShuffleList(untrainedWords);
+            untrainedWords = MyUtilities.SortWordsByProgress(untrainedWords);
             for (int i = 0; i < maxQuestCount; i++)
             {
                 QuestionLeo question = GeneratorTask(i, questionsTemp);

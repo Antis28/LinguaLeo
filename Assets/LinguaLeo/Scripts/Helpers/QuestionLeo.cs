@@ -39,7 +39,7 @@ namespace LinguaLeo.Scripts.Helpers
                     tempAnswers.Pop();
                 answers.Add(tempAnswers.Pop());
             }
-            answers = Utilities.ShuffleList(answers);
+            answers = MyUtilities.ShuffleList(answers);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace LinguaLeo.Scripts.Helpers
         {
             Stack<WordLeo> stack = new Stack<WordLeo>();
             List<WordLeo> wordsTemp = new List<WordLeo>(words);
-            wordsTemp = Utilities.ShuffleList(wordsTemp);
+            wordsTemp = MyUtilities.ShuffleList(wordsTemp);
             System.Random random = new System.Random();
             while (stack.Count < count)
             {

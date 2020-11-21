@@ -20,7 +20,7 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
 
         public void Init(WordLeo word)
         {
-            wordImage.sprite = Utilities.GetSprite(word.pictureURL);
+            wordImage.sprite = MyUtilities.GetSprite(word.pictureURL);
             wordImage.preserveAspect = true;
 
             levelText.text = word.progress.license.ToString();
@@ -28,10 +28,10 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
             word.LicenseExpirationCheck();
 
             TimeSpan time = word.GetLicenseValidityTime();
-            TimeReduceText.text = Utilities.FormatTime(time);
+            TimeReduceText.text = MyUtilities.FormatTime(time);
 
             TimeSpan timeUnlock = word.GetLicenseUnlockForRepeat();
-            TimeUnlockText.text = Utilities.FormatTime(timeUnlock);
+            TimeUnlockText.text = MyUtilities.FormatTime(timeUnlock);
 
             GetComponent<Transform>().localScale = Vector3.one;
             GetComponent<Transform>().localPosition = Vector3.zero;

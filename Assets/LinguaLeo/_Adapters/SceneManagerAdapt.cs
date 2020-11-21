@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-namespace LinguaLeo._Adapters
+namespace LinguaLeo.Adapters
 {
     public class SceneManagerAdapt
     {

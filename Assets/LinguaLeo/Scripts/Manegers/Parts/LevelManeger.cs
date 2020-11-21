@@ -1,4 +1,4 @@
-﻿using LinguaLeo._Adapters;
+﻿using LinguaLeo.Adapters;
 using UnityEditor;
 using UnityEngine;
 #if UNITY_EDITOR

@@ -134,8 +134,8 @@ namespace LinguaLeo.Scripts.Workout
         public void SetImage(string fileName)
         {
             string foloder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + Utilities.ConverterUrlToName(fileName));
-            Sprite sprite = Utilities.LoadSpriteFromFile(foloder + Utilities.ConverterUrlToName(fileName));
+            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyUtilities.ConverterUrlToName(fileName));
+            Sprite sprite = MyUtilities.LoadSpriteFromFile(foloder + MyUtilities.ConverterUrlToName(fileName));
 
             wordImage.sprite = sprite;
             wordImage.preserveAspect = true;
@@ -143,7 +143,7 @@ namespace LinguaLeo.Scripts.Workout
 
         public void SetSound(string file)
         {
-            GameManager.AudioPlayer.SetSound(Utilities.ConverterUrlToName(file, false));
+            GameManager.AudioPlayer.SetSound(MyUtilities.ConverterUrlToName(file, false));
             if (sayToggle.isOn)
                 GameManager.AudioPlayer.SayWord();
         }

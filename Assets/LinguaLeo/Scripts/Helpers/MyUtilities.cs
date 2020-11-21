@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace LinguaLeo.Scripts.Helpers
 {
-    public class Utilities
+    public class MyUtilities
     {
         public static Sprite LoadSpriteFromFile(string path)
         {
@@ -43,7 +43,7 @@ namespace LinguaLeo.Scripts.Helpers
         public static Sprite GetSprite(string fileName)
         {
             string folder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + Utilities.ConverterUrlToName(fileName));
+            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyUtilities.ConverterUrlToName(fileName));
             Sprite sprite = LoadSpriteFromFile(folder + ConverterUrlToName(fileName));
             return sprite;
 

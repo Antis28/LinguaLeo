@@ -68,7 +68,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
             {
                 string path = "Data/Covers" + "/" + item.pictureName + ".png";
 
-                Sprite sprite = Utilities.LoadSpriteFromFile(path);
+                Sprite sprite = MyUtilities.LoadSpriteFromFile(path);
                 CreateCard(sprite, item.name, item.wordCount);
                 yield return null;
             }

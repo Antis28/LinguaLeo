@@ -10,6 +10,7 @@
         <e p="Editor" t="Include">
           <e p="Hierarchy" t="Include">
             <e p="BatchRename.cs" t="Include" />
+            <e p="DirtyAndSaveSceneToRemoveDeprecatedComponents.cs" t="Include" />
           </e>
           <e p="Tests" t="Include">
             <e p="WordCollectionTests.cs" t="Include" />
@@ -24,7 +25,7 @@
           </e>
           <e p="Scripts" t="Include">
             <e p="Behaviour" t="Include">
-              <e p="02b_groupСhoice" t="Include">
+              <e p="02b_groupChoice" t="Include">
                 <e p="SearchByFirstChar.cs" t="Include" />
                 <e p="SelectGroup.cs" t="Include" />
                 <e p="WordSetPanel.cs" t="Include" />
@@ -58,10 +59,10 @@
                 <e p="LicenseTimeout.cs" t="Include" />
                 <e p="LicenseTimeTraining.cs" t="Include" />
               </e>
+              <e p="MyUtilities.cs" t="Include" />
               <e p="QuestionLeo.cs" t="Include" />
               <e p="SceneNames.cs" t="Include" />
               <e p="Settings.cs" t="Include" />
-              <e p="Utilities.cs" t="Include" />
               <e p="WordCollection.cs" t="Include" />
               <e p="WordCountInGroup.cs" t="Include" />
               <e p="WordGroup.cs" t="Include" />

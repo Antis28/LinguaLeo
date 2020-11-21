@@ -1,4 +1,4 @@
-﻿using LinguaLeo._Adapters;
+﻿using LinguaLeo.Adapters;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Manegers.Parts;
