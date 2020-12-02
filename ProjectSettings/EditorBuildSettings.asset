@@ -6,19 +6,22 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/LinguaLeo/Scenes/01a_Start.unity
+    path: Assets/LinguaLeo/Scenes/Android/Main/01a_Start_Android.unity
+    guid: 4112e5ed434fac54cb21cb7e8f09c880
+  - enabled: 1
+    path: Assets/LinguaLeo/Scenes/Main/01a_Start.unity
     guid: 43761d21fee7703419f597aa7bb2b766
   - enabled: 1
-    path: Assets/LinguaLeo/Scenes/01b_Settings.unity
+    path: Assets/LinguaLeo/Scenes/Main/01b_Settings.unity
     guid: 30006527b2bf2db45bd3881f1175b816
   - enabled: 1
-    path: "Assets/LinguaLeo/Scenes/02a_training\u0421hoice.unity"
+    path: "Assets/LinguaLeo/Scenes/Main/02a_training\u0421hoice.unity"
     guid: bade622bf1a530645ab21ed72afa9fc3
   - enabled: 1
-    path: "Assets/LinguaLeo/Scenes/02b_group\u0421hoice.unity"
+    path: "Assets/LinguaLeo/Scenes/Main/02b_group\u0421hoice.unity"
     guid: 7e34f1a5d813279459c7ff6a48c6590a
   - enabled: 1
-    path: Assets/LinguaLeo/Scenes/02c_wordView.unity
+    path: Assets/LinguaLeo/Scenes/Main/02c_wordView.unity
     guid: 54f873bb52df82b458c0139aec753a3e
   - enabled: 1
     path: Assets/LinguaLeo/Scenes/Workout/worldTranslate.unity
@@ -39,7 +42,7 @@ EditorBuildSettings:
     path: Assets/LinguaLeo/Scenes/Workout/wordPuzzle.unity
     guid: ad5f246a1b8cb6c438bbd9855a57cb14
   - enabled: 1
-    path: Assets/LinguaLeo/Scenes/result.unity
+    path: Assets/LinguaLeo/Scenes/Main/result.unity
     guid: ab56d0597abe68b4bbf3497a14dbaf42
   - enabled: 1
     path: Assets/LinguaLeo/Scenes/Additive/wordinfo.unity
@@ -47,4 +50,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LinguaLeo/Scenes/Additive/brainInfo.unity
     guid: ff033a52318a0be47a8fe731b10ddde9
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/LinguaLeo/Scenes/Android/Main/01b_Settings_Android.unity
+    guid: 2f46887c32026154390bdf5199aaebf4
+  - enabled: 1
+    path: "Assets/LinguaLeo/Scenes/Android/Main/02a_training\u0421hoice_Android.unity"
+    guid: 22eba23bb2c086d4caac8bbb744bcea8
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 652ac64b2d782744b9bfaf5c69bf205c,
+      type: 2}

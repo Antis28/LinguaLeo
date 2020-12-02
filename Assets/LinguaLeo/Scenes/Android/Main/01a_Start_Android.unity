@@ -151,16 +151,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 414285890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_SubmitAction: {fileID: 2064916234097673511, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_CancelAction: {fileID: -1967631576421560919, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_LeftClickAction: {fileID: 8056856818456041789, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MiddleClickAction: {fileID: 3279352641294131588, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_RightClickAction: {fileID: 3837173908680883260, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDevicePositionAction: {fileID: 4754684134866288074, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
 --- !u!114 &414285892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +221,26 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u0423\u0447\u0438\u0442\u044C"
       objectReference: {fileID: 0}
+    - target: {fileID: 114183047553438018, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114183047553438018, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114183047553438018, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114183047553438018, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1970825356}
     - target: {fileID: 114282167589019516, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -211,6 +250,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: QuitGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 114842205045614236, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
+        type: 3}
+      propertyPath: sceneName
+      value: "02a_training\u0421hoice_Android"
+      objectReference: {fileID: 0}
+    - target: {fileID: 114946993424176882, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
+        type: 3}
+      propertyPath: sceneName
+      value: 01b_Settings_Android
       objectReference: {fileID: 0}
     - target: {fileID: 224009561762937374, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
         type: 3}
@@ -295,22 +344,22 @@ PrefabInstance:
     - target: {fileID: 224577532472292156, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -274
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224577532472292156, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 34
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224577532472292156, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 351
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 224577532472292156, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 235
+      value: 236
       objectReference: {fileID: 0}
     - target: {fileID: 224577532472292156, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
         type: 3}
@@ -834,6 +883,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1910427157}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1970825356 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114842205045614236, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 848020793}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772b045dac9a6cc43b9eae0bfe03117e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2047623137
 PrefabInstance:
   m_ObjectHideFlags: 0
