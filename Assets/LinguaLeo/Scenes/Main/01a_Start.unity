@@ -202,6 +202,16 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u0423\u0447\u0438\u0442\u044C"
       objectReference: {fileID: 0}
+    - target: {fileID: 114282167589019516, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LinguaLeo.Scripts.Behaviour.QuitHelper, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 114282167589019516, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitGame
+      objectReference: {fileID: 0}
     - target: {fileID: 224009561762937374, guid: 1eb23bf8b35149d42929270cf4d8b9fd,
         type: 3}
       propertyPath: m_AnchorMin.y
