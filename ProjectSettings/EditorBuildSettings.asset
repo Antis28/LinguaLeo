@@ -57,5 +57,7 @@ EditorBuildSettings:
     path: "Assets/LinguaLeo/Scenes/Android/Main/02a_training\u0421hoice_Android.unity"
     guid: 22eba23bb2c086d4caac8bbb744bcea8
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: c0961fc23e22c8b4eb6273dcfe62be02,
+      type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 652ac64b2d782744b9bfaf5c69bf205c,
       type: 2}
