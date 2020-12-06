@@ -7,15 +7,18 @@ using UnityEngine;
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 {
-    public static class ResourcesLoader
+    public class StreamingAssetsLoader : IResourcesLoader
     {
-        private static string pathToRootResources = string.Empty;
+        private string pathToRootResources = string.Empty;
+        private SpriteLoader spriteLoader;
 
-        static ResourcesLoader() { SelectPathByPlatform(); }
+        public StreamingAssetsLoader()
+        {
+            SelectPathByPlatform();
+            spriteLoader = new SpriteLoader(pathToRootResources);
+        }
 
-        public static string PathToRootResources => pathToRootResources;
-
-        private static void SelectPathByPlatform()
+        private void SelectPathByPlatform()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
             //Android uses files inside a compressed APK/JAR file
@@ -27,14 +30,14 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
             pathToRootResources = "jar:file://" + Application.dataPath + "!/assets";
 #endif
 
-#if UNITY_EDITOR ||  UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE
             // Most platforms (Unity Editor, Windows, Linux players, PS4, Xbox One, Switch) use Application.dataPath + "/StreamingAssets"
             pathToRootResources = Path.Combine(Application.dataPath, "StreamingAssets");
 #endif
             pathToRootResources = Path.Combine(pathToRootResources, "Data");
         }
-        
-        public static string ConverterUrlToName(string url, bool withExtension = true)
+
+        public string ConverterUrlToName(string url, bool withExtension = true)
         {
             //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
             //string url = "http://contentcdn.lingualeo.com/uploads/picture/96-631152008.mp3";
@@ -47,12 +50,38 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 
             return Path.GetFileNameWithoutExtension(mat.Value);
         }
+
+
+        public Sprite GetPicture(string fileName)
+        {
+            var normalizeName = ConverterUrlToName(fileName);
+            return spriteLoader.GetSpriteFromPicture(normalizeName);
+        }
+
+        public Sprite GetCover(string fileName)
+        {
+            var normalizeName = ConverterUrlToName(fileName);
+            return spriteLoader.GetSpriteFromCovers(normalizeName);
+        }
+
+        public AudioClip GetAudioClip(string fileName) { throw new NotImplementedException(); }
     }
 
     public class MyUtilities
     {
-        public static string GetFirstTranslate(WordLeo questWord) { return questWord.translations.Split(',')[0]; }
-        public static string[] GetTranslates(WordLeo questWord) { return questWord.translations.Split(','); }
+        public static string ConverterUrlToName(string url, bool withExtension = true)
+        {
+            //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
+            //string url = "http://contentcdn.lingualeo.com/uploads/picture/96-631152008.mp3";
+            string patern = @"(\d+.png$)|(\d+-\d+.mp3$)";
+            Regex rg = new Regex(patern, RegexOptions.IgnoreCase);
+            Match mat = rg.Match(url);
+
+            if (withExtension)
+                return Path.GetFileName(mat.Value);
+
+            return Path.GetFileNameWithoutExtension(mat.Value);
+        }
 
         public static string FormatTime(TimeSpan timeLeft)
         {
@@ -66,41 +95,6 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
             if (result == string.Empty)
                 result = "0";
             return result;
-        }
-
-        public static string FormatTime(double timeLeft)
-        {
-            var span = TimeSpan.FromMinutes(timeLeft);
-            return FormatTime(span);
-        }
-
-        public int GetINT(string text)
-        {
-            int value;
-            if (int.TryParse(text, out value)) { return value; }
-
-            return 0;
-        }
-
-        public bool GetBOOL(string text)
-        {
-            bool value;
-            if (bool.TryParse(text, out value)) { return value; }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Выбрать слова которые не полностью изучены
-        /// </summary>
-        /// <param name="wordsFromGroup"></param>
-        /// <returns></returns>
-        internal static List<WordLeo> SelectNotDoneWords(List<WordLeo> wordsFromGroup)
-        {
-            var remainList = from word in wordsFromGroup
-                             where !word.AllWorkoutDone()
-                             select word;
-            return remainList.ToList();
         }
 
         /// <summary>
@@ -141,19 +135,6 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
                 cards[n] = cards[rndValue];
                 cards[rndValue] = temp;
             }
-        }
-
-
-        public static List<WordLeo> SortWordsByProgress(List<WordLeo> words)
-        {
-            var result = from word in words
-                         orderby word.GetProgressCount() descending,
-                             word.GetLicense() descending,
-                             word.GetLicenseValidityTime()
-                         select word;
-
-            var sortedWordGroups = result.ToList();
-            return sortedWordGroups;
         }
 
         /// <summary>

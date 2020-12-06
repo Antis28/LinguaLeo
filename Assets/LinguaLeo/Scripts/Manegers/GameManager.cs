@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using LinguaLeo.Scripts.Behaviour;
+using LinguaLeo.Scripts.Helpers.ResourceLoading;
 using LinguaLeo.Scripts.Manegers.Parts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -47,6 +48,8 @@ namespace LinguaLeo.Scripts.Manegers
         private static WordManeger wordManeger = null;
 
         private static WorkoutManager workoutManager = null;
+        
+        private static IResourcesLoader resourcesLoader = null;
 
         #endregion
 
@@ -172,6 +175,8 @@ namespace LinguaLeo.Scripts.Manegers
                 return workoutManager;
             }
         }
+
+        public static IResourcesLoader ResourcesLoader => resourcesLoader ?? (resourcesLoader = new StreamingAssetsLoader());
 
         #endregion
 
