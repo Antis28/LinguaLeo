@@ -35,7 +35,7 @@ namespace LinguaLeo.Scripts.Behaviour
 
             InitButtons();
             GameManager.ScoreKeeper.ResetScore();
-            print("lastWorkout = " + GameManager.LevelManeger.lastWorkout);
+            print("lastWorkout = " + GameManager.SceneLoader.lastWorkout);
         }
 
         private void InitButtons()
@@ -50,7 +50,7 @@ namespace LinguaLeo.Scripts.Behaviour
                         break;
                     case "ListWorkoutButton":
                         button.onClick.AddListener(() =>
-                            GameManager.LevelManeger.LoadLevel(SceneNames.trainingСhoice)
+                            GameManager.SceneLoader.LoadLevel(SceneNames.trainingСhoice)
                         );
                         break;
                     case "ContinueWorkoutButton":

@@ -36,10 +36,10 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
             viewButton = transform.Find("ViewButton").GetComponent<Button>();
 
             learnButton.onClick.AddListener(PanelClick);
-            learnButton.onClick.AddListener(() => GameManager.LevelManeger.LoadLevel(SceneNames.trainingСhoice));
+            learnButton.onClick.AddListener(() => GameManager.SceneLoader.LoadLevel(SceneNames.trainingСhoice));
 
             viewButton.onClick.AddListener(PanelClick);
-            viewButton.onClick.AddListener(() => GameManager.LevelManeger.LoadLevel(SceneNames.wordView));
+            viewButton.onClick.AddListener(() => GameManager.SceneLoader.LoadLevel(SceneNames.wordView));
 
         }
 

@@ -130,6 +130,9 @@ LICENSE.txt
 /Assets/Resources/
 /packages
 
+# Jetbrain Rider Cache
+.idea/
+Assets/Plugins/Editor/JetBrains*
 /_ReSharper.Caches
 /.vs
 
@@ -147,3 +150,5 @@ LICENSE.txt
 !ISSUE_TEMPLATE.md
 !Pull Request template.md
 !README.md
+
+

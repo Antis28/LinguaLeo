@@ -2,6 +2,7 @@
 using System.Xml;
 using LinguaLeo.Scripts.Helpers;
 using NUnit.Framework;
+#pragma warning disable 414
 
 namespace Editor.Tests
 {

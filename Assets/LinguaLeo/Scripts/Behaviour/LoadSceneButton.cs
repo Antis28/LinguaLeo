@@ -11,7 +11,7 @@ namespace LinguaLeo.Scripts.Behaviour
 
         // Use this for initialization
         void Start () {
-            GetComponent<Button>().onClick.AddListener(() => GameManager.LevelManeger.LoadLevel(sceneName));
+            GetComponent<Button>().onClick.AddListener(() => GameManager.SceneLoader.LoadLevel(sceneName));
         }
     }
 }

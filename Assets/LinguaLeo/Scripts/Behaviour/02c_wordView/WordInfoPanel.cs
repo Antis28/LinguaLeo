@@ -40,7 +40,7 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
     
         void Start()
         {
-            //  LevelManeger levelManeger = FindObjectOfType<LevelManeger>();
+            //  SceneLoader sceneLoader = FindObjectOfType<SceneLoader>();
         }
 
         // OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider

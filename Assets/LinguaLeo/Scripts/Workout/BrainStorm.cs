@@ -10,16 +10,16 @@ namespace LinguaLeo.Scripts.Workout
 {
     public class BrainStorm : IObserver
     {
-        private LevelManeger levelManeger;
+        private SceneLoader sceneLoader;
         private Workout core;
         private Workout subCore;
         private int stage;
         private WorkoutNames subWorkout;
 
-        public BrainStorm(Workout brainStormCore, LevelManeger levelManeger)
+        public BrainStorm(Workout brainStormCore, SceneLoader sceneLoader)
         {
             core = brainStormCore;
-            this.levelManeger = levelManeger;
+            this.sceneLoader = sceneLoader;
 
             ResetStage();
             Run();
@@ -65,7 +65,7 @@ namespace LinguaLeo.Scripts.Workout
             }
             if (sceneName != string.Empty)
             {
-                levelManeger.LoadLevel(sceneName);
+                sceneLoader.LoadLevel(sceneName);
             }
 
         }
@@ -91,7 +91,7 @@ namespace LinguaLeo.Scripts.Workout
         private void ShowResult()
         {
             ResetStage();
-            GameManager.LevelManeger.LoadResultWorkOut();
+            GameManager.SceneLoader.LoadResultWorkOut();
         }
 
         public void ResetStage()
