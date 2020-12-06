@@ -64,8 +64,6 @@ namespace LinguaLeo.Scripts.Helpers
 
         }
 
-       
-
         public static string FormatTime(TimeSpan timeLeft)
         {
             string result = string.Empty;
@@ -79,10 +77,7 @@ namespace LinguaLeo.Scripts.Helpers
                 result = "0";
             return result;
         }
-
-        
        
-
         /// <summary>
         /// перемешать слова
         /// </summary>
@@ -102,6 +97,7 @@ namespace LinguaLeo.Scripts.Helpers
             }
             return list;
         }
+        
         /// <summary>
         /// перетосовать колоду
         /// </summary>
@@ -119,19 +115,6 @@ namespace LinguaLeo.Scripts.Helpers
                 cards[n] = cards[rndValue];
                 cards[rndValue] = temp;
             }
-        }
-
-
-        public static List<WordLeo> SortWordsByProgress(List<WordLeo> words)
-        {
-            var result = from word in words
-                orderby word.GetProgressCount() descending,
-                    word.GetLicense() descending,
-                    word.GetLicenseValidityTime()
-                select word;
-
-            var sortedWordGroups = result.ToList();
-            return sortedWordGroups;
         }
 
         /// <summary>
