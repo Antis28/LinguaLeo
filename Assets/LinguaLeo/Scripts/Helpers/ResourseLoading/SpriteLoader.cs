@@ -1,21 +1,25 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 {
-    public class SpriteLoader
+    public static class SpriteLoader
     {
-        private string spriteDirectory = Path.Combine(ResourcesLoader.PathToRootResources, "Picture");
-        
-        
-        public static Sprite GetSprite(string fileName)
+        private static readonly string pictureDirectory = Path.Combine(ResourcesLoader.PathToRootResources, "Picture");
+        private static string coverDirectory = Path.Combine(ResourcesLoader.PathToRootResources, "Covers");
+
+
+        public static Sprite GetSpriteFromPicture(string fileName)
         {
-            const string folder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyUtilities.ConverterUrlToName(fileName));
-            var sprite = LoadSpriteFromFile(folder + ResourcesLoader.ConverterUrlToName(fileName));
+            var normalisedName = ResourcesLoader.ConverterUrlToName(fileName);
+            var fullPath = Path.Combine(pictureDirectory, normalisedName);
+            var sprite = LoadSpriteFromFile(fullPath);
             return sprite;
         }
-        
+
+        public static Sprite GetSpriteFromCovers(string fileName) { throw new NotImplementedException(); }
+
         private static Sprite LoadSpriteFromFile(string path)
         {
             //string path = "Data/Covers" + "/" + pictureName + ".png";

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
+using LinguaLeo.Scripts.Helpers.ResourceLoading;
 using LinguaLeo.Scripts.Manegers;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -178,9 +179,7 @@ namespace LinguaLeo.Scripts.Workout
 
         private void SetImage(string fileName)
         {
-            string foloder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyMyUtilities.ConverterUrlToName(fileName));
-            Sprite sprite = MyUtilities.LoadSpriteFromFile(foloder + MyUtilities.ConverterUrlToName(fileName));
+            var sprite = SpriteLoader.GetSpriteFromPicture(fileName);
 
             wordImage.sprite = sprite;
             wordImage.preserveAspect = true;

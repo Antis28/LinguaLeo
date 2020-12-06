@@ -17,12 +17,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 
         private static void SelectPathByPlatform()
         {
-#if UNITY_EDITOR || UNITY_EDITOR_WIN
-            // Most platforms (Unity Editor, Windows, Linux players, PS4, Xbox One, Switch) use Application.dataPath + "/StreamingAssets"
-            pathToRootResources = Application.dataPath + "/StreamingAssets";
-#endif
-
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             //Android uses files inside a compressed APK/JAR file
             //To read streaming Assets on platforms like Android and WebGL
             //, where you cannot access streaming Asset files directly, use UnityWebRequest.
@@ -31,7 +26,11 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
             //Use Application.persistentDataPath for a folder location that is writable.
             pathToRootResources = "jar:file://" + Application.dataPath + "!/assets";
 #endif
-            
+
+#if UNITY_EDITOR ||  UNITY_STANDALONE
+            // Most platforms (Unity Editor, Windows, Linux players, PS4, Xbox One, Switch) use Application.dataPath + "/StreamingAssets"
+            pathToRootResources = Path.Combine(Application.dataPath, "StreamingAssets");
+#endif
             pathToRootResources = Path.Combine(pathToRootResources, "Data");
         }
         
@@ -52,12 +51,6 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 
     public class MyUtilities
     {
-       
-
-       
-
-        
-
         public static string GetFirstTranslate(WordLeo questWord) { return questWord.translations.Split(',')[0]; }
         public static string[] GetTranslates(WordLeo questWord) { return questWord.translations.Split(','); }
 
