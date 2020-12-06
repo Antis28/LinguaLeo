@@ -133,10 +133,7 @@ namespace LinguaLeo.Scripts.Workout
 
         public void SetImage(string fileName)
         {
-            string foloder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyUtilities.ConverterUrlToName(fileName));
-            Sprite sprite = MyUtilities.LoadSpriteFromFile(foloder + MyUtilities.ConverterUrlToName(fileName));
-
+            var sprite = GameManager.ResourcesLoader.GetPicture(fileName);
             wordImage.sprite = sprite;
             wordImage.preserveAspect = true;
         }
