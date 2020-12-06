@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace LinguaLeo.Scripts.Manegers.Parts
 {
-    public class LevelManeger : MonoBehaviour
+    public class SceneLoader : MonoBehaviour
     {
         public int lastWorkout = -1;
 
