@@ -13,7 +13,7 @@ namespace LinguaLeo.Scripts.Behaviour
         public void QuitGame()
         {
             GameManager.Notifications.PostNotification(null, GAME_EVENTS.QuitGame);
-            GameManager.LevelManeger.QuitGame();
+            GameManager.SceneLoader.QuitGame();
         }
 
         /// <summary>

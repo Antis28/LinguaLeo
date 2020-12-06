@@ -42,7 +42,7 @@ namespace LinguaLeo.Scripts.Manegers
 
         private static WordLeo currentWord = null;
 
-        private LevelManeger levelManeger;
+        private SceneLoader sceneLoader;
         private WorkoutNames currentWorkout;
         private WorkoutNames subWorkout;
         private Workout.Workout core;
@@ -91,7 +91,7 @@ namespace LinguaLeo.Scripts.Manegers
                 GameManager.ScoreKeeper.SetScoreFactor(factorScoreBrainStorm);
                 questMaxCount = brainstormQuestCount;
                 core = PrepareWorkout(WorkoutNames.brainStorm);
-                brainStorm = new BrainStorm(core, levelManeger);
+                brainStorm = new BrainStorm(core, sceneLoader);
                 return;
             }
 
@@ -99,7 +99,7 @@ namespace LinguaLeo.Scripts.Manegers
 
             if (sceneName != string.Empty)
             {
-                levelManeger.LoadLevel(sceneName);
+                sceneLoader.LoadLevel(sceneName);
             }
         }
 
@@ -140,7 +140,7 @@ namespace LinguaLeo.Scripts.Manegers
                 case WorkoutNames.Audio:
                 case WorkoutNames.Puzzle:
                 case WorkoutNames.reiteration:
-                    GameManager.LevelManeger.LoadResultWorkOut();
+                    GameManager.SceneLoader.LoadResultWorkOut();
                     break;
                 case WorkoutNames.brainStorm:
 
@@ -294,7 +294,7 @@ namespace LinguaLeo.Scripts.Manegers
         // Use this for initialization
         private void Start()
         {
-            levelManeger = FindObjectOfType<LevelManeger>();
+            sceneLoader = FindObjectOfType<SceneLoader>();
             SubscribeToEvents();
         }
         #endregion
