@@ -10,9 +10,10 @@ namespace LinguaLeo.Scripts.Helpers
     /// см. класс ExportWordLeo
     /// в проекте Обучение/CSVReader
     /// </summary>
-
     public class WordLeo : IEquatable<WordLeo>
     {
+        #region XML поля
+
         [XmlAttribute]
         public string wordValue;
 
@@ -41,7 +42,11 @@ namespace LinguaLeo.Scripts.Helpers
         [XmlElement]
         public WorkoutProgress progress;
 
+        #endregion
+
         public WordLeo() { }
+
+        #region Работа с лицензиями
 
         /// <summary>
         /// Понизить лицензию
@@ -67,11 +72,6 @@ namespace LinguaLeo.Scripts.Helpers
             progress.ResetAllWorkouts();
             progress.license = LicenseLevels.Level_0;
             progress.lastRepeat = DateTime.Now;
-        }
-
-        public void UnlockWorkouts()
-        {
-            progress.ResetAllWorkouts();
         }
 
         /// <summary>
@@ -127,10 +127,8 @@ namespace LinguaLeo.Scripts.Helpers
                     break;
             }
         }
-        public LicenseLevels GetLicense()
-        {
-            return progress.license;
-        }
+
+        public LicenseLevels GetLicense() { return progress.license; }
 
         /// <summary>
         /// Проверка можно ли уже повторять слово.
@@ -139,10 +137,7 @@ namespace LinguaLeo.Scripts.Helpers
         public void LicenseExpirationCheck()
         {
             LicenseLevels license = progress.license;
-            if (license == LicenseLevels.Level_0 || !progress.AllWorkoutDone())
-            {
-                return;
-            }
+            if (license == LicenseLevels.Level_0 || !progress.AllWorkoutDone()) { return; }
 
             double minutes = GetLicenseTime();
 
@@ -198,6 +193,7 @@ namespace LinguaLeo.Scripts.Helpers
                     break;
             }
         }
+
         /// <summary>
         /// Расчитывает количество минут до 
         /// разблокировки лицензии для повторения.
@@ -206,10 +202,7 @@ namespace LinguaLeo.Scripts.Helpers
         public TimeSpan GetLicenseUnlockForRepeat()
         {
             LicenseLevels license = progress.license;
-            if (license == LicenseLevels.Level_0 || !progress.AllWorkoutDone())
-            {
-                return TimeSpan.Zero;
-            }
+            if (license == LicenseLevels.Level_0 || !progress.AllWorkoutDone()) { return TimeSpan.Zero; }
 
             double minutes = GetLicenseTime();
             double minutesLeft = 0;
@@ -246,10 +239,8 @@ namespace LinguaLeo.Scripts.Helpers
                     minutesLeft = LicenseTimeTraining.Level_9 - minutes;
                     break;
             }
-            if (minutesLeft < 0)
-            {
-                minutesLeft = 0;
-            }
+
+            if (minutesLeft < 0) { minutesLeft = 0; }
 
             return TimeSpan.FromMinutes(minutesLeft);
         }
@@ -296,12 +287,12 @@ namespace LinguaLeo.Scripts.Helpers
                     minutesLeft = LicenseTimeout.Level_9 - minutes;
                     break;
             }
-            if (minutesLeft < 0)
-            {
-                minutesLeft = 0;
-            }
+
+            if (minutesLeft < 0) { minutesLeft = 0; }
+
             return TimeSpan.FromMinutes(minutesLeft);
         }
+
         /// <summary>
         /// минут с последнего повторения слова 
         /// </summary>
@@ -311,6 +302,20 @@ namespace LinguaLeo.Scripts.Helpers
             TimeSpan interval = DateTime.Now - progress.lastRepeat;
             return interval.TotalMinutes;
         }
+
+        public void AddLicenseLevel()
+        {
+            progress.lastRepeat = DateTime.Now;
+            progress.license++;
+            GameManager.Notifications.PostNotification(null, GAME_EVENTS.UpdatedLicenseLevel);
+        }
+        
+        public bool LicenseExists() { return progress.license >= LicenseLevels.Level_1; }
+        #endregion
+
+        #region Работа с тренировками
+
+        public void UnlockWorkouts() { progress.ResetAllWorkouts(); }
 
         public bool CanbeRepeated()
         {
@@ -326,68 +331,33 @@ namespace LinguaLeo.Scripts.Helpers
         {
             float progressCount = 0;
 
-            if (progress.word_translate)
-            {
-                progressCount += 0.25f;
-            }
-            if (progress.translate_word)
-            {
-                progressCount += 0.25f;
-            }
-            if (progress.audio_word)
-            {
-                progressCount += 0.25f;
-            }
-            if (progress.word_puzzle)
-            {
-                progressCount += 0.25f;
-            }
+            if (progress.word_translate) { progressCount += 0.25f; }
+
+            if (progress.translate_word) { progressCount += 0.25f; }
+
+            if (progress.audio_word) { progressCount += 0.25f; }
+
+            if (progress.word_puzzle) { progressCount += 0.25f; }
+
             return progressCount;
         }
+        
+        public bool CanTraining(WorkoutNames workoutName) { return progress.CanTraining(workoutName); }
+        
+        public bool AllWorkoutDone() { return progress.AllWorkoutDone(); }
+        
+        public void LearnWordTranslate() { progress.word_translate = true; }
 
-        public bool CanTraining(WorkoutNames workoutName)
-        {
-            return progress.CanTraining(workoutName);
-        }
+        public void LearnTranslateWord() { progress.translate_word = true; }
 
-        public bool AllWorkoutDone()
-        {
-            return progress.AllWorkoutDone();
-        }
+        public void LearnAudio() { progress.audio_word = true; }
 
-        public void AddLicenseLevel()
-        {
-            progress.lastRepeat = DateTime.Now;
-            progress.license++;
-            GameManager.Notifications.PostNotification(null, GAME_EVENTS.UpdatedLicenseLevel);
-        }
-
-        public void LearnWordTranslate()
-        {
-            progress.word_translate = true;
-        }
-
-        public void LearnTranslateWord()
-        {
-            progress.translate_word = true;
-        }
-
-        public void LearnAudio()
-        {
-            progress.audio_word = true;
-        }
-
-        public void LearnPuzzle()
-        {
-            progress.word_puzzle = true;
-        }
-
-        public bool LicenseExists()
-        {
-            return progress.license >= LicenseLevels.Level_1;
-        }
+        public void LearnPuzzle() { progress.word_puzzle = true; }
+        
+        #endregion
 
         #region сравнение в методе Contains
+
         public bool Equals(WordLeo other)
         {
             if (other == null)
@@ -408,14 +378,11 @@ namespace LinguaLeo.Scripts.Helpers
                 return Equals(wordLeo);
         }
 
-        public override int GetHashCode()
-        {
-            return this.wordValue.GetHashCode();
-        }
+        public override int GetHashCode() { return this.wordValue.GetHashCode(); }
 
         public static bool operator ==(WordLeo wordLeo1, WordLeo wordLeo2)
         {
-            if (((object)wordLeo1) == null || ((object)wordLeo2) == null)
+            if (((object) wordLeo1) == null || ((object) wordLeo2) == null)
                 return Object.Equals(wordLeo1, wordLeo2);
 
             return wordLeo1.Equals(wordLeo2);
@@ -423,12 +390,13 @@ namespace LinguaLeo.Scripts.Helpers
 
         public static bool operator !=(WordLeo wordLeo1, WordLeo wordLeo2)
         {
-            if (((object)wordLeo1) == null || ((object)wordLeo2) == null)
+            if (((object) wordLeo1) == null || ((object) wordLeo2) == null)
                 return !Object.Equals(wordLeo1, wordLeo2);
 
             return !(wordLeo1.Equals(wordLeo2));
         }
-        #endregion    
+
+        #endregion
 
         override
             public string ToString()
