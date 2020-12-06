@@ -64,14 +64,7 @@ namespace LinguaLeo.Scripts.Helpers
 
         }
 
-        public static string GetFirstTranslate(WordLeo questWord)
-        {
-            return questWord.translations.Split(',')[0];
-        }
-        public static string[] GetTranslates(WordLeo questWord)
-        {
-            return questWord.translations.Split(',');
-        }
+       
 
         public static string FormatTime(TimeSpan timeLeft)
         {
@@ -87,44 +80,8 @@ namespace LinguaLeo.Scripts.Helpers
             return result;
         }
 
-        public static string FormatTime(double timeLeft)
-        {
-            var span = TimeSpan.FromMinutes(timeLeft);
-            return FormatTime(span);
-        }
-
-        public int GetINT(string text)
-        {
-            int value;
-            if (int.TryParse(text, out value))
-            {
-                return value;
-            }
-            return 0;
-        }
-
-        public bool GetBOOL(string text)
-        {
-            bool value;
-            if (bool.TryParse(text, out value))
-            {
-                return value;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Выбрать слова которые не полностью изучены
-        /// </summary>
-        /// <param name="wordsFromGroup"></param>
-        /// <returns></returns>
-        internal static List<WordLeo> SelectNotDoneWords(List<WordLeo> wordsFromGroup)
-        {
-            var remainList = from word in wordsFromGroup
-                where !word.AllWorkoutDone()
-                select word;
-            return remainList.ToList();
-        }
+        
+       
 
         /// <summary>
         /// перемешать слова
