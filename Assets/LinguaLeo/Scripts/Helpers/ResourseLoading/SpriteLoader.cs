@@ -22,7 +22,12 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
             return sprite;
         }
 
-        public Sprite GetSpriteFromCovers(string fileName) { throw new NotImplementedException(); }
+        public Sprite GetSpriteFromCovers(string fileName)
+        {
+            var fullPath = Path.Combine(coverDirectory, fileName);
+            var sprite = LoadSpriteFromFile(fullPath);
+            return sprite;
+        }
 
         private Sprite LoadSpriteFromFile(string path)
         {

@@ -60,8 +60,8 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 
         public Sprite GetCover(string fileName)
         {
-            var normalizeName = ConverterUrlToName(fileName);
-            return spriteLoader.GetSpriteFromCovers(normalizeName);
+            
+            return spriteLoader.GetSpriteFromCovers(fileName);
         }
 
         public AudioClip GetAudioClip(string fileName) { throw new NotImplementedException(); }

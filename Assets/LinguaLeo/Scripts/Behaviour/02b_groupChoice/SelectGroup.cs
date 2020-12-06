@@ -62,13 +62,12 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// <returns>необходимо для корутины</returns>
         private IEnumerator CreatePanels()
         {
-            List<WordGroup> group = GameManager.WordManeger.GetGroupNames();
-            UpdateContentHeight(group.Count);
-            foreach (var item in group)
+            List<WordGroup> groups = GameManager.WordManeger.GetGroupNames();
+            UpdateContentHeight(groups.Count);
+            foreach (var item in groups)
             {
-                string path = "Data/Covers" + "/" + item.pictureName + ".png";
-
-                Sprite sprite = MyUtilities.LoadSpriteFromFile(path);
+                var sprite = GameManager.ResourcesLoader.GetCover(item.pictureName + ".png");
+                
                 CreateCard(sprite, item.name, item.wordCount);
                 yield return null;
             }
