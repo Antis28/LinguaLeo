@@ -141,8 +141,19 @@ namespace LinguaLeo.Scripts.Helpers
             groups = groups.OrderBy((x) => x).ToList();
             return groups;
         }
-
-    
+        
+        /// <summary>
+        /// Выбрать слова которые не полностью изучены
+        /// </summary>
+        /// <param name="wordsFromGroup"></param>
+        /// <returns></returns>
+        internal  List<WordLeo> SelectNotDoneWords()
+        {
+            var remainList = from word in wordsFromGroup
+                             where !word.AllWorkoutDone()
+                             select word;
+            return remainList.ToList();
+        }
     }
 }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using LinguaLeo.Scripts.Helpers;
+﻿using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Manegers;
 using UnityEngine;
@@ -9,19 +8,13 @@ using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Workout
 {
-    public class WordPuzzle : MonoBehaviour, IObserver, IWorkout
+    public class WordPuzzle : AbstractWorkout, IObserver
     {
         private event UnityAction EnterButtonEvent;
-
-        [SerializeField]
-        private WorkoutNames WorkoutName = WorkoutNames.WordTranslate;
-
-        [SerializeField]
-        private Text questionText = null; // Поле для вопроса
+       
         [SerializeField]
         private Image progressImage; // Картинка прогресса
-        [SerializeField]
-        private Image wordImage = null; // Картинка ассоциаци со словом
+       
         [SerializeField]
         private Button checkButton = null;
 
@@ -34,79 +27,16 @@ namespace LinguaLeo.Scripts.Workout
         private int answersCount; // Число протренированых слов
 
         private Button repeatWordButton = null;
-        private Workout core;
 
         private Color correctColor = new Color(59 / 255f,
-            152 / 255f,
-            57 / 255f);
+                                               152 / 255f,
+                                               57 / 255f);
         private Color wrongColor = new Color(157 / 255f,
             38 / 255f,
             29 / 255f);
         private bool isAnswerCorrect;
         private Text mistakeText;
         private Text translateText;
-
-
-        WorkoutNames IWorkout.WorkoutName
-        {
-            get
-            {
-                return WorkoutName;
-            }
-        }
-
-        Workout IWorkout.GetCore()
-        {
-            throw new NotImplementedException();
-        }
-
-        WordLeo IWorkout.GetCurrentWord()
-        {
-            return core.GetCurrentWord();
-        }
-
-        // Use this for initialization
-        void Start()
-        {
-            repeatWordButton = GameObject.Find("RepeatWordButton").GetComponent<Button>();
-            checkButton = GameObject.Find("CheckButton").GetComponent<Button>();
-
-            sayToggle = GameObject.Find("AutoSoundToggle").GetComponent<Toggle>();
-            scoreSlider = GameObject.Find("ScoreSlider").GetComponent<Slider>();
-
-            progressImage = GameObject.Find("ProgressImage").GetComponent<Image>();
-            wordImage = GameObject.Find("WordImage").GetComponent<Image>();
-
-            scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
-            mistakeText = GameObject.Find("MistakeText").GetComponent<Text>();
-            translateText = GameObject.Find("TranslateText").GetComponent<Text>();
-
-            AnswerInputField = GameObject.Find("AnswerInputField").GetComponent<InputField>();
-
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
-
-            if (repeatWordButton)
-                repeatWordButton.onClick.AddListener(
-                    () =>
-                    {
-                        GameManager.AudioPlayer.SayWord();
-                        //передать фокус полю ввода
-                        AnswerInputField.ActivateInputField();
-                    });
-
-            GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            if (Input.GetKeyUp(KeyCode.Return))
-            {
-                EnterButtonEvent();
-            }
-        }
-
 
         void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
@@ -173,8 +103,7 @@ namespace LinguaLeo.Scripts.Workout
                 mistakeText.color = wrongColor;
             }
         }
-
-    
+        
         private void Core_DrawTask()
         {
             Debug.Log("Core_DrawTask");
@@ -191,7 +120,7 @@ namespace LinguaLeo.Scripts.Workout
             SetupEnterButton(CheckAnswerClick);
 
             WordProgressUpdate();
-            ProgeressBarUpdate();
+            ProgressBarUpdate();
             GameObject.FindObjectOfType<DebugUI>().FillPanel(core.tasks);
 
             //передать фокус полю ввода
@@ -210,7 +139,7 @@ namespace LinguaLeo.Scripts.Workout
             progressImage.fillAmount = GetCurrentQuest().questWord.GetProgressCount();
         }
 
-        private void ProgeressBarUpdate()
+        private void ProgressBarUpdate()
         {
             answersCount++;
             scoreText.text = answersCount + "/" + scoreSlider.maxValue;
@@ -224,15 +153,6 @@ namespace LinguaLeo.Scripts.Workout
             else
                 scoreSlider.maxValue = GameManager.WordManeger.CountWordInGroup();
             scoreText.text = answersCount + "/" + scoreSlider.maxValue;
-        }
-
-        private void HideImage()
-        {
-            wordImage.enabled = false;
-        }
-        private void ShowImage()
-        {
-            wordImage.enabled = true;
         }
 
         private void HideQuestion()
@@ -259,14 +179,46 @@ namespace LinguaLeo.Scripts.Workout
             repeatWordButton.gameObject.SetActive(true);
         }
 
-        private void SetImage(string fileName)
+        // Use this for initialization
+        void Start()
         {
-            string foloder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyMyUtilities.ConverterUrlToName(fileName));
-            Sprite sprite = MyUtilities.LoadSpriteFromFile(foloder + MyUtilities.ConverterUrlToName(fileName));
+            repeatWordButton = GameObject.Find("RepeatWordButton").GetComponent<Button>();
+            checkButton = GameObject.Find("CheckButton").GetComponent<Button>();
 
-            wordImage.sprite = sprite;
-            wordImage.preserveAspect = true;
+            sayToggle = GameObject.Find("AutoSoundToggle").GetComponent<Toggle>();
+            scoreSlider = GameObject.Find("ScoreSlider").GetComponent<Slider>();
+
+            progressImage = GameObject.Find("ProgressImage").GetComponent<Image>();
+            wordImage = GameObject.Find("WordImage").GetComponent<Image>();
+
+            scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+            mistakeText = GameObject.Find("MistakeText").GetComponent<Text>();
+            translateText = GameObject.Find("TranslateText").GetComponent<Text>();
+
+            AnswerInputField = GameObject.Find("AnswerInputField").GetComponent<InputField>();
+
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
+
+            if (repeatWordButton)
+                repeatWordButton.onClick.AddListener(
+                    () =>
+                    {
+                        GameManager.AudioPlayer.SayWord();
+                        //передать фокус полю ввода
+                        AnswerInputField.ActivateInputField();
+                    });
+
+            GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.Return))
+            {
+                EnterButtonEvent();
+            }
         }
     }
 }

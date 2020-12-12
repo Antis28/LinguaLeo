@@ -1,5 +1,4 @@
-﻿using System;
-using LinguaLeo.Scripts.Helpers;
+﻿using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Manegers;
 using UnityEngine;
@@ -9,23 +8,17 @@ using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Workout
 {
-    public class AudioTest : MonoBehaviour, IObserver, IWorkout
+    public class AudioTest : AbstractWorkout, IObserver
     {
         private event UnityAction EnterButtonEvent;
 
         [SerializeField]
-        private WorkoutNames WorkoutName = WorkoutNames.WordTranslate;
-
-        [SerializeField]
-        private Text questionText = null; // Поле для вопроса
-        [SerializeField]
         private Image progressImage; // Картинка прогресса
-        [SerializeField]
-        private Image wordImage = null; // Картинка ассоциаци со словом
+       
         [SerializeField]
         private Button checkButton = null;
 
-        InputField AnswerInputField = null;
+        private InputField answerInputField = null;
 
         private Toggle sayToggle = null; // checkbox для автопроизношения
         private Slider scoreSlider = null; // Протренировано слов прогресс
@@ -34,36 +27,16 @@ namespace LinguaLeo.Scripts.Workout
         private int answersCount; // Число протренированых слов
 
         private Button repeatWordButton = null;
-        private Workout core;
 
         private Color correctColor = new Color(59 / 255f,
-            152 / 255f,
-            57 / 255f);
+                                               152 / 255f,
+                                               57 / 255f);
         private Color wrongColor = new Color(157 / 255f,
             38 / 255f,
             29 / 255f);
         private bool isAnswerCorrect;
         private Text mistakeText;
         private Text translateText;
-
-
-        WorkoutNames IWorkout.WorkoutName
-        {
-            get
-            {
-                return WorkoutName;
-            }
-        }
-
-        Workout IWorkout.GetCore()
-        {
-            throw new NotImplementedException();
-        }
-
-        WordLeo IWorkout.GetCurrentWord()
-        {
-            return core.GetCurrentWord();
-        }
 
         void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
@@ -110,8 +83,8 @@ namespace LinguaLeo.Scripts.Workout
         }
         private void CheckAnswer()
         {
-            //AnswerInputField.text = AnswerInputField.text.Replace("'", "’");
-            isAnswerCorrect = AnswerInputField.text == core.GetCurrentWord().wordValue;
+            //answerInputField.text = answerInputField.text.Replace("'", "’");
+            isAnswerCorrect = answerInputField.text == core.GetCurrentWord().wordValue;
             questionText.text = core.GetCurrentWord().wordValue;
             translateText.text = core.GetCurrentWord().translations;
             if (isAnswerCorrect)
@@ -121,11 +94,78 @@ namespace LinguaLeo.Scripts.Workout
                 mistakeText.text = string.Empty;
             }
             else {
-                mistakeText.text = AnswerInputField.text;
+                mistakeText.text = answerInputField.text;
                 mistakeText.color = wrongColor;
             }
         }
 
+        private void Core_DrawTask()
+        {
+            Debug.Log("Core_DrawTask");
+
+            QuestionLeo questionLeo = core.GetCurrentQuest();
+            core.SetSound(questionLeo.questWord.soundURL);
+            SetImage(questionLeo.questWord.pictureURL);
+            HideImage();
+            HideQuestion();
+            answerInputField.text = string.Empty;
+
+            SetupEnterButton(CheckAnswerClick);
+
+            if (sayToggle.isOn)
+                GameManager.AudioPlayer.SayWord();
+
+            WordProgressUpdate();
+            ProgressBarUpdate();
+            GameObject.FindObjectOfType<DebugUI>().FillPanel(core.tasks);
+
+            //передать фокус полю ввода
+            answerInputField.ActivateInputField();
+
+            // выбор элемента как активного
+            EventSystem.current.SetSelectedGameObject(answerInputField.gameObject);
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
+        }
+
+        /// <summary>
+        /// показывает прогресс изучения слова
+        /// </summary>
+        private void WordProgressUpdate()
+        {
+            progressImage.fillAmount = GetCurrentQuest().questWord.GetProgressCount();
+        }
+
+        private void ProgressBarUpdate()
+        {
+            answersCount++;
+            scoreText.text = answersCount + "/" + scoreSlider.maxValue;
+            scoreSlider.value = answersCount;
+        }
+
+        private void InitWordCountBar()
+        {
+            if (core.maxQuestCount < GameManager.WordManeger.CountWordInGroup())
+                scoreSlider.maxValue = core.maxQuestCount;
+            else
+                scoreSlider.maxValue = GameManager.WordManeger.CountWordInGroup();
+            scoreText.text = answersCount + "/" + scoreSlider.maxValue;
+        }
+
+        private void HideQuestion()
+        {
+            questionText.gameObject.SetActive(false);
+            mistakeText.gameObject.SetActive(false);
+            translateText.gameObject.SetActive(false);
+            answerInputField.gameObject.SetActive(true);
+        }
+        private void ShowQuestion()
+        {
+            questionText.gameObject.SetActive(true);
+            mistakeText.gameObject.SetActive(true);
+            translateText.gameObject.SetActive(true);
+            answerInputField.gameObject.SetActive(false);
+        }
+        
         // Use this for initialization
         void Start()
         {
@@ -142,7 +182,7 @@ namespace LinguaLeo.Scripts.Workout
             mistakeText = GameObject.Find("MistakeText").GetComponent<Text>();
             translateText = GameObject.Find("TranslateText").GetComponent<Text>();
 
-            AnswerInputField = GameObject.Find("AnswerInputField").GetComponent<InputField>();
+            answerInputField = GameObject.Find("answerInputField").GetComponent<InputField>();
 
             GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
             GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
@@ -153,7 +193,7 @@ namespace LinguaLeo.Scripts.Workout
                     {
                         GameManager.AudioPlayer.SayWord();
                         //передать фокус полю ввода
-                        AnswerInputField.ActivateInputField();
+                        answerInputField.ActivateInputField();
                     });
 
             GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
@@ -168,89 +208,5 @@ namespace LinguaLeo.Scripts.Workout
             }
         }
 
-        private void Core_DrawTask()
-        {
-            Debug.Log("Core_DrawTask");
-
-            QuestionLeo questionLeo = core.GetCurrentQuest();
-            core.SetSound(questionLeo.questWord.soundURL);
-            SetImage(questionLeo.questWord.pictureURL);
-            HideImage();
-            HideQuestion();
-            AnswerInputField.text = string.Empty;
-
-            SetupEnterButton(CheckAnswerClick);
-
-            if (sayToggle.isOn)
-                GameManager.AudioPlayer.SayWord();
-
-            WordProgressUpdate();
-            ProgeressBarUpdate();
-            GameObject.FindObjectOfType<DebugUI>().FillPanel(core.tasks);
-
-            //передать фокус полю ввода
-            AnswerInputField.ActivateInputField();
-
-            // выбор элемента как активного
-            EventSystem.current.SetSelectedGameObject(AnswerInputField.gameObject);
-            GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
-        }
-
-        /// <summary>
-        /// показывает прогресс изучения слова
-        /// </summary>
-        private void WordProgressUpdate()
-        {
-            progressImage.fillAmount = GetCurrentQuest().questWord.GetProgressCount();
-        }
-
-        private void ProgeressBarUpdate()
-        {
-            answersCount++;
-            scoreText.text = answersCount + "/" + scoreSlider.maxValue;
-            scoreSlider.value = answersCount;
-        }
-
-        private void InitWordCountBar()
-        {
-            if (core.maxQuestCount < GameManager.WordManeger.CountWordInGroup())
-                scoreSlider.maxValue = core.maxQuestCount;
-            else
-                scoreSlider.maxValue = GameManager.WordManeger.CountWordInGroup();
-            scoreText.text = answersCount + "/" + scoreSlider.maxValue;
-        }
-
-        private void HideImage()
-        {
-            wordImage.enabled = false;
-        }
-        private void ShowImage()
-        {
-            wordImage.enabled = true;
-        }
-
-        private void HideQuestion()
-        {
-            questionText.gameObject.SetActive(false);
-            mistakeText.gameObject.SetActive(false);
-            translateText.gameObject.SetActive(false);
-            AnswerInputField.gameObject.SetActive(true);
-        }
-        private void ShowQuestion()
-        {
-            questionText.gameObject.SetActive(true);
-            mistakeText.gameObject.SetActive(true);
-            translateText.gameObject.SetActive(true);
-            AnswerInputField.gameObject.SetActive(false);
-        }
-        private void SetImage(string fileName)
-        {
-            string foloder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyMyUtilities.ConverterUrlToName(fileName));
-            Sprite sprite = MyUtilities.LoadSpriteFromFile(foloder + MyUtilities.ConverterUrlToName(fileName));
-
-            wordImage.sprite = sprite;
-            wordImage.preserveAspect = true;
-        }
     }
 }

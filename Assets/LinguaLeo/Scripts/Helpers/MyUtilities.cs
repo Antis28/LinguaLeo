@@ -13,42 +13,6 @@ namespace LinguaLeo.Scripts.Helpers
 {
     public class MyUtilities
     {
-        public static Sprite LoadSpriteFromFile(string path)
-        {
-            //string path = "Data/Covers" + "/" + pictureName + ".png";
-            if (!File.Exists(path))
-            {
-                Debug.LogWarning("File not found\n" + path);
-                path = "Data/Picture" + "/" + "image-not-found.png";
-                if (!File.Exists(path))
-                    return null;
-            }
-
-            byte[] picture;
-
-            using (FileStream stream = new FileStream(path, FileMode.Open))
-            {
-                picture = new byte[stream.Length];
-                // считываем данные
-                stream.Read(picture, 0, picture.Length);
-            }
-
-            Texture2D texture2D = new Texture2D(1, 1);
-            texture2D.LoadImage(picture);
-
-            Sprite sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(.5f, .5f));
-            return sprite;
-        }
-
-        public static Sprite GetSprite(string fileName)
-        {
-            string folder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyUtilities.ConverterUrlToName(fileName));
-            Sprite sprite = LoadSpriteFromFile(folder + ConverterUrlToName(fileName));
-            return sprite;
-
-        }
-
         public static string ConverterUrlToName(string url, bool withExtension = true)
         {
             //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
@@ -64,15 +28,6 @@ namespace LinguaLeo.Scripts.Helpers
 
         }
 
-        public static string GetFirstTranslate(WordLeo questWord)
-        {
-            return questWord.translations.Split(',')[0];
-        }
-        public static string[] GetTranslates(WordLeo questWord)
-        {
-            return questWord.translations.Split(',');
-        }
-
         public static string FormatTime(TimeSpan timeLeft)
         {
             string result = string.Empty;
@@ -86,46 +41,7 @@ namespace LinguaLeo.Scripts.Helpers
                 result = "0";
             return result;
         }
-
-        public static string FormatTime(double timeLeft)
-        {
-            var span = TimeSpan.FromMinutes(timeLeft);
-            return FormatTime(span);
-        }
-
-        public int GetINT(string text)
-        {
-            int value;
-            if (int.TryParse(text, out value))
-            {
-                return value;
-            }
-            return 0;
-        }
-
-        public bool GetBOOL(string text)
-        {
-            bool value;
-            if (bool.TryParse(text, out value))
-            {
-                return value;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Выбрать слова которые не полностью изучены
-        /// </summary>
-        /// <param name="wordsFromGroup"></param>
-        /// <returns></returns>
-        internal static List<WordLeo> SelectNotDoneWords(List<WordLeo> wordsFromGroup)
-        {
-            var remainList = from word in wordsFromGroup
-                where !word.AllWorkoutDone()
-                select word;
-            return remainList.ToList();
-        }
-
+       
         /// <summary>
         /// перемешать слова
         /// </summary>
@@ -145,6 +61,7 @@ namespace LinguaLeo.Scripts.Helpers
             }
             return list;
         }
+        
         /// <summary>
         /// перетосовать колоду
         /// </summary>
@@ -162,19 +79,6 @@ namespace LinguaLeo.Scripts.Helpers
                 cards[n] = cards[rndValue];
                 cards[rndValue] = temp;
             }
-        }
-
-
-        public static List<WordLeo> SortWordsByProgress(List<WordLeo> words)
-        {
-            var result = from word in words
-                orderby word.GetProgressCount() descending,
-                    word.GetLicense() descending,
-                    word.GetLicenseValidityTime()
-                select word;
-
-            var sortedWordGroups = result.ToList();
-            return sortedWordGroups;
         }
 
         /// <summary>

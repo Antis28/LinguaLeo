@@ -8,25 +8,14 @@ using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Workout
 {
-    public class WordToTranslate : MonoBehaviour, IObserver, IWorkout
+    public class WordToTranslate : AbstractWorkout, IObserver
     {
-        [SerializeField]
-        private WorkoutNames WorkoutName = WorkoutNames.WordTranslate;
 
         [SerializeField]
         private bool isReverse = false;
 
-        WorkoutNames IWorkout.WorkoutName
-        {
-            get
-            {
-                return WorkoutName;
-            }
-        }
-
-        private Text questionText = null; // Поле для вопроса
+        
         private Text transcriptText = null; // Поле для транскрипции
-        private Image wordImage = null; // Картинка ассоциаци со словом
 
         private GameObject RepeatWordButton = null;
 
@@ -47,32 +36,7 @@ namespace LinguaLeo.Scripts.Workout
         private Text contextText = null; //Текст для контекста
         private GameObject contextPanel; //Панель для контекста
 
-
-        private Workout core;
-
-        // Use this for initialization
-        void Start()
-        {
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
-
-            questionText = GameObject.Find("QuestionText").GetComponent<Text>();
-            transcriptText = GameObject.Find("TranscriptText").GetComponent<Text>();
-            wordImage = GameObject.Find("WordImage").GetComponent<Image>();
-
-            contextPanel = contextText.transform.parent.gameObject;
-            RepeatWordButton = GameObject.Find("RepeatWordButton");
-
-            if (RepeatWordButton)
-            {
-                RepeatWordButton.GetComponent<Button>().onClick.AddListener(
-                    () => GameManager.AudioPlayer.SayWord());
-            }
-
-            GameManager.Notifications.PostNotification(this, GAME_EVENTS.WorkoutLoaded);
-        }
-
-        private void Core_DrawTask()
+       private void Core_DrawTask()
         {
             if (isReverse)
                 BuildUiToTranslateWord();
@@ -165,25 +129,6 @@ namespace LinguaLeo.Scripts.Workout
         private void SetTranscript(string transcript)
         {
             transcriptText.text = transcript;
-        }
-
-        private void HideImage()
-        {
-            wordImage.enabled = false;
-        }
-        private void ShowImage()
-        {
-            wordImage.enabled = true;
-        }
-
-        private void SetImage(string fileName)
-        {
-            string foloder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyMyUtilities.ConverterUrlToName(fileName));
-            Sprite sprite = MyUtilities.LoadSpriteFromFile(foloder + MyUtilities.ConverterUrlToName(fileName));
-
-            wordImage.sprite = sprite;
-            wordImage.preserveAspect = true;
         }
 
         private void SetContext(string context)
@@ -282,14 +227,26 @@ namespace LinguaLeo.Scripts.Workout
             }
         }
 
-        WordLeo IWorkout.GetCurrentWord()
+        // Use this for initialization
+        void Start()
         {
-            return core.GetCurrentWord();
-        }
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
 
-        Workout IWorkout.GetCore()
-        {
-            return core;
+            questionText = GameObject.Find("QuestionText").GetComponent<Text>();
+            transcriptText = GameObject.Find("TranscriptText").GetComponent<Text>();
+            wordImage = GameObject.Find("WordImage").GetComponent<Image>();
+
+            contextPanel = contextText.transform.parent.gameObject;
+            RepeatWordButton = GameObject.Find("RepeatWordButton");
+
+            if (RepeatWordButton)
+            {
+                RepeatWordButton.GetComponent<Button>().onClick.AddListener(
+                    () => GameManager.AudioPlayer.SayWord());
+            }
+
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.WorkoutLoaded);
         }
     }
 }

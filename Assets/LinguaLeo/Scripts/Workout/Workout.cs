@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Manegers;
@@ -25,7 +26,7 @@ namespace LinguaLeo.Scripts.Workout
 
         public event UnityAction DrawTask;
 
-        void OnDrawTask()
+        private void OnDrawTask()
         {
             if (DrawTask != null)
                 DrawTask();
@@ -33,16 +34,10 @@ namespace LinguaLeo.Scripts.Workout
 
         public WorkoutNames WorkoutName
         {
-            get
-            {
-                return workoutName;
-            }
+            get { return workoutName; }
         }
 
-        public bool TaskExists()
-        {
-            return tasks != null && tasks.Count > 0;
-        }
+        public bool TaskExists() { return tasks != null && tasks.Count > 0; }
 
         // Use this for initialization
         public Workout(WorkoutNames WorkoutName, int questCount)
@@ -54,36 +49,22 @@ namespace LinguaLeo.Scripts.Workout
         public bool TrainingDone()
         {
             bool trainingDone = true;
-            foreach (var task in tasks)
-            {
-                trainingDone = trainingDone && task.questWord.AllWorkoutDone();
-            }
+            foreach (var task in tasks) { trainingDone = trainingDone && task.questWord.AllWorkoutDone(); }
+
             return trainingDone;
         }
 
-        public WordLeo GetCurrentWord()
-        {
-            return tasks[questionID].questWord;
-        }
-        public QuestionLeo GetCurrentQuest()
-        {
-            return tasks[questionID];
-        }
+        public WordLeo GetCurrentWord() { return tasks[questionID].questWord; }
+        public QuestionLeo GetCurrentQuest() { return tasks[questionID]; }
 
         #region Handlers
-        public void LoadQuestions()
-        {
-            tasks = LoadTasks();
-        }
-        public void SetNextQuestion()
-        {
-            buttonsHandler.SetNextQuestion(RunNextQuestion);
-        }
-        public void RunNextQuestion()
-        {
-            BuildTask(questionID + 1);
-        }
-        #endregion 
+
+        public void LoadQuestions() { tasks = LoadTasks(); }
+        public void SetNextQuestion() { buttonsHandler.SetNextQuestion(RunNextQuestion); }
+        public void RunNextQuestion() { BuildTask(questionID + 1); }
+
+        #endregion
+
         public void SetSound(string file)
         {
             GameManager.AudioPlayer.SetSound(MyUtilities.ConverterUrlToName(file, false));
@@ -95,15 +76,9 @@ namespace LinguaLeo.Scripts.Workout
             buttonsHandler.FillingEnterButton(true);
         }
 
-        public Workout GetCore()
-        {
-            return this;
-        }
+        public Workout GetCore() { return this; }
 
-        public void BuildFirstTask()
-        {
-            BuildTask(0);
-        }
+        public void BuildFirstTask() { BuildTask(0); }
 
         private List<QuestionLeo> LoadTasks()
         {
@@ -113,15 +88,16 @@ namespace LinguaLeo.Scripts.Workout
                 return questionsTemp;
 
             untrainedWords = MyUtilities.ShuffleList(untrainedWords);
-            untrainedWords = MyUtilities.SortWordsByProgress(untrainedWords);
+            untrainedWords = SortWordsByProgress(untrainedWords);
             for (int i = 0; i < maxQuestCount; i++)
             {
-                QuestionLeo question = GeneratorTask(i, questionsTemp);
+                var question = GeneratorTask(i, questionsTemp);
 
                 if (question == null)
                     break;
                 questionsTemp.Add(question);
             }
+
             return questionsTemp;
         }
 
@@ -135,6 +111,7 @@ namespace LinguaLeo.Scripts.Workout
                 GameManager.Notifications.PostNotification(null, GAME_EVENTS.WordsEnded);
                 return;
             }
+
             // Отрисовать GUI
             OnDrawTask();
         }
@@ -147,6 +124,7 @@ namespace LinguaLeo.Scripts.Workout
                 toNode = 0;
                 return true;
             }
+
             return false;
         }
 
@@ -157,16 +135,15 @@ namespace LinguaLeo.Scripts.Workout
         /// <returns></returns>
         private bool AvaiableBuilding(int current)
         {
-            if (trainingСompleted || tasks.Count == 0)
-            {
-                return false;
-            }
+            if (trainingСompleted || tasks.Count == 0) { return false; }
+
             questionID = FindNodeByID(current);
             if (questionID < 0)
             {
                 Debug.LogError(this + "отсутствует или указан неверно идентификатор узла.");
                 return false;
             }
+
             trainingСompleted = CheckTrainingСompleted();
             return true;
         }
@@ -199,11 +176,9 @@ namespace LinguaLeo.Scripts.Workout
         {
             foreach (var item in words)
             {
-                if (!exceptWords.Contains(new QuestionLeo(item)))
-                {
-                    return item;
-                }
+                if (!exceptWords.Contains(new QuestionLeo(item))) { return item; }
             }
+
             return null;
         }
 
@@ -223,6 +198,18 @@ namespace LinguaLeo.Scripts.Workout
             }
 
             return -1;
+        }
+
+        public static List<WordLeo> SortWordsByProgress(List<WordLeo> words)
+        {
+            var result = from word in words
+                         orderby word.GetProgressCount() descending,
+                             word.GetLicense() descending,
+                             word.GetLicenseValidityTime()
+                         select word;
+
+            var sortedWordGroups = result.ToList();
+            return sortedWordGroups;
         }
     }
 }

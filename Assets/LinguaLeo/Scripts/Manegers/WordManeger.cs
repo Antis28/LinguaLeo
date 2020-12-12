@@ -75,8 +75,7 @@ namespace LinguaLeo.Scripts.Manegers
 
         public int CountUntrainWordInGroup()
         {
-            List<WordLeo> remainWord = MyUtilities.SelectNotDoneWords(
-                vocabulary.wordsFromGroup);
+            var remainWord = vocabulary.SelectNotDoneWords();
             return remainWord.Count;
         }
 

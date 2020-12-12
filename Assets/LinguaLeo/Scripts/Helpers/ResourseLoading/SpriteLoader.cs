@@ -1,30 +1,42 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 {
     public class SpriteLoader
     {
-        private string spriteDirectory = Path.Combine(ResourcesLoader.PathToRootResources, "Picture");
-        
-        
-        public static Sprite GetSprite(string fileName)
+        private readonly string pictureDirectory;
+        private string coverDirectory;
+
+        public SpriteLoader(string PathToRootResources)
         {
-            const string folder = "Data/Picture/";
-            //Sprite sprite = Resources.Load<Sprite>(foloder + "/" + MyUtilities.ConverterUrlToName(fileName));
-            var sprite = LoadSpriteFromFile(folder + ResourcesLoader.ConverterUrlToName(fileName));
+            this.pictureDirectory = Path.Combine(PathToRootResources, "Picture");
+            this.coverDirectory = Path.Combine(PathToRootResources, "Covers");
+        }
+
+        public Sprite GetSpriteFromPicture(string fileName)
+        {
+            var fullPath = Path.Combine(pictureDirectory, fileName);
+            var sprite = LoadSpriteFromFile(fullPath);
             return sprite;
         }
-        
-        private static Sprite LoadSpriteFromFile(string path)
+
+        public Sprite GetSpriteFromCovers(string fileName)
         {
-            //string path = "Data/Covers" + "/" + pictureName + ".png";
+            var fullPath = Path.Combine(coverDirectory, fileName);
+            var sprite = LoadSpriteFromFile(fullPath);
+            return sprite;
+        }
+
+        private Sprite LoadSpriteFromFile(string path)
+        {
             if (!File.Exists(path))
             {
                 Debug.LogWarning("File not found\n" + path);
                 path = "Data/Picture" + "/" + "image-not-found.png";
                 if (!File.Exists(path))
-                    return null;
+                    throw new FileLoadException(path);
             }
 
             byte[] picture;

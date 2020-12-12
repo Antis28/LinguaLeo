@@ -12,17 +12,14 @@ namespace LinguaLeo.Scripts.Helpers
         public List<WordLeo> answers;
 
         public QuestionLeo() { }
-        public QuestionLeo(WordLeo word)
-        {
-            questWord = word;
-        }
+        public QuestionLeo(WordLeo word) { questWord = word; }
 
         /// <summary>
         /// заполнит варианты ответов
         /// </summary>
         public void FillInAnswers(int answerCount)
         {
-            int[] numAnswers = { 0, 1, 2, 3, 4 };
+            int[] numAnswers = {0, 1, 2, 3, 4};
             int indexOfQuestWord = URandom.Range(0, answerCount);
 
             List<WordLeo> GroupWords = GameManager.WordManeger.GetAllGroupWords();
@@ -35,10 +32,12 @@ namespace LinguaLeo.Scripts.Helpers
                     answers.Add(questWord);
                     continue;
                 }
+
                 if (tempAnswers.Peek() == questWord)
                     tempAnswers.Pop();
                 answers.Add(tempAnswers.Pop());
             }
+
             answers = MyUtilities.ShuffleList(answers);
         }
 
@@ -63,10 +62,12 @@ namespace LinguaLeo.Scripts.Helpers
                     wordsTemp.RemoveAt(randomIndex);
                 }
             }
+
             return stack;
         }
 
         #region сравнение в методе Contains
+
         public bool Equals(QuestionLeo other)
         {
             if (other == null)
@@ -77,6 +78,7 @@ namespace LinguaLeo.Scripts.Helpers
             else
                 return false;
         }
+
         public bool Equals(WordLeo other)
         {
             if (other == null)
@@ -100,14 +102,11 @@ namespace LinguaLeo.Scripts.Helpers
                 return Equals(quest);
         }
 
-        public override int GetHashCode()
-        {
-            return this.questWord.wordValue.GetHashCode();
-        }
+        public override int GetHashCode() { return this.questWord.wordValue.GetHashCode(); }
 
         public static bool operator ==(QuestionLeo quest1, QuestionLeo quest2)
         {
-            if (((object)quest1) == null || ((object)quest2) == null)
+            if (((object) quest1) == null || ((object) quest2) == null)
                 return Object.Equals(quest1, quest2);
 
             return quest1.Equals(quest2);
@@ -115,11 +114,12 @@ namespace LinguaLeo.Scripts.Helpers
 
         public static bool operator !=(QuestionLeo quest1, QuestionLeo quest2)
         {
-            if (((object)quest1) == null || ((object)quest2) == null)
+            if (((object) quest1) == null || ((object) quest2) == null)
                 return !Object.Equals(quest1, quest2);
 
             return !(quest1.Equals(quest2));
         }
-        #endregion    
+
+        #endregion
     }
 }
