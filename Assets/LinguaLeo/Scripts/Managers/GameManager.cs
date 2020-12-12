@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using LinguaLeo.Scripts.Behaviour;
 using LinguaLeo.Scripts.Helpers.ResourceLoading;
+using LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements;
+using LinguaLeo.Scripts.Managers;
 using LinguaLeo.Scripts.Manegers.Parts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -176,7 +178,7 @@ namespace LinguaLeo.Scripts.Manegers
             }
         }
 
-        public static IResourcesLoader ResourcesLoader => resourcesLoader ?? (resourcesLoader = new StreamingAssetsLoader());
+        public static IResourcesLoader ResourcesLoader => resourcesLoader ?? (resourcesLoader = new DataLoader());
 
         #endregion
 

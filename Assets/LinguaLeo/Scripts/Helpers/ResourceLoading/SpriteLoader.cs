@@ -8,11 +8,14 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
     {
         private readonly string pictureDirectory;
         private string coverDirectory;
+        
+        private readonly string pictureDirectoryName =  "Picture";
+        private readonly string coversDirectoryName =  "Covers";
 
         public SpriteLoader(string PathToRootResources)
         {
-            this.pictureDirectory = Path.Combine(PathToRootResources, "Picture");
-            this.coverDirectory = Path.Combine(PathToRootResources, "Covers");
+            this.pictureDirectory = Path.Combine(PathToRootResources, pictureDirectoryName);
+            this.coverDirectory = Path.Combine(PathToRootResources, coversDirectoryName);
         }
 
         public Sprite GetSpriteFromPicture(string fileName)
