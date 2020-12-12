@@ -7,5 +7,8 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
         Sprite GetPicture(string fileName);
         Sprite GetCover(string fileName);
         AudioClip GetAudioClip(string fileName);
+        
+        WordCollection LoadVocabulary();
+        void SaveVocabulary(WordCollection vocabulary);
     }
 }

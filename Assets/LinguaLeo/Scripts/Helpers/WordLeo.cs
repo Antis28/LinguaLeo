@@ -13,7 +13,7 @@ namespace LinguaLeo.Scripts.Helpers
     public class WordLeo : IEquatable<WordLeo>
     {
         #region XML поля
-
+//TODO: Удалить XmlAttribute после проверки работоспособности загрузки WordLeoXml и VocabularyFromXml.
         [XmlAttribute]
         public string wordValue;
 

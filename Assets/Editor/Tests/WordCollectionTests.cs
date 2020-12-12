@@ -29,7 +29,7 @@ namespace Editor.Tests
         private const string NameGroup = "Цитатник_7";
         private readonly int _countWordsInGroup = 49;
         private const string Path = @"Data/Base/WordBase.xml";
-
+/*
         [OneTimeSetUp]
         public void PrepareBase()
         {
@@ -56,7 +56,7 @@ namespace Editor.Tests
                 () => WordCollection.BuildFromXml(pathToBug)
             );
         }
-
+*/
         [Test]
         [Category("Slow Tests")]
         public void SaveToXml_ValidPath_PathExists()

@@ -4,48 +4,29 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using LinguaLeo.Scripts.Helpers.Interfaces;
+using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
 
 namespace LinguaLeo.Scripts.Helpers
 {
-    [XmlRoot("Root")]
     public class WordCollection
     {
-        [XmlArray("LeoWords")]
-        [XmlArrayItem("word")]
         public List<WordLeo> allWords; // полный словарь
-
-        [XmlIgnore]
         public List<WordLeo> wordsFromGroup; // словарь для набора слов
 
-        private Random random = new Random();
+        private readonly Random random = new Random();
 
-        public static WordCollection BuildFromXml(string path)
+        public WordCollection()
         {
-            if (!File.Exists(path))
-                throw new IOException("File not found");
-
-            WordCollection result = null;
-
-            using (TextReader Stream = new StreamReader(path, Encoding.UTF8))// (path, FileMode.Open, FileAccess.Read))
-            {
-                XmlSerializer Serializer = new XmlSerializer(typeof(WordCollection));
-                result = Serializer.Deserialize(Stream) as WordCollection;
-                Stream.Close();
-
-                if (result == null)
-                    throw new Exception("File not Deserialize");
-            }
-            return result;
         }
 
         public void SaveToXml(string path)
-        { 
+        {
             if (!File.Exists(path))
                 throw new Exception("File not founded");
 
             using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
             {
-
                 //Now save game data
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
 
@@ -61,11 +42,8 @@ namespace LinguaLeo.Scripts.Helpers
         public void LoadGroup(string groupName)
         {
             wordsFromGroup = new List<WordLeo>();
-            foreach (var word in allWords)
-            {
-                if (word.groups.Contains(groupName))
-                    wordsFromGroup.Add(word);
-            }
+            var query = allWords.Where(word => word.groups.Contains(groupName));
+            foreach (var word in query) { wordsFromGroup.Add(word); }
         }
 
         public WordLeo GetRandomWord()
@@ -79,10 +57,8 @@ namespace LinguaLeo.Scripts.Helpers
         public List<WordLeo> GetRandomWords(int Count)
         {
             List<WordLeo> words = new List<WordLeo>(Count);
-            for (int i = 0; i < Count; i++)
-            {
-                words.Add(GetRandomWord());
-            }
+            for (int i = 0; i < Count; i++) { words.Add(GetRandomWord()); }
+
             return words;
         }
 
@@ -97,10 +73,8 @@ namespace LinguaLeo.Scripts.Helpers
         public List<WordLeo> GetRandomWordsFromGroup(int Count)
         {
             List<WordLeo> words = new List<WordLeo>(Count);
-            for (int i = 0; i < Count; i++)
-            {
-                words.Add(GetRandomWordFromGroup());
-            }
+            for (int i = 0; i < Count; i++) { words.Add(GetRandomWordFromGroup()); }
+
             return words;
         }
 
@@ -114,13 +88,11 @@ namespace LinguaLeo.Scripts.Helpers
                 if (item.CanTraining(workoutName))
                     untrainedWords.Add(item);
             }
+
             return untrainedWords;
         }
 
-        public bool GroupExist()
-        {
-            return wordsFromGroup != null;
-        }
+        public bool GroupExist() { return wordsFromGroup != null; }
 
         /// <summary>
         /// Извлекает название всех групп
@@ -138,16 +110,17 @@ namespace LinguaLeo.Scripts.Helpers
                         groups.Add(group);
                 }
             }
+
             groups = groups.OrderBy((x) => x).ToList();
             return groups;
         }
-        
+
         /// <summary>
         /// Выбрать слова которые не полностью изучены
         /// </summary>
         /// <param name="wordsFromGroup"></param>
         /// <returns></returns>
-        internal  List<WordLeo> SelectNotDoneWords()
+        internal List<WordLeo> SelectNotDoneWords()
         {
             var remainList = from word in wordsFromGroup
                              where !word.AllWorkoutDone()
@@ -156,4 +129,3 @@ namespace LinguaLeo.Scripts.Helpers
         }
     }
 }
-
