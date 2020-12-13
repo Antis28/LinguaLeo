@@ -110,8 +110,8 @@ namespace LinguaLeo.Scripts.Workout
 
             QuestionLeo questionLeo = core.GetCurrentQuest();
             translateText.text = core.GetCurrentWord().translations;
-            core.SetSound(questionLeo.questWord.soundURL);
-            SetImage(questionLeo.questWord.pictureURL);
+            core.SetSound(questionLeo.questWord.soundUrl);
+            SetImage(questionLeo.questWord.pictureUrl);
             HideImage();
             HideQuestion();
             HideRepeatWordButton();

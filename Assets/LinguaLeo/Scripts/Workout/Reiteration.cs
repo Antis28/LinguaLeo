@@ -223,8 +223,8 @@ namespace LinguaLeo.Scripts.Workout
             buttonsHandler.FillingButtonsWithOptions(answers, questionWord);
             buttonsHandler.FillingEnterButton(true);
 
-            SetImage(questionLeo.questWord.pictureURL);
-            SetSound(questionLeo.questWord.soundURL);
+            SetImage(questionLeo.questWord.pictureUrl);
+            SetSound(questionLeo.questWord.soundUrl);
             SetContext(questionLeo.questWord.highlightedContext);
             HideContext();
 

@@ -166,10 +166,10 @@ namespace LinguaLeo.Scripts.Workout
 
             SetButtons(questionLeo, questionLeo.questWord);
 
-            SetImage(questionLeo.questWord.pictureURL);
+            SetImage(questionLeo.questWord.pictureUrl);
             HideImage();
 
-            core.SetSound(questionLeo.questWord.soundURL);
+            core.SetSound(questionLeo.questWord.soundUrl);
             if (sayToggle.isOn)
                 GameManager.AudioPlayer.SayWord();
 
@@ -192,9 +192,9 @@ namespace LinguaLeo.Scripts.Workout
 
             SetButtons(questionLeo, questionLeo.questWord);
 
-            SetImage(questionLeo.questWord.pictureURL);
+            SetImage(questionLeo.questWord.pictureUrl);
 
-            core.SetSound(questionLeo.questWord.soundURL);
+            core.SetSound(questionLeo.questWord.soundUrl);
             SetContext(questionLeo.questWord.highlightedContext);
 
             HideImage();  //ShowImage();

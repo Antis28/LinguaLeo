@@ -12,34 +12,16 @@ namespace LinguaLeo.Scripts.Helpers
     /// </summary>
     public class WordLeo : IEquatable<WordLeo>
     {
-        #region XML поля
-//TODO: Удалить XmlAttribute после проверки работоспособности загрузки WordLeoXml и VocabularyFromXml.
-        [XmlAttribute]
+        #region поля
+
         public string wordValue;
-
-        [XmlAttribute]
         public string translations;
-
-        [XmlAttribute]
-        public string pictureURL;
-
-        [XmlAttribute]
+        public string pictureUrl;
         public string transcription;
-
-        [XmlAttribute]
         public string highlightedContext;
-
-        [XmlAttribute]
-        public string soundURL;
-
-        [XmlAttribute]
+        public string soundUrl;
         public string clozefiedContext;
-
-        [XmlArray]
-        [XmlArrayItem("group")]
         public string[] groups;
-
-        [XmlElement]
         public WorkoutProgress progress;
 
         #endregion
@@ -309,8 +291,9 @@ namespace LinguaLeo.Scripts.Helpers
             progress.license++;
             GameManager.Notifications.PostNotification(null, GAME_EVENTS.UpdatedLicenseLevel);
         }
-        
+
         public bool LicenseExists() { return progress.license >= LicenseLevels.Level_1; }
+
         #endregion
 
         #region Работа с тренировками
@@ -341,11 +324,11 @@ namespace LinguaLeo.Scripts.Helpers
 
             return progressCount;
         }
-        
+
         public bool CanTraining(WorkoutNames workoutName) { return progress.CanTraining(workoutName); }
-        
+
         public bool AllWorkoutDone() { return progress.AllWorkoutDone(); }
-        
+
         public void LearnWordTranslate() { progress.word_translate = true; }
 
         public void LearnTranslateWord() { progress.translate_word = true; }
@@ -353,7 +336,7 @@ namespace LinguaLeo.Scripts.Helpers
         public void LearnAudio() { progress.audio_word = true; }
 
         public void LearnPuzzle() { progress.word_puzzle = true; }
-        
+
         #endregion
 
         #region сравнение в методе Contains
@@ -378,6 +361,7 @@ namespace LinguaLeo.Scripts.Helpers
                 return Equals(wordLeo);
         }
 
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
         public override int GetHashCode() { return this.wordValue.GetHashCode(); }
 
         public static bool operator ==(WordLeo wordLeo1, WordLeo wordLeo2)

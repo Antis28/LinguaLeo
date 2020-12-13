@@ -21,7 +21,7 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
 
         public void Init(WordLeo word)
         {
-            wordImage.sprite = GameManager.ResourcesLoader.GetPicture(word.pictureURL);
+            wordImage.sprite = GameManager.ResourcesLoader.GetPicture(word.pictureUrl);
             wordImage.preserveAspect = true;
 
             levelText.text = word.progress.license.ToString();

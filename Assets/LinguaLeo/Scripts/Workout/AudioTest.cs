@@ -104,8 +104,8 @@ namespace LinguaLeo.Scripts.Workout
             Debug.Log("Core_DrawTask");
 
             QuestionLeo questionLeo = core.GetCurrentQuest();
-            core.SetSound(questionLeo.questWord.soundURL);
-            SetImage(questionLeo.questWord.pictureURL);
+            core.SetSound(questionLeo.questWord.soundUrl);
+            SetImage(questionLeo.questWord.pictureUrl);
             HideImage();
             HideQuestion();
             answerInputField.text = string.Empty;

@@ -150,10 +150,10 @@ namespace Editor.Tests
             {
                 wordValue = "metaphor",
                 translations = "метафора",
-                pictureURL = "http://contentcdn.lingualeo.com/uploads/picture/3250267.png",
+                pictureUrl = "http://contentcdn.lingualeo.com/uploads/picture/3250267.png",
                 transcription = "ˈmɛtəfɔr",
                 highlightedContext = "",
-                soundURL = "https://audiocdn.lingualeo.com/v2/1/25559-631152008.mp3",
+                soundUrl = "https://audiocdn.lingualeo.com/v2/1/25559-631152008.mp3",
                 clozefiedContext = "",
                 groups = new[] { "Литература" }
             };
