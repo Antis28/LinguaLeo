@@ -9,7 +9,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
         private readonly string vocabularyDirectory = "Base";
         private readonly string vocabularyFile = "WordBase.xml";
 
-        private readonly IVocabularyManager vocabularyManager;
+        private readonly IVocabularyManager<WordCollection> vocabularyManager;
 
         public VocabularyLoader(string pathToRootResources)
         {

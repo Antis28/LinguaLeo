@@ -2,9 +2,9 @@
 
 namespace LinguaLeo.Scripts.Helpers.Interfaces
 {
-    public interface IVocabularyManager
+    public interface IVocabularyManager<T> where T: class
     {
-        WordCollection Load();
-        void Save(WordCollection vocabulary);
+        T Load();
+        void Save(T vocabulary);
     }
 }
