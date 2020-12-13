@@ -9,21 +9,30 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 {
     public class AudioLoader
     {
-        private readonly string audioDirectory;
-        private readonly string resExt = ".ogg";
+        #region Public variables
 
         public UnityEvent LoadingComplete;
 
-        public AudioLoader(string PathToRootResources)
-        {
-            this.audioDirectory = Path.Combine(PathToRootResources, "Audio", "OGG");
-        }
+        #endregion
+
+        #region Private variables
+
+        private readonly string audioDirectory;
+        private readonly string resExt = ".ogg";
+
+        #endregion
+
+        #region Public Methods
 
         public AudioClip GetAudioClip(string fileName)
         {
             var fullPath = Path.Combine(audioDirectory, fileName + resExt);
             return LoadAudioFromFile(fullPath);
         }
+
+        #endregion
+
+        #region Private Methods
 
         private AudioClip LoadAudioFromFile(string path)
         {
@@ -40,6 +49,13 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 
                 return DownloadHandlerAudioClip.GetContent(www);
             }
+        }
+
+        #endregion
+
+        public AudioLoader(string PathToRootResources)
+        {
+            audioDirectory = Path.Combine(PathToRootResources, "Audio", "OGG");
         }
     }
 }

@@ -6,6 +6,7 @@ namespace LinguaLeo.Scripts.Helpers
     {
         [XmlAttribute]
         public string name;
+
         [XmlAttribute]
         public int wordCount;
 

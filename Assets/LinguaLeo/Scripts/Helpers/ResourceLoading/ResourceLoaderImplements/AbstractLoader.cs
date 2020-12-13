@@ -14,11 +14,27 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
     /// </summary>
     public abstract class AbstractLoader : IResourcesLoader
     {
+        #region Private variables
+
         protected string pathToRootResources = string.Empty;
         private SpriteLoader spriteLoader;
         private AudioLoader audioLoader;
         private VocabularyLoader vocabularyLoader;
         private WordGroupFromXml wordGroupFromXml;
+
+        #endregion
+
+        #region Public Methods
+
+        public AudioClip GetAudioClip(string fileName)
+        {
+            return audioLoader.GetAudioClip(fileName);
+        }
+
+        public Sprite GetCover(string fileName)
+        {
+            return spriteLoader.GetSpriteFromCovers(fileName);
+        }
 
         public Sprite GetPicture(string fileName)
         {
@@ -26,13 +42,14 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
             return spriteLoader.GetSpriteFromPicture(normalizeName);
         }
 
-        public Sprite GetCover(string fileName) { return spriteLoader.GetSpriteFromCovers(fileName); }
-
-        public AudioClip GetAudioClip(string fileName) { return audioLoader.GetAudioClip(fileName); }
-        
         public WordCollection LoadVocabulary()
         {
             return vocabularyLoader.GetVocabulary();
+        }
+
+        public List<WordGroup> LoadWordGroup()
+        {
+            return wordGroupFromXml.Load();
         }
 
         public void SaveVocabulary(WordCollection vocabulary)
@@ -40,25 +57,14 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
             vocabularyLoader.SaveVocabulary(vocabulary);
         }
 
-        public List<WordGroup> LoadWordGroup() { return wordGroupFromXml.Load(); }
         public void SaveWordGroup(List<WordGroup> groups)
         {
             wordGroupFromXml.Save(groups);
         }
 
+        #endregion
 
-        /// <summary>
-        /// Вызывать ТОЛЬКО после установки пути к ресурсам(pathToRootResources)
-        /// </summary>
-        protected void InitAllLoaders()
-        {
-            spriteLoader = new SpriteLoader(pathToRootResources);
-            audioLoader = new AudioLoader(pathToRootResources);
-            vocabularyLoader = new VocabularyLoader(pathToRootResources);
-            wordGroupFromXml = new WordGroupFromXml(pathToRootResources);
-        }
-        
-        
+        #region Private Methods
 
         private string ConverterUrlToName(string url, bool withExtension = true)
         {
@@ -73,5 +79,19 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 
             return Path.GetFileNameWithoutExtension(mat.Value);
         }
+
+
+        /// <summary>
+        /// Вызывать ТОЛЬКО после установки пути к ресурсам(pathToRootResources)
+        /// </summary>
+        protected void InitAllLoaders()
+        {
+            spriteLoader = new SpriteLoader(pathToRootResources);
+            audioLoader = new AudioLoader(pathToRootResources);
+            vocabularyLoader = new VocabularyLoader(pathToRootResources);
+            wordGroupFromXml = new WordGroupFromXml(pathToRootResources);
+        }
+
+        #endregion
     }
 }

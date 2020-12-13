@@ -10,8 +10,19 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
     /// </summary>
     public class SearchByFirstChar : MonoBehaviour
     {
+        #region Public variables
+
         public Text gt;
+
+        #endregion
+
+        #region Private variables
+
         private SelectGroup selectGroup;
+
+        #endregion
+
+        #region Unity events
 
         private void Start()
         {
@@ -19,9 +30,26 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
             selectGroup = FindObjectOfType<SelectGroup>();
         }
 
-        private void Update()
+        #endregion
+
+        #region Private Methods
+
+        private WordSetPanel FindPanelByCaption(string substring)
         {
-            FindSubString();
+            substring = substring.ToLower();
+            var allWordSetPanel = selectGroup.GetTiles();
+
+            var actualPanels = from p in allWordSetPanel
+                               orderby p.GetName()
+                               where p.GetName().ToLower().StartsWith(substring)
+                               select p;
+            if (!actualPanels.Any())
+                actualPanels = from p in allWordSetPanel
+                               orderby p.GetName()
+                               where p.GetName().ToLower().Contains(substring)
+                               select p;
+
+            return actualPanels.Count() > 0 ? actualPanels.First() : null;
         }
 
         private void FindSubString()
@@ -33,11 +61,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
                     if (gt.text.Length != 0)
 
                         gt.text = gt.text.Substring(0, gt.text.Length - 1);
-                }
-                else
-                {
-                    gt.text += c;
-                }
+                } else { gt.text += c; }
 
                 var panel = FindPanelByCaption(gt.text);
                 if (panel == null)
@@ -52,27 +76,16 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
             var index = selectGroup.GetTiles().ToList().FindIndex(x => panel.GetName() == x.GetName());
 
             var high = selectGroup.GetHightToTile(index);
-            
+
             selectGroup.SetHeigtContent(high);
             selectGroup.HighLightTile(index);
         }
 
-        private WordSetPanel FindPanelByCaption(string substring)
+        private void Update()
         {
-            substring = substring.ToLower();
-            var allWordSetPanel = selectGroup.GetTiles();
-
-            var actualPanels = from p in allWordSetPanel
-                orderby p.GetName()
-                where p.GetName().ToLower().StartsWith(substring)
-                select p;
-            if (!actualPanels.Any())
-                actualPanels = from p in allWordSetPanel
-                    orderby p.GetName()
-                    where p.GetName().ToLower().Contains(substring)
-                    select p;
-
-            return actualPanels.Count() > 0 ? actualPanels.First() : null;
+            FindSubString();
         }
+
+        #endregion
     }
 }

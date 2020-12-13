@@ -9,13 +9,13 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
     /// </summary>
     public class DataLoader : AbstractLoader
     {
+        #region Private variables
+
         private readonly string folderXml = @"Data";
 
-        public DataLoader()
-        {
-            SelectPathByPlatform();
-            InitAllLoaders();
-        }
+        #endregion
+
+        #region Private Methods
 
         private void SelectPathByPlatform()
         {
@@ -28,6 +28,12 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 #endif
         }
 
-       
+        #endregion
+
+        public DataLoader()
+        {
+            SelectPathByPlatform();
+            InitAllLoaders();
+        }
     }
 }

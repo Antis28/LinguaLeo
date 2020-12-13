@@ -1,11 +1,12 @@
-﻿
-using LinguaLeo.Scripts.Manegers;
+﻿using LinguaLeo.Scripts.Manegers;
 using UnityEngine;
 using LinguaLeo.Adapters;
 
 namespace LinguaLeo.Scripts.Behaviour
 {
-    public class QuitHelper : MonoBehaviour {
+    public class QuitHelper : MonoBehaviour
+    {
+        #region Public Methods
 
         /// <summary>
         /// Завершает игру.
@@ -24,5 +25,7 @@ namespace LinguaLeo.Scripts.Behaviour
             //Load first level        
             SceneManagerAdapt.LoadScene(0);
         }
+
+        #endregion
     }
 }

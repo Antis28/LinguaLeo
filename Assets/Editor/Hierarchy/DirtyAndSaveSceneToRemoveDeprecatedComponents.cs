@@ -5,6 +5,8 @@ using System.Linq;
 
 public class DirtyAndSaveSceneToRemoveDeprecatedComponents : MonoBehaviour
 {
+    #region Private Methods
+
     [MenuItem("Cleanup/Cleanup Scenes with Deprecated Components")]
     static void DoCleanup()
     {
@@ -17,9 +19,11 @@ public class DirtyAndSaveSceneToRemoveDeprecatedComponents : MonoBehaviour
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
-            
-            if(scene != EditorSceneManager.GetActiveScene())
+
+            if (scene != EditorSceneManager.GetActiveScene())
                 EditorSceneManager.UnloadSceneAsync(scene);
         }
     }
+
+    #endregion
 }

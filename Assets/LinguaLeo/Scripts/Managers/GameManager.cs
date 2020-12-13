@@ -26,9 +26,7 @@ namespace LinguaLeo.Scripts.Manegers
     [RequireComponent(typeof(WorkoutManager))]
     public class GameManager : MonoBehaviour
     {
-        //public static Scene lastScene = SceneManager.GetActiveScene();
-
-        #region Поля
+        #region Static Fields and Constants
 
         //Internal reference to single active instance of object - for singleton behaviour
         private static GameManager instance = null;
@@ -51,12 +49,12 @@ namespace LinguaLeo.Scripts.Manegers
         private static WordManeger wordManeger = null;
 
         private static WorkoutManager workoutManager = null;
-        
+
         private static IResourcesLoader resourcesLoader = null;
 
         #endregion
 
-        #region Свойства
+        #region Public variables
 
         /// <summary>
         /// Экземпляр синглтона GameManager
@@ -121,8 +119,6 @@ namespace LinguaLeo.Scripts.Manegers
             }
         }
 
-        #region C# property to retrieve
-
         public static ScoreKeeper ScoreKeeper
         {
             get
@@ -183,25 +179,20 @@ namespace LinguaLeo.Scripts.Manegers
 
         #endregion
 
-        #endregion
+        #region Unity events
 
-        #region Другие методы
-
-        private static void CheckManyInstance<T>() where T : Object
+        private void Start()
         {
-#if UNITY_EDITOR
-            var manyInstanceSingleton = FindObjectsOfType<T>();
-            if (manyInstanceSingleton.Length > 1)
-            {
-                Debug.LogError("(manyInstanceSingleton)");
-                foreach (var item in manyInstanceSingleton) { Debug.LogError(item.name); }
-            }
+#if UNITY_ANDROID
+            StartCoroutine(LoadYourAsyncScene("01a_Start_Android"));
+#else
+            StartCoroutine(LoadYourAsyncScene("01a_Start"));
 #endif
         }
 
         #endregion
 
-        #region Жизненый цикл
+        #region Private Methods
 
         // Called before Start on object creation
         void Awake()
@@ -216,16 +207,17 @@ namespace LinguaLeo.Scripts.Manegers
             }
         }
 
-        private void Start()
+        private static void CheckManyInstance<T>() where T : Object
         {
-#if UNITY_ANDROID
-            StartCoroutine(LoadYourAsyncScene("01a_Start_Android"));
-#else
-            StartCoroutine(LoadYourAsyncScene("01a_Start"));
+#if UNITY_EDITOR
+            var manyInstanceSingleton = FindObjectsOfType<T>();
+            if (manyInstanceSingleton.Length > 1)
+            {
+                Debug.LogError("(manyInstanceSingleton)");
+                foreach (var item in manyInstanceSingleton) { Debug.LogError(item.name); }
+            }
 #endif
         }
-
-        #endregion
 
         private IEnumerator LoadYourAsyncScene(string sceneName)
         {
@@ -239,5 +231,9 @@ namespace LinguaLeo.Scripts.Manegers
             // Wait until the asynchronous scene fully loads
             while (!asyncLoad.isDone) { yield return null; }
         }
+
+        #endregion
+
+        //public static Scene lastScene = SceneManager.GetActiveScene();
     }
 }

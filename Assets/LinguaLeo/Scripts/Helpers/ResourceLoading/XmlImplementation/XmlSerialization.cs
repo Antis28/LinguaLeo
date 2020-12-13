@@ -9,29 +9,15 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
     /// Сохраняет и загружает Xml файл сеапилизацией
     /// </summary>
     /// <typeparam name="T">Класс для сеапилизации</typeparam>
-    public class XmlSerialization<T> where T: class
+    public class XmlSerialization<T> where T : class
     {
-        public void Save(string path,  T vocabulary)
-        { 
-            if (!File.Exists(path))
-                throw new FileNotFoundException("path: " + path);
+        #region Public Methods
 
-            using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
-            {
-
-                //Now save game data
-                var xmlSerializer = new XmlSerializer(typeof(T));
-
-                xmlSerializer.Serialize(stream, vocabulary);
-                stream.Close();
-            }
-        }
-        
-        public  T Load(string path)
+        public T Load(string path)
         {
             if (!File.Exists(path))
                 throw new FileNotFoundException("path: " + path);
-            
+
             T result;
 
             using (TextReader stream = new StreamReader(path, Encoding.UTF8)) // (path, FileMode.Open, FileAccess.Read))
@@ -46,5 +32,22 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
 
             return result;
         }
+
+        public void Save(string path, T vocabulary)
+        {
+            if (!File.Exists(path))
+                throw new FileNotFoundException("path: " + path);
+
+            using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                //Now save game data
+                var xmlSerializer = new XmlSerializer(typeof(T));
+
+                xmlSerializer.Serialize(stream, vocabulary);
+                stream.Close();
+            }
+        }
+
+        #endregion
     }
 }

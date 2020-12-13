@@ -8,22 +8,31 @@ namespace LinguaLeo.Scripts.Behaviour
 {
     public class ResultPanel : MonoBehaviour
     {
+        #region Static Fields and Constants
+
+        const int BED_RESULT = 0;
+        const int GOOD_RESULT = 9;
+        const int BEST_RESULT = 10;
+
+        #endregion
+
+        #region SerializeFields
 
         [SerializeField]
         Text CaptionText = null;
+
         [SerializeField]
         Text LearnText = null;
+
         [SerializeField]
         Text EatingText = null;
 
         [SerializeField]
         Button[] buttons;
 
+        #endregion
 
-
-        const int BED_RESULT = 0;
-        const int GOOD_RESULT = 9;
-        const int BEST_RESULT = 10;
+        #region Unity events
 
         // Use this for initialization
         void Start()
@@ -38,27 +47,9 @@ namespace LinguaLeo.Scripts.Behaviour
             print("lastWorkout = " + GameManager.SceneLoader.lastWorkout);
         }
 
-        private void InitButtons()
-        {
-            buttons = transform.GetComponentsInChildren<Button>();
-            foreach (var button in buttons)
-            {
-                switch (button.name)
-                {
-                    case "NextWorkoutButton":
-                        //item.onClick.AddListener();
-                        break;
-                    case "ListWorkoutButton":
-                        button.onClick.AddListener(() =>
-                            GameManager.SceneLoader.LoadLevel(SceneNames.trainingСhoice)
-                        );
-                        break;
-                    case "ContinueWorkoutButton":
-                        CheckContinueWorkout(button);
-                        break;
-                }
-            }
-        }
+        #endregion
+
+        #region Private Methods
 
         private void CheckContinueWorkout(Button button)
         {
@@ -68,47 +59,15 @@ namespace LinguaLeo.Scripts.Behaviour
             {
                 button.interactable = true;
                 button.onClick.AddListener(() =>
-                    GameManager.Notifications.PostNotification(this, GAME_EVENTS.ContinueWorkout)
+                                               GameManager.Notifications.PostNotification(
+                                                   this, GAME_EVENTS.ContinueWorkout)
                 );
                 button.gameObject.SetActive(true);
-            }
-            else
+            } else
             {
                 button.interactable = false;
                 button.gameObject.SetActive(false);
             }
-        }
-
-        private void ShowCaption(float score)
-        {
-            if (score == BED_RESULT)
-            {
-                CaptionText.text = "В этот раз не получилось, но продолжай тренироваться!";
-            }
-            else if (score < GOOD_RESULT)
-            {
-                CaptionText.text = "Неплохо, но есть над чем поработать.";
-            }
-            else if (score == GOOD_RESULT)
-            {
-                CaptionText.text = "Круто, отличный результат!";
-            }
-            else if (score == BEST_RESULT)
-            {
-                CaptionText.text = "Поздравляем, отличный результат!";
-            }
-        }
-
-        private void ShowLearn(float score)
-        {
-            if (score < 0)
-            {
-                Debug.LogError("score = " + score);
-                score = 0;
-            }
-            var resultText = GetStudiedWordsCount(score);
-            resultText += GetWordsCountLeft();
-            LearnText.text = resultText;
         }
 
         /// <summary>
@@ -120,7 +79,7 @@ namespace LinguaLeo.Scripts.Behaviour
         {
             if (score == 0 || score > 4)
                 return string.Format("{0} слов изучено, ", score);
-            else if (score == 1)
+            if (score == 1)
                 return string.Format("{0} слово изучено, ", score);
 
             return string.Format("{0} слова изучено, ", score);
@@ -136,6 +95,49 @@ namespace LinguaLeo.Scripts.Behaviour
             return string.Format("{0} на изучении", wordsLeft);
         }
 
+        private void InitButtons()
+        {
+            buttons = transform.GetComponentsInChildren<Button>();
+            foreach (var button in buttons)
+            {
+                switch (button.name)
+                {
+                    case "NextWorkoutButton":
+                        //item.onClick.AddListener();
+                        break;
+                    case "ListWorkoutButton":
+                        button.onClick.AddListener(() =>
+                                                       GameManager.SceneLoader.LoadLevel(SceneNames.trainingСhoice)
+                        );
+                        break;
+                    case "ContinueWorkoutButton":
+                        CheckContinueWorkout(button);
+                        break;
+                }
+            }
+        }
+
+        private void ShowCaption(float score)
+        {
+            if (score == BED_RESULT
+            ) { CaptionText.text = "В этот раз не получилось, но продолжай тренироваться!"; } else if (
+                score < GOOD_RESULT) { CaptionText.text = "Неплохо, но есть над чем поработать."; } else if (
+                score == GOOD_RESULT) { CaptionText.text = "Круто, отличный результат!"; } else if (score == BEST_RESULT
+            ) { CaptionText.text = "Поздравляем, отличный результат!"; }
+        }
+
+        private void ShowLearn(float score)
+        {
+            if (score < 0)
+            {
+                Debug.LogError("score = " + score);
+                score = 0;
+            }
+
+            var resultText = GetStudiedWordsCount(score);
+            resultText += GetWordsCountLeft();
+            LearnText.text = resultText;
+        }
 
 
         // Update is called once per frame
@@ -148,6 +150,8 @@ namespace LinguaLeo.Scripts.Behaviour
                 ShowLearn(GameManager.ScoreKeeper.ScoreValue);
             }
         }
+
+        #endregion
     }
 }
 

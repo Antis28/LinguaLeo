@@ -13,6 +13,8 @@ namespace LinguaLeo.Scripts.Helpers
 {
     public class MyUtilities
     {
+        #region Public Methods
+
         public static string ConverterUrlToName(string url, bool withExtension = true)
         {
             //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
@@ -25,7 +27,14 @@ namespace LinguaLeo.Scripts.Helpers
                 return Path.GetFileName(mat.Value);
 
             return Path.GetFileNameWithoutExtension(mat.Value);
+        }
 
+        public static T FindComponentInGO<T>(string nameGO)
+        {
+            GameObject go = GameObject.Find(nameGO);
+            if (go)
+                return go.GetComponent<T>();
+            return default;
         }
 
         public static string FormatTime(TimeSpan timeLeft)
@@ -40,45 +49,6 @@ namespace LinguaLeo.Scripts.Helpers
             if (result == string.Empty)
                 result = "0";
             return result;
-        }
-       
-        /// <summary>
-        /// перемешать слова
-        /// </summary>
-        /// <param name="words"></param>
-        /// <returns></returns>
-        public static List<WordLeo> ShuffleList(List<WordLeo> words)
-        {
-            List<WordLeo> list = new List<WordLeo>(words);
-
-            System.Random random = new System.Random();
-
-            for (int i = list.Count; i > 1; i--)
-            {
-                int j = random.Next(i);
-                list.Add(list[j]);
-                list.RemoveAt(j);
-            }
-            return list;
-        }
-        
-        /// <summary>
-        /// перетосовать колоду
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="cards"></param>
-        public static void ShuffleDeck<T>(List<T> cards)
-        {
-            System.Random generator = new System.Random();
-            int n = cards.Count;
-            while (n > 1)
-            {
-                int rndValue = generator.Next(n);
-                --n;
-                T temp = cards[n];
-                cards[n] = cards[rndValue];
-                cards[rndValue] = temp;
-            }
         }
 
         /// <summary>
@@ -109,22 +79,58 @@ namespace LinguaLeo.Scripts.Helpers
 
             if (sortedArray[low] == toFind)
                 return low;
-            else if (sortedArray[high] == toFind)
+            if (sortedArray[high] == toFind)
                 return high;
-            else
-                return -1; // Not found
+            return -1; // Not found
         }
-        public static T FindComponentInGO<T>(string nameGO)
+
+        /// <summary>
+        /// перетосовать колоду
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="cards"></param>
+        public static void ShuffleDeck<T>(List<T> cards)
         {
-            GameObject go = GameObject.Find(nameGO);
-            if (go)
-                return go.GetComponent<T>();
-            return default;
+            System.Random generator = new System.Random();
+            int n = cards.Count;
+            while (n > 1)
+            {
+                int rndValue = generator.Next(n);
+                --n;
+                T temp = cards[n];
+                cards[n] = cards[rndValue];
+                cards[rndValue] = temp;
+            }
         }
+
+        /// <summary>
+        /// перемешать слова
+        /// </summary>
+        /// <param name="words"></param>
+        /// <returns></returns>
+        public static List<WordLeo> ShuffleList(List<WordLeo> words)
+        {
+            List<WordLeo> list = new List<WordLeo>(words);
+
+            System.Random random = new System.Random();
+
+            for (int i = list.Count; i > 1; i--)
+            {
+                int j = random.Next(i);
+                list.Add(list[j]);
+                list.RemoveAt(j);
+            }
+
+            return list;
+        }
+
+        #endregion
     }
 
     public class MyComparer : IComparer
     {
+        #region Public Methods
+
         public int Compare(object x, object y)
         {
             ButtonComponent lVal = x as ButtonComponent;
@@ -138,29 +144,36 @@ namespace LinguaLeo.Scripts.Helpers
         {
             return (new CaseInsensitiveComparer()).Compare(x.name, y.name);
         }
+
+        #endregion
     }
 
     class UniqRandom
     {
+        #region Private variables
+
         readonly int MAX_COUNT;
         List<int> lastIndex;
 
-        UniqRandom(int max)
-        {
-            MAX_COUNT = max;
-            lastIndex = new List<int>(MAX_COUNT);
-        }
+        #endregion
+
+        #region Private Methods
 
         int nextRandom()
         {
             int rndValue = -1;
 
-            do
-            {
-                rndValue = Random.Range(0, MAX_COUNT);
-            } while (lastIndex.Contains(rndValue));
+            do { rndValue = Random.Range(0, MAX_COUNT); } while (lastIndex.Contains(rndValue));
 
             return rndValue;
+        }
+
+        #endregion
+
+        UniqRandom(int max)
+        {
+            MAX_COUNT = max;
+            lastIndex = new List<int>(MAX_COUNT);
         }
     }
 }

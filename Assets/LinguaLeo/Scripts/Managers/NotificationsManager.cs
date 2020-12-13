@@ -11,13 +11,23 @@ namespace LinguaLeo.Scripts.Manegers
     /// </summary>
     public class NotificationsManager : MonoBehaviour
     {
+        #region Public variables
 
-        private Dictionary<GAME_EVENTS, List<MonoBehaviour>> _listeners =
-            new Dictionary<GAME_EVENTS, List<MonoBehaviour>>();
         public int CountListeners
         {
             get { return _listeners.Count; }
         }
+
+        #endregion
+
+        #region Private variables
+
+        private Dictionary<GAME_EVENTS, List<MonoBehaviour>> _listeners =
+            new Dictionary<GAME_EVENTS, List<MonoBehaviour>>();
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Function to add a listener for an notification to the listeners list - 
@@ -33,7 +43,14 @@ namespace LinguaLeo.Scripts.Manegers
 
             //Add object to listener list for this notification
             _listeners[notificationName].Add(sender);
+        }
 
+        /// <summary>
+        /// Function to clear all listeners -  Функция очистки всех прослушивателей
+        /// </summary>
+        public void ClearListeners()
+        {
+            _listeners.Clear();
         }
 
         /// <summary>
@@ -101,27 +118,27 @@ namespace LinguaLeo.Scripts.Manegers
                     if (item.Value[i] == null)
                         item.Value.RemoveAt(i);
                 }
+
                 // If items remain in list for this notification, then add this to tmp dictionary -  
                 // Если элементы остались в списке для этого уведомления, добавить их в словарь tmp
                 if (item.Value.Count > 0)
                     tmpListeners.Add(item.Key, item.Value);
             }
+
             //Replace listeners object with new, optimized dictionary
             _listeners = tmpListeners;
         }
 
-        /// <summary>
-        /// Function to clear all listeners -  Функция очистки всех прослушивателей
-        /// </summary>
-        public void ClearListeners()
-        {
-            _listeners.Clear();
-        }
+        #endregion
+
+        #region Private Methods
 
         private void Awake()
         {
             SceneManagerAdapt.AddSceneLoaded(RemoveRedundancies);
         }
+
+        #endregion
     }
 
 
@@ -129,7 +146,7 @@ namespace LinguaLeo.Scripts.Manegers
     {
         LoadGameComplete,
         SaveGamePrepare,
-   
+
         WorkoutLoaded,
         CorrectAnswer,
         NonCorrectAnswer,
@@ -143,6 +160,6 @@ namespace LinguaLeo.Scripts.Manegers
         ButtonHandlerLoaded,
         NotUntrainedWords,
         UpdatedLicenseLevel,
-        QuitGame,
+        QuitGame
     }
 }

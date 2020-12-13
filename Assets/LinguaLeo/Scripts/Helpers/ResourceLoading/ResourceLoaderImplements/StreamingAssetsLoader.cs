@@ -6,11 +6,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 {
     public class StreamingAssetsLoader : AbstractLoader
     {
-        public StreamingAssetsLoader()
-        {
-            SelectPathByPlatform();
-            InitAllLoaders();
-        }
+        #region Private Methods
 
         private void SelectPathByPlatform()
         {
@@ -29,6 +25,14 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
             pathToRootResources = Path.Combine(Application.dataPath, "StreamingAssets");
 #endif
             pathToRootResources = Path.Combine(pathToRootResources, "Data");
+        }
+
+        #endregion
+
+        public StreamingAssetsLoader()
+        {
+            SelectPathByPlatform();
+            InitAllLoaders();
         }
     }
 }

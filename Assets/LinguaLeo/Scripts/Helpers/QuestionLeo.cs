@@ -7,12 +7,46 @@ namespace LinguaLeo.Scripts.Helpers
 {
     public class QuestionLeo : IEquatable<QuestionLeo>
     {
+        #region Public variables
+
         public int id;
         public WordLeo questWord;
         public List<WordLeo> answers;
 
-        public QuestionLeo() { }
-        public QuestionLeo(WordLeo word) { questWord = word; }
+        #endregion
+
+        #region Public Methods
+
+        public bool Equals(QuestionLeo other)
+        {
+            if (other == null)
+                return false;
+
+            if (questWord.wordValue == other.questWord.wordValue)
+                return true;
+            return false;
+        }
+
+        public bool Equals(WordLeo other)
+        {
+            if (other == null)
+                return false;
+
+            if (questWord.wordValue == other.wordValue)
+                return true;
+            return false;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
+                return false;
+
+            QuestionLeo quest = obj as QuestionLeo;
+            if (quest == null)
+                return false;
+            return Equals(quest);
+        }
 
         /// <summary>
         /// заполнит варианты ответов
@@ -41,68 +75,10 @@ namespace LinguaLeo.Scripts.Helpers
             answers = MyUtilities.ShuffleList(answers);
         }
 
-        /// <summary>
-        /// Заполнить стек случайным образом
-        /// </summary>
-        /// <param name="words"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        private Stack<WordLeo> FillRandomStack(List<WordLeo> words, int count)
+        public override int GetHashCode()
         {
-            Stack<WordLeo> stack = new Stack<WordLeo>();
-            List<WordLeo> wordsTemp = new List<WordLeo>(words);
-            wordsTemp = MyUtilities.ShuffleList(wordsTemp);
-            System.Random random = new System.Random();
-            while (stack.Count < count)
-            {
-                int randomIndex = random.Next(wordsTemp.Count);
-                if (!stack.Contains(wordsTemp[randomIndex]))
-                {
-                    stack.Push(wordsTemp[randomIndex]);
-                    wordsTemp.RemoveAt(randomIndex);
-                }
-            }
-
-            return stack;
+            return questWord.wordValue.GetHashCode();
         }
-
-        #region сравнение в методе Contains
-
-        public bool Equals(QuestionLeo other)
-        {
-            if (other == null)
-                return false;
-
-            if (this.questWord.wordValue == other.questWord.wordValue)
-                return true;
-            else
-                return false;
-        }
-
-        public bool Equals(WordLeo other)
-        {
-            if (other == null)
-                return false;
-
-            if (this.questWord.wordValue == other.wordValue)
-                return true;
-            else
-                return false;
-        }
-
-        public override bool Equals(Object obj)
-        {
-            if (obj == null)
-                return false;
-
-            QuestionLeo quest = obj as QuestionLeo;
-            if (quest == null)
-                return false;
-            else
-                return Equals(quest);
-        }
-
-        public override int GetHashCode() { return this.questWord.wordValue.GetHashCode(); }
 
         public static bool operator ==(QuestionLeo quest1, QuestionLeo quest2)
         {
@@ -121,5 +97,41 @@ namespace LinguaLeo.Scripts.Helpers
         }
 
         #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Заполнить стек случайным образом
+        /// </summary>
+        /// <param name="words"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        private Stack<WordLeo> FillRandomStack(List<WordLeo> words, int count)
+        {
+            Stack<WordLeo> stack = new Stack<WordLeo>();
+            List<WordLeo> wordsTemp = new List<WordLeo>(words);
+            wordsTemp = MyUtilities.ShuffleList(wordsTemp);
+            Random random = new Random();
+            while (stack.Count < count)
+            {
+                int randomIndex = random.Next(wordsTemp.Count);
+                if (!stack.Contains(wordsTemp[randomIndex]))
+                {
+                    stack.Push(wordsTemp[randomIndex]);
+                    wordsTemp.RemoveAt(randomIndex);
+                }
+            }
+
+            return stack;
+        }
+
+        #endregion
+
+        public QuestionLeo() { }
+
+        public QuestionLeo(WordLeo word)
+        {
+            questWord = word;
+        }
     }
 }

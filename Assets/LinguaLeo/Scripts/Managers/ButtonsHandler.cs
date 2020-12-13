@@ -9,18 +9,33 @@ namespace LinguaLeo.Scripts.Manegers
 {
     public class ButtonsHandler : MonoBehaviour
     {
-        [SerializeField]
-        private ButtonComponent[] buttons;
-        [SerializeField]
-        private Button RepeatWordButton = null;
-
-        private int buttonID;
+        #region Static Fields and Constants
 
         private const string DONT_KNOW = "Не знаю :(";
         private const string NEXT_WORD = "Следующее →";
+
+        #endregion
+
+        #region SerializeFields
+
+        [SerializeField]
+        private ButtonComponent[] buttons;
+
+        [SerializeField]
+        private Button RepeatWordButton = null;
+
+        #endregion
+
+        #region Private variables
+
+        private int buttonID;
         private Button correctButton = null;
 
         private UnityAction[] ButtonsEvent;
+
+        #endregion
+
+        #region Unity events
 
         void Start()
         {
@@ -35,6 +50,10 @@ namespace LinguaLeo.Scripts.Manegers
 
             GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Очистить кнопки от текста
@@ -84,14 +103,28 @@ namespace LinguaLeo.Scripts.Manegers
                 return;
 
             ButtonComponent extraB = buttons[buttonID];
-            if (isFirst)
+            if (isFirst) { EnterButtonToDontKnow(extraB); } else { EnterButtonToNext(extraB); }
+        }
+
+        public void SetNextQuestion(UnityAction action)
+        {
+            print("SetNextQuestion");
+            ClearListeners();
+            buttonID = 0;
+            foreach (var button in buttons)
             {
-                EnterButtonToDontKnow(extraB);
+                JoinNextNode(button.button, action);
+                buttonID++;
             }
-            else
-            {
-                EnterButtonToNext(extraB);
-            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        void ClearListeners()
+        {
+            foreach (ButtonComponent b in buttons) { b.button.onClick.RemoveAllListeners(); }
         }
 
         private void EnterButtonToDontKnow(ButtonComponent extraB)
@@ -113,27 +146,16 @@ namespace LinguaLeo.Scripts.Manegers
             SetColors(extraB.button, new Color(68f / 255, 145 / 255f, 207f / 255));
         }
 
-        void ClearListeners()
+        /// <summary>
+        /// Присоеденить на кнопку событие
+        /// перехода к следующему слову
+        /// </summary>
+        /// <param name="button"></param>
+        /// <param name="questionID">ID для следующей ноды</param>
+        private void JoinNextNode(Button button, UnityAction action) //int questionID) 
         {
-            foreach (ButtonComponent b in buttons)
-            {
-                b.button.onClick.RemoveAllListeners();
-            }
-        }
-
-        private void ResetColors()
-        {
-            foreach (var button in buttons)
-            {
-                SetColors(button.button, Color.white);
-            }
-        }
-        private void SetColors(Button button, Color color)
-        {
-            var colors = button.colors;
-            colors.normalColor = color;
-            colors.highlightedColor = color;
-            button.colors = colors;
+            button.onClick.AddListener(action);
+            ReplaceKeyEvent(action);
         }
 
         /// <summary>
@@ -149,34 +171,42 @@ namespace LinguaLeo.Scripts.Manegers
             ReplaceKeyEvent(runShowResult);
         }
 
-        /// <summary>
-        /// Присоеденить на кнопку событие
-        /// перехода к следующему слову
-        /// </summary>
-        /// <param name="button"></param>
-        /// <param name="questionID">ID для следующей ноды</param>
-        private void JoinNextNode(Button button, UnityAction action)//int questionID) 
-        {
-            button.onClick.AddListener(action);
-            ReplaceKeyEvent(action);
-        }
-
         private void ReplaceKeyEvent(UnityAction action)
         {
             ButtonsEvent[buttonID] = null;
             ButtonsEvent[buttonID] += action;
         }
 
-        public void SetNextQuestion(UnityAction action)
+        private void ResetColors()
         {
-            print("SetNextQuestion");
-            ClearListeners();
-            buttonID = 0;
-            foreach (var button in buttons)
+            foreach (var button in buttons) { SetColors(button.button, Color.white); }
+        }
+
+        private UnityAction RunKeyAction(int numberKey)
+        {
+            UnityAction action = ButtonsEvent[numberKey];
+            if (action != null) { action(); }
+
+            return action;
+        }
+
+        private void RunKeyHandler()
+        {
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space)) { RunKeyAction(5); } else if (
+                Input.GetKeyDown(KeyCode.Alpha1)) { RunKeyAction(0); } else if (Input.GetKeyDown(KeyCode.Alpha2)
+            ) { RunKeyAction(1); } else if (Input.GetKeyDown(KeyCode.Alpha3)) { RunKeyAction(2); } else if (
+                Input.GetKeyDown(KeyCode.Alpha4)) { RunKeyAction(3); } else if (Input.GetKeyDown(KeyCode.Alpha5))
             {
-                JoinNextNode(button.button, action);
-                buttonID++;
+                RunKeyAction(4);
             }
+        }
+
+        private void SetColors(Button button, Color color)
+        {
+            var colors = button.colors;
+            colors.normalColor = color;
+            colors.highlightedColor = color;
+            button.colors = colors;
         }
 
         /// <summary>
@@ -192,15 +222,16 @@ namespace LinguaLeo.Scripts.Manegers
                 SetColors(button, Color.green);
                 GameManager.Notifications.PostNotification(button, GAME_EVENTS.CorrectAnswer);
             }
+
             if (!istrue)
             {
-
                 GameManager.Notifications.PostNotification(button, GAME_EVENTS.NonCorrectAnswer);
 
                 SetColors(button, Color.red);
                 //кнопка с правильным словом
                 SetColors(correctButton, Color.green);
             }
+
             ClearListeners();
             FillingEnterButton(false);
             //установить следующий вопрос       
@@ -212,48 +243,6 @@ namespace LinguaLeo.Scripts.Manegers
             RunKeyHandler();
         }
 
-        private void RunKeyHandler()
-        {
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
-            {
-                RunKeyAction(5);
-
-            }
-            else
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                RunKeyAction(0);
-            }
-            else
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                RunKeyAction(1);
-            }
-            else
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                RunKeyAction(2);
-            }
-            else
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                RunKeyAction(3);
-            }
-            else
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                RunKeyAction(4);
-            }
-        }
-
-        private UnityAction RunKeyAction(int numberKey)
-        {
-            UnityAction action = ButtonsEvent[numberKey];
-            if (action != null)
-            {
-                action();
-            } 
-            return action;
-        }
+        #endregion
     }
 }

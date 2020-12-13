@@ -6,15 +6,39 @@ using UnityEngine;
 
 namespace LinguaLeo.Scripts.Manegers.Parts
 {
-    public class LicensesManager : MonoBehaviour,IObserver
+    public class LicensesManager : MonoBehaviour, IObserver
     {
+        #region Static Fields and Constants
 
         const float CHECK_INTERVAL = 900f;
+
+        #endregion
+
+        #region Events
+
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        {
+            switch (notificationName)
+            {
+                case GAME_EVENTS.LoadedVocabulary:
+                    StopCoroutine(ChekLoop());
+                    //StartCoroutine(ChekLoop());
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Unity events
 
         void Start()
         {
             //GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
         }
+
+        #endregion
+
+        #region Private Methods
 
         // Use this for initialization
         IEnumerator ChekLoop()
@@ -33,15 +57,6 @@ namespace LinguaLeo.Scripts.Manegers.Parts
             }
         }
 
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
-        {
-            switch (notificationName)
-            {            
-                case GAME_EVENTS.LoadedVocabulary:
-                    StopCoroutine(ChekLoop());
-                    //StartCoroutine(ChekLoop());
-                    break;
-            }
-        }
+        #endregion
     }
 }

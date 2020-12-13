@@ -9,20 +9,17 @@ namespace LinguaLeo.Scripts.Manegers.Parts
     [RequireComponent(typeof(AudioSource))]
     public class AudioPlayer : MonoBehaviour
     {
+        #region SerializeFields
+
         [SerializeField]
         private AudioClip sayClip;
+
         [SerializeField]
         private AudioSource music;
 
-        AssetBundle voiceBundle;
+        #endregion
 
-        private readonly string bundleFolder = @"M:\My_projects\!_Unity\LinguaLeo\Assets\AssetBundles\";//@"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\";//"/Data/Audio";
-        private readonly string bundleName = "voices";
-
-        private readonly string resFolder = @"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\OGG\";
-        private readonly string resExt = ".ogg";
-
-        private string lastPath = null;
+        #region Public variables
 
         public AudioSource Music
         {
@@ -33,8 +30,53 @@ namespace LinguaLeo.Scripts.Manegers.Parts
                     music = gameObject.GetComponent<AudioSource>();
                     music.loop = false;
                 }
+
                 return music;
             }
+        }
+
+        #endregion
+
+        #region Private variables
+
+        AssetBundle voiceBundle;
+
+        private readonly string
+            bundleFolder =
+                @"M:\My_projects\!_Unity\LinguaLeo\Assets\AssetBundles\"; //@"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\";//"/Data/Audio";
+
+        private readonly string bundleName = "voices";
+
+        private readonly string resFolder = @"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\OGG\";
+        private readonly string resExt = ".ogg";
+
+        private string lastPath = null;
+
+        #endregion
+
+        #region Public Methods
+
+        public IEnumerator LoadMusicFromFile()
+        {
+            if (!File.Exists(lastPath))
+                throw new FileNotFoundException();
+            using (UnityWebRequest www =
+                UnityWebRequestMultimedia.GetAudioClip("file://" + lastPath, AudioType.OGGVORBIS))
+            {
+                yield return www.SendWebRequest();
+
+                if (www.isNetworkError) { Debug.Log(www.error); } else
+                {
+                    sayClip = DownloadHandlerAudioClip.GetContent(www);
+                }
+            }
+        }
+
+        public void SayWord()
+        {
+            if (sayClip == null) { StartCoroutine(LoadMusicFromFile()); }
+
+            StartCoroutine(WaitLoadingAudio());
         }
 
         public void SetSound(string fileName)
@@ -44,41 +86,17 @@ namespace LinguaLeo.Scripts.Manegers.Parts
             lastPath = resFolder + fileName + resExt;
             sayClip = null;
         }
-        public void SayWord()
-        {
-            if (sayClip == null)
-            {
-                StartCoroutine(LoadMusicFromFile());
-            }
-            StartCoroutine(WaitLoadingAudio());
-        }
 
-        public IEnumerator LoadMusicFromFile()
-        {
-            if (!File.Exists(lastPath))
-                throw new FileNotFoundException();
-            using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://" + lastPath, AudioType.OGGVORBIS))
-            {
-                yield return www.SendWebRequest();
+        #endregion
 
-                if (www.isNetworkError)
-                {
-                    Debug.Log(www.error);
-                }
-                else
-                {
-                    sayClip = DownloadHandlerAudioClip.GetContent(www);
-                }
-            }
-        }
+        #region Private Methods
 
-        IEnumerator WaitLoadingAudio()
+        void ExtractFromBundle()
         {
-            while (sayClip == null)
-            {
-                yield return null;
-            }
-            Music.PlayOneShot(sayClip);
+            string fileName = "Assets/Resources/81-631152000.mp3";
+            if (voiceBundle.Contains(fileName))
+                voiceBundle.LoadAsset<AudioClip>(fileName);
+            else { Debug.LogError("Clip " + fileName + " not found"); }
         }
 
         private void LoadBundle()
@@ -89,10 +107,7 @@ namespace LinguaLeo.Scripts.Manegers.Parts
 
             voiceBundle = AssetBundleAdapt.LoadFromFile(path);
 
-            foreach (var item in voiceBundle.GetAllAssetNames())
-            {
-                print(item);
-            }
+            foreach (var item in voiceBundle.GetAllAssetNames()) { print(item); }
 
 
             if (!File.Exists(path))
@@ -101,18 +116,17 @@ namespace LinguaLeo.Scripts.Manegers.Parts
                 Debug.LogError(path);
                 return;
             }
+
             path = bundleFolder + bundleName;
         }
 
-        void ExtractFromBundle()
+        IEnumerator WaitLoadingAudio()
         {
-            string fileName = "Assets/Resources/81-631152000.mp3";
-            if (voiceBundle.Contains(fileName))
-                voiceBundle.LoadAsset<AudioClip>(fileName);
-            else
-            {
-                Debug.LogError("Clip " + fileName + " not found");
-            }
+            while (sayClip == null) { yield return null; }
+
+            Music.PlayOneShot(sayClip);
         }
+
+        #endregion
     }
 }

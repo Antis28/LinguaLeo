@@ -7,30 +7,20 @@ namespace LinguaLeo.Scripts.Helpers
 {
     public class WordCountInGroup : MonoBehaviour, IObserver
     {
+        #region SerializeFields
+
         [SerializeField]
         WorkoutNames workoutName = WorkoutNames.WordTranslate;
+
+        #endregion
+
+        #region Private variables
+
         Text countText;
 
-        // Use this for initialization
-        void Start () {
-            Transform CountTransform = transform.Find("CountText");
-            if (CountTransform == null)
-                return;
-            countText = CountTransform.GetComponent<Text>();
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
-        }
-	
-        // Update is called once per frame
-        void Update () {
-		
-        }
+        #endregion
 
-        void ShowWordCount()
-        {
-            if (countText == null)
-                return;
-            countText.text = GameManager.WordManeger.GetUntrainedGroupWords(workoutName).Count.ToString();
-        }
+        #region Events
 
         void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
@@ -41,5 +31,35 @@ namespace LinguaLeo.Scripts.Helpers
                     break;
             }
         }
+
+        #endregion
+
+        #region Unity events
+
+        // Use this for initialization
+        void Start()
+        {
+            Transform CountTransform = transform.Find("CountText");
+            if (CountTransform == null)
+                return;
+            countText = CountTransform.GetComponent<Text>();
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        void ShowWordCount()
+        {
+            if (countText == null)
+                return;
+            countText.text = GameManager.WordManeger.GetUntrainedGroupWords(workoutName).Count.ToString();
+        }
+
+        // Update is called once per frame
+        void Update() { }
+
+        #endregion
     }
 }

@@ -4,49 +4,32 @@ using UnityEngine;
 
 namespace LinguaLeo.Scripts.Behaviour
 {
-    public class ScoreKeeper : MonoBehaviour, IObserver {
+    public class ScoreKeeper : MonoBehaviour, IObserver
+    {
+        #region SerializeFields
+
         [SerializeField]
         private float score;
-        private float priceScore = 1;
-        private float scoreFactor;
 
-        /// <summary>
-        /// Выставляет цену за выученое слово в тренировке.
-        /// </summary>
-        public void SetScoreFactor(float max)
-        {
-            scoreFactor = max;
-        }
+        #endregion
+
+        #region Public variables
 
         public float ScoreValue
         {
-            get
-            {
-                return score;
-            }
+            get { return score; }
         }
 
-        public float GetCorrectAnswers()
-        {
-            return scoreFactor * score;
-        }
+        #endregion
 
-        // Use this for initialization
-        void Start()
-        {
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
-            ResetScore();
-        }
+        #region Private variables
 
-        public void AddScore(float points)
-        {
-            score += points;
-        }
+        private float priceScore = 1;
+        private float scoreFactor;
 
-        public void ResetScore()
-        {
-            score = 0;
-        }
+        #endregion
+
+        #region Events
 
         public void OnNotify(object parametr, GAME_EVENTS notificationName)
         {
@@ -58,5 +41,45 @@ namespace LinguaLeo.Scripts.Behaviour
                     break;
             }
         }
+
+        #endregion
+
+        #region Unity events
+
+        // Use this for initialization
+        void Start()
+        {
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
+            ResetScore();
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void AddScore(float points)
+        {
+            score += points;
+        }
+
+        public float GetCorrectAnswers()
+        {
+            return scoreFactor * score;
+        }
+
+        public void ResetScore()
+        {
+            score = 0;
+        }
+
+        /// <summary>
+        /// Выставляет цену за выученое слово в тренировке.
+        /// </summary>
+        public void SetScoreFactor(float max)
+        {
+            scoreFactor = max;
+        }
+
+        #endregion
     }
 }

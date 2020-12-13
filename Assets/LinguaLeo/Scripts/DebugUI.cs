@@ -7,9 +7,14 @@ namespace LinguaLeo.Scripts
 {
     public class DebugUI : MonoBehaviour
     {
+        #region SerializeFields
+
         [SerializeField]
         Text[] words = null;
 
+        #endregion
+
+        #region Public Methods
 
         public void FillPanel(List<QuestionLeo> list)
         {
@@ -19,5 +24,7 @@ namespace LinguaLeo.Scripts
                     words[i].text = list[i].questWord.wordValue;
             }
         }
+
+        #endregion
     }
 }

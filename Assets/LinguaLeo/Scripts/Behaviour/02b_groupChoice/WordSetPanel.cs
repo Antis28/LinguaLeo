@@ -7,27 +7,40 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
 {
     public class WordSetPanel : MonoBehaviour
     {
+        #region SerializeFields
+
         [SerializeField]
         Image LogoImage = null;
+
         [SerializeField]
         Text CaptionText = null;
+
         [SerializeField]
         Text WordCountText = null;
+
+        #endregion
+
+        #region Private variables
+
         Button learnButton;
         Button viewButton;
 
         string groupName = string.Empty;
 
-        public void Init(Sprite sprite, string caption, int count)
-        {
-            LogoImage.sprite = sprite;
-            groupName = caption;
-            CaptionText.text = groupName.Replace('_', ' ');
-            WordCountText.text = count + " cлов";
+        #endregion
 
-            GetComponent<Transform>().localScale = Vector3.one;
-            GetComponent<Transform>().localPosition = Vector3.zero;
+        #region Events
+
+        // OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider
+        public void OnMouseDown()
+        {
+            Debug.Log("OnMouseDown");
+            PanelClick();
         }
+
+        #endregion
+
+        #region Unity events
 
         // Use this for initialization
         void Start()
@@ -40,7 +53,26 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
 
             viewButton.onClick.AddListener(PanelClick);
             viewButton.onClick.AddListener(() => GameManager.SceneLoader.LoadLevel(SceneNames.wordView));
+        }
 
+        #endregion
+
+        #region Public Methods
+
+        public string GetName()
+        {
+            return CaptionText.text;
+        }
+
+        public void Init(Sprite sprite, string caption, int count)
+        {
+            LogoImage.sprite = sprite;
+            groupName = caption;
+            CaptionText.text = groupName.Replace('_', ' ');
+            WordCountText.text = count + " cлов";
+
+            GetComponent<Transform>().localScale = Vector3.one;
+            GetComponent<Transform>().localPosition = Vector3.zero;
         }
 
         public void PanelClick()
@@ -49,21 +81,11 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
             GameManager.WordManeger.LoadStartWordGroup(groupName);
         }
 
-        // OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider
-        public void OnMouseDown()
-        {
-            Debug.Log("OnMouseDown");
-            PanelClick();
-        }
-
-        public string GetName()
-        {
-            return CaptionText.text;
-        }
-
         public override string ToString()
         {
             return groupName;
         }
+
+        #endregion
     }
 }

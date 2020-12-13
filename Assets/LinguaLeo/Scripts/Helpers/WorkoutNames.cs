@@ -8,6 +8,6 @@
         Puzzle,
         reiteration,
         brainStorm,
-        Savanna,
+        Savanna
     }
 }

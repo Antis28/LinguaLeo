@@ -6,9 +6,15 @@ using UnityEngine.UI;
 namespace LinguaLeo.Scripts.Behaviour
 {
     public class SelectWorkoutButton : MonoBehaviour
-    {    
+    {
+        #region SerializeFields
+
         [SerializeField]
         private WorkoutNames workoutName = WorkoutNames.WordTranslate;
+
+        #endregion
+
+        #region Unity events
 
         // Use this for initialization
         void Start()
@@ -17,5 +23,7 @@ namespace LinguaLeo.Scripts.Behaviour
                 () => GameManager.WorkoutManager.RunWorkOut(workoutName)
             );
         }
+
+        #endregion
     }
 }

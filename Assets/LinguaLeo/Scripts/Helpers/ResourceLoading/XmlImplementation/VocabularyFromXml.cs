@@ -1,5 +1,4 @@
-﻿
-using LinguaLeo.Scripts.Helpers.Interfaces;
+﻿using LinguaLeo.Scripts.Helpers.Interfaces;
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
 {
@@ -8,29 +7,36 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
     /// </summary>
     public class VocabularyFromXml : IVocabularyManager<WordCollection>
     {
-      //  private readonly string folderXml = @"Data/Base";
-      //  private readonly string fileNameXml = "WordBase.xml";
+        #region Private variables
+
+        //  private readonly string folderXml = @"Data/Base";
+        //  private readonly string fileNameXml = "WordBase.xml";
         private readonly string path;
         private readonly XmlSerialization<WordCollectionXml> xmlSerialization;
+
+        #endregion
+
+        #region Public Methods
+
+        public WordCollection Load()
+        {
+            return (WordCollection) xmlSerialization.Load(path);
+        }
+
+        public void Save(WordCollection saveObject)
+        {
+            xmlSerialization.Save(path, (WordCollectionXml) saveObject);
+        }
+
+        #endregion
 
         public VocabularyFromXml(string path)
         {
             this.path = path;
             xmlSerialization = new XmlSerialization<WordCollectionXml>();
         }
-        
-        public WordCollection Load()
-        {
-           return  (WordCollection)xmlSerialization.Load(path);
-        }
 
-        public void Save(WordCollection saveObject)
-        {
-            xmlSerialization.Save(path, (WordCollectionXml)saveObject);
-        }
-        
-       
-        
+
         /*
         
         /// <summary>

@@ -9,18 +9,26 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
     [XmlRoot("Root")]
     public class WordCollectionXml
     {
+        #region Public variables
+
         [XmlArray("LeoWords")]
         [XmlArrayItem("word")]
         public List<WordLeo> allWords; // полный словарь
-        
+
+        #endregion
+
+        #region Public Methods
+
         public static explicit operator WordCollection(WordCollectionXml param)
         {
-            return  new WordCollection {allWords = param.allWords};
+            return new WordCollection {allWords = param.allWords};
         }
-        
-        public static explicit operator WordCollectionXml (WordCollection param)
+
+        public static explicit operator WordCollectionXml(WordCollection param)
         {
-            return  new WordCollectionXml {allWords = param.allWords};
+            return new WordCollectionXml {allWords = param.allWords};
         }
+
+        #endregion
     }
 }

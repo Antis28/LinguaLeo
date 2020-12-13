@@ -2,7 +2,6 @@
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
 {
-    
     /// <summary>
     /// Mapping Class
     /// см. класс ExportWordLeo
@@ -10,7 +9,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
     /// </summary>
     public class WordLeoXml
     {
-        #region XML поля
+        #region Public variables
 
         [XmlAttribute]
         public string wordValue;

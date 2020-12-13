@@ -5,14 +5,18 @@ namespace LinguaLeo.Scripts.Helpers.Interfaces
 {
     public interface IResourcesLoader
     {
-        Sprite GetPicture(string fileName);
-        Sprite GetCover(string fileName);
+        #region Public Methods
+
         AudioClip GetAudioClip(string fileName);
+        Sprite GetCover(string fileName);
+        Sprite GetPicture(string fileName);
 
         WordCollection LoadVocabulary();
-        void SaveVocabulary(WordCollection vocabulary);
 
         List<WordGroup> LoadWordGroup();
+        void SaveVocabulary(WordCollection vocabulary);
         void SaveWordGroup(List<WordGroup> groups);
+
+        #endregion
     }
 }

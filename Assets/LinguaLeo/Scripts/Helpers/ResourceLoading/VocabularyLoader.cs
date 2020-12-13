@@ -6,16 +6,16 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 {
     public class VocabularyLoader
     {
+        #region Private variables
+
         private readonly string vocabularyDirectory = "Base";
         private readonly string vocabularyFile = "WordBase.xml";
 
         private readonly IVocabularyManager<WordCollection> vocabularyManager;
 
-        public VocabularyLoader(string pathToRootResources)
-        {
-            var vocabularyFullPath = Path.Combine(pathToRootResources, vocabularyDirectory, vocabularyFile);
-            vocabularyManager = new VocabularyFromXml(vocabularyFullPath);
-        }
+        #endregion
+
+        #region Public Methods
 
         public WordCollection GetVocabulary()
         {
@@ -27,9 +27,21 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
             vocabularyManager.Save(vocabulary);
         }
 
+        #endregion
+
+        #region Private Methods
+
         private WordCollection LoadVocabularyFromXml()
         {
             return vocabularyManager.Load();
+        }
+
+        #endregion
+
+        public VocabularyLoader(string pathToRootResources)
+        {
+            var vocabularyFullPath = Path.Combine(pathToRootResources, vocabularyDirectory, vocabularyFile);
+            vocabularyManager = new VocabularyFromXml(vocabularyFullPath);
         }
     }
 }

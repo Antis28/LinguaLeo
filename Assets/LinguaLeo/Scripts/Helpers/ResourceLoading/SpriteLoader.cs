@@ -6,17 +6,24 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 {
     public class SpriteLoader
     {
+        #region Private variables
+
         private readonly string pictureDirectory;
         private readonly string coverDirectory;
-        
-        private readonly string pictureDirectoryName =  "Picture";
-        private readonly string coversDirectoryName =  "Covers";
-        private readonly string fileExtension =  ".png";
 
-        public SpriteLoader(string pathToRootResources)
+        private readonly string pictureDirectoryName = "Picture";
+        private readonly string coversDirectoryName = "Covers";
+        private readonly string fileExtension = ".png";
+
+        #endregion
+
+        #region Public Methods
+
+        public Sprite GetSpriteFromCovers(string fileName)
         {
-            this.pictureDirectory = Path.Combine(pathToRootResources, pictureDirectoryName );
-            this.coverDirectory = Path.Combine(pathToRootResources, coversDirectoryName );
+            var fullPath = Path.Combine(coverDirectory, fileName);
+            var sprite = LoadSpriteFromFile(fullPath);
+            return sprite;
         }
 
         public Sprite GetSpriteFromPicture(string fileName)
@@ -26,12 +33,9 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
             return sprite;
         }
 
-        public Sprite GetSpriteFromCovers(string fileName)
-        {
-            var fullPath = Path.Combine(coverDirectory, fileName);
-            var sprite = LoadSpriteFromFile(fullPath);
-            return sprite;
-        }
+        #endregion
+
+        #region Private Methods
 
         private Sprite LoadSpriteFromFile(string path)
         {
@@ -58,6 +62,14 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
             var sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height),
                                        new Vector2(.5f, .5f));
             return sprite;
+        }
+
+        #endregion
+
+        public SpriteLoader(string pathToRootResources)
+        {
+            pictureDirectory = Path.Combine(pathToRootResources, pictureDirectoryName);
+            coverDirectory = Path.Combine(pathToRootResources, coversDirectoryName);
         }
     }
 }

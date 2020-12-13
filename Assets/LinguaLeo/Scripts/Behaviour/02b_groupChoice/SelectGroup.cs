@@ -14,30 +14,38 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
     /// </summary>
     public class SelectGroup : MonoBehaviour, IObserver
     {
+        #region Static Fields and Constants
+
         private const float PanelHeight = 500;
+
+        #endregion
+
+        #region SerializeFields
 
         /// <summary>
         /// Родительский объект в который будут складываться карточки группы.
         /// </summary>
-        [SerializeField] private GameObject content = null;
+        [SerializeField]
+        private GameObject content = null;
 
         /// <summary>
         /// Образец карточки группы.
         /// </summary>
-        [SerializeField] private WordSetPanel panelPrefab = null;
+        [SerializeField]
+        private WordSetPanel panelPrefab = null;
+
+        #endregion
+
+        #region Private variables
 
         /// <summary>
         /// Список всех UI панелей групп слов.
         /// </summary>
         private WordSetPanel[] wordTiles;
 
-        /// <summary>
-        /// Инициализация
-        /// </summary>
-        private void Start()
-        {
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
-        }
+        #endregion
+
+        #region Events
 
         /// <summary>
         /// Получает уведомления о игровых событиях.
@@ -55,51 +63,48 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
             }
         }
 
+        #endregion
+
+        #region Unity events
+
         /// <summary>
-        /// Генерирует панели групп слов.
-        /// Ооочень медленно.
+        /// Инициализация
         /// </summary>
-        /// <returns>необходимо для корутины</returns>
-        private IEnumerator CreatePanels()
+        private void Start()
         {
-            List<WordGroup> groups = GameManager.WordManeger.GetGroupNames();
-            UpdateContentHeight(groups.Count);
-            foreach (var item in groups)
-            {
-                var sprite = GameManager.ResourcesLoader.GetCover(item.pictureName);
-                
-                CreateCard(sprite, item.name, item.wordCount);
-                yield return null;
-            }
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Получить высоту контейнера до последней плитки
+        /// </summary>
+        /// <param name="panelIndex">номер плитки</param>
+        /// <param name="columnCount">колличество колонок</param>
+        /// <returns>Высота контейнера до последней карточки</returns>
+        public float GetHightContainer(float panelIndex, float columnCount = 3)
+        {
+            SetTileSize();
+            return DeltaContentHeight(panelIndex, columnCount);
         }
 
         /// <summary>
-        /// Создает отдельную панель для описания группы слов.
+        /// Получить высоту контейнера до плитки
         /// </summary>
-        /// <param name="sprite">Обложка</param>
-        /// <param name="caption">Название группы</param>
-        /// <param name="count">Количество слов в группе</param>
-        private void CreateCard(Sprite sprite, string caption, int count)
+        /// <param name="panelIndex">номер плитки</param>
+        /// <param name="columnCount">колличество колонок</param>
+        /// <returns></returns>
+        public float GetHightToTile(float panelIndex, float columnCount = 3)
         {
-            WordSetPanel setPanel = Instantiate(panelPrefab, content.transform);
-            setPanel.Init(sprite, caption, count);
-        }
+            var deltaContentHeight = DeltaContentHeight(panelIndex + 1, columnCount);
+            var tileHeight = CalcTileHeight();
+            var deltaTileHeight = tileHeight + (tileHeight / 2);
 
-        /// <summary>
-        /// Выделить плитку по индексу
-        /// и снять выделение со всех остальных.
-        /// </summary>
-        /// <param name="index">Индекс плитки</param>
-        public void HighLightTile(int index)
-        {
-            WordSetPanel[] tiles = GetTiles();
-            foreach (var item in tiles)
-            {
-                item.GetComponent<Image>().color = Color.white;
-            }
-
-            WordSetPanel tile = tiles[index];
-            tile.GetComponent<Image>().color = Color.yellow;
+            var height = deltaContentHeight - deltaTileHeight;
+            return height;
         }
 
         /// <summary>
@@ -112,12 +117,60 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
             {
                 wordTiles = transform.GetComponentsInChildren<WordSetPanel>();
                 var panels = from p in wordTiles
-                    orderby p.GetName()
-                    select p;
+                             orderby p.GetName()
+                             select p;
                 wordTiles = panels.ToArray();
             }
 
             return wordTiles;
+        }
+
+        /// <summary>
+        /// Выделить плитку по индексу
+        /// и снять выделение со всех остальных.
+        /// </summary>
+        /// <param name="index">Индекс плитки</param>
+        public void HighLightTile(int index)
+        {
+            WordSetPanel[] tiles = GetTiles();
+            foreach (var item in tiles) { item.GetComponent<Image>().color = Color.white; }
+
+            WordSetPanel tile = tiles[index];
+            tile.GetComponent<Image>().color = Color.yellow;
+        }
+
+        /// <summary>
+        /// Выставляет высоту Content так, чтобы все плитки поместились.
+        /// </summary>
+        /// <param name="height">Высота</param>
+        public void SetHeigtContent(float height)
+        {
+            Vector2 size = new Vector2
+            {
+                y = height // -tileHeight / 2
+            };
+
+            // float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+            // отцентрировать плитку вертикально
+            RectTransform rectContent = content.GetComponent<RectTransform>();
+            rectContent.localPosition = size;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Расчитывает высоту плитки.
+        /// </summary>
+        /// <returns>Высота плитки</returns>
+        private float CalcTileHeight()
+        {
+            // Растояние между плитками сверху и снизу
+            float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+            float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
+            float fullHeightPanel = tileHeight + panelYSpace;
+            return fullHeightPanel;
         }
 
         /// <summary>
@@ -140,14 +193,47 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         }
 
         /// <summary>
-        ///  Вычисляет высоту всех панелей в 3 колонки
+        /// Создает отдельную панель для описания группы слов.
         /// </summary>
-        /// <param name="panelCount">колличество панелей</param>
-        /// <param name="columnCount">колличество колонок</param>
-        private void UpdateContentHeight(float panelCount, float columnCount = 3)
+        /// <param name="sprite">Обложка</param>
+        /// <param name="caption">Название группы</param>
+        /// <param name="count">Количество слов в группе</param>
+        private void CreateCard(Sprite sprite, string caption, int count)
         {
-            float height = GetHightContainer(panelCount, columnCount);
-            SetSizeContent(height);
+            WordSetPanel setPanel = Instantiate(panelPrefab, content.transform);
+            setPanel.Init(sprite, caption, count);
+        }
+
+        /// <summary>
+        /// Генерирует панели групп слов.
+        /// Ооочень медленно.
+        /// </summary>
+        /// <returns>необходимо для корутины</returns>
+        private IEnumerator CreatePanels()
+        {
+            List<WordGroup> groups = GameManager.WordManeger.GetGroupNames();
+            UpdateContentHeight(groups.Count);
+            foreach (var item in groups)
+            {
+                var sprite = GameManager.ResourcesLoader.GetCover(item.pictureName);
+
+                CreateCard(sprite, item.name, item.wordCount);
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Расчет высоты контейнера до верхней грани плитки.
+        /// </summary>
+        /// <param name="panelIndex">номер плитки</param>
+        /// <param name="columnCount">количество столбцов</param>
+        /// <returns>Высота до вершины плитки</returns>
+        private float DeltaContentHeight(float panelIndex, float columnCount)
+        {
+            var tileHeight = CalcTileHeight();
+            var deltaRow = Mathf.Ceil(panelIndex / columnCount);
+            var deltaContentHeight = tileHeight * deltaRow;
+            return deltaContentHeight;
         }
 
         /// <summary>
@@ -163,65 +249,6 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
             RectTransform rectContent = content.GetComponent<RectTransform>();
             rectContent.sizeDelta = size;
             rectContent.localPosition = Vector3.zero;
-        }
-
-        /// <summary>
-        /// Выставляет высоту Content так, чтобы все плитки поместились.
-        /// </summary>
-        /// <param name="height">Высота</param>
-        public void SetHeigtContent(float height)
-        {
-            Vector2 size = new Vector2
-            {
-                y = height // -tileHeight / 2
-            };
-
-            // float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
-            // отцентрировать плитку вертикально
-            RectTransform rectContent = content.GetComponent<RectTransform>();
-            rectContent.localPosition = size;
-        }
-
-        /// <summary>
-        /// Получить высоту контейнера до последней плитки
-        /// </summary>
-        /// <param name="panelIndex">номер плитки</param>
-        /// <param name="columnCount">колличество колонок</param>
-        /// <returns>Высота контейнера до последней карточки</returns>
-        public float GetHightContainer(float panelIndex, float columnCount = 3)
-        {
-            SetTileSize();
-            return DeltaContentHeight(panelIndex, columnCount);
-        }
-
-        /// <summary>
-        /// Получить высоту контейнера до плитки
-        /// </summary>
-        /// <param name="panelIndex">номер плитки</param>
-        /// <param name="columnCount">колличество колонок</param>
-        /// <returns></returns>
-        public float GetHightToTile(float panelIndex, float columnCount = 3)
-        {
-            var deltaContentHeight = DeltaContentHeight(panelIndex+1, columnCount);
-            var tileHeight = CalcTileHeight();
-            var deltaTileHeight = tileHeight + (tileHeight / 2);
-
-            var height = deltaContentHeight - deltaTileHeight;
-            return height;
-        }
-
-        /// <summary>
-        /// Расчет высоты контейнера до верхней грани плитки.
-        /// </summary>
-        /// <param name="panelIndex">номер плитки</param>
-        /// <param name="columnCount">количество столбцов</param>
-        /// <returns>Высота до вершины плитки</returns>
-        private float DeltaContentHeight(float panelIndex, float columnCount)
-        {
-            var tileHeight = CalcTileHeight();
-            var deltaRow = Mathf.Ceil(panelIndex / columnCount);
-            var deltaContentHeight = tileHeight * deltaRow;
-            return deltaContentHeight;
         }
 
         /// <summary>
@@ -246,14 +273,12 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
                 tileSize.x = 500;
 
                 Debug.Log("ratio_16x9");
-            }
-            else if (ratio_16x10 == ratioIndex.ToString("0.0"))
+            } else if (ratio_16x10 == ratioIndex.ToString("0.0"))
             {
                 sizeDelta.x = 1227;
                 tileSize.x = 400;
                 Debug.Log("ratio_16x10");
-            }
-            else if (ratio_5x4 == ratioIndex.ToString("0.0"))
+            } else if (ratio_5x4 == ratioIndex.ToString("0.0"))
             {
                 sizeDelta.x = 927;
                 tileSize.x = 300;
@@ -269,16 +294,16 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         }
 
         /// <summary>
-        /// Расчитывает высоту плитки.
+        ///  Вычисляет высоту всех панелей в 3 колонки
         /// </summary>
-        /// <returns>Высота плитки</returns>
-        private float CalcTileHeight()
+        /// <param name="panelCount">колличество панелей</param>
+        /// <param name="columnCount">колличество колонок</param>
+        private void UpdateContentHeight(float panelCount, float columnCount = 3)
         {
-            // Растояние между плитками сверху и снизу
-            float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
-            float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
-            float fullHeightPanel = tileHeight + panelYSpace;
-            return fullHeightPanel;
+            float height = GetHightContainer(panelCount, columnCount);
+            SetSizeContent(height);
         }
+
+        #endregion
     }
 }

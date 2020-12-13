@@ -11,39 +11,40 @@ namespace LinguaLeo.Scripts.Helpers
 {
     public class WordCollection
     {
-        public List<WordLeo> allWords; // полный словарь
+        #region Public variables
+
+        public List<WordLeo> allWords;       // полный словарь
         public List<WordLeo> wordsFromGroup; // словарь для набора слов
+
+        #endregion
+
+        #region Private variables
 
         private readonly Random random = new Random();
 
-        public WordCollection()
-        {
-        }
+        #endregion
 
-        public void SaveToXml(string path)
-        {
-            if (!File.Exists(path))
-                throw new Exception("File not founded");
-
-            using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
-            {
-                //Now save game data
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
-
-                xmlSerializer.Serialize(stream, this);
-                stream.Close();
-            }
-        }
+        #region Public Methods
 
         /// <summary>
-        /// Загрука слов из набора слов
+        /// Извлекает название всех групп
         /// </summary>
-        /// <param name="groupName">название набора слов</param>
-        public void LoadGroup(string groupName)
+        /// <returns>список групп</returns>
+        public List<string> FilterGroup()
         {
-            wordsFromGroup = new List<WordLeo>();
-            var query = allWords.Where(word => word.groups.Contains(groupName));
-            foreach (var word in query) { wordsFromGroup.Add(word); }
+            List<string> groups = new List<string>();
+
+            foreach (var word in allWords)
+            {
+                foreach (var group in word.groups)
+                {
+                    if (!groups.Contains(group))
+                        groups.Add(group);
+                }
+            }
+
+            groups = groups.OrderBy(x => x).ToList();
+            return groups;
         }
 
         public WordLeo GetRandomWord()
@@ -54,20 +55,20 @@ namespace LinguaLeo.Scripts.Helpers
             return word;
         }
 
-        public List<WordLeo> GetRandomWords(int Count)
-        {
-            List<WordLeo> words = new List<WordLeo>(Count);
-            for (int i = 0; i < Count; i++) { words.Add(GetRandomWord()); }
-
-            return words;
-        }
-
         public WordLeo GetRandomWordFromGroup()
         {
             int randomIndex = random.Next(wordsFromGroup.Count);
 
             WordLeo word = wordsFromGroup[randomIndex];
             return word;
+        }
+
+        public List<WordLeo> GetRandomWords(int Count)
+        {
+            List<WordLeo> words = new List<WordLeo>(Count);
+            for (int i = 0; i < Count; i++) { words.Add(GetRandomWord()); }
+
+            return words;
         }
 
         public List<WordLeo> GetRandomWordsFromGroup(int Count)
@@ -92,28 +93,40 @@ namespace LinguaLeo.Scripts.Helpers
             return untrainedWords;
         }
 
-        public bool GroupExist() { return wordsFromGroup != null; }
+        public bool GroupExist()
+        {
+            return wordsFromGroup != null;
+        }
 
         /// <summary>
-        /// Извлекает название всех групп
+        /// Загрука слов из набора слов
         /// </summary>
-        /// <returns>список групп</returns>
-        public List<string> FilterGroup()
+        /// <param name="groupName">название набора слов</param>
+        public void LoadGroup(string groupName)
         {
-            List<string> groups = new List<string>();
-
-            foreach (var word in allWords)
-            {
-                foreach (var group in word.groups)
-                {
-                    if (!groups.Contains(group))
-                        groups.Add(group);
-                }
-            }
-
-            groups = groups.OrderBy((x) => x).ToList();
-            return groups;
+            wordsFromGroup = new List<WordLeo>();
+            var query = allWords.Where(word => word.groups.Contains(groupName));
+            foreach (var word in query) { wordsFromGroup.Add(word); }
         }
+
+        public void SaveToXml(string path)
+        {
+            if (!File.Exists(path))
+                throw new Exception("File not founded");
+
+            using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                //Now save game data
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
+
+                xmlSerializer.Serialize(stream, this);
+                stream.Close();
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
 
         /// <summary>
         /// Выбрать слова которые не полностью изучены
@@ -127,5 +140,7 @@ namespace LinguaLeo.Scripts.Helpers
                              select word;
             return remainList.ToList();
         }
+
+        #endregion
     }
 }

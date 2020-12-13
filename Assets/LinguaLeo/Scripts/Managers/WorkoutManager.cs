@@ -10,6 +10,14 @@ namespace LinguaLeo.Scripts.Manegers
 {
     public class WorkoutManager : MonoBehaviour, IObserver
     {
+        #region Static Fields and Constants
+
+        private static WordLeo currentWord = null;
+
+        #endregion
+
+        #region SerializeFields
+
         /// <summary>
         /// Количество слов которое можно изучать в мозговом штурме.
         /// </summary>
@@ -36,30 +44,75 @@ namespace LinguaLeo.Scripts.Manegers
         [SerializeField]
         private float factorScoreSimpleWorkOut = 1f;
 
+        #endregion
+
+        #region Public variables
+
+        public BrainStorm BrainStorm
+        {
+            get { throw new System.NotImplementedException(); }
+
+            set { }
+        }
+
+        #endregion
+
+        #region Private variables
+
         private int questMaxCount = 0;
 
         BrainStorm brainStorm = null;
-
-        private static WordLeo currentWord = null;
 
         private SceneLoader sceneLoader;
         private WorkoutNames currentWorkout;
         private WorkoutNames subWorkout;
         private Workout.Workout core;
 
-        public BrainStorm BrainStorm
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
+        #endregion
 
-            set
+        #region Events
+
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        {
+            switch (notificationName)
             {
+                case GAME_EVENTS.ButtonHandlerLoaded:
+                    StartBehaviour();
+                    break;
+                case GAME_EVENTS.CorrectAnswer:
+                    AddWorkoutProgress(currentWord, subWorkout);
+                    if (currentWord.AllWorkoutDone())
+                        currentWord.AddLicenseLevel();
+                    break;
+                case GAME_EVENTS.WordsEnded:
+                    WordsEndedBehaviour();
+                    break;
+                case GAME_EVENTS.BuildTask:
+                    IWorkout workout = parametr as IWorkout;
+                    subWorkout = workout.WorkoutName;
+                    currentWord = workout.GetCurrentWord();
+                    break;
+                case GAME_EVENTS.ContinueWorkout:
+                    RestartWorkOut();
+                    break;
             }
         }
 
-        #region Методы
+        #endregion
+
+        #region Unity events
+
+        // Use this for initialization
+        private void Start()
+        {
+            sceneLoader = FindObjectOfType<SceneLoader>();
+            SubscribeToEvents();
+        }
+
+        #endregion
+
+        #region Public Methods
+
         public int GetBrainTasks()
         {
             int workoutCount = 4;
@@ -74,6 +127,21 @@ namespace LinguaLeo.Scripts.Manegers
             }
 
             return GameManager.ScoreKeeper.ScoreValue;
+        }
+
+        public Workout.Workout GetWorkout()
+        {
+            if (brainStorm == null)
+                return core;
+            return brainStorm.GetsSubCore();
+        }
+
+        /// <summary>
+        /// Перезапуск последней тренировки.
+        /// </summary>
+        public void RestartWorkOut()
+        {
+            RunWorkOut(currentWorkout);
         }
 
         /// <summary>
@@ -97,26 +165,31 @@ namespace LinguaLeo.Scripts.Manegers
 
             string sceneName = GetSceneName(name);
 
-            if (sceneName != string.Empty)
+            if (sceneName != string.Empty) { sceneLoader.LoadLevel(sceneName); }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
+        {
+            switch (workout)
             {
-                sceneLoader.LoadLevel(sceneName);
+                case WorkoutNames.WordTranslate:
+                case WorkoutNames.reiteration:
+                    word.LearnWordTranslate();
+                    break;
+                case WorkoutNames.TranslateWord:
+                    word.LearnTranslateWord();
+                    break;
+                case WorkoutNames.Audio:
+                    word.LearnAudio();
+                    break;
+                case WorkoutNames.Puzzle:
+                    word.LearnPuzzle();
+                    break;
             }
-        }
-
-        /// <summary>
-        /// Перезапуск последней тренировки.
-        /// </summary>
-        public void RestartWorkOut()
-        {
-            RunWorkOut(currentWorkout);
-        }
-
-        public Workout.Workout GetWorkout()
-        {
-            if (brainStorm == null)
-                return core;
-            else
-                return brainStorm.GetsSubCore();
         }
 
         private void CoreInitialization()
@@ -130,25 +203,53 @@ namespace LinguaLeo.Scripts.Manegers
             }
         }
 
-        private void WordsEndedBehaviour()
+        private string GetSceneName(WorkoutNames name)
         {
-            switch (currentWorkout)
+            string sceneName = string.Empty;
+            switch (name)
             {
                 case WorkoutNames.WordTranslate:
+                    sceneName = "worldTranslate";
+                    break;
                 case WorkoutNames.TranslateWord:
-                case WorkoutNames.Savanna:
+                    sceneName = "translateWorld";
+                    break;
                 case WorkoutNames.Audio:
+                    sceneName = "audioTest";
+                    break;
                 case WorkoutNames.Puzzle:
+                    sceneName = "wordPuzzle";
+                    break;
                 case WorkoutNames.reiteration:
-                    GameManager.SceneLoader.LoadResultWorkOut();
+                    sceneName = string.Empty;
                     break;
                 case WorkoutNames.brainStorm:
-
-                    brainStorm.Run();
+                    sceneName = string.Empty;
                     break;
-                default:
+                case WorkoutNames.Savanna:
+                    sceneName = "savanna";
                     break;
             }
+
+            return sceneName;
+        }
+
+        /// <summary>
+        /// Подготавливает ядро для тренировки
+        /// </summary>
+        /// <param name="currentWorkout"></param>
+        /// <returns></returns>
+        private Workout.Workout PrepareWorkout(WorkoutNames currentWorkout)
+        {
+            Workout.Workout core = new Workout.Workout(currentWorkout, questMaxCount);
+            core.LoadQuestions();
+            if (!core.TaskExists())
+            {
+                Debug.LogError("Нет доступных слов для тренировки" + currentWorkout);
+                return null;
+            }
+
+            return core;
         }
 
         private void StartBehaviour()
@@ -180,75 +281,6 @@ namespace LinguaLeo.Scripts.Manegers
                     break;
                 case WorkoutNames.reiteration:
                     break;
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Подготавливает ядро для тренировки
-        /// </summary>
-        /// <param name="currentWorkout"></param>
-        /// <returns></returns>
-        private Workout.Workout PrepareWorkout(WorkoutNames currentWorkout)
-        {
-            Workout.Workout core = new Workout.Workout(currentWorkout, questMaxCount);
-            core.LoadQuestions();
-            if (!core.TaskExists())
-            {
-                Debug.LogError("Нет доступных слов для тренировки" + currentWorkout);
-                return null;
-            }
-            return core;
-        }
-
-        private string GetSceneName(WorkoutNames name)
-        {
-            string sceneName = string.Empty;
-            switch (name)
-            {
-                case WorkoutNames.WordTranslate:
-                    sceneName = "worldTranslate";
-                    break;
-                case WorkoutNames.TranslateWord:
-                    sceneName = "translateWorld";
-                    break;
-                case WorkoutNames.Audio:
-                    sceneName = "audioTest";
-                    break;
-                case WorkoutNames.Puzzle:
-                    sceneName = "wordPuzzle";
-                    break;
-                case WorkoutNames.reiteration:
-                    sceneName = string.Empty;
-                    break;
-                case WorkoutNames.brainStorm:
-                    sceneName = string.Empty;
-                    break;
-                case WorkoutNames.Savanna:
-                    sceneName = "savanna";
-                    break;
-            }
-            return sceneName;
-        }
-
-        private void AddWorkoutProgress(WordLeo word, WorkoutNames workout)
-        {
-            switch (workout)
-            {
-                case WorkoutNames.WordTranslate:
-                case WorkoutNames.reiteration:
-                    word.LearnWordTranslate();
-                    break;
-                case WorkoutNames.TranslateWord:
-                    word.LearnTranslateWord();
-                    break;
-                case WorkoutNames.Audio:
-                    word.LearnAudio();
-                    break;
-                case WorkoutNames.Puzzle:
-                    word.LearnPuzzle();
-                    break;
             }
         }
 
@@ -262,41 +294,26 @@ namespace LinguaLeo.Scripts.Manegers
             notification.AddListener(this, GAME_EVENTS.BuildTask);
             notification.AddListener(this, GAME_EVENTS.ContinueWorkout);
         }
-    
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+
+        private void WordsEndedBehaviour()
         {
-            switch (notificationName)
+            switch (currentWorkout)
             {
-                case GAME_EVENTS.ButtonHandlerLoaded:
-                    StartBehaviour();
+                case WorkoutNames.WordTranslate:
+                case WorkoutNames.TranslateWord:
+                case WorkoutNames.Savanna:
+                case WorkoutNames.Audio:
+                case WorkoutNames.Puzzle:
+                case WorkoutNames.reiteration:
+                    GameManager.SceneLoader.LoadResultWorkOut();
                     break;
-                case GAME_EVENTS.CorrectAnswer:
-                    AddWorkoutProgress(currentWord, subWorkout);
-                    if (currentWord.AllWorkoutDone())
-                        currentWord.AddLicenseLevel();
-                    break;
-                case GAME_EVENTS.WordsEnded:
-                    WordsEndedBehaviour();
-                    break;
-                case GAME_EVENTS.BuildTask:
-                    IWorkout workout = parametr as IWorkout;
-                    subWorkout = workout.WorkoutName;
-                    currentWord = workout.GetCurrentWord();
-                    break;
-                case GAME_EVENTS.ContinueWorkout:
-                    RestartWorkOut();
+                case WorkoutNames.brainStorm:
+
+                    brainStorm.Run();
                     break;
             }
         }
-        #endregion
 
-        #region Жизненый цикл
-        // Use this for initialization
-        private void Start()
-        {
-            sceneLoader = FindObjectOfType<SceneLoader>();
-            SubscribeToEvents();
-        }
         #endregion
     }
 }

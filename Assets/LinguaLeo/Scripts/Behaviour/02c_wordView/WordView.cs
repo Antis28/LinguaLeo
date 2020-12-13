@@ -9,10 +9,23 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
 {
     public class WordView : MonoBehaviour, IObserver
     {
-        [SerializeField] private GameObject content = null;
-        [SerializeField] private WordInfoPanel panelPrefab = null;
-        [SerializeField] private Color selectWordColor = Color.yellow;
-        [SerializeField] private Color unselectWordColor = Color.yellow;
+        #region SerializeFields
+
+        [SerializeField]
+        private GameObject content = null;
+
+        [SerializeField]
+        private WordInfoPanel panelPrefab = null;
+
+        [SerializeField]
+        private Color selectWordColor = Color.yellow;
+
+        [SerializeField]
+        private Color unselectWordColor = Color.yellow;
+
+        #endregion
+
+        #region Events
 
         void IObserver.OnNotify(object parameter, GAME_EVENTS notificationName)
         {
@@ -21,6 +34,20 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
             Debug.Log("Start Size");
             StartCoroutine(CreatePanels());
         }
+
+        #endregion
+
+        #region Unity events
+
+        // Use this for initialization
+        private void Start()
+        {
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+        }
+
+        #endregion
+
+        #region Public Methods
 
         public void HighLightTile(int index)
         {
@@ -60,27 +87,17 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
             return height;
         }
 
-        // Use this for initialization
-        private void Start()
-        {
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
-        }
+        #endregion
 
-        private IEnumerator CreatePanels() //int spriteName
-        {
-            var group = GameManager.WordManeger.GetAllGroupWords();
-            UpdateContentHeight(group.Count);
-            foreach (var item in group)
-            {
-                CreateCard(item);
-                yield return null;
-            }
-        }
+        #region Private Methods
 
-        private void CreateCard(WordLeo word)
+        private float CalcTileHeight()
         {
-            var setPanel = Instantiate(panelPrefab, content.transform);
-            setPanel.Init(word);
+            // Растояние между плитками сверху и снизу
+            var tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+            var panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
+            var fullHeightPanel = tileHeight + panelYSpace;
+            return fullHeightPanel;
         }
 
         private void CalculateContentHeight()
@@ -101,15 +118,21 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
             //rectContent.localPosition = Vector3.zero;
         }
 
-        /// <summary>
-        ///     Вычисляет высоту всех панелей в 3 колонки
-        /// </summary>
-        /// <param name="panelCount">колличество панелей</param>
-        /// <param name="columnCount">колличество колонок</param>
-        private void UpdateContentHeight(float panelCount, float columnCount = 3)
+        private void CreateCard(WordLeo word)
         {
-            var height = СalculateHeightContainer(panelCount, columnCount);
-            SetSizeContent(height);
+            var setPanel = Instantiate(panelPrefab, content.transform);
+            setPanel.Init(word);
+        }
+
+        private IEnumerator CreatePanels() //int spriteName
+        {
+            var group = GameManager.WordManeger.GetAllGroupWords();
+            UpdateContentHeight(group.Count);
+            foreach (var item in group)
+            {
+                CreateCard(item);
+                yield return null;
+            }
         }
 
         private void SetSizeContent(float height)
@@ -167,13 +190,17 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
             Debug.Log("tileSize = " + tileSize);
         }
 
-        private float CalcTileHeight()
+        /// <summary>
+        ///     Вычисляет высоту всех панелей в 3 колонки
+        /// </summary>
+        /// <param name="panelCount">колличество панелей</param>
+        /// <param name="columnCount">колличество колонок</param>
+        private void UpdateContentHeight(float panelCount, float columnCount = 3)
         {
-            // Растояние между плитками сверху и снизу
-            var tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
-            var panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
-            var fullHeightPanel = tileHeight + panelYSpace;
-            return fullHeightPanel;
+            var height = СalculateHeightContainer(panelCount, columnCount);
+            SetSizeContent(height);
         }
+
+        #endregion
     }
 }

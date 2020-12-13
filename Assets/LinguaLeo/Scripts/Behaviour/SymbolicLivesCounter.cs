@@ -2,26 +2,34 @@
 
 namespace LinguaLeo.Scripts.Behaviour
 {
-    public class SymbolicLivesCounter : MonoBehaviour {
+    public class SymbolicLivesCounter : MonoBehaviour
+    {
+        #region Public variables
 
         public GameObject[] hearts;
+
+        #endregion
+
+        #region Private variables
+
         private int lives;
 
+        #endregion
+
+        #region Unity events
+
         // Use this for initialization
-        void Start () {
+        void Start()
+        {
             hearts = new GameObject[transform.childCount];
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                hearts[i] = transform.GetChild(i).gameObject;
-            }
+            for (int i = 0; i < transform.childCount; i++) { hearts[i] = transform.GetChild(i).gameObject; }
 
             lives = hearts.Length;
         }
-	
-        // Update is called once per frame
-        void Update () {
-		
-        }
+
+        #endregion
+
+        #region Public Methods
 
         public bool AddLife(int amount = 1)
         {
@@ -31,21 +39,30 @@ namespace LinguaLeo.Scripts.Behaviour
                 UpdateLives();
                 return true;
             }
+
             return false;
         }
+
         public bool LoseLife(int amount = 1)
         {
             lives--;
             if (lives > 0)
             {
                 UpdateLives();
-                return false;            
+                return false;
             }
+
             lives = 0;
             UpdateLives();
             return true;
-
         }
+
+        #endregion
+
+        #region Private Methods
+
+        // Update is called once per frame
+        void Update() { }
 
         private void UpdateLives()
         {
@@ -57,5 +74,7 @@ namespace LinguaLeo.Scripts.Behaviour
                     hearts[i].SetActive(false);
             }
         }
+
+        #endregion
     }
 }

@@ -5,13 +5,23 @@ using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Behaviour
 {
-    public class LoadSceneButton : MonoBehaviour {
+    public class LoadSceneButton : MonoBehaviour
+    {
+        #region SerializeFields
+
         [SerializeField]
         private string sceneName = string.Empty;
 
+        #endregion
+
+        #region Unity events
+
         // Use this for initialization
-        void Start () {
+        void Start()
+        {
             GetComponent<Button>().onClick.AddListener(() => GameManager.SceneLoader.LoadLevel(sceneName));
         }
+
+        #endregion
     }
 }

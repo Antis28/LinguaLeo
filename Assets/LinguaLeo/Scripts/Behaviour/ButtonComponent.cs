@@ -8,10 +8,15 @@ namespace LinguaLeo.Scripts.Behaviour
 {
     public class ButtonComponent : MonoBehaviour
     {
+        #region Public variables
 
         public Button button;
         public Text text;
         public RectTransform rect;
+
+        #endregion
+
+        #region Public Methods
 
         public void Awake()
         {
@@ -19,5 +24,7 @@ namespace LinguaLeo.Scripts.Behaviour
             text = GetComponentInChildren<Text>();
             rect = GetComponent<RectTransform>();
         }
+
+        #endregion
     }
 }
