@@ -14,7 +14,7 @@ namespace LinguaLeo.Scripts.Managers
 {
     public class WordManeger : MonoBehaviour, IObserver
     {
-        private readonly string folderXml = @"Data/Base";
+       // private readonly string folderXml = @"Data/Base";
         
         private static WordCollection vocabulary = null; // полный словарь
         private static List<string> wordGroups = null; // названия наборов слов
@@ -85,18 +85,7 @@ namespace LinguaLeo.Scripts.Managers
         /// <returns>описание наборов слов</returns>
         public List<WordGroup> GetGroupNames()
         {
-            if (groupNames != null)
-                return groupNames;
-
-            string path = folderXml + "/" + "WordGroup.xml";
-            if (!File.Exists(path))
-            {
-                Debug.LogError("File not found. Path: " + path);
-                return null;
-            }
-            groupNames = DeserializeGroup(path);
-            //SerializeGroup(GroupNames, path);
-            return groupNames;
+            return groupNames ?? (groupNames = GameManager.ResourcesLoader.LoadWordGroup());
         }
 
         /// <summary>
@@ -147,7 +136,7 @@ namespace LinguaLeo.Scripts.Managers
                 case GAME_EVENTS.WordsEnded:
                     /*
                     string path = folderXml + "/" + fileNameXml;
-                    vocabulary.SaveToXml(path);
+                    vocabulary.Save(path);
                     */
                     SaveVocabulary();
                     break;

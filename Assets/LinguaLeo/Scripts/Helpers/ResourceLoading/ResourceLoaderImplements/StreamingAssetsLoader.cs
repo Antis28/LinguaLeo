@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 {
-    public class StreamingAssetsLoader : AbstractLoader, IResourcesLoader
+    public class StreamingAssetsLoader : AbstractLoader
     {
         public StreamingAssetsLoader()
         {
@@ -29,8 +30,5 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 #endif
             pathToRootResources = Path.Combine(pathToRootResources, "Data");
         }
-
-        public WordCollection LoadVocabulary() { throw new System.NotImplementedException(); }
-        public void SaveVocabulary(WordCollection vocabulary) { throw new System.NotImplementedException(); }
     }
 }

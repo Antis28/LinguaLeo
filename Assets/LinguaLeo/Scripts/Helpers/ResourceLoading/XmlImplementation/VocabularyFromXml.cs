@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Xml.Serialization;
+﻿
 using LinguaLeo.Scripts.Helpers.Interfaces;
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
@@ -16,54 +11,25 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
       //  private readonly string folderXml = @"Data/Base";
       //  private readonly string fileNameXml = "WordBase.xml";
         private readonly string path;
+        private readonly XmlSerialization<WordCollectionXml> xmlSerialization;
 
-        public VocabularyFromXml(string path) { this.path = path; }
+        public VocabularyFromXml(string path)
+        {
+            this.path = path;
+            xmlSerialization = new XmlSerialization<WordCollectionXml>();
+        }
         
         public WordCollection Load()
         {
-           return  (WordCollection)LoadFromXml<WordCollectionXml>(path);
+           return  (WordCollection)xmlSerialization.Load(path);
         }
 
-        public void Save(WordCollection vocabulary)
+        public void Save(WordCollection saveObject)
         {
-            SaveToXml(path, (WordCollectionXml)vocabulary);
+            xmlSerialization.Save(path, (WordCollectionXml)saveObject);
         }
         
-        private void SaveToXml<T>(string path,  T vocabulary) where T: class
-        { 
-            if (!File.Exists(path))
-                throw new FileNotFoundException("path: " + path);
-
-            using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
-            {
-
-                //Now save game data
-                var xmlSerializer = new XmlSerializer(typeof(T));
-
-                xmlSerializer.Serialize(stream, vocabulary);
-                stream.Close();
-            }
-        }
-        
-        private  T LoadFromXml<T>(string path) where T: class
-        {
-            if (!File.Exists(path))
-                throw new FileNotFoundException("path: " + path);
-            
-            T result;
-
-            using (TextReader stream = new StreamReader(path, Encoding.UTF8)) // (path, FileMode.Open, FileAccess.Read))
-            {
-                var serializer = new XmlSerializer(typeof(T));
-                result = serializer.Deserialize(stream) as T;
-                stream.Close();
-
-                if (result == null)
-                    throw new SerializationException("File not Deserialize");
-            }
-
-            return result;
-        }
+       
         
         /*
         

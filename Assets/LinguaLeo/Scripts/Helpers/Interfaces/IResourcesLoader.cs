@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 {
@@ -10,5 +11,8 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
         
         WordCollection LoadVocabulary();
         void SaveVocabulary(WordCollection vocabulary);
+        
+        List<WordGroup> LoadWordGroup();
+        void SaveWordGroup(List<WordGroup> groups);
     }
 }
