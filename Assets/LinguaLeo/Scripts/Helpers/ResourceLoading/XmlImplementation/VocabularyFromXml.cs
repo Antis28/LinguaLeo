@@ -11,7 +11,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
     /// <summary>
     /// Позволяет работать со словорем в XML реализации
     /// </summary>
-    public class VocabularyFromXml : IVocabularyManager
+    public class VocabularyFromXml : IVocabularyManager<WordCollection>
     {
       //  private readonly string folderXml = @"Data/Base";
       //  private readonly string fileNameXml = "WordBase.xml";
