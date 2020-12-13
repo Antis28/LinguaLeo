@@ -39,7 +39,7 @@ namespace LinguaLeo.Scripts.Manegers.Parts
 
         #region Private variables
 
-        AssetBundle voiceBundle;
+        private AssetBundle voiceBundle;
 
         private readonly string
             bundleFolder =
@@ -91,7 +91,7 @@ namespace LinguaLeo.Scripts.Manegers.Parts
 
         #region Private Methods
 
-        void ExtractFromBundle()
+        private void ExtractFromBundle()
         {
             string fileName = "Assets/Resources/81-631152000.mp3";
             if (voiceBundle.Contains(fileName))
@@ -120,7 +120,7 @@ namespace LinguaLeo.Scripts.Manegers.Parts
             path = bundleFolder + bundleName;
         }
 
-        IEnumerator WaitLoadingAudio()
+        private IEnumerator WaitLoadingAudio()
         {
             while (sayClip == null) { yield return null; }
 

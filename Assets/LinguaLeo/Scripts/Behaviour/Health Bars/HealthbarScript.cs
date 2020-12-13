@@ -13,7 +13,7 @@ namespace LinguaLeo.Scripts.Behaviour.Health_Bars
         private Text PercentText = null;
 
         [SerializeField]
-        Animator addbrainvalue = null;
+        private Animator addbrainvalue = null;
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace LinguaLeo.Scripts.Behaviour.Health_Bars
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
             healthbarFilling = GetComponent<Image>();

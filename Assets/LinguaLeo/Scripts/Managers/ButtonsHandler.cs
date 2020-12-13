@@ -37,7 +37,7 @@ namespace LinguaLeo.Scripts.Manegers
 
         #region Unity events
 
-        void Start()
+        private void Start()
         {
             buttons = FindObjectsOfType<ButtonComponent>();
             ButtonsEvent = new UnityAction[buttons.Length];
@@ -122,7 +122,7 @@ namespace LinguaLeo.Scripts.Manegers
 
         #region Private Methods
 
-        void ClearListeners()
+        private void ClearListeners()
         {
             foreach (ButtonComponent b in buttons) { b.button.onClick.RemoveAllListeners(); }
         }
@@ -238,7 +238,7 @@ namespace LinguaLeo.Scripts.Manegers
             GameManager.Notifications.PostNotification(null, GAME_EVENTS.ShowResult);
         }
 
-        void Update()
+        private void Update()
         {
             RunKeyHandler();
         }

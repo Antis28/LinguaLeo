@@ -17,7 +17,7 @@ namespace LinguaLeo.Scripts.Behaviour
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             GetComponent<Button>().onClick.AddListener(
                 () => GameManager.WorkoutManager.RunWorkOut(workoutName)

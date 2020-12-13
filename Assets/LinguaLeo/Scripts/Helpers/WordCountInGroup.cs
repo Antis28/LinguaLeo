@@ -10,13 +10,13 @@ namespace LinguaLeo.Scripts.Helpers
         #region SerializeFields
 
         [SerializeField]
-        WorkoutNames workoutName = WorkoutNames.WordTranslate;
+        private WorkoutNames workoutName = WorkoutNames.WordTranslate;
 
         #endregion
 
         #region Private variables
 
-        Text countText;
+        private Text countText;
 
         #endregion
 
@@ -37,7 +37,7 @@ namespace LinguaLeo.Scripts.Helpers
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             Transform CountTransform = transform.Find("CountText");
             if (CountTransform == null)
@@ -50,7 +50,7 @@ namespace LinguaLeo.Scripts.Helpers
 
         #region Private Methods
 
-        void ShowWordCount()
+        private void ShowWordCount()
         {
             if (countText == null)
                 return;
@@ -58,7 +58,7 @@ namespace LinguaLeo.Scripts.Helpers
         }
 
         // Update is called once per frame
-        void Update() { }
+        private void Update() { }
 
         #endregion
     }

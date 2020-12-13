@@ -61,7 +61,7 @@ namespace LinguaLeo.Scripts.Workout
 
         private ButtonsHandler buttonsHandler;
 
-        List<WordLeo> untrainedWords;
+        private List<WordLeo> untrainedWords;
 
         WorkoutNames IWorkout.WorkoutName
         {
@@ -184,7 +184,7 @@ namespace LinguaLeo.Scripts.Workout
 
 
         // Use this for initialization
-        void Awake()
+        private void Awake()
         {
             GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
             GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
@@ -293,7 +293,7 @@ namespace LinguaLeo.Scripts.Workout
         /// </summary>
         /// <param name="i">ID для поиска</param>
         /// <returns></returns>
-        int FindNodeByID(int i)
+        private int FindNodeByID(int i)
         {
             int j = 0;
             foreach (var quest in questions)

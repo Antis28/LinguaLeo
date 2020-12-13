@@ -77,7 +77,7 @@ namespace LinguaLeo.Scripts.Workout
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
             GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);

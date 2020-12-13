@@ -10,32 +10,32 @@ namespace LinguaLeo.Scripts.Behaviour
     {
         #region Static Fields and Constants
 
-        const int BED_RESULT = 0;
-        const int GOOD_RESULT = 9;
-        const int BEST_RESULT = 10;
+        private const int BED_RESULT = 0;
+        private const int GOOD_RESULT = 9;
+        private const int BEST_RESULT = 10;
 
         #endregion
 
         #region SerializeFields
 
         [SerializeField]
-        Text CaptionText = null;
+        private Text CaptionText = null;
 
         [SerializeField]
-        Text LearnText = null;
+        private Text LearnText = null;
 
         [SerializeField]
-        Text EatingText = null;
+        private Text EatingText = null;
 
         [SerializeField]
-        Button[] buttons;
+        private Button[] buttons;
 
         #endregion
 
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             float score = GameManager.ScoreKeeper.GetCorrectAnswers();
             ShowCaption(score);
@@ -141,7 +141,7 @@ namespace LinguaLeo.Scripts.Behaviour
 
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (Input.GetKey(KeyCode.A))
             {

@@ -22,7 +22,7 @@ namespace LinguaLeo.Scripts.Workout
 
         private List<WordLeo> untrainedWords;
 
-        WorkoutNames workoutName;
+        private WorkoutNames workoutName;
 
         public event UnityAction DrawTask;
 
@@ -187,7 +187,7 @@ namespace LinguaLeo.Scripts.Workout
         /// </summary>
         /// <param name="i">ID для поиска</param>
         /// <returns></returns>
-        int FindNodeByID(int i)
+        private int FindNodeByID(int i)
         {
             int j = 0;
             foreach (var quest in tasks)

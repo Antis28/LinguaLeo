@@ -21,7 +21,7 @@ namespace Editor.Hierarchy
         }
 
         // Rename
-        void OnWizardCreate()
+        private void OnWizardCreate()
         {
             // If selection empty, then exit
             if (Selection.objects == null)
@@ -43,7 +43,7 @@ namespace Editor.Hierarchy
         #region Private Methods
 
         [MenuItem("MyFeature/BatchRename...")]
-        static void CreateWizard()
+        private static void CreateWizard()
         {
             DisplayWizard<BatchRename>("BatchRename", "Rename");
         }

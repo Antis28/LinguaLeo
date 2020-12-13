@@ -77,7 +77,7 @@ namespace LinguaLeo.Scripts.Workout
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             repeatWordButton = GameObject.Find("RepeatWordButton").GetComponent<Button>();
             checkButton = GameObject.Find("CheckButton").GetComponent<Button>();
@@ -217,7 +217,7 @@ namespace LinguaLeo.Scripts.Workout
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (Input.GetKeyUp(KeyCode.Return)) { EnterButtonEvent(); }
         }

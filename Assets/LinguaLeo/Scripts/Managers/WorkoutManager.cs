@@ -61,7 +61,7 @@ namespace LinguaLeo.Scripts.Manegers
 
         private int questMaxCount = 0;
 
-        BrainStorm brainStorm = null;
+        private BrainStorm brainStorm = null;
 
         private SceneLoader sceneLoader;
         private WorkoutNames currentWorkout;

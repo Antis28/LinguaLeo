@@ -47,7 +47,7 @@ namespace LinguaLeo.Scripts.Behaviour
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
             ResetScore();

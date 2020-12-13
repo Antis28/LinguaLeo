@@ -8,7 +8,7 @@ public class DirtyAndSaveSceneToRemoveDeprecatedComponents : MonoBehaviour
     #region Private Methods
 
     [MenuItem("Cleanup/Cleanup Scenes with Deprecated Components")]
-    static void DoCleanup()
+    private static void DoCleanup()
     {
         var sceneGUIDs = AssetDatabase.FindAssets("t:Scene");
         string[] scenePaths = sceneGUIDs.Select(i => AssetDatabase.GUIDToAssetPath(i)).ToArray();

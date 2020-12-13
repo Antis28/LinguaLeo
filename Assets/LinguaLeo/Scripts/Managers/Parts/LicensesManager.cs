@@ -10,7 +10,7 @@ namespace LinguaLeo.Scripts.Manegers.Parts
     {
         #region Static Fields and Constants
 
-        const float CHECK_INTERVAL = 900f;
+        private const float CHECK_INTERVAL = 900f;
 
         #endregion
 
@@ -31,7 +31,7 @@ namespace LinguaLeo.Scripts.Manegers.Parts
 
         #region Unity events
 
-        void Start()
+        private void Start()
         {
             //GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
         }
@@ -41,7 +41,7 @@ namespace LinguaLeo.Scripts.Manegers.Parts
         #region Private Methods
 
         // Use this for initialization
-        IEnumerator ChekLoop()
+        private IEnumerator ChekLoop()
         {
             List<WordLeo> allWords = GameManager.WordManeger.GetAllWords();
 

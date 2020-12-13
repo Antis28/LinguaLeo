@@ -148,18 +148,18 @@ namespace LinguaLeo.Scripts.Helpers
         #endregion
     }
 
-    class UniqRandom
+    internal class UniqRandom
     {
         #region Private variables
 
-        readonly int MAX_COUNT;
-        List<int> lastIndex;
+        private readonly int MAX_COUNT;
+        private List<int> lastIndex;
 
         #endregion
 
         #region Private Methods
 
-        int nextRandom()
+        private int nextRandom()
         {
             int rndValue = -1;
 
@@ -170,7 +170,7 @@ namespace LinguaLeo.Scripts.Helpers
 
         #endregion
 
-        UniqRandom(int max)
+        private UniqRandom(int max)
         {
             MAX_COUNT = max;
             lastIndex = new List<int>(MAX_COUNT);

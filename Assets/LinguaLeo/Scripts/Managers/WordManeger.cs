@@ -47,7 +47,7 @@ namespace LinguaLeo.Scripts.Managers
 
         #region Unity events
 
-        void Start()
+        private void Start()
         {
             GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
             GameManager.Notifications.AddListener(this, GAME_EVENTS.QuitGame);
@@ -185,7 +185,7 @@ namespace LinguaLeo.Scripts.Managers
             }
         }
 
-        IEnumerator LoadedVocalubary()
+        private IEnumerator LoadedVocalubary()
         {
             yield return null;
             if (vocabulary != null)

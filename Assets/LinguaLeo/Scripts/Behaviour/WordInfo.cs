@@ -12,19 +12,19 @@ namespace LinguaLeo.Scripts.Behaviour
         #region SerializeFields
 
         [SerializeField]
-        Text LevelText = null;
+        private Text LevelText = null;
 
         [SerializeField]
-        Text TimeRepeatText = null;
+        private Text TimeRepeatText = null;
 
         [SerializeField]
-        Text TimeReduceText = null;
+        private Text TimeReduceText = null;
 
         #endregion
 
         #region Private variables
 
-        Workout.Workout coreWorkout = null;
+        private Workout.Workout coreWorkout = null;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace LinguaLeo.Scripts.Behaviour
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
             GameManager.Notifications.AddListener(this, GAME_EVENTS.UpdatedLicenseLevel);

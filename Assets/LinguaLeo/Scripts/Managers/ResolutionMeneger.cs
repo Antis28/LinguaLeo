@@ -7,9 +7,9 @@ namespace LinguaLeo.Scripts.Manegers
     {
         #region Static Fields and Constants
 
-        const string SCREEN_WIDTH = "screen_width";
-        const string SCREEN_HEIGHT = "screen_height";
-        const string FULLSCREEN = "screen_isFull";
+        private const string SCREEN_WIDTH = "screen_width";
+        private const string SCREEN_HEIGHT = "screen_height";
+        private const string FULLSCREEN = "screen_isFull";
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace LinguaLeo.Scripts.Manegers
         #region Private Methods
 
         // Use this for initialization
-        void Awake()
+        private void Awake()
         {
             int width = PlayerPrefs.GetInt(SCREEN_WIDTH, 640);
             int height = PlayerPrefs.GetInt(SCREEN_HEIGHT, 480);

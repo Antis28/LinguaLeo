@@ -19,7 +19,7 @@ namespace LinguaLeo.Scripts.Behaviour
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             hearts = new GameObject[transform.childCount];
             for (int i = 0; i < transform.childCount; i++) { hearts[i] = transform.GetChild(i).gameObject; }
@@ -62,7 +62,7 @@ namespace LinguaLeo.Scripts.Behaviour
         #region Private Methods
 
         // Update is called once per frame
-        void Update() { }
+        private void Update() { }
 
         private void UpdateLives()
         {

@@ -11,19 +11,19 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
         #region SerializeFields
 
         [SerializeField]
-        Image wordImage = null;
+        private Image wordImage = null;
 
         [SerializeField]
-        Text wordText = null;
+        private Text wordText = null;
 
         [SerializeField]
-        Text levelText = null;
+        private Text levelText = null;
 
         [SerializeField]
-        Text TimeReduceText = null;
+        private Text TimeReduceText = null;
 
         [SerializeField]
-        Text TimeUnlockText = null;
+        private Text TimeUnlockText = null;
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
 
         #region Unity events
 
-        void Start()
+        private void Start()
         {
             //  SceneLoader sceneLoader = FindObjectOfType<SceneLoader>();
         }

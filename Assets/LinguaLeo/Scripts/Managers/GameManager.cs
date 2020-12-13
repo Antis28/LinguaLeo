@@ -195,7 +195,7 @@ namespace LinguaLeo.Scripts.Manegers
         #region Private Methods
 
         // Called before Start on object creation
-        void Awake()
+        private void Awake()
         {
             //Check if there is an existing instance of this object
             if ((instance) && (instance.GetInstanceID() != GetInstanceID()))

@@ -10,22 +10,22 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         #region SerializeFields
 
         [SerializeField]
-        Image LogoImage = null;
+        private Image LogoImage = null;
 
         [SerializeField]
-        Text CaptionText = null;
+        private Text CaptionText = null;
 
         [SerializeField]
-        Text WordCountText = null;
+        private Text WordCountText = null;
 
         #endregion
 
         #region Private variables
 
-        Button learnButton;
-        Button viewButton;
+        private Button learnButton;
+        private Button viewButton;
 
-        string groupName = string.Empty;
+        private string groupName = string.Empty;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             learnButton = transform.Find("LearnButton").GetComponent<Button>();
             viewButton = transform.Find("ViewButton").GetComponent<Button>();

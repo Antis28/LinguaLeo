@@ -10,7 +10,7 @@ namespace LinguaLeo.Scripts
         #region SerializeFields
 
         [SerializeField]
-        Text[] words = null;
+        private Text[] words = null;
 
         #endregion
 

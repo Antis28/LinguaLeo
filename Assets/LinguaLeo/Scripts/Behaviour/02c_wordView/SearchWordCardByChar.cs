@@ -15,14 +15,14 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
 
         #region Private variables
 
-        WordInfoPanel[] allWordInfoPanel = null;
-        WordView wordView = null;
+        private WordInfoPanel[] allWordInfoPanel = null;
+        private WordView wordView = null;
 
         #endregion
 
         #region Unity events
 
-        void Start()
+        private void Start()
         {
             gt = GetComponent<Text>();
             allWordInfoPanel = GetAllWordSetPanel();
@@ -95,7 +95,7 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
             wordView.HighLightTile(index);
         }
 
-        void Update()
+        private void Update()
         {
             FindSubString();
         }
