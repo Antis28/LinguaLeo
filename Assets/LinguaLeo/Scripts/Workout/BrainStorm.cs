@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers;
-using LinguaLeo.Scripts.Manegers.Parts;
+using LinguaLeo.Scripts.Managers;
+using LinguaLeo.Scripts.Managers.Parts;
 using UnityEngine;
 
 namespace LinguaLeo.Scripts.Workout
@@ -55,7 +55,7 @@ namespace LinguaLeo.Scripts.Workout
             return subCore;
         }
 
-        public void ResetStage()
+        private void ResetStage()
         {
             stage = 0;
         }

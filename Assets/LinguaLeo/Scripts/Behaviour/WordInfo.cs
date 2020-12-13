@@ -1,9 +1,9 @@
 ﻿using System;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers;
 using UnityEngine;
 using UnityEngine.UI;
 using LinguaLeo.Scripts.Helpers;
+using LinguaLeo.Scripts.Managers;
 
 namespace LinguaLeo.Scripts.Behaviour
 {

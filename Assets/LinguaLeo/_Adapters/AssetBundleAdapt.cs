@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace LinguaLeo.Adapters
+namespace LinguaLeo._Adapters
 {
     public class AssetBundleAdapt
     {

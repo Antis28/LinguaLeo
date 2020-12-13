@@ -2,7 +2,7 @@
 
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Managers;
 using LinguaLeo.Scripts.Workout;
 using UnityEngine;
 using UnityEngine.UI;

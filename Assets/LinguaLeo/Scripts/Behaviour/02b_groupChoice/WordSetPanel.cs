@@ -1,9 +1,9 @@
 ﻿using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
+namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
 {
     public class WordSetPanel : MonoBehaviour
     {

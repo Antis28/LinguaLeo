@@ -4,7 +4,7 @@ using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Manegers.Parts
+namespace LinguaLeo.Scripts.Managers.Parts
 {
     public class LicensesManager : MonoBehaviour, IObserver
     {

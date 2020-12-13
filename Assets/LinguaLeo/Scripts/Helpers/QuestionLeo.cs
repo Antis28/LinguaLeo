@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Managers;
 using URandom = UnityEngine.Random;
 
 namespace LinguaLeo.Scripts.Helpers

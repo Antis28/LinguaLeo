@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Manegers
+namespace LinguaLeo.Scripts.Managers
 {
     public class ResolutionMeneger : MonoBehaviour
     {

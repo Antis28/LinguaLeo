@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 using LinguaLeo.Scripts.Helpers.Licences;
-using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Managers;
 
 namespace LinguaLeo.Scripts.Helpers
 {

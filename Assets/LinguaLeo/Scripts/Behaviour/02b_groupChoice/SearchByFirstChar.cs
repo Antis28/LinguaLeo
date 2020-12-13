@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
+namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
 {
     /// <summary>
     ///     Поиск в списке по первым набранным буквам.

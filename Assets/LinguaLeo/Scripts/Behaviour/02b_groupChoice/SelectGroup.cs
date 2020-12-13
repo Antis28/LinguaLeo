@@ -1,13 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
+using System.Collections;
 using System.Linq;
-using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
+#endregion
+
+namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
 {
     /// <summary>
     /// Выбор группы слов для изучения.
@@ -132,10 +134,10 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// <param name="index">Индекс плитки</param>
         public void HighLightTile(int index)
         {
-            WordSetPanel[] tiles = GetTiles();
+            var tiles = GetTiles();
             foreach (var item in tiles) { item.GetComponent<Image>().color = Color.white; }
 
-            WordSetPanel tile = tiles[index];
+            var tile = tiles[index];
             tile.GetComponent<Image>().color = Color.yellow;
         }
 
@@ -145,14 +147,14 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// <param name="height">Высота</param>
         public void SetHeigtContent(float height)
         {
-            Vector2 size = new Vector2
+            var size = new Vector2
             {
                 y = height // -tileHeight / 2
             };
 
             // float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
             // отцентрировать плитку вертикально
-            RectTransform rectContent = content.GetComponent<RectTransform>();
+            var rectContent = content.GetComponent<RectTransform>();
             rectContent.localPosition = size;
         }
 
@@ -167,9 +169,9 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         private float CalcTileHeight()
         {
             // Растояние между плитками сверху и снизу
-            float tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
-            float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
-            float fullHeightPanel = tileHeight + panelYSpace;
+            var tileHeight = content.GetComponent<GridLayoutGroup>().cellSize.y;
+            var panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
+            var fullHeightPanel = tileHeight + panelYSpace;
             return fullHeightPanel;
         }
 
@@ -180,11 +182,11 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         {
             // TODO: вычислять колличество колонок динамически
             float clumnCount = 3;
-            float panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
+            var panelYSpace = content.GetComponent<GridLayoutGroup>().spacing.y * 2;
             float panelCount = content.transform.childCount;
 
-            Vector2 size = new Vector2();
-            RectTransform rectContent = content.GetComponent<RectTransform>();
+            var size = new Vector2();
+            var rectContent = content.GetComponent<RectTransform>();
             size.y = (PanelHeight + panelYSpace) * panelCount / clumnCount;
             rectContent.sizeDelta = size;
 
@@ -200,7 +202,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// <param name="count">Количество слов в группе</param>
         private void CreateCard(Sprite sprite, string caption, int count)
         {
-            WordSetPanel setPanel = Instantiate(panelPrefab, content.transform);
+            var setPanel = Instantiate(panelPrefab, content.transform);
             setPanel.Init(sprite, caption, count);
         }
 
@@ -211,7 +213,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// <returns>необходимо для корутины</returns>
         private IEnumerator CreatePanels()
         {
-            List<WordGroup> groups = GameManager.WordManeger.GetGroupNames();
+            var groups = GameManager.WordManeger.GetGroupNames();
             UpdateContentHeight(groups.Count);
             foreach (var item in groups)
             {
@@ -242,11 +244,11 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// <param name="height">Высота</param>
         private void SetSizeContent(float height)
         {
-            Vector2 size = new Vector2
+            var size = new Vector2
             {
                 y = height
             };
-            RectTransform rectContent = content.GetComponent<RectTransform>();
+            var rectContent = content.GetComponent<RectTransform>();
             rectContent.sizeDelta = size;
             rectContent.localPosition = Vector3.zero;
         }
@@ -257,15 +259,15 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// </summary>
         private void SetTileSize()
         {
-            string ratio_16x9 = "1.8";
-            string ratio_16x10 = "1.6";
-            string ratio_5x4 = "1.3";
+            var ratio_16x9 = "1.8";
+            var ratio_16x10 = "1.6";
+            var ratio_5x4 = "1.3";
 
-            Vector2 tileSize = content.GetComponent<GridLayoutGroup>().cellSize;
-            Vector2 sizeDelta = GetComponent<RectTransform>().sizeDelta;
+            var tileSize = content.GetComponent<GridLayoutGroup>().cellSize;
+            var sizeDelta = GetComponent<RectTransform>().sizeDelta;
             float pixelWidth = Camera.main.pixelWidth;
             float pixelHeight = Camera.main.pixelHeight;
-            float ratioIndex = pixelWidth / pixelHeight;
+            var ratioIndex = pixelWidth / pixelHeight;
 
             if (ratio_16x9 == ratioIndex.ToString("0.0"))
             {
@@ -300,7 +302,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
         /// <param name="columnCount">колличество колонок</param>
         private void UpdateContentHeight(float panelCount, float columnCount = 3)
         {
-            float height = GetHightContainer(panelCount, columnCount);
+            var height = GetHightContainer(panelCount, columnCount);
             SetSizeContent(height);
         }
 

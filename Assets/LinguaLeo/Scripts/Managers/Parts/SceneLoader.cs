@@ -1,4 +1,4 @@
-﻿using LinguaLeo.Adapters;
+﻿using LinguaLeo._Adapters;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,7 +7,7 @@ using UnityEngine;
 #endif
 
 
-namespace LinguaLeo.Scripts.Manegers.Parts
+namespace LinguaLeo.Scripts.Managers.Parts
 {
     public class SceneLoader : MonoBehaviour
     {

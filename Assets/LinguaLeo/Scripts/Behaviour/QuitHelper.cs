@@ -1,6 +1,6 @@
-﻿using LinguaLeo.Scripts.Manegers;
+﻿using LinguaLeo._Adapters;
+using LinguaLeo.Scripts.Managers;
 using UnityEngine;
-using LinguaLeo.Adapters;
 
 namespace LinguaLeo.Scripts.Behaviour
 {

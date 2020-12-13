@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
-using LinguaLeo.Adapters;
+using LinguaLeo._Adapters;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers;
 using UnityEngine;
 
 namespace LinguaLeo.Scripts.Managers

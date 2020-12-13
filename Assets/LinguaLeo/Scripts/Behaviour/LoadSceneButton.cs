@@ -1,5 +1,4 @@
-﻿using LinguaLeo.Scripts.Manegers;
-using LinguaLeo.Scripts.Manegers.Parts;
+﻿using LinguaLeo.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 

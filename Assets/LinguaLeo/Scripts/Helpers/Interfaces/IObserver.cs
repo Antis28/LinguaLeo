@@ -1,4 +1,4 @@
-﻿using LinguaLeo.Scripts.Manegers;
+﻿using LinguaLeo.Scripts.Managers;
 
 namespace LinguaLeo.Scripts.Helpers.Interfaces
 {

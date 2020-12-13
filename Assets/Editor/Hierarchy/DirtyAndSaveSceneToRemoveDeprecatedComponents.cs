@@ -1,29 +1,31 @@
-﻿using UnityEngine;
+﻿using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using System.Linq;
+using UnityEngine;
 
-public class DirtyAndSaveSceneToRemoveDeprecatedComponents : MonoBehaviour
-{
-    #region Private Methods
-
-    [MenuItem("Cleanup/Cleanup Scenes with Deprecated Components")]
-    private static void DoCleanup()
+namespace Editor.Hierarchy {
+    public class DirtyAndSaveSceneToRemoveDeprecatedComponents : MonoBehaviour
     {
-        var sceneGUIDs = AssetDatabase.FindAssets("t:Scene");
-        string[] scenePaths = sceneGUIDs.Select(i => AssetDatabase.GUIDToAssetPath(i)).ToArray();
+        #region Private Methods
 
-        for (int i = 0; i < scenePaths.Length; i++)
+        [MenuItem("Cleanup/Cleanup Scenes with Deprecated Components")]
+        private static void DoCleanup()
         {
-            var scene = EditorSceneManager.OpenScene(scenePaths[i], OpenSceneMode.Additive);
+            var sceneGUIDs = AssetDatabase.FindAssets("t:Scene");
+            string[] scenePaths = sceneGUIDs.Select(i => AssetDatabase.GUIDToAssetPath(i)).ToArray();
 
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
+            for (int i = 0; i < scenePaths.Length; i++)
+            {
+                var scene = EditorSceneManager.OpenScene(scenePaths[i], OpenSceneMode.Additive);
 
-            if (scene != EditorSceneManager.GetActiveScene())
-                EditorSceneManager.UnloadSceneAsync(scene);
+                EditorSceneManager.MarkSceneDirty(scene);
+                EditorSceneManager.SaveScene(scene);
+
+                if (scene != EditorSceneManager.GetActiveScene())
+                    EditorSceneManager.UnloadSceneAsync(scene);
+            }
         }
-    }
 
-    #endregion
+        #endregion
+    }
 }

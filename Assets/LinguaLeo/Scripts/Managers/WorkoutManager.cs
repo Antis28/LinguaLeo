@@ -1,12 +1,12 @@
-﻿using LinguaLeo.Adapters;
+﻿using LinguaLeo._Adapters;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers.Parts;
+using LinguaLeo.Scripts.Managers.Parts;
 using LinguaLeo.Scripts.Workout;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace LinguaLeo.Scripts.Manegers
+namespace LinguaLeo.Scripts.Managers
 {
     public class WorkoutManager : MonoBehaviour, IObserver
     {

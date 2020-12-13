@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Manegers
+namespace LinguaLeo.Scripts.Managers
 {
     public class ButtonsHandler : MonoBehaviour
     {
