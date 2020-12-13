@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using LinguaLeo.Scripts.Behaviour;
+using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Helpers.ResourceLoading;
 using LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements;
 using LinguaLeo.Scripts.Managers;

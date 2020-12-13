@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using LinguaLeo.Scripts.Helpers.Interfaces;
 using UnityEngine;
 using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
 
