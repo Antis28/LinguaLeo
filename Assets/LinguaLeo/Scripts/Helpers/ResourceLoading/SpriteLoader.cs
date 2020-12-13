@@ -7,20 +7,21 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
     public class SpriteLoader
     {
         private readonly string pictureDirectory;
-        private string coverDirectory;
+        private readonly string coverDirectory;
         
         private readonly string pictureDirectoryName =  "Picture";
         private readonly string coversDirectoryName =  "Covers";
+        private readonly string fileExtension =  ".png";
 
-        public SpriteLoader(string PathToRootResources)
+        public SpriteLoader(string pathToRootResources)
         {
-            this.pictureDirectory = Path.Combine(PathToRootResources, pictureDirectoryName);
-            this.coverDirectory = Path.Combine(PathToRootResources, coversDirectoryName);
+            this.pictureDirectory = Path.Combine(pathToRootResources, pictureDirectoryName );
+            this.coverDirectory = Path.Combine(pathToRootResources, coversDirectoryName );
         }
 
         public Sprite GetSpriteFromPicture(string fileName)
         {
-            var fullPath = Path.Combine(pictureDirectory, fileName);
+            var fullPath = Path.Combine(pictureDirectory, fileName + fileExtension);
             var sprite = LoadSpriteFromFile(fullPath);
             return sprite;
         }

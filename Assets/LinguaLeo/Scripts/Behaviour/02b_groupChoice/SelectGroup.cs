@@ -66,7 +66,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupСhoice
             UpdateContentHeight(groups.Count);
             foreach (var item in groups)
             {
-                var sprite = GameManager.ResourcesLoader.GetCover(item.pictureName + ".png");
+                var sprite = GameManager.ResourcesLoader.GetCover(item.pictureName);
                 
                 CreateCard(sprite, item.name, item.wordCount);
                 yield return null;
