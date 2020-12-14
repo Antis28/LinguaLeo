@@ -30,7 +30,7 @@ namespace LinguaLeo.Scripts.Managers
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        void IObserver.OnNotify(object parameter, GAME_EVENTS notificationName)
         {
             switch (notificationName)
             {
