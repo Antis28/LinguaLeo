@@ -13,7 +13,7 @@ namespace LinguaLeo.Scripts.Managers
     /// Хранилище ссылок на синглтоны
     /// </summary>
 // Component for sending and receiving  
-    [RequireComponent(typeof(WordManeger))]
+    [RequireComponent(typeof(WordManager))]
     [RequireComponent(typeof(SceneLoader))]
     [RequireComponent(typeof(ScoreKeeper))]
     [RequireComponent(typeof(AudioPlayer))]
@@ -42,7 +42,7 @@ namespace LinguaLeo.Scripts.Managers
         //Internal reference to notifications object
         private static SceneLoader sceneLoader = null;
 
-        private static WordManeger wordManeger = null;
+        private static WordManager wordManager = null;
 
         private static WorkoutManager workoutManager = null;
 
@@ -143,17 +143,17 @@ namespace LinguaLeo.Scripts.Managers
             }
         }
 
-        public static WordManeger WordManeger
+        public static WordManager WordManager
         {
             get
             {
-                if (wordManeger == null)
+                if (wordManager == null)
                 {
-                    CheckManyInstance<WordManeger>();
-                    wordManeger = instance.GetComponent<WordManeger>();
+                    CheckManyInstance<WordManager>();
+                    wordManager = instance.GetComponent<WordManager>();
                 }
 
-                return wordManeger;
+                return wordManager;
             }
         }
 

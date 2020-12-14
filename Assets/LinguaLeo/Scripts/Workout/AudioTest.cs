@@ -183,10 +183,10 @@ namespace LinguaLeo.Scripts.Workout
 
         private void InitWordCountBar()
         {
-            if (core.maxQuestCount < GameManager.WordManeger.CountWordInGroup())
+            if (core.maxQuestCount < GameManager.WordManager.CountWordInGroup())
                 scoreSlider.maxValue = core.maxQuestCount;
             else
-                scoreSlider.maxValue = GameManager.WordManeger.CountWordInGroup();
+                scoreSlider.maxValue = GameManager.WordManager.CountWordInGroup();
             scoreText.text = answersCount + "/" + scoreSlider.maxValue;
         }
 

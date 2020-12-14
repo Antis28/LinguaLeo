@@ -115,7 +115,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
         /// <returns>Плитки с группами слов</returns>
         public WordSetPanel[] GetTiles()
         {
-            if (wordTiles == null || wordTiles.Length < GameManager.WordManeger.GetGroupNames().Count)
+            if (wordTiles == null || wordTiles.Length < GameManager.WordManager.GetGroupNames().Count)
             {
                 wordTiles = transform.GetComponentsInChildren<WordSetPanel>();
                 var panels = from p in wordTiles
@@ -213,7 +213,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
         /// <returns>необходимо для корутины</returns>
         private IEnumerator CreatePanels()
         {
-            var groups = GameManager.WordManeger.GetGroupNames();
+            var groups = GameManager.WordManager.GetGroupNames();
             UpdateContentHeight(groups.Count);
             foreach (var item in groups)
             {

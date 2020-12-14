@@ -126,7 +126,7 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
 
         private IEnumerator CreatePanels() //int spriteName
         {
-            var group = GameManager.WordManeger.GetAllGroupWords();
+            var group = GameManager.WordManager.GetAllGroupWords();
             UpdateContentHeight(group.Count);
             foreach (var item in group)
             {

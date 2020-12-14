@@ -172,7 +172,7 @@ namespace LinguaLeo.Scripts.Workout
             List<WordLeo> TempWords = new List<WordLeo>(ANSWER_COUNT * 2);
             if (words != null)
                 TempWords.AddRange(words);
-            List<WordLeo> allWords = GameManager.WordManeger.GetAllWords();
+            List<WordLeo> allWords = GameManager.WordManager.GetAllWords();
 
             //TODO: Заменить на случайный индекс
             allWords = ShuffleList(allWords);
@@ -274,13 +274,13 @@ namespace LinguaLeo.Scripts.Workout
         /// <param name="questionLeo"></param>
         private void FillAnswersForQuestion(QuestionLeo questionLeo)
         {
-            List<WordLeo> words = GameManager.WordManeger.GetWordsWithLicense();
+            List<WordLeo> words = GameManager.WordManager.GetWordsWithLicense();
             Stack<WordLeo> answers = null;
 
             if (words.Count <= ANSWER_COUNT * 2)
             {
                 words = AddWordsForAnswers(words);
-                //words = GameManager.WordManeger.GetAllWords();
+                //words = GameManager.WordManager.GetAllWords();
             }
 
             answers = PrepareAnswers(words, ANSWER_COUNT);
@@ -360,7 +360,7 @@ namespace LinguaLeo.Scripts.Workout
         private void LoadTasks()
         {
             questions = new List<QuestionLeo>(QUEST_COUNT);
-            untrainedWords = GameManager.WordManeger.GetWordsWithLicense();
+            untrainedWords = GameManager.WordManager.GetWordsWithLicense();
 
             for (int i = 0; i < QUEST_COUNT; i++)
             {

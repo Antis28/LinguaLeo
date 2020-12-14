@@ -43,7 +43,7 @@ namespace LinguaLeo.Scripts.Managers.Parts
         // Use this for initialization
         private IEnumerator ChekLoop()
         {
-            List<WordLeo> allWords = GameManager.WordManeger.GetAllWords();
+            List<WordLeo> allWords = GameManager.WordManager.GetAllWords();
 
             while (true)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region
+
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -9,19 +10,21 @@ using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using UnityEngine;
 
+#endregion
+
 namespace LinguaLeo.Scripts.Managers
 {
-    public class WordManeger : MonoBehaviour, IObserver
+    public class WordManager : MonoBehaviour, IObserver
     {
-        #region Static Fields and Constants
+        #region Private variables
 
-        private static WordCollection vocabulary = null; // полный словарь
-        private static List<string> wordGroups = null;   // названия наборов слов
+        private WordCollection vocabulary = null; // полный словарь
+        private List<string> wordGroups = null;   // названия наборов слов
 
-        private static List<WordLeo> currentWordGroups = null;
+        private List<WordLeo> currentWordGroups = null;
 
-        private static string currentGroupName;
-        private static List<WordGroup> groupNames;
+        private string currentGroupName;
+        private List<WordGroup> groupNames;
 
         #endregion
 
@@ -60,7 +63,7 @@ namespace LinguaLeo.Scripts.Managers
 
         #region Public Methods
 
-        public int CountUntrainWordInGroup()
+        public int CountUntrainedWordInGroup()
         {
             var remainWord = vocabulary.SelectNotDoneWords();
             return remainWord.Count;
@@ -72,25 +75,12 @@ namespace LinguaLeo.Scripts.Managers
         }
 
         /// <summary>
-        /// Создать xml наборов слов
+        /// получить описание наборов слов
         /// </summary>
-        public void CreateWordGroups()
+        /// <returns>описание наборов слов</returns>
+        public List<WordGroup> GetGroupNames()
         {
-            throw new NotImplementedException();
-            //List<string> groupNames = GetGroupNames();
-            //List<WordGroup> groups = new List<WordGroup>();
-            //foreach (string name in groupNames)
-            //{
-            //    LoadGroup(name);
-            //    int count = GameManager.WordManeger.LoadVocabulary().wordsFromGroup.Count;
-
-            //    groups.Add(new WordGroup() {
-            //        name = name,
-            //        wordCount = count,
-            //        pictureName = "504"
-            //    });
-            //}
-            //SerializeGroup(groups);
+            return groupNames ?? (groupNames = GameManager.ResourcesLoader.LoadWordGroup());
         }
 
         /// <summary>
@@ -109,15 +99,6 @@ namespace LinguaLeo.Scripts.Managers
         }
 
         /// <summary>
-        /// получить описание наборов слов
-        /// </summary>
-        /// <returns>описание наборов слов</returns>
-        public List<WordGroup> GetGroupNames()
-        {
-            return groupNames ?? (groupNames = GameManager.ResourcesLoader.LoadWordGroup());
-        }
-
-        /// <summary>
         /// получить нетринерованые слова из набора
         /// </summary>
         /// <returns>нетринерованые слова из набора</returns>
@@ -129,14 +110,14 @@ namespace LinguaLeo.Scripts.Managers
 
         public List<WordLeo> GetWordsWithLicense()
         {
-            List<WordLeo> allWords = GameManager.WordManeger.GetAllWords();
-            List<WordLeo> wordsByLicense = new List<WordLeo>();
+            var allWords = GameManager.WordManager.GetAllWords();
+            var wordsByLicense = new List<WordLeo>();
 
             foreach (var word in allWords)
             {
                 word.LicenseExpirationCheck();
-                bool AllWorkoutDone = word.AllWorkoutDone();
-                bool license = word.LicenseExists();
+                var AllWorkoutDone = word.AllWorkoutDone();
+                var license = word.LicenseExists();
 
                 //if (!word.CanbeRepeated())
                 if (AllWorkoutDone || !license)
@@ -159,7 +140,7 @@ namespace LinguaLeo.Scripts.Managers
 
         public void ResetLicense()
         {
-            foreach (WordLeo item in vocabulary.allWords) { item.ResetLicense(); }
+            foreach (var item in vocabulary.allWords) { item.ResetLicense(); }
         }
 
         #endregion
@@ -173,8 +154,8 @@ namespace LinguaLeo.Scripts.Managers
             using (TextReader stream = new StreamReader(FileName, Encoding.UTF8)
             ) // (path, FileMode.Open, FileAccess.Read))
             {
-                XmlSerializer Serializer = new XmlSerializer(typeof(List<WordGroup>));
-                List<WordGroup> result = Serializer.Deserialize(stream) as List<WordGroup>;
+                var Serializer = new XmlSerializer(typeof(List<WordGroup>));
+                var result = Serializer.Deserialize(stream) as List<WordGroup>;
                 stream.Close();
                 if (result == null)
                     Debug.LogError("Do not Deserialize Group");
@@ -191,10 +172,10 @@ namespace LinguaLeo.Scripts.Managers
                 GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
         }
 
-        private static void LoadStartWordGroup()
+        private void LoadStartWordGroup()
         {
             Settings.LoadFromXml();
-            string lastWordGroup = Settings.Instance.lastWordGroup;
+            var lastWordGroup = Settings.Instance.lastWordGroup;
             if (lastWordGroup != null)
             {
                 vocabulary.LoadGroup(lastWordGroup);
@@ -236,7 +217,7 @@ namespace LinguaLeo.Scripts.Managers
             using (TextWriter stream = new StreamWriter(fileName, false, Encoding.UTF8)
             ) // (path, FileMode.Open, FileAccess.Read))
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
+                var xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
                 xmlSerializer.Serialize(stream, list);
                 stream.Close();
                 Debug.Log("SerializeGroup");

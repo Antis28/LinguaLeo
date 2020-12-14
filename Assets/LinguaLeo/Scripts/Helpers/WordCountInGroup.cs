@@ -54,7 +54,7 @@ namespace LinguaLeo.Scripts.Helpers
         {
             if (countText == null)
                 return;
-            countText.text = GameManager.WordManeger.GetUntrainedGroupWords(workoutName).Count.ToString();
+            countText.text = GameManager.WordManager.GetUntrainedGroupWords(workoutName).Count.ToString();
         }
 
         // Update is called once per frame

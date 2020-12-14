@@ -83,7 +83,7 @@ namespace LinguaLeo.Scripts.Workout
         private List<QuestionLeo> LoadTasks()
         {
             List<QuestionLeo> questionsTemp = new List<QuestionLeo>(maxQuestCount);
-            untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords(workoutName);
+            untrainedWords = GameManager.WordManager.GetUntrainedGroupWords(workoutName);
             if (untrainedWords.Count == 0)
                 return questionsTemp;
 

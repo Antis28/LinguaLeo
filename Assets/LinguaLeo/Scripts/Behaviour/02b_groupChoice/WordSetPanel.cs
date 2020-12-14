@@ -78,7 +78,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
         public void PanelClick()
         {
             Debug.Log("LoadGroup = " + groupName);
-            GameManager.WordManeger.LoadStartWordGroup(groupName);
+            GameManager.WordManager.LoadStartWordGroup(groupName);
         }
 
         public override string ToString()

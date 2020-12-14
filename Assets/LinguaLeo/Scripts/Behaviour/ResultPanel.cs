@@ -54,7 +54,7 @@ namespace LinguaLeo.Scripts.Behaviour
         private void CheckContinueWorkout(Button button)
         {
             float score = GameManager.ScoreKeeper.ScoreValue;
-            int wordInGroupRemain = GameManager.WordManeger.CountUntrainWordInGroup();
+            int wordInGroupRemain = GameManager.WordManager.CountUntrainedWordInGroup();
             if (wordInGroupRemain > 0)
             {
                 button.interactable = true;
@@ -91,7 +91,7 @@ namespace LinguaLeo.Scripts.Behaviour
         /// <param name="score"></param>
         private String GetWordsCountLeft()
         {
-            int wordsLeft = GameManager.WordManeger.CountUntrainWordInGroup();
+            int wordsLeft = GameManager.WordManager.CountUntrainedWordInGroup();
             return string.Format("{0} на изучении", wordsLeft);
         }
 
