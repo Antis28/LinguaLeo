@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using LinguaLeo._Adapters;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
+using LinguaLeo.Scripts.Managers.Parts;
 using UnityEngine;
 
 #endregion
@@ -19,12 +20,7 @@ namespace LinguaLeo.Scripts.Managers
         #region Private variables
 
         private WordCollection vocabulary = null; // полный словарь
-        private List<string> wordGroups = null;   // названия наборов слов
-
-        private List<WordLeo> currentWordGroups = null;
-
-        private string currentGroupName;
-        private List<WordGroup> groupNames;
+        private GroupWords groupWords = null;
 
         #endregion
 
@@ -38,7 +34,7 @@ namespace LinguaLeo.Scripts.Managers
                     SaveVocabulary();
                     break;
                 case GameEvents.QuitGame:
-                    Settings.Instance.lastWordGroup = currentGroupName;
+                    Settings.Instance.lastWordGroup = groupWords.CurrentGroupName;
                     print("save settings");
                     Settings.SaveToXml();
                     break;
@@ -65,52 +61,27 @@ namespace LinguaLeo.Scripts.Managers
 
         public int CountUntrainedWordInGroup()
         {
-            var remainWord = vocabulary.SelectNotDoneWords();
-            return remainWord.Count;
+            return groupWords.CountUntrainedWordInGroup();
         }
 
         public int CountWordInGroup()
         {
-            return currentWordGroups.Count;
+            return groupWords.CountWordInGroup();
         }
 
-        /// <summary>
-        /// получить описание наборов слов
-        /// </summary>
-        /// <returns>описание наборов слов</returns>
         public List<WordGroup> GetGroupNames()
         {
-            return groupNames ?? (groupNames = GameManager.ResourcesLoader.LoadWordGroup());
+            return groupWords.GetGroupNames();
         }
-
-        /// <summary>
-        /// получить все слова из набора
-        /// </summary>
-        /// <returns></returns>
-        public List<WordLeo> GetAllGroupWords()
-        {
-            return vocabulary.wordsFromGroup;
-        }
-
 
         public List<WordLeo> GetAllWords()
         {
             return vocabulary.allWords;
         }
 
-        /// <summary>
-        /// получить нетринерованые слова из набора
-        /// </summary>
-        /// <returns>нетринерованые слова из набора</returns>
-        public List<WordLeo> GetUntrainedGroupWords(WorkoutNames workoutName)
-        {
-            currentWordGroups = vocabulary.GetUntrainedGroupWords(workoutName);
-            return currentWordGroups;
-        }
-
         public List<WordLeo> GetWordsWithLicense()
         {
-            var allWords = GameManager.WordManager.GetAllWords();
+            var allWords = GetAllWords();
             var wordsByLicense = new List<WordLeo>();
 
             foreach (var word in allWords)
@@ -128,19 +99,25 @@ namespace LinguaLeo.Scripts.Managers
             return wordsByLicense;
         }
 
-        /// <summary>
-        /// Загружает набор слов из словаря
-        /// </summary>
-        /// <param name="groupName"></param>
-        public void LoadStartWordGroup(string groupName)
+        public List<WordLeo> GetAllGroupWords()
         {
-            currentGroupName = groupName;
-            vocabulary.LoadGroup(groupName);
+            return groupWords.GetAllGroupWords();
         }
+
+        public List<WordLeo> GetUntrainedGroupWords(WorkoutNames workoutName)
+        {
+            return groupWords.GetUntrainedGroupWords(workoutName);
+        }
+
 
         public void ResetLicense()
         {
             foreach (var item in vocabulary.allWords) { item.ResetLicense(); }
+        }
+
+        public void LoadStartWordGroup(string groupName)
+        {
+            groupWords.LoadStartWordGroup(groupName);
         }
 
         #endregion
@@ -167,37 +144,17 @@ namespace LinguaLeo.Scripts.Managers
 
         private IEnumerator LoadedVocalubary()
         {
-            yield return null;
-            if (vocabulary != null)
-                GameManager.Notifications.PostNotification(this, GameEvents.LoadedVocabulary);
+            while (vocabulary == null) { yield return null; }
+
+            GameManager.Notifications.PostNotification(this, GameEvents.LoadedVocabulary);
         }
 
-        private void LoadStartWordGroup()
-        {
-            Settings.LoadFromXml();
-            var lastWordGroup = Settings.Instance.lastWordGroup;
-            if (lastWordGroup != null)
-            {
-                vocabulary.LoadGroup(lastWordGroup);
-                print("LoadGroup = " + lastWordGroup);
-            } else
-            {
-                vocabulary.LoadGroup(wordGroups[23]);
-                print(wordGroups[23]);
-            }
-        }
 
         private void LoadVocabulary()
         {
             if (vocabulary == null) { vocabulary = GameManager.ResourcesLoader.LoadVocabulary(); }
 
-            wordGroups = vocabulary.FilterGroup();
-
-            // Здесь происходит загрузка стартового набора слов
-            //vocabulary.LoadGroup(wordGroups[66]);
-            //vocabulary.LoadGroup(wordGroups[23]);
-            LoadStartWordGroup();
-
+            groupWords = new GroupWords(vocabulary);
             SceneManagerAdapt.AddSceneLoaded(SceneManager_sceneLoaded);
             StartCoroutine(LoadedVocalubary());
         }
@@ -210,18 +167,6 @@ namespace LinguaLeo.Scripts.Managers
         private void SceneManager_sceneLoaded()
         {
             StartCoroutine(LoadedVocalubary());
-        }
-
-        private void SerializeGroup(List<WordGroup> list, string fileName = "WordGroup.xml")
-        {
-            using (TextWriter stream = new StreamWriter(fileName, false, Encoding.UTF8)
-            ) // (path, FileMode.Open, FileAccess.Read))
-            {
-                var xmlSerializer = new XmlSerializer(typeof(List<WordGroup>));
-                xmlSerializer.Serialize(stream, list);
-                stream.Close();
-                Debug.Log("SerializeGroup");
-            }
         }
 
         #endregion
