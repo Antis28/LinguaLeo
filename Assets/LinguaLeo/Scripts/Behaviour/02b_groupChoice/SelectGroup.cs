@@ -54,16 +54,17 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
         /// </summary>
         /// <param name="parametr">Параметры</param>
         /// <param name="notificationName">Тип событя</param>
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        void IObserver.OnNotify(object parametr, GameEvents notificationName)
         {
             switch (notificationName)
             {
-                case GAME_EVENTS.LoadedVocabulary:
+                case GameEvents.LoadedVocabulary:
                     Debug.Log("Start Size");
                     StartCoroutine(CreatePanels());
                     break;
             }
         }
+
 
         #endregion
 
@@ -74,7 +75,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
         /// </summary>
         private void Start()
         {
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+            GameManager.Notifications.AddListener(this, GameEvents.LoadedVocabulary);
         }
 
         #endregion
@@ -259,9 +260,9 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
         /// </summary>
         private void SetTileSize()
         {
-            var ratio_16x9 = "1.8";
-            var ratio_16x10 = "1.6";
-            var ratio_5x4 = "1.3";
+            var ratio16X9 = "1.8";
+            var ratio16X10 = "1.6";
+            var ratio5X4 = "1.3";
 
             var tileSize = content.GetComponent<GridLayoutGroup>().cellSize;
             var sizeDelta = GetComponent<RectTransform>().sizeDelta;
@@ -269,18 +270,18 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
             float pixelHeight = Camera.main.pixelHeight;
             var ratioIndex = pixelWidth / pixelHeight;
 
-            if (ratio_16x9 == ratioIndex.ToString("0.0"))
+            if (ratio16X9 == ratioIndex.ToString("0.0"))
             {
                 sizeDelta.x = 1527;
                 tileSize.x = 500;
 
                 Debug.Log("ratio_16x9");
-            } else if (ratio_16x10 == ratioIndex.ToString("0.0"))
+            } else if (ratio16X10 == ratioIndex.ToString("0.0"))
             {
                 sizeDelta.x = 1227;
                 tileSize.x = 400;
                 Debug.Log("ratio_16x10");
-            } else if (ratio_5x4 == ratioIndex.ToString("0.0"))
+            } else if (ratio5X4 == ratioIndex.ToString("0.0"))
             {
                 sizeDelta.x = 927;
                 tileSize.x = 300;
@@ -307,5 +308,6 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
         }
 
         #endregion
+      
     }
 }

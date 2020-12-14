@@ -22,11 +22,11 @@ namespace LinguaLeo.Scripts.Helpers
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        void IObserver.OnNotify(object parametr, GameEvents notificationName)
         {
             switch (notificationName)
             {
-                case GAME_EVENTS.LoadedVocabulary:
+                case GameEvents.LoadedVocabulary:
                     ShowWordCount();
                     break;
             }
@@ -39,11 +39,11 @@ namespace LinguaLeo.Scripts.Helpers
         // Use this for initialization
         private void Start()
         {
-            Transform CountTransform = transform.Find("CountText");
-            if (CountTransform == null)
+            Transform countTransform = transform.Find("CountText");
+            if (countTransform == null)
                 return;
-            countText = CountTransform.GetComponent<Text>();
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+            countText = countTransform.GetComponent<Text>();
+            GameManager.Notifications.AddListener(this, GameEvents.LoadedVocabulary);
         }
 
         #endregion

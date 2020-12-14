@@ -14,17 +14,17 @@ namespace LinguaLeo.Scripts.Helpers
         #region Public variables
 
         [XmlElement("translate")]
-        public bool word_translate;
+        public bool wordTranslate;
 
         [XmlElement("reverse")]
-        public bool translate_word;
+        public bool translateWord;
 
         //savannah,
         [XmlElement("audio")]
-        public bool audio_word;
+        public bool audioWord;
 
         [XmlElement("puzzle")]
-        public bool word_puzzle;
+        public bool wordPuzzle;
 
         [XmlElement("savanna")]
         public bool savanna;
@@ -44,10 +44,10 @@ namespace LinguaLeo.Scripts.Helpers
         /// <returns></returns>
         public bool AllWorkoutDone()
         {
-            return word_translate &&
-                   translate_word &&
-                   audio_word &&
-                   word_puzzle;
+            return wordTranslate &&
+                   translateWord &&
+                   audioWord &&
+                   wordPuzzle;
         }
 
         public bool CanTraining(WorkoutNames workoutName)
@@ -55,20 +55,20 @@ namespace LinguaLeo.Scripts.Helpers
             switch (workoutName)
             {
                 case WorkoutNames.WordTranslate:
-                    return !word_translate;
+                    return !wordTranslate;
                 case WorkoutNames.TranslateWord:
-                    return !translate_word;
+                    return !translateWord;
                 case WorkoutNames.Audio:
-                    return !audio_word;
+                    return !audioWord;
                 case WorkoutNames.Puzzle:
-                    return !word_puzzle;
+                    return !wordPuzzle;
 
-                case WorkoutNames.reiteration:
-                    return !word_translate;
+                case WorkoutNames.Reiteration:
+                    return !wordTranslate;
                 case WorkoutNames.Savanna:
                     return !savanna;
 
-                case WorkoutNames.brainStorm:
+                case WorkoutNames.BrainStorm:
                     return !AllWorkoutDone();
                 default:
                     Debug.LogError("Тренировка не найдена");
@@ -78,10 +78,10 @@ namespace LinguaLeo.Scripts.Helpers
 
         public void ResetAllWorkouts()
         {
-            word_translate = false;
-            translate_word = false;
-            audio_word = false;
-            word_puzzle = false;
+            wordTranslate = false;
+            translateWord = false;
+            audioWord = false;
+            wordPuzzle = false;
         }
 
         #endregion

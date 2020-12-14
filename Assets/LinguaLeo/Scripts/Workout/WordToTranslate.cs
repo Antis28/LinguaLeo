@@ -39,7 +39,7 @@ namespace LinguaLeo.Scripts.Workout
 
         private Text transcriptText = null; // Поле для транскрипции
 
-        private GameObject RepeatWordButton = null;
+        private GameObject repeatWordButton = null;
 
         private GameObject contextPanel; //Панель для контекста
 
@@ -47,11 +47,11 @@ namespace LinguaLeo.Scripts.Workout
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        void IObserver.OnNotify(object parametr, GameEvents notificationName)
         {
             switch (notificationName)
             {
-                case GAME_EVENTS.CoreBuild:
+                case GameEvents.CoreBuild:
                     core = parametr as Workout;
                     core.buttonsHandler = FindObjectOfType<ButtonsHandler>();
                     core.DrawTask += Core_DrawTask;
@@ -59,7 +59,7 @@ namespace LinguaLeo.Scripts.Workout
                     InitWordCountBar();
                     //FindObjectOfType<DebugUI>().FillPanel(questions);
                     break;
-                case GAME_EVENTS.ShowResult:
+                case GameEvents.ShowResult:
                     if (isReverse && sayToggle.isOn)
                         GameManager.AudioPlayer.SayWord();
                     ShowImage();
@@ -79,23 +79,23 @@ namespace LinguaLeo.Scripts.Workout
         // Use this for initialization
         private void Start()
         {
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
+            GameManager.Notifications.AddListener(this, GameEvents.ShowResult);
+            GameManager.Notifications.AddListener(this, GameEvents.CoreBuild);
 
             questionText = GameObject.Find("QuestionText").GetComponent<Text>();
             transcriptText = GameObject.Find("TranscriptText").GetComponent<Text>();
             wordImage = GameObject.Find("WordImage").GetComponent<Image>();
 
             contextPanel = contextText.transform.parent.gameObject;
-            RepeatWordButton = GameObject.Find("RepeatWordButton");
+            repeatWordButton = GameObject.Find("RepeatWordButton");
 
-            if (RepeatWordButton)
+            if (repeatWordButton)
             {
-                RepeatWordButton.GetComponent<Button>().onClick.AddListener(
+                repeatWordButton.GetComponent<Button>().onClick.AddListener(
                     () => GameManager.AudioPlayer.SayWord());
             }
 
-            GameManager.Notifications.PostNotification(this, GAME_EVENTS.WorkoutLoaded);
+            GameManager.Notifications.PostNotification(this, GameEvents.WorkoutLoaded);
         }
 
         #endregion
@@ -170,11 +170,11 @@ namespace LinguaLeo.Scripts.Workout
 
             WordProgressUpdate();
             WorkoutProgeressUpdate();
-            FindObjectOfType<DebugUI>().FillPanel(core.tasks);
+            FindObjectOfType<DebugUi>().FillPanel(core.tasks);
 
             // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
             EventSystem.current.SetSelectedGameObject(gameObject);
-            GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
+            GameManager.Notifications.PostNotification(this, GameEvents.BuildTask);
         }
 
         private void HideContext()
@@ -184,7 +184,7 @@ namespace LinguaLeo.Scripts.Workout
 
         private void HideRepeatWordButton()
         {
-            RepeatWordButton.SetActive(false);
+            repeatWordButton.SetActive(false);
         }
 
         private void HideTranscript()
@@ -249,7 +249,7 @@ namespace LinguaLeo.Scripts.Workout
 
         private void ShowRepeatWordButton()
         {
-            RepeatWordButton.SetActive(true);
+            repeatWordButton.SetActive(true);
         }
 
         private void ShowTranscript()

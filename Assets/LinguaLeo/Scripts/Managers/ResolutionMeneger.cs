@@ -7,9 +7,9 @@ namespace LinguaLeo.Scripts.Managers
     {
         #region Static Fields and Constants
 
-        private const string SCREEN_WIDTH = "screen_width";
-        private const string SCREEN_HEIGHT = "screen_height";
-        private const string FULLSCREEN = "screen_isFull";
+        private const string ScreenWidth = "screen_width";
+        private const string ScreenHeight = "screen_height";
+        private const string Fullscreen = "screen_isFull";
 
         #endregion
 
@@ -37,9 +37,9 @@ namespace LinguaLeo.Scripts.Managers
 
         public void SetResolution(int width, int height, bool fullscreen = false)
         {
-            PlayerPrefs.SetInt(SCREEN_WIDTH, width);
-            PlayerPrefs.SetInt(SCREEN_HEIGHT, height);
-            PlayerPrefs.SetString(FULLSCREEN, fullscreen.ToString());
+            PlayerPrefs.SetInt(ScreenWidth, width);
+            PlayerPrefs.SetInt(ScreenHeight, height);
+            PlayerPrefs.SetString(Fullscreen, fullscreen.ToString());
 
             Screen.SetResolution(width, height, fullscreen);
             print("SetResolution");
@@ -52,9 +52,9 @@ namespace LinguaLeo.Scripts.Managers
         // Use this for initialization
         private void Awake()
         {
-            int width = PlayerPrefs.GetInt(SCREEN_WIDTH, 640);
-            int height = PlayerPrefs.GetInt(SCREEN_HEIGHT, 480);
-            bool fullScreen = bool.Parse(PlayerPrefs.GetString(FULLSCREEN, "false"));
+            int width = PlayerPrefs.GetInt(ScreenWidth, 640);
+            int height = PlayerPrefs.GetInt(ScreenHeight, 480);
+            bool fullScreen = bool.Parse(PlayerPrefs.GetString(Fullscreen, "false"));
 
             SetResolution(width, height, fullScreen);
             GetComponent<Dropdown>().onValueChanged.AddListener(OnValueChanged);

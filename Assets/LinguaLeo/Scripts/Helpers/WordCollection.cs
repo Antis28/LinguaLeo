@@ -63,18 +63,18 @@ namespace LinguaLeo.Scripts.Helpers
             return word;
         }
 
-        public List<WordLeo> GetRandomWords(int Count)
+        public List<WordLeo> GetRandomWords(int count)
         {
-            List<WordLeo> words = new List<WordLeo>(Count);
-            for (int i = 0; i < Count; i++) { words.Add(GetRandomWord()); }
+            List<WordLeo> words = new List<WordLeo>(count);
+            for (int i = 0; i < count; i++) { words.Add(GetRandomWord()); }
 
             return words;
         }
 
-        public List<WordLeo> GetRandomWordsFromGroup(int Count)
+        public List<WordLeo> GetRandomWordsFromGroup(int count)
         {
-            List<WordLeo> words = new List<WordLeo>(Count);
-            for (int i = 0; i < Count; i++) { words.Add(GetRandomWordFromGroup()); }
+            List<WordLeo> words = new List<WordLeo>(count);
+            for (int i = 0; i < count; i++) { words.Add(GetRandomWordFromGroup()); }
 
             return words;
         }

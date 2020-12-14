@@ -72,27 +72,27 @@ namespace LinguaLeo.Scripts.Managers
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        void IObserver.OnNotify(object parametr, GameEvents notificationName)
         {
             switch (notificationName)
             {
-                case GAME_EVENTS.ButtonHandlerLoaded:
+                case GameEvents.ButtonHandlerLoaded:
                     StartBehaviour();
                     break;
-                case GAME_EVENTS.CorrectAnswer:
+                case GameEvents.CorrectAnswer:
                     AddWorkoutProgress(currentWord, subWorkout);
                     if (currentWord.AllWorkoutDone())
                         currentWord.AddLicenseLevel();
                     break;
-                case GAME_EVENTS.WordsEnded:
+                case GameEvents.WordsEnded:
                     WordsEndedBehaviour();
                     break;
-                case GAME_EVENTS.BuildTask:
+                case GameEvents.BuildTask:
                     IWorkout workout = parametr as IWorkout;
                     subWorkout = workout.WorkoutName;
                     currentWord = workout.GetCurrentWord();
                     break;
-                case GAME_EVENTS.ContinueWorkout:
+                case GameEvents.ContinueWorkout:
                     RestartWorkOut();
                     break;
             }
@@ -121,7 +121,7 @@ namespace LinguaLeo.Scripts.Managers
 
         public float GetCorrectAnswers()
         {
-            if (currentWorkout == WorkoutNames.brainStorm)
+            if (currentWorkout == WorkoutNames.BrainStorm)
             {
                 return GameManager.ScoreKeeper.ScoreValue * factorScoreBrainStorm;
             }
@@ -154,11 +154,11 @@ namespace LinguaLeo.Scripts.Managers
             questMaxCount = simpleQuestCount;
             GameManager.ScoreKeeper.SetScoreFactor(factorScoreSimpleWorkOut);
 
-            if (name == WorkoutNames.brainStorm)
+            if (name == WorkoutNames.BrainStorm)
             {
                 GameManager.ScoreKeeper.SetScoreFactor(factorScoreBrainStorm);
                 questMaxCount = brainstormQuestCount;
-                core = PrepareWorkout(WorkoutNames.brainStorm);
+                core = PrepareWorkout(WorkoutNames.BrainStorm);
                 brainStorm = new BrainStorm(core, sceneLoader);
                 return;
             }
@@ -177,7 +177,7 @@ namespace LinguaLeo.Scripts.Managers
             switch (workout)
             {
                 case WorkoutNames.WordTranslate:
-                case WorkoutNames.reiteration:
+                case WorkoutNames.Reiteration:
                     word.LearnWordTranslate();
                     break;
                 case WorkoutNames.TranslateWord:
@@ -195,11 +195,11 @@ namespace LinguaLeo.Scripts.Managers
         private void CoreInitialization()
         {
             if (core != null)
-                GameManager.Notifications.PostNotification(core, GAME_EVENTS.CoreBuild);
+                GameManager.Notifications.PostNotification(core, GameEvents.CoreBuild);
             else
             {
                 Debug.LogError("core == null");
-                GameManager.Notifications.PostNotification(core, GAME_EVENTS.NotUntrainedWords);
+                GameManager.Notifications.PostNotification(core, GameEvents.NotUntrainedWords);
             }
         }
 
@@ -220,10 +220,10 @@ namespace LinguaLeo.Scripts.Managers
                 case WorkoutNames.Puzzle:
                     sceneName = "wordPuzzle";
                     break;
-                case WorkoutNames.reiteration:
+                case WorkoutNames.Reiteration:
                     sceneName = string.Empty;
                     break;
-                case WorkoutNames.brainStorm:
+                case WorkoutNames.BrainStorm:
                     sceneName = string.Empty;
                     break;
                 case WorkoutNames.Savanna:
@@ -271,7 +271,7 @@ namespace LinguaLeo.Scripts.Managers
                     core = PrepareWorkout(currentWorkout);
                     CoreInitialization();
                     break;
-                case WorkoutNames.brainStorm:
+                case WorkoutNames.BrainStorm:
                     SceneManager.LoadSceneAsync("brainInfo", LoadSceneMode.Additive);
                     brainStorm.CoreInitialization();
                     break;
@@ -279,7 +279,7 @@ namespace LinguaLeo.Scripts.Managers
                     core = PrepareWorkout(currentWorkout);
                     CoreInitialization();
                     break;
-                case WorkoutNames.reiteration:
+                case WorkoutNames.Reiteration:
                     break;
             }
         }
@@ -288,11 +288,11 @@ namespace LinguaLeo.Scripts.Managers
         {
             var notification = GameManager.Notifications;
 
-            notification.AddListener(this, GAME_EVENTS.ButtonHandlerLoaded);
-            notification.AddListener(this, GAME_EVENTS.CorrectAnswer);
-            notification.AddListener(this, GAME_EVENTS.WordsEnded);
-            notification.AddListener(this, GAME_EVENTS.BuildTask);
-            notification.AddListener(this, GAME_EVENTS.ContinueWorkout);
+            notification.AddListener(this, GameEvents.ButtonHandlerLoaded);
+            notification.AddListener(this, GameEvents.CorrectAnswer);
+            notification.AddListener(this, GameEvents.WordsEnded);
+            notification.AddListener(this, GameEvents.BuildTask);
+            notification.AddListener(this, GameEvents.ContinueWorkout);
         }
 
         private void WordsEndedBehaviour()
@@ -304,10 +304,10 @@ namespace LinguaLeo.Scripts.Managers
                 case WorkoutNames.Savanna:
                 case WorkoutNames.Audio:
                 case WorkoutNames.Puzzle:
-                case WorkoutNames.reiteration:
+                case WorkoutNames.Reiteration:
                     GameManager.SceneLoader.LoadResultWorkOut();
                     break;
-                case WorkoutNames.brainStorm:
+                case WorkoutNames.BrainStorm:
 
                     brainStorm.Run();
                     break;

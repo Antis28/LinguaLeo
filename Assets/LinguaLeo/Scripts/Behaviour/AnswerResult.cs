@@ -5,6 +5,7 @@ using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Managers;
 using LinguaLeo.Scripts.Workout;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 #endregion
@@ -15,11 +16,13 @@ namespace LinguaLeo.Scripts.Behaviour
     {
         #region SerializeFields
 
+        [FormerlySerializedAs("ResultText")]
         [SerializeField]
-        private Text ResultText = null;
+        private Text resultText = null;
 
+        [FormerlySerializedAs("SampleText")]
         [SerializeField]
-        private Text SampleText = null;
+        private Text sampleText = null;
 
         #endregion
 
@@ -37,27 +40,27 @@ namespace LinguaLeo.Scripts.Behaviour
 
         #region Events
 
-        public void OnNotify(object parametr, GAME_EVENTS notificationName)
+        public void OnNotify(object parametr, GameEvents notificationName)
         {
             ButtonComponent button = null;
             if (parametr != null)
                 button = ((Component) parametr).GetComponent<ButtonComponent>();
-            if (ResultText == null)
+            if (resultText == null)
                 return;
             switch (notificationName)
             {
-                case GAME_EVENTS.CorrectAnswer:
-                    ResultText.text = "Верный ответ.";
-                    ResultText.color = correctColor;
+                case GameEvents.CorrectAnswer:
+                    resultText.text = "Верный ответ.";
+                    resultText.color = correctColor;
                     break;
-                case GAME_EVENTS.NonCorrectAnswer:
-                    ResultText.text = "Неверный ответ.";
-                    ResultText.color = wrongColor;
+                case GameEvents.NonCorrectAnswer:
+                    resultText.text = "Неверный ответ.";
+                    resultText.color = wrongColor;
                     FillSamleText(button);
                     break;
-                case GAME_EVENTS.BuildTask:
-                    ResultText.text = string.Empty;
-                    SampleText.text = string.Empty;
+                case GameEvents.BuildTask:
+                    resultText.text = string.Empty;
+                    sampleText.text = string.Empty;
                     break;
             }
         }
@@ -100,18 +103,18 @@ namespace LinguaLeo.Scripts.Behaviour
             if (word == null)
                 return;
             if (button.text.text == word.translations)
-                SampleText.text = word.translations + " → " + word.wordValue;
+                sampleText.text = word.translations + " → " + word.wordValue;
             else
-                SampleText.text = word.wordValue + " → " + word.translations;
+                sampleText.text = word.wordValue + " → " + word.translations;
         }
 
         private void SubscribeToEvents()
         {
             var notification = GameManager.Notifications;
 
-            notification.AddListener(this, GAME_EVENTS.CorrectAnswer);
-            notification.AddListener(this, GAME_EVENTS.NonCorrectAnswer);
-            notification.AddListener(this, GAME_EVENTS.BuildTask);
+            notification.AddListener(this, GameEvents.CorrectAnswer);
+            notification.AddListener(this, GameEvents.NonCorrectAnswer);
+            notification.AddListener(this, GameEvents.BuildTask);
         }
 
         #endregion

@@ -49,11 +49,11 @@ namespace LinguaLeo.Scripts.Workout
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        void IObserver.OnNotify(object parametr, GameEvents notificationName)
         {
             switch (notificationName)
             {
-                case GAME_EVENTS.CoreBuild:
+                case GameEvents.CoreBuild:
                     core = parametr as Workout;
                     core.buttonsHandler = FindObjectOfType<ButtonsHandler>();
                     core.DrawTask += Core_DrawTask;
@@ -61,7 +61,7 @@ namespace LinguaLeo.Scripts.Workout
                     InitWordCountBar();
                     //FindObjectOfType<DebugUI>().FillPanel(questions);
                     break;
-                case GAME_EVENTS.ShowResult:
+                case GameEvents.ShowResult:
                     SetupEnterButton(core.RunNextQuestion);
                     CheckAnswer();
                     ShowQuestion();
@@ -94,8 +94,8 @@ namespace LinguaLeo.Scripts.Workout
 
             answerInputField = GameObject.Find("answerInputField").GetComponent<InputField>();
 
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
+            GameManager.Notifications.AddListener(this, GameEvents.CoreBuild);
+            GameManager.Notifications.AddListener(this, GameEvents.ShowResult);
 
             if (repeatWordButton)
                 repeatWordButton.onClick.AddListener(
@@ -106,7 +106,7 @@ namespace LinguaLeo.Scripts.Workout
                         answerInputField.ActivateInputField();
                     });
 
-            GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
+            GameManager.Notifications.PostNotification(null, GameEvents.ButtonHandlerLoaded);
         }
 
         #endregion
@@ -115,7 +115,7 @@ namespace LinguaLeo.Scripts.Workout
 
         public void CheckAnswerClick()
         {
-            GameManager.Notifications.PostNotification(null, GAME_EVENTS.ShowResult);
+            GameManager.Notifications.PostNotification(null, GameEvents.ShowResult);
         }
 
         public QuestionLeo GetCurrentQuest()
@@ -135,7 +135,7 @@ namespace LinguaLeo.Scripts.Workout
             translateText.text = core.GetCurrentWord().translations;
             if (isAnswerCorrect)
             {
-                GameManager.Notifications.PostNotification(this, GAME_EVENTS.CorrectAnswer);
+                GameManager.Notifications.PostNotification(this, GameEvents.CorrectAnswer);
                 questionText.color = correctColor;
                 mistakeText.text = string.Empty;
             } else
@@ -163,14 +163,14 @@ namespace LinguaLeo.Scripts.Workout
 
             WordProgressUpdate();
             ProgressBarUpdate();
-            FindObjectOfType<DebugUI>().FillPanel(core.tasks);
+            FindObjectOfType<DebugUi>().FillPanel(core.tasks);
 
             //передать фокус полю ввода
             answerInputField.ActivateInputField();
 
             // выбор элемента как активного
             EventSystem.current.SetSelectedGameObject(answerInputField.gameObject);
-            GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
+            GameManager.Notifications.PostNotification(this, GameEvents.BuildTask);
         }
 
         private void HideQuestion()

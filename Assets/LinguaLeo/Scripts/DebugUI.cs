@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts
 {
-    public class DebugUI : MonoBehaviour
+    public class DebugUi : MonoBehaviour
     {
         #region SerializeFields
 

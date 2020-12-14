@@ -11,8 +11,8 @@ namespace Editor.Hierarchy {
         [MenuItem("Cleanup/Cleanup Scenes with Deprecated Components")]
         private static void DoCleanup()
         {
-            var sceneGUIDs = AssetDatabase.FindAssets("t:Scene");
-            string[] scenePaths = sceneGUIDs.Select(i => AssetDatabase.GUIDToAssetPath(i)).ToArray();
+            var sceneGuiDs = AssetDatabase.FindAssets("t:Scene");
+            string[] scenePaths = sceneGuiDs.Select(i => AssetDatabase.GUIDToAssetPath(i)).ToArray();
 
             for (int i = 0; i < scenePaths.Length; i++)
             {

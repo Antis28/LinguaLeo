@@ -34,8 +34,8 @@ namespace Editor.Tests
 
         #region Private variables
 
-        private WordCollection _wordCollection;
-        private readonly int _countWordsInGroup = 49;
+        private WordCollection wordCollection;
+        private readonly int countWordsInGroup = 49;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace Editor.Tests
         [Category("Fast Tests")]
         public void FilterGroup_WordsLoaded_ReturnListGroupName()
         {
-            List<string> listGroupName = _wordCollection.FilterGroup();
+            List<string> listGroupName = wordCollection.FilterGroup();
             Assert.IsInstanceOf<List<string>>(listGroupName);
         }
 
@@ -53,7 +53,7 @@ namespace Editor.Tests
         [Category("Fast Tests")]
         public void GetRandomWord_ValidState_RetunWordLeo()
         {
-            WordLeo randomWord = _wordCollection.GetRandomWord();
+            WordLeo randomWord = wordCollection.GetRandomWord();
             Assert.IsInstanceOf<WordLeo>(randomWord);
         }
 
@@ -61,9 +61,9 @@ namespace Editor.Tests
         [Category("Fast Tests")]
         public void GetRandomWordFromGroup_ValidGroup_ReturnWordLeo()
         {
-            _wordCollection.LoadGroup(NameGroup);
+            wordCollection.LoadGroup(NameGroup);
 
-            WordLeo word = _wordCollection.GetRandomWordFromGroup();
+            WordLeo word = wordCollection.GetRandomWordFromGroup();
             Assert.IsInstanceOf<WordLeo>(word);
         }
 
@@ -72,7 +72,7 @@ namespace Editor.Tests
         public void GetRandomWords_CountWordsFive_RetunListWithFiveWordLeo()
         {
             int countWords = 5;
-            List<WordLeo> words = _wordCollection.GetRandomWords(countWords);
+            List<WordLeo> words = wordCollection.GetRandomWords(countWords);
 
             Assert.IsInstanceOf<List<WordLeo>>(words);
             Assert.AreEqual(words.Count, countWords);
@@ -83,9 +83,9 @@ namespace Editor.Tests
         public void GetRandomWordsFromGroup_ValidGroup_RetunListWithFiveWordLeo()
         {
             int countWords = 5;
-            _wordCollection.LoadGroup(NameGroup);
+            wordCollection.LoadGroup(NameGroup);
 
-            List<WordLeo> words = _wordCollection.GetRandomWordsFromGroup(countWords);
+            List<WordLeo> words = wordCollection.GetRandomWordsFromGroup(countWords);
             Assert.IsInstanceOf<List<WordLeo>>(words);
         }
 
@@ -93,10 +93,10 @@ namespace Editor.Tests
         [Category("Fast Tests")]
         public void GetUntrainedGroupWords_AudioWorkout_RetunListWordLeo()
         {
-            _wordCollection.LoadGroup(NameGroup);
+            wordCollection.LoadGroup(NameGroup);
             WorkoutNames workoutName = WorkoutNames.Audio;
 
-            List<WordLeo> words = _wordCollection.GetUntrainedGroupWords(workoutName);
+            List<WordLeo> words = wordCollection.GetUntrainedGroupWords(workoutName);
             Assert.IsInstanceOf<List<WordLeo>>(words);
         }
 
@@ -104,8 +104,8 @@ namespace Editor.Tests
         [Category("Fast Tests")]
         public void GroupExist_ValidNameGroup_ReturnTrue()
         {
-            _wordCollection.LoadGroup(NameGroup);
-            bool isGroupExist = _wordCollection.GroupExist();
+            wordCollection.LoadGroup(NameGroup);
+            bool isGroupExist = wordCollection.GroupExist();
             Assert.IsTrue(isGroupExist);
         }
 
@@ -113,8 +113,8 @@ namespace Editor.Tests
         [Category("Fast Tests")]
         public void LoadGroup_ValidNameGroup_ReturnListWordLeo()
         {
-            _wordCollection.LoadGroup(NameGroup);
-            Assert.IsInstanceOf<List<WordLeo>>(_wordCollection.wordsFromGroup);
+            wordCollection.LoadGroup(NameGroup);
+            Assert.IsInstanceOf<List<WordLeo>>(wordCollection.wordsFromGroup);
         }
 
 /*
@@ -149,7 +149,7 @@ namespace Editor.Tests
         [Category("Slow Tests")]
         public void SaveToXml_ValidPath_PathExists()
         {
-            _wordCollection.SaveToXml(Path);
+            wordCollection.SaveToXml(Path);
             FileAssert.Exists(Path);
         }
 

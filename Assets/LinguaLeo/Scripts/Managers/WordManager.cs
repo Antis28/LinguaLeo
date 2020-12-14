@@ -30,14 +30,14 @@ namespace LinguaLeo.Scripts.Managers
 
         #region Events
 
-        void IObserver.OnNotify(object parameter, GAME_EVENTS notificationName)
+        void IObserver.OnNotify(object parameter, GameEvents notificationName)
         {
             switch (notificationName)
             {
-                case GAME_EVENTS.WordsEnded:
+                case GameEvents.WordsEnded:
                     SaveVocabulary();
                     break;
-                case GAME_EVENTS.QuitGame:
+                case GameEvents.QuitGame:
                     Settings.Instance.lastWordGroup = currentGroupName;
                     print("save settings");
                     Settings.SaveToXml();
@@ -51,8 +51,8 @@ namespace LinguaLeo.Scripts.Managers
 
         private void Start()
         {
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.WordsEnded);
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.QuitGame);
+            GameManager.Notifications.AddListener(this, GameEvents.WordsEnded);
+            GameManager.Notifications.AddListener(this, GameEvents.QuitGame);
 
             LoadVocabulary();
             //CreateWordGroups();
@@ -116,11 +116,11 @@ namespace LinguaLeo.Scripts.Managers
             foreach (var word in allWords)
             {
                 word.LicenseExpirationCheck();
-                var AllWorkoutDone = word.AllWorkoutDone();
+                var allWorkoutDone = word.AllWorkoutDone();
                 var license = word.LicenseExists();
 
                 //if (!word.CanbeRepeated())
-                if (AllWorkoutDone || !license)
+                if (allWorkoutDone || !license)
                     continue;
                 wordsByLicense.Add(word);
             }
@@ -147,15 +147,15 @@ namespace LinguaLeo.Scripts.Managers
 
         #region Private Methods
 
-        private List<WordGroup> DeserializeGroup(string FileName)
+        private List<WordGroup> DeserializeGroup(string fileName)
         {
             //string FileName = "WordGroup.xml";
 
-            using (TextReader stream = new StreamReader(FileName, Encoding.UTF8)
+            using (TextReader stream = new StreamReader(fileName, Encoding.UTF8)
             ) // (path, FileMode.Open, FileAccess.Read))
             {
-                var Serializer = new XmlSerializer(typeof(List<WordGroup>));
-                var result = Serializer.Deserialize(stream) as List<WordGroup>;
+                var serializer = new XmlSerializer(typeof(List<WordGroup>));
+                var result = serializer.Deserialize(stream) as List<WordGroup>;
                 stream.Close();
                 if (result == null)
                     Debug.LogError("Do not Deserialize Group");
@@ -169,7 +169,7 @@ namespace LinguaLeo.Scripts.Managers
         {
             yield return null;
             if (vocabulary != null)
-                GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
+                GameManager.Notifications.PostNotification(this, GameEvents.LoadedVocabulary);
         }
 
         private void LoadStartWordGroup()

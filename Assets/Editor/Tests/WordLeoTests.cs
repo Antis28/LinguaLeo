@@ -10,7 +10,7 @@ namespace Editor.Tests
     {
         #region Private variables
 
-        private WordLeo _word;
+        private WordLeo word;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace Editor.Tests
         [Test]
         public void GetLicense()
         {
-            var level = _word.GetLicense();
+            var level = word.GetLicense();
             Assert.IsInstanceOf<LicenseLevels>(level);
         }
 
@@ -104,51 +104,51 @@ namespace Editor.Tests
         [Test]
         public void LicenseValidityCheck()
         {
-            _word.LicenseValidityCheck();
+            word.LicenseValidityCheck();
             Assert.Fail();
         }
 
         [OneTimeSetUp]
         public void Prepare()
         {
-            _word = new WordLeo();
-            _word.progress = new WorkoutProgress();
-            _word.progress.license = LicenseLevels.Level_5;
+            word = new WordLeo();
+            word.progress = new WorkoutProgress();
+            word.progress.license = LicenseLevels.Level5;
         }
 
         [Test]
         public void ReduceLicense()
         {
-            var beforeLevel = _word.GetLicense();
-            _word.ReduceLicense();
-            var afterLevel = _word.GetLicense();
+            var beforeLevel = word.GetLicense();
+            word.ReduceLicense();
+            var afterLevel = word.GetLicense();
             Assert.AreNotEqual(beforeLevel, afterLevel);
         }
 
         [Test]
         public void ResetLicense()
         {
-            _word.ResetLicense();
+            word.ResetLicense();
             var snapTime = DateTime.Now;
 
-            Assert.AreEqual(_word.GetLicense(), LicenseLevels.Level_0);
-            Assert.AreEqual(_word.progress.lastRepeat, snapTime);
+            Assert.AreEqual(word.GetLicense(), LicenseLevels.Level0);
+            Assert.AreEqual(word.progress.lastRepeat, snapTime);
         }
 
         [Test]
         public void UnlockWorkouts()
         {
-            _word.progress.word_translate = true;
-            _word.progress.translate_word = true;
-            _word.progress.audio_word = true;
-            _word.progress.word_puzzle = true;
+            word.progress.wordTranslate = true;
+            word.progress.translateWord = true;
+            word.progress.audioWord = true;
+            word.progress.wordPuzzle = true;
 
-            _word.UnlockWorkouts();
+            word.UnlockWorkouts();
 
-            Assert.AreEqual(_word.progress.word_translate, false);
-            Assert.AreEqual(_word.progress.translate_word, false);
-            Assert.AreEqual(_word.progress.audio_word, false);
-            Assert.AreEqual(_word.progress.word_puzzle, false);
+            Assert.AreEqual(word.progress.wordTranslate, false);
+            Assert.AreEqual(word.progress.translateWord, false);
+            Assert.AreEqual(word.progress.audioWord, false);
+            Assert.AreEqual(word.progress.wordPuzzle, false);
         }
 
         #endregion

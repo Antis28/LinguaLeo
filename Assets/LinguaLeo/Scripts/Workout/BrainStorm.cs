@@ -22,11 +22,11 @@ namespace LinguaLeo.Scripts.Workout
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        void IObserver.OnNotify(object parametr, GameEvents notificationName)
         {
             switch (notificationName)
             {
-                case GAME_EVENTS.NotUntrainedWords:
+                case GameEvents.NotUntrainedWords:
                     Run();
                     break;
             }
@@ -38,10 +38,10 @@ namespace LinguaLeo.Scripts.Workout
 
         public void CoreInitialization()
         {
-            if (subCore != null) { GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.CoreBuild); } else
+            if (subCore != null) { GameManager.Notifications.PostNotification(subCore, GameEvents.CoreBuild); } else
             {
                 Debug.LogError("core == null");
-                GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.NotUntrainedWords);
+                GameManager.Notifications.PostNotification(subCore, GameEvents.NotUntrainedWords);
             }
         }
 
@@ -121,12 +121,12 @@ namespace LinguaLeo.Scripts.Workout
         {
             Workout newCore = new Workout(currentWorkout, core.maxQuestCount);
             List<QuestionLeo> newTasks = new List<QuestionLeo>();
-            int ID = 0;
+            int id = 0;
             foreach (var task in core.tasks)
             {
                 if (task.questWord.CanTraining(currentWorkout))
                 {
-                    task.id = ID++;
+                    task.id = id++;
                     newTasks.Add(task);
                 }
             }
@@ -152,10 +152,10 @@ namespace LinguaLeo.Scripts.Workout
                 case WorkoutNames.Puzzle:
                     sceneName = "wordPuzzle";
                     break;
-                case WorkoutNames.reiteration:
+                case WorkoutNames.Reiteration:
                     sceneName = string.Empty;
                     break;
-                case WorkoutNames.brainStorm:
+                case WorkoutNames.BrainStorm:
                     sceneName = string.Empty;
                     break;
                 case WorkoutNames.Savanna:
@@ -232,7 +232,7 @@ namespace LinguaLeo.Scripts.Workout
             ResetStage();
             Run();
 
-            GameManager.Notifications.AddListener(null, GAME_EVENTS.NotUntrainedWords);
+            GameManager.Notifications.AddListener(null, GameEvents.NotUntrainedWords);
         }
     }
 }

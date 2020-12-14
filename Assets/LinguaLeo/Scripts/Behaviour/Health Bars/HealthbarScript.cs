@@ -1,6 +1,7 @@
 ﻿using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Behaviour.Health_Bars
@@ -9,8 +10,9 @@ namespace LinguaLeo.Scripts.Behaviour.Health_Bars
     {
         #region SerializeFields
 
+        [FormerlySerializedAs("PercentText")]
         [SerializeField]
-        private Text PercentText = null;
+        private Text percentText = null;
 
         [SerializeField]
         private Animator addbrainvalue = null;
@@ -32,11 +34,11 @@ namespace LinguaLeo.Scripts.Behaviour.Health_Bars
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        void IObserver.OnNotify(object parametr, GameEvents notificationName)
         {
             switch (notificationName)
             {
-                case GAME_EVENTS.CorrectAnswer:
+                case GameEvents.CorrectAnswer:
                     addbrainvalue.Play("addingBrainValue");
                     Invoke("UpdateBrain", 1);
                     break;
@@ -50,7 +52,7 @@ namespace LinguaLeo.Scripts.Behaviour.Health_Bars
         // Use this for initialization
         private void Start()
         {
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
+            GameManager.Notifications.AddListener(this, GameEvents.CorrectAnswer);
             healthbarFilling = GetComponent<Image>();
             maxHealth = GameManager.WorkoutManager.GetBrainTasks();
             UpdateBrain();
@@ -65,7 +67,7 @@ namespace LinguaLeo.Scripts.Behaviour.Health_Bars
             health += value;
             if (health > maxHealth)
                 health = maxHealth;
-            updateHealth();
+            UpdateHealth();
         }
 
         public bool RemoveHealth(int value)
@@ -74,11 +76,11 @@ namespace LinguaLeo.Scripts.Behaviour.Health_Bars
             if (health <= 0)
             {
                 health = 0;
-                updateHealth();
+                UpdateHealth();
                 return true;
             }
 
-            updateHealth();
+            UpdateHealth();
             return false;
         }
 
@@ -106,21 +108,21 @@ namespace LinguaLeo.Scripts.Behaviour.Health_Bars
         {
             //var correctAnswers = GameManager.WorkoutManager.GetCorrectAnswers();
             var correctAnswers = GameManager.ScoreKeeper.ScoreValue;
-            updateHealth(correctAnswers);
+            UpdateHealth(correctAnswers);
         }
 
-        private void updateHealth()
+        private void UpdateHealth()
         {
             var fillingAmount = health / maxHealth;
             healthbarFilling.fillAmount = fillingAmount;
         }
 
-        private void updateHealth(float value)
+        private void UpdateHealth(float value)
         {
             health = value;
             float fillingAmount = health / maxHealth;
             healthbarFilling.fillAmount = fillingAmount;
-            PercentText.text = (int) (fillingAmount * 100) + " %";
+            percentText.text = (int) (fillingAmount * 100) + " %";
         }
 
         #endregion

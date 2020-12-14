@@ -29,9 +29,9 @@ namespace LinguaLeo.Scripts.Helpers
             return Path.GetFileNameWithoutExtension(mat.Value);
         }
 
-        public static T FindComponentInGO<T>(string nameGO)
+        public static T FindComponentInGo<T>(string nameGo)
         {
-            GameObject go = GameObject.Find(nameGO);
+            GameObject go = GameObject.Find(nameGo);
             if (go)
                 return go.GetComponent<T>();
             return default;
@@ -152,18 +152,18 @@ namespace LinguaLeo.Scripts.Helpers
     {
         #region Private variables
 
-        private readonly int MAX_COUNT;
+        private readonly int maxCount;
         private List<int> lastIndex;
 
         #endregion
 
         #region Private Methods
 
-        private int nextRandom()
+        private int NextRandom()
         {
             int rndValue = -1;
 
-            do { rndValue = Random.Range(0, MAX_COUNT); } while (lastIndex.Contains(rndValue));
+            do { rndValue = Random.Range(0, maxCount); } while (lastIndex.Contains(rndValue));
 
             return rndValue;
         }
@@ -172,8 +172,8 @@ namespace LinguaLeo.Scripts.Helpers
 
         private UniqRandom(int max)
         {
-            MAX_COUNT = max;
-            lastIndex = new List<int>(MAX_COUNT);
+            maxCount = max;
+            lastIndex = new List<int>(maxCount);
         }
     }
 }

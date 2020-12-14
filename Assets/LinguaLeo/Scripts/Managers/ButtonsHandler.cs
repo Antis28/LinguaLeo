@@ -3,6 +3,7 @@ using LinguaLeo.Scripts.Behaviour;
 using LinguaLeo.Scripts.Helpers;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Managers
@@ -11,8 +12,8 @@ namespace LinguaLeo.Scripts.Managers
     {
         #region Static Fields and Constants
 
-        private const string DONT_KNOW = "Не знаю :(";
-        private const string NEXT_WORD = "Следующее →";
+        private const string DontKnow = "Не знаю :(";
+        private const string NextWord = "Следующее →";
 
         #endregion
 
@@ -21,17 +22,18 @@ namespace LinguaLeo.Scripts.Managers
         [SerializeField]
         private ButtonComponent[] buttons;
 
+        [FormerlySerializedAs("RepeatWordButton")]
         [SerializeField]
-        private Button RepeatWordButton = null;
+        private Button repeatWordButton = null;
 
         #endregion
 
         #region Private variables
 
-        private int buttonID;
+        private int buttonId;
         private Button correctButton = null;
 
-        private UnityAction[] ButtonsEvent;
+        private UnityAction[] buttonsEvent;
 
         #endregion
 
@@ -40,15 +42,15 @@ namespace LinguaLeo.Scripts.Managers
         private void Start()
         {
             buttons = FindObjectsOfType<ButtonComponent>();
-            ButtonsEvent = new UnityAction[buttons.Length];
+            buttonsEvent = new UnityAction[buttons.Length];
 
 
             System.Array.Sort(buttons, new MyComparer());
 
-            if (RepeatWordButton)
-                RepeatWordButton.onClick.AddListener(() => GameManager.AudioPlayer.SayWord());
+            if (repeatWordButton)
+                repeatWordButton.onClick.AddListener(() => GameManager.AudioPlayer.SayWord());
 
-            GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
+            GameManager.Notifications.PostNotification(null, GameEvents.ButtonHandlerLoaded);
         }
 
         #endregion
@@ -61,7 +63,7 @@ namespace LinguaLeo.Scripts.Managers
         public void ClearTextInButtons()
         {
             ResetColors();
-            buttonID = 0;
+            buttonId = 0;
             //TODO: Очистить текст вопроса ClearTextInQestion()
             foreach (ButtonComponent b in buttons)
             {
@@ -81,14 +83,14 @@ namespace LinguaLeo.Scripts.Managers
             foreach (string word in listWords)
             {
                 bool answerIsCorrect = word.Contains(questionWord);
-                ButtonComponent bc = buttons[buttonID];
+                ButtonComponent bc = buttons[buttonId];
 
                 if (answerIsCorrect)
                     correctButton = bc.button;
 
                 bc.text.text = word;
                 JoinShowResult(bc.button, answerIsCorrect);
-                buttonID++;
+                buttonId++;
             }
         }
 
@@ -99,10 +101,10 @@ namespace LinguaLeo.Scripts.Managers
         /// <param name="isFirst"></param>
         public void FillingEnterButton(bool isFirst)
         {
-            if (buttons.Length <= buttonID)
+            if (buttons.Length <= buttonId)
                 return;
 
-            ButtonComponent extraB = buttons[buttonID];
+            ButtonComponent extraB = buttons[buttonId];
             if (isFirst) { EnterButtonToDontKnow(extraB); } else { EnterButtonToNext(extraB); }
         }
 
@@ -110,11 +112,11 @@ namespace LinguaLeo.Scripts.Managers
         {
             print("SetNextQuestion");
             ClearListeners();
-            buttonID = 0;
+            buttonId = 0;
             foreach (var button in buttons)
             {
                 JoinNextNode(button.button, action);
-                buttonID++;
+                buttonId++;
             }
         }
 
@@ -130,17 +132,17 @@ namespace LinguaLeo.Scripts.Managers
         private void EnterButtonToDontKnow(ButtonComponent extraB)
         {
             // Отдельная кнопка "не знаю"            
-            extraB.text.text = DONT_KNOW;
+            extraB.text.text = DontKnow;
             extraB.button.GetComponentInChildren<Text>().color = Color.black;
             SetColors(extraB.button, Color.white);
 
-            JoinShowResult(buttons[buttonID].button, false);
+            JoinShowResult(buttons[buttonId].button, false);
         }
 
         private void EnterButtonToNext(ButtonComponent extraB)
         {
             // Отдельная кнопка "следующее"
-            extraB.text.text = NEXT_WORD;
+            extraB.text.text = NextWord;
             extraB.button.GetComponentInChildren<Text>().color = Color.white;
 
             SetColors(extraB.button, new Color(68f / 255, 145 / 255f, 207f / 255));
@@ -173,8 +175,8 @@ namespace LinguaLeo.Scripts.Managers
 
         private void ReplaceKeyEvent(UnityAction action)
         {
-            ButtonsEvent[buttonID] = null;
-            ButtonsEvent[buttonID] += action;
+            buttonsEvent[buttonId] = null;
+            buttonsEvent[buttonId] += action;
         }
 
         private void ResetColors()
@@ -184,7 +186,7 @@ namespace LinguaLeo.Scripts.Managers
 
         private UnityAction RunKeyAction(int numberKey)
         {
-            UnityAction action = ButtonsEvent[numberKey];
+            UnityAction action = buttonsEvent[numberKey];
             if (action != null) { action(); }
 
             return action;
@@ -220,12 +222,12 @@ namespace LinguaLeo.Scripts.Managers
             if (istrue)
             {
                 SetColors(button, Color.green);
-                GameManager.Notifications.PostNotification(button, GAME_EVENTS.CorrectAnswer);
+                GameManager.Notifications.PostNotification(button, GameEvents.CorrectAnswer);
             }
 
             if (!istrue)
             {
-                GameManager.Notifications.PostNotification(button, GAME_EVENTS.NonCorrectAnswer);
+                GameManager.Notifications.PostNotification(button, GameEvents.NonCorrectAnswer);
 
                 SetColors(button, Color.red);
                 //кнопка с правильным словом
@@ -235,7 +237,7 @@ namespace LinguaLeo.Scripts.Managers
             ClearListeners();
             FillingEnterButton(false);
             //установить следующий вопрос       
-            GameManager.Notifications.PostNotification(null, GAME_EVENTS.ShowResult);
+            GameManager.Notifications.PostNotification(null, GameEvents.ShowResult);
         }
 
         private void Update()

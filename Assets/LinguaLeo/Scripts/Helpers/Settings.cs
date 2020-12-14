@@ -10,13 +10,13 @@ namespace LinguaLeo.Scripts.Helpers
         #region Static Fields and Constants
 
         [XmlIgnore]
-        private static readonly string folderXml = @"Data/";
+        private static readonly string FolderXml = @"Data/";
 
         [XmlIgnore]
-        private static readonly string fileNameXml = "Settings.xml";
+        private static readonly string FileNameXml = "Settings.xml";
 
         [XmlIgnore]
-        private static readonly string path = folderXml + fileNameXml;
+        private static readonly string Path = FolderXml + FileNameXml;
 
         [XmlIgnore]
         private static Settings instance;
@@ -46,14 +46,14 @@ namespace LinguaLeo.Scripts.Helpers
 
         public static void LoadFromXml()
         {
-            if (!File.Exists(path)) { SaveToXml(); }
+            if (!File.Exists(Path)) { SaveToXml(); }
 
             Settings result = null;
-            using (TextReader Stream = new StreamReader(path, Encoding.UTF8))
+            using (TextReader stream = new StreamReader(Path, Encoding.UTF8))
             {
-                XmlSerializer Serializer = new XmlSerializer(typeof(Settings));
-                result = Serializer.Deserialize(Stream) as Settings;
-                Stream.Close();
+                XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+                result = serializer.Deserialize(stream) as Settings;
+                stream.Close();
             }
 
             instance = result;
@@ -61,7 +61,7 @@ namespace LinguaLeo.Scripts.Helpers
 
         public static void SaveToXml()
         {
-            using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
+            using (TextWriter stream = new StreamWriter(Path, false, Encoding.UTF8))
             {
                 //Now save game data
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(Settings));

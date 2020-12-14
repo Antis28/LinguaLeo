@@ -11,7 +11,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
     {
         #region Public variables
 
-        public UnityEvent LoadingComplete;
+        public UnityEvent loadingComplete;
 
         #endregion
 
@@ -53,9 +53,9 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 
         #endregion
 
-        public AudioLoader(string PathToRootResources)
+        public AudioLoader(string pathToRootResources)
         {
-            audioDirectory = Path.Combine(PathToRootResources, "Audio", "OGG");
+            audioDirectory = Path.Combine(pathToRootResources, "Audio", "OGG");
         }
     }
 }

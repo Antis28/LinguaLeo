@@ -2,6 +2,7 @@
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Behaviour._02c_wordView
@@ -19,11 +20,13 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
         [SerializeField]
         private Text levelText = null;
 
+        [FormerlySerializedAs("TimeReduceText")]
         [SerializeField]
-        private Text TimeReduceText = null;
+        private Text timeReduceText = null;
 
+        [FormerlySerializedAs("TimeUnlockText")]
         [SerializeField]
-        private Text TimeUnlockText = null;
+        private Text timeUnlockText = null;
 
         #endregion
 
@@ -63,10 +66,10 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
             word.LicenseExpirationCheck();
 
             TimeSpan time = word.GetLicenseValidityTime();
-            TimeReduceText.text = MyUtilities.FormatTime(time);
+            timeReduceText.text = MyUtilities.FormatTime(time);
 
             TimeSpan timeUnlock = word.GetLicenseUnlockForRepeat();
-            TimeUnlockText.text = MyUtilities.FormatTime(timeUnlock);
+            timeUnlockText.text = MyUtilities.FormatTime(timeUnlock);
 
             GetComponent<Transform>().localScale = Vector3.one;
             GetComponent<Transform>().localPosition = Vector3.zero;
