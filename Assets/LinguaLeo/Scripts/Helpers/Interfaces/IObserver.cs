@@ -6,7 +6,7 @@ namespace LinguaLeo.Scripts.Helpers.Interfaces
     {
         #region Events
 
-        void OnNotify(object parametr, GameEvents notificationName);
+        void OnNotify(object parametr, GAME_EVENTS notificationName);
 
         #endregion
 

@@ -108,7 +108,7 @@ namespace LinguaLeo.Scripts.Workout
 
             if (!AvaiableBuilding(current))
             {
-                GameManager.Notifications.PostNotification(null, GameEvents.WordsEnded);
+                GameManager.Notifications.PostNotification(null, GAME_EVENTS.WordsEnded);
                 return;
             }
 

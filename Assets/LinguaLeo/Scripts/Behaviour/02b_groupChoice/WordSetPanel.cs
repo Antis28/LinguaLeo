@@ -1,7 +1,6 @@
 ﻿using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
@@ -10,17 +9,14 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
     {
         #region SerializeFields
 
-        [FormerlySerializedAs("LogoImage")]
         [SerializeField]
-        private Image logoImage = null;
+        private Image LogoImage = null;
 
-        [FormerlySerializedAs("CaptionText")]
         [SerializeField]
-        private Text captionText = null;
+        private Text CaptionText = null;
 
-        [FormerlySerializedAs("WordCountText")]
         [SerializeField]
-        private Text wordCountText = null;
+        private Text WordCountText = null;
 
         #endregion
 
@@ -65,15 +61,15 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
 
         public string GetName()
         {
-            return captionText.text;
+            return CaptionText.text;
         }
 
         public void Init(Sprite sprite, string caption, int count)
         {
-            logoImage.sprite = sprite;
+            LogoImage.sprite = sprite;
             groupName = caption;
-            captionText.text = groupName.Replace('_', ' ');
-            wordCountText.text = count + " cлов";
+            CaptionText.text = groupName.Replace('_', ' ');
+            WordCountText.text = count + " cлов";
 
             GetComponent<Transform>().localScale = Vector3.one;
             GetComponent<Transform>().localPosition = Vector3.zero;

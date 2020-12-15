@@ -6,8 +6,8 @@
         TranslateWord,
         Audio,
         Puzzle,
-        Reiteration,
-        BrainStorm,
+        reiteration,
+        brainStorm,
         Savanna
     }
 }

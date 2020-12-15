@@ -32,7 +32,7 @@ namespace LinguaLeo.Scripts.Helpers
         {
             progress.lastRepeat = DateTime.Now;
             progress.license++;
-            GameManager.Notifications.PostNotification(null, GameEvents.UpdatedLicenseLevel);
+            GameManager.Notifications.PostNotification(null, GAME_EVENTS.UpdatedLicenseLevel);
         }
 
         public bool AllWorkoutDone()
@@ -90,41 +90,41 @@ namespace LinguaLeo.Scripts.Helpers
         public TimeSpan GetLicenseUnlockForRepeat()
         {
             LicenseLevels license = progress.license;
-            if (license == LicenseLevels.Level0 || !progress.AllWorkoutDone()) { return TimeSpan.Zero; }
+            if (license == LicenseLevels.Level_0 || !progress.AllWorkoutDone()) { return TimeSpan.Zero; }
 
             double minutes = GetLicenseTime();
             double minutesLeft = 0;
 
             switch (license)
             {
-                case LicenseLevels.Level1:
-                    minutesLeft = LicenseTimeTraining.level1 - minutes;
+                case LicenseLevels.Level_1:
+                    minutesLeft = LicenseTimeTraining.Level_1 - minutes;
                     break;
-                case LicenseLevels.Level2:
-                    minutesLeft = LicenseTimeTraining.level2 - minutes;
+                case LicenseLevels.Level_2:
+                    minutesLeft = LicenseTimeTraining.Level_2 - minutes;
                     break;
-                case LicenseLevels.Level3:
-                    minutesLeft = LicenseTimeTraining.level3 - minutes;
+                case LicenseLevels.Level_3:
+                    minutesLeft = LicenseTimeTraining.Level_3 - minutes;
                     break;
-                case LicenseLevels.Level4:
-                    minutesLeft = LicenseTimeTraining.level4 - minutes;
+                case LicenseLevels.Level_4:
+                    minutesLeft = LicenseTimeTraining.Level_4 - minutes;
                     break;
-                case LicenseLevels.Level5:
-                    minutesLeft = LicenseTimeTraining.level5 - minutes;
+                case LicenseLevels.Level_5:
+                    minutesLeft = LicenseTimeTraining.Level_5 - minutes;
                     break;
-                case LicenseLevels.Level6:
-                    minutesLeft = LicenseTimeTraining.level6 - minutes;
+                case LicenseLevels.Level_6:
+                    minutesLeft = LicenseTimeTraining.Level_6 - minutes;
                     break;
-                case LicenseLevels.Level7:
-                    minutesLeft = LicenseTimeTraining.level7 - minutes;
+                case LicenseLevels.Level_7:
+                    minutesLeft = LicenseTimeTraining.Level_7 - minutes;
                     break;
-                case LicenseLevels.Level8:
+                case LicenseLevels.Level_8:
                     //лицензия на 1 месяц
-                    minutesLeft = LicenseTimeTraining.level8 - minutes;
+                    minutesLeft = LicenseTimeTraining.Level_8 - minutes;
                     break;
-                case LicenseLevels.Level9:
+                case LicenseLevels.Level_9:
                     //лицензия на 6 месяцев
-                    minutesLeft = LicenseTimeTraining.level9 - minutes;
+                    minutesLeft = LicenseTimeTraining.Level_9 - minutes;
                     break;
             }
 
@@ -145,34 +145,34 @@ namespace LinguaLeo.Scripts.Helpers
 
             switch (license)
             {
-                case LicenseLevels.Level1:
-                    minutesLeft = LicenseTimeout.level1 - minutes;
+                case LicenseLevels.Level_1:
+                    minutesLeft = LicenseTimeout.Level_1 - minutes;
                     break;
-                case LicenseLevels.Level2:
-                    minutesLeft = LicenseTimeout.level2 - minutes;
+                case LicenseLevels.Level_2:
+                    minutesLeft = LicenseTimeout.Level_2 - minutes;
                     break;
-                case LicenseLevels.Level3:
-                    minutesLeft = LicenseTimeout.level3 - minutes;
+                case LicenseLevels.Level_3:
+                    minutesLeft = LicenseTimeout.Level_3 - minutes;
                     break;
-                case LicenseLevels.Level4:
-                    minutesLeft = LicenseTimeout.level4 - minutes;
+                case LicenseLevels.Level_4:
+                    minutesLeft = LicenseTimeout.Level_4 - minutes;
                     break;
-                case LicenseLevels.Level5:
-                    minutesLeft = LicenseTimeout.level5 - minutes;
+                case LicenseLevels.Level_5:
+                    minutesLeft = LicenseTimeout.Level_5 - minutes;
                     break;
-                case LicenseLevels.Level6:
-                    minutesLeft = LicenseTimeout.level6 - minutes;
+                case LicenseLevels.Level_6:
+                    minutesLeft = LicenseTimeout.Level_6 - minutes;
                     break;
-                case LicenseLevels.Level7:
-                    minutesLeft = LicenseTimeout.level7 - minutes;
+                case LicenseLevels.Level_7:
+                    minutesLeft = LicenseTimeout.Level_7 - minutes;
                     break;
-                case LicenseLevels.Level8:
+                case LicenseLevels.Level_8:
                     //лицензия на 1 месяц
-                    minutesLeft = LicenseTimeout.level8 - minutes;
+                    minutesLeft = LicenseTimeout.Level_8 - minutes;
                     break;
-                case LicenseLevels.Level9:
+                case LicenseLevels.Level_9:
                     //лицензия на 6 месяцев
-                    minutesLeft = LicenseTimeout.level9 - minutes;
+                    minutesLeft = LicenseTimeout.Level_9 - minutes;
                     break;
             }
 
@@ -188,40 +188,40 @@ namespace LinguaLeo.Scripts.Helpers
         {
             float progressCount = 0;
 
-            if (progress.wordTranslate) { progressCount += 0.25f; }
+            if (progress.word_translate) { progressCount += 0.25f; }
 
-            if (progress.translateWord) { progressCount += 0.25f; }
+            if (progress.translate_word) { progressCount += 0.25f; }
 
-            if (progress.audioWord) { progressCount += 0.25f; }
+            if (progress.audio_word) { progressCount += 0.25f; }
 
-            if (progress.wordPuzzle) { progressCount += 0.25f; }
+            if (progress.word_puzzle) { progressCount += 0.25f; }
 
             return progressCount;
         }
 
         public void LearnAudio()
         {
-            progress.audioWord = true;
+            progress.audio_word = true;
         }
 
         public void LearnPuzzle()
         {
-            progress.wordPuzzle = true;
+            progress.word_puzzle = true;
         }
 
         public void LearnTranslateWord()
         {
-            progress.translateWord = true;
+            progress.translate_word = true;
         }
 
         public void LearnWordTranslate()
         {
-            progress.wordTranslate = true;
+            progress.word_translate = true;
         }
 
         public bool LicenseExists()
         {
-            return progress.license >= LicenseLevels.Level1;
+            return progress.license >= LicenseLevels.Level_1;
         }
 
         /// <summary>
@@ -231,58 +231,58 @@ namespace LinguaLeo.Scripts.Helpers
         public void LicenseExpirationCheck()
         {
             LicenseLevels license = progress.license;
-            if (license == LicenseLevels.Level0 || !progress.AllWorkoutDone()) { return; }
+            if (license == LicenseLevels.Level_0 || !progress.AllWorkoutDone()) { return; }
 
             double minutes = GetLicenseTime();
 
-            if (minutes > LicenseTimeout.level1)
+            if (minutes > LicenseTimeout.Level_1)
                 LicenseValidityCheck();
 
             switch (license)
             {
-                case LicenseLevels.Level1:
+                case LicenseLevels.Level_1:
                     //лицензия на 20 минут
-                    if (minutes > LicenseTimeTraining.level1)
+                    if (minutes > LicenseTimeTraining.Level_1)
                         UnlockWorkouts();
                     break;
-                case LicenseLevels.Level2:
+                case LicenseLevels.Level_2:
                     //лицензия на 1 час
-                    if (minutes > LicenseTimeTraining.level2)
+                    if (minutes > LicenseTimeTraining.Level_2)
                         UnlockWorkouts();
                     break;
-                case LicenseLevels.Level3:
+                case LicenseLevels.Level_3:
                     //лицензия на  3 часа
-                    if (minutes > LicenseTimeTraining.level3)
+                    if (minutes > LicenseTimeTraining.Level_3)
                         UnlockWorkouts();
                     break;
-                case LicenseLevels.Level4:
+                case LicenseLevels.Level_4:
                     //лицензия на 1 сутки
-                    if (minutes > LicenseTimeTraining.level4)
+                    if (minutes > LicenseTimeTraining.Level_4)
                         UnlockWorkouts();
                     break;
-                case LicenseLevels.Level5:
+                case LicenseLevels.Level_5:
                     //лицензия на 2 суток
-                    if (minutes > LicenseTimeTraining.level5)
+                    if (minutes > LicenseTimeTraining.Level_5)
                         UnlockWorkouts();
                     break;
-                case LicenseLevels.Level6:
+                case LicenseLevels.Level_6:
                     //лицензия на 3 суток
-                    if (minutes > LicenseTimeTraining.level6)
+                    if (minutes > LicenseTimeTraining.Level_6)
                         UnlockWorkouts();
                     break;
-                case LicenseLevels.Level7:
+                case LicenseLevels.Level_7:
                     //лицензия на 1 неделю
-                    if (minutes > LicenseTimeTraining.level7)
+                    if (minutes > LicenseTimeTraining.Level_7)
                         UnlockWorkouts();
                     break;
-                case LicenseLevels.Level8:
+                case LicenseLevels.Level_8:
                     //лицензия на 1 месяц
-                    if (minutes > LicenseTimeTraining.level8)
+                    if (minutes > LicenseTimeTraining.Level_8)
                         UnlockWorkouts();
                     break;
-                case LicenseLevels.Level9:
+                case LicenseLevels.Level_9:
                     //лицензия на 6 месяцев
-                    if (minutes > LicenseTimeTraining.level9)
+                    if (minutes > LicenseTimeTraining.Level_9)
                         UnlockWorkouts();
                     break;
             }
@@ -299,44 +299,44 @@ namespace LinguaLeo.Scripts.Helpers
             double minutes = interval.TotalMinutes;
             switch (license)
             {
-                case LicenseLevels.Level2:
+                case LicenseLevels.Level_2:
                     //лицензия на 1 час
-                    if (minutes > LicenseTimeout.level2)
+                    if (minutes > LicenseTimeout.Level_2)
                         ReduceLicense();
                     break;
-                case LicenseLevels.Level3:
+                case LicenseLevels.Level_3:
                     //лицензия на  3 часа
-                    if (minutes > LicenseTimeout.level3)
+                    if (minutes > LicenseTimeout.Level_3)
                         ReduceLicense();
                     break;
-                case LicenseLevels.Level4:
+                case LicenseLevels.Level_4:
                     //лицензия на 1 сутки
-                    if (minutes > LicenseTimeout.level4)
+                    if (minutes > LicenseTimeout.Level_4)
                         ReduceLicense();
                     break;
-                case LicenseLevels.Level5:
+                case LicenseLevels.Level_5:
                     //лицензия на 2 суток
-                    if (minutes > LicenseTimeout.level5)
+                    if (minutes > LicenseTimeout.Level_5)
                         ReduceLicense();
                     break;
-                case LicenseLevels.Level6:
+                case LicenseLevels.Level_6:
                     //лицензия на 3 суток
-                    if (minutes > LicenseTimeout.level6)
+                    if (minutes > LicenseTimeout.Level_6)
                         ReduceLicense();
                     break;
-                case LicenseLevels.Level7:
+                case LicenseLevels.Level_7:
                     //лицензия на 1 неделю
-                    if (minutes > LicenseTimeout.level7)
+                    if (minutes > LicenseTimeout.Level_7)
                         ReduceLicense();
                     break;
-                case LicenseLevels.Level8:
+                case LicenseLevels.Level_8:
                     //лицензия на 1 месяц
-                    if (minutes > LicenseTimeout.level8)
+                    if (minutes > LicenseTimeout.Level_8)
                         ReduceLicense();
                     break;
-                case LicenseLevels.Level9:
+                case LicenseLevels.Level_9:
                     //лицензия на 6 месяцев
-                    if (minutes > LicenseTimeout.level9)
+                    if (minutes > LicenseTimeout.Level_9)
                         ReduceLicense();
                     break;
             }
@@ -363,7 +363,7 @@ namespace LinguaLeo.Scripts.Helpers
         /// </summary>
         public void ReduceLicense()
         {
-            if (progress.license == LicenseLevels.Level0)
+            if (progress.license == LicenseLevels.Level_0)
                 return;
 
             progress.ResetAllWorkouts();
@@ -373,14 +373,14 @@ namespace LinguaLeo.Scripts.Helpers
 
         public void ResetLicense()
         {
-            if (progress.license == LicenseLevels.Level0)
+            if (progress.license == LicenseLevels.Level_0)
             {
                 progress.ResetAllWorkouts();
                 return;
             }
 
             progress.ResetAllWorkouts();
-            progress.license = LicenseLevels.Level0;
+            progress.license = LicenseLevels.Level_0;
             progress.lastRepeat = DateTime.Now;
         }
 

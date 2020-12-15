@@ -25,7 +25,7 @@ namespace LinguaLeo.Scripts.Workout
 
         #region Private variables
 
-        private InputField answerInputField = null;
+        private InputField AnswerInputField = null;
 
         private Toggle sayToggle = null;   // checkbox для автопроизношения
         private Slider scoreSlider = null; // Протренировано слов прогресс
@@ -49,11 +49,11 @@ namespace LinguaLeo.Scripts.Workout
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GameEvents notificationName)
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
             switch (notificationName)
             {
-                case GameEvents.CoreBuild:
+                case GAME_EVENTS.CoreBuild:
                     core = parametr as Workout;
                     core.buttonsHandler = FindObjectOfType<ButtonsHandler>();
                     core.DrawTask += Core_DrawTask;
@@ -61,7 +61,7 @@ namespace LinguaLeo.Scripts.Workout
                     InitWordCountBar();
                     //FindObjectOfType<DebugUI>().FillPanel(questions);
                     break;
-                case GameEvents.ShowResult:
+                case GAME_EVENTS.ShowResult:
                     SetupEnterButton(core.RunNextQuestion);
                     CheckAnswer();
                     ShowQuestion();
@@ -92,10 +92,10 @@ namespace LinguaLeo.Scripts.Workout
             mistakeText = GameObject.Find("MistakeText").GetComponent<Text>();
             translateText = GameObject.Find("TranslateText").GetComponent<Text>();
 
-            answerInputField = GameObject.Find("AnswerInputField").GetComponent<InputField>();
+            AnswerInputField = GameObject.Find("AnswerInputField").GetComponent<InputField>();
 
-            GameManager.Notifications.AddListener(this, GameEvents.CoreBuild);
-            GameManager.Notifications.AddListener(this, GameEvents.ShowResult);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
 
             if (repeatWordButton)
                 repeatWordButton.onClick.AddListener(
@@ -103,10 +103,10 @@ namespace LinguaLeo.Scripts.Workout
                     {
                         GameManager.AudioPlayer.SayWord();
                         //передать фокус полю ввода
-                        answerInputField.ActivateInputField();
+                        AnswerInputField.ActivateInputField();
                     });
 
-            GameManager.Notifications.PostNotification(null, GameEvents.ButtonHandlerLoaded);
+            GameManager.Notifications.PostNotification(null, GAME_EVENTS.ButtonHandlerLoaded);
         }
 
         #endregion
@@ -130,24 +130,24 @@ namespace LinguaLeo.Scripts.Workout
             ShowRepeatWordButton();
 
             //AnswerInputField.text = AnswerInputField.text.Replace("'", "’");
-            isAnswerCorrect = answerInputField.text == core.GetCurrentWord().wordValue;
+            isAnswerCorrect = AnswerInputField.text == core.GetCurrentWord().wordValue;
             questionText.text = core.GetCurrentWord().wordValue;
 
             if (isAnswerCorrect)
             {
-                GameManager.Notifications.PostNotification(this, GameEvents.CorrectAnswer);
+                GameManager.Notifications.PostNotification(this, GAME_EVENTS.CorrectAnswer);
                 questionText.color = correctColor;
                 mistakeText.text = string.Empty;
             } else
             {
-                mistakeText.text = answerInputField.text;
+                mistakeText.text = AnswerInputField.text;
                 mistakeText.color = wrongColor;
             }
         }
 
         private void CheckAnswerClick()
         {
-            GameManager.Notifications.PostNotification(null, GameEvents.ShowResult);
+            GameManager.Notifications.PostNotification(null, GAME_EVENTS.ShowResult);
         }
 
         private void Core_DrawTask()
@@ -161,20 +161,20 @@ namespace LinguaLeo.Scripts.Workout
             HideImage();
             HideQuestion();
             HideRepeatWordButton();
-            answerInputField.text = string.Empty;
+            AnswerInputField.text = string.Empty;
 
             SetupEnterButton(CheckAnswerClick);
 
             WordProgressUpdate();
             ProgressBarUpdate();
-            FindObjectOfType<DebugUi>().FillPanel(core.tasks);
+            FindObjectOfType<DebugUI>().FillPanel(core.tasks);
 
             //передать фокус полю ввода
-            answerInputField.ActivateInputField();
+            AnswerInputField.ActivateInputField();
 
             // выбор элемента как активного
-            EventSystem.current.SetSelectedGameObject(answerInputField.gameObject);
-            GameManager.Notifications.PostNotification(this, GameEvents.BuildTask);
+            EventSystem.current.SetSelectedGameObject(AnswerInputField.gameObject);
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
         }
 
         private void HideQuestion()
@@ -182,7 +182,7 @@ namespace LinguaLeo.Scripts.Workout
             questionText.gameObject.SetActive(false);
             mistakeText.gameObject.SetActive(false);
             //translateText.gameObject.SetActive(false);
-            answerInputField.gameObject.SetActive(true);
+            AnswerInputField.gameObject.SetActive(true);
         }
 
         private void HideRepeatWordButton()
@@ -222,7 +222,7 @@ namespace LinguaLeo.Scripts.Workout
             questionText.gameObject.SetActive(true);
             mistakeText.gameObject.SetActive(true);
             //translateText.gameObject.SetActive(true);
-            answerInputField.gameObject.SetActive(false);
+            AnswerInputField.gameObject.SetActive(false);
         }
 
         private void ShowRepeatWordButton()

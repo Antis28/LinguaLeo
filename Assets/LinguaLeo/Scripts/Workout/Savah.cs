@@ -4,7 +4,6 @@ using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Workout
@@ -13,9 +12,8 @@ namespace LinguaLeo.Scripts.Workout
     {
         #region SerializeFields
 
-        [FormerlySerializedAs("WorkoutName")]
         [SerializeField]
-        private WorkoutNames workoutName = WorkoutNames.WordTranslate;
+        private WorkoutNames WorkoutName = WorkoutNames.WordTranslate;
 
         //[SerializeField]
         //private int questCount = 30;
@@ -29,7 +27,7 @@ namespace LinguaLeo.Scripts.Workout
 
         WorkoutNames IWorkout.WorkoutName
         {
-            get { return workoutName; }
+            get { return WorkoutName; }
         }
 
 
@@ -39,18 +37,18 @@ namespace LinguaLeo.Scripts.Workout
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GameEvents notificationName)
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
             switch (notificationName)
             {
-                case GameEvents.CoreBuild:
+                case GAME_EVENTS.CoreBuild:
                     core = parametr as Workout;
                     core.buttonsHandler = FindObjectOfType<ButtonsHandler>();
                     core.DrawTask += Core_DrawTask;
                     core.BuildFirstTask();
                     //FindObjectOfType<DebugUI>().FillPanel(questions);
                     break;
-                case GameEvents.ShowResult:
+                case GAME_EVENTS.ShowResult:
                     core.RunNextQuestion();
                     break;
             }
@@ -63,8 +61,8 @@ namespace LinguaLeo.Scripts.Workout
         // Use this for initialization
         private void Start()
         {
-            GameManager.Notifications.AddListener(this, GameEvents.CoreBuild);
-            GameManager.Notifications.AddListener(this, GameEvents.ShowResult);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
         }
 
         #endregion
@@ -106,7 +104,7 @@ namespace LinguaLeo.Scripts.Workout
         {
             // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
             EventSystem.current.SetSelectedGameObject(gameObject);
-            GameManager.Notifications.PostNotification(this, GameEvents.BuildTask);
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
         }
 
         /// <summary>

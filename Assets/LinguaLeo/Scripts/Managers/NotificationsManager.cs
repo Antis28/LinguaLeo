@@ -15,15 +15,15 @@ namespace LinguaLeo.Scripts.Managers
 
         public int CountListeners
         {
-            get { return listeners.Count; }
+            get { return _listeners.Count; }
         }
 
         #endregion
 
         #region Private variables
 
-        private Dictionary<GameEvents, List<MonoBehaviour>> listeners =
-            new Dictionary<GameEvents, List<MonoBehaviour>>();
+        private Dictionary<GAME_EVENTS, List<MonoBehaviour>> _listeners =
+            new Dictionary<GAME_EVENTS, List<MonoBehaviour>>();
 
         #endregion
 
@@ -35,14 +35,14 @@ namespace LinguaLeo.Scripts.Managers
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="notificationName"></param>
-        public void AddListener(MonoBehaviour sender, GameEvents notificationName)
+        public void AddListener(MonoBehaviour sender, GAME_EVENTS notificationName)
         {
             //Add listener to dictionary
-            if (!listeners.ContainsKey(notificationName))
-                listeners.Add(notificationName, new List<MonoBehaviour>());
+            if (!_listeners.ContainsKey(notificationName))
+                _listeners.Add(notificationName, new List<MonoBehaviour>());
 
             //Add object to listener list for this notification
-            listeners[notificationName].Add(sender);
+            _listeners[notificationName].Add(sender);
         }
 
         /// <summary>
@@ -50,20 +50,20 @@ namespace LinguaLeo.Scripts.Managers
         /// </summary>
         public void ClearListeners()
         {
-            listeners.Clear();
+            _listeners.Clear();
         }
 
         /// <summary>
         /// Function to post a notification to a listener -
         /// Функция отправки уведомлений слушателю
         /// </summary>
-        public void PostNotification(object parametr, GameEvents notificationName)
+        public void PostNotification(object parametr, GAME_EVENTS notificationName)
         {
             //If no key in dictionary exists, then exit
-            if (!listeners.ContainsKey(notificationName))
+            if (!_listeners.ContainsKey(notificationName))
                 return;
             //Else post notification to all matching listener‘s -  Уведомлять о новых сообщениях всем соответствующим слушателям
-            foreach (IObserver listener in listeners[notificationName])
+            foreach (IObserver listener in _listeners[notificationName])
             {
                 if (listener != null)
                     //listener.SendMessage(notificationName, sender, SendMessageOptions.DontRequireReceiver);
@@ -79,22 +79,22 @@ namespace LinguaLeo.Scripts.Managers
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="notificationName"></param>
-        public void RemoveListener(IObserver sender, GameEvents notificationName)
+        public void RemoveListener(IObserver sender, GAME_EVENTS notificationName)
         {
             //If no key in dictionary exists, then exit
-            if (!listeners.ContainsKey(notificationName))
+            if (!_listeners.ContainsKey(notificationName))
                 return;
 
-            var listListeners = listeners[notificationName];
-            int senderId = sender.GetInstanceID();
+            var listListeners = _listeners[notificationName];
+            int senderID = sender.GetInstanceID();
 
             //Cycle through listeners and identify component, and then remove 
             //Проведите цикл прослушивающих и идентифицируйте компонент, а затем удалите
             for (int i = listListeners.Count - 1; i >= 0; i--)
             {
-                int currentId = listListeners[i].GetInstanceID();
+                int currentID = listListeners[i].GetInstanceID();
                 //Check instance ID - Проверить идентификатор экземпляра
-                if (currentId == senderId)
+                if (currentID == senderID)
                     //Matched. Remove from list -  Совпало. Убрать из списка
                     listListeners.RemoveAt(i);
             }
@@ -106,9 +106,9 @@ namespace LinguaLeo.Scripts.Managers
         /// </summary>
         public void RemoveRedundancies()
         {
-            var tmpListeners = new Dictionary<GameEvents, List<MonoBehaviour>>();
+            var tmpListeners = new Dictionary<GAME_EVENTS, List<MonoBehaviour>>();
 
-            foreach (var item in listeners)
+            foreach (var item in _listeners)
             {
                 // Cycle through all listener objects in list, remove null objects 
                 // Циклический просмотр всех объектов-слушателей в списке, удаление нулевых объектов
@@ -126,7 +126,7 @@ namespace LinguaLeo.Scripts.Managers
             }
 
             //Replace listeners object with new, optimized dictionary
-            listeners = tmpListeners;
+            _listeners = tmpListeners;
         }
 
         #endregion
@@ -142,7 +142,7 @@ namespace LinguaLeo.Scripts.Managers
     }
 
 
-    public enum GameEvents
+    public enum GAME_EVENTS
     {
         LoadGameComplete,
         SaveGamePrepare,

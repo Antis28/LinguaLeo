@@ -10,17 +10,17 @@ namespace LinguaLeo.Scripts.Managers.Parts
     {
         #region Static Fields and Constants
 
-        private const float CheckInterval = 900f;
+        private const float CHECK_INTERVAL = 900f;
 
         #endregion
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GameEvents notificationName)
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
             switch (notificationName)
             {
-                case GameEvents.LoadedVocabulary:
+                case GAME_EVENTS.LoadedVocabulary:
                     StopCoroutine(ChekLoop());
                     //StartCoroutine(ChekLoop());
                     break;
@@ -53,7 +53,7 @@ namespace LinguaLeo.Scripts.Managers.Parts
                     yield return null;
                 }
 
-                yield return new WaitForSeconds(CheckInterval);
+                yield return new WaitForSeconds(CHECK_INTERVAL);
             }
         }
 

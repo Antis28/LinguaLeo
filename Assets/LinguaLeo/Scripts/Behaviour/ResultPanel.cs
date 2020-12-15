@@ -2,7 +2,6 @@
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LinguaLeo.Scripts.Behaviour
@@ -11,25 +10,22 @@ namespace LinguaLeo.Scripts.Behaviour
     {
         #region Static Fields and Constants
 
-        private const int BedResult = 0;
-        private const int GoodResult = 9;
-        private const int BestResult = 10;
+        private const int BED_RESULT = 0;
+        private const int GOOD_RESULT = 9;
+        private const int BEST_RESULT = 10;
 
         #endregion
 
         #region SerializeFields
 
-        [FormerlySerializedAs("CaptionText")]
         [SerializeField]
-        private Text captionText = null;
+        private Text CaptionText = null;
 
-        [FormerlySerializedAs("LearnText")]
         [SerializeField]
-        private Text learnText = null;
+        private Text LearnText = null;
 
-        [FormerlySerializedAs("EatingText")]
         [SerializeField]
-        private Text eatingText = null;
+        private Text EatingText = null;
 
         [SerializeField]
         private Button[] buttons;
@@ -44,7 +40,7 @@ namespace LinguaLeo.Scripts.Behaviour
             float score = GameManager.ScoreKeeper.GetCorrectAnswers();
             ShowCaption(score);
             ShowLearn(score);
-            eatingText.text = "100%";
+            EatingText.text = "100%";
 
             InitButtons();
             GameManager.ScoreKeeper.ResetScore();
@@ -64,7 +60,7 @@ namespace LinguaLeo.Scripts.Behaviour
                 button.interactable = true;
                 button.onClick.AddListener(() =>
                                                GameManager.Notifications.PostNotification(
-                                                   this, GameEvents.ContinueWorkout)
+                                                   this, GAME_EVENTS.ContinueWorkout)
                 );
                 button.gameObject.SetActive(true);
             } else
@@ -123,11 +119,11 @@ namespace LinguaLeo.Scripts.Behaviour
 
         private void ShowCaption(float score)
         {
-            if (score == BedResult
-            ) { captionText.text = "В этот раз не получилось, но продолжай тренироваться!"; } else if (
-                score < GoodResult) { captionText.text = "Неплохо, но есть над чем поработать."; } else if (
-                score == GoodResult) { captionText.text = "Круто, отличный результат!"; } else if (score == BestResult
-            ) { captionText.text = "Поздравляем, отличный результат!"; }
+            if (score == BED_RESULT
+            ) { CaptionText.text = "В этот раз не получилось, но продолжай тренироваться!"; } else if (
+                score < GOOD_RESULT) { CaptionText.text = "Неплохо, но есть над чем поработать."; } else if (
+                score == GOOD_RESULT) { CaptionText.text = "Круто, отличный результат!"; } else if (score == BEST_RESULT
+            ) { CaptionText.text = "Поздравляем, отличный результат!"; }
         }
 
         private void ShowLearn(float score)
@@ -140,7 +136,7 @@ namespace LinguaLeo.Scripts.Behaviour
 
             var resultText = GetStudiedWordsCount(score);
             resultText += GetWordsCountLeft();
-            learnText.text = resultText;
+            LearnText.text = resultText;
         }
 
 

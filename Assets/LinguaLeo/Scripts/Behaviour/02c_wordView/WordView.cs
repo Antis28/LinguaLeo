@@ -27,9 +27,9 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
 
         #region Events
 
-        void IObserver.OnNotify(object parameter, GameEvents notificationName)
+        void IObserver.OnNotify(object parameter, GAME_EVENTS notificationName)
         {
-            if (notificationName != GameEvents.LoadedVocabulary) return;
+            if (notificationName != GAME_EVENTS.LoadedVocabulary) return;
 
             Debug.Log("Start Size");
             StartCoroutine(CreatePanels());
@@ -42,7 +42,7 @@ namespace LinguaLeo.Scripts.Behaviour._02c_wordView
         // Use this for initialization
         private void Start()
         {
-            GameManager.Notifications.AddListener(this, GameEvents.LoadedVocabulary);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
         }
 
         #endregion

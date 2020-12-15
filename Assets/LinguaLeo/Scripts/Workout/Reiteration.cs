@@ -14,8 +14,8 @@ namespace LinguaLeo.Scripts.Workout
     {
         #region Static Fields and Constants
 
-        private const int QuestCount = 10;
-        private const int AnswerCount = 5;
+        private const int QUEST_COUNT = 10;
+        private const int ANSWER_COUNT = 5;
 
         #endregion
 
@@ -55,7 +55,7 @@ namespace LinguaLeo.Scripts.Workout
         private GameObject contextPanel; //Панель для контекста
 
         private List<QuestionLeo> questions;
-        private int questionId;
+        private int questionID;
 
         private bool trainingСompleted;
 
@@ -65,32 +65,32 @@ namespace LinguaLeo.Scripts.Workout
 
         WorkoutNames IWorkout.WorkoutName
         {
-            get { return WorkoutNames.Reiteration; }
+            get { return WorkoutNames.reiteration; }
         }
 
         #endregion
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GameEvents notificationName)
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
             switch (notificationName)
             {
-                case GameEvents.BuildTask:
+                case GAME_EVENTS.BuildTask:
                     WordProgressUpdate();
                     ProgeressUpdate();
                     HideImage();
                     break;
-                case GameEvents.LoadedVocabulary:
+                case GAME_EVENTS.LoadedVocabulary:
                     LoadTasks();
                     BuildTask(0);
-                    FindObjectOfType<DebugUi>().FillPanel(questions);
+                    FindObjectOfType<DebugUI>().FillPanel(questions);
                     break;
-                case GameEvents.ShowResult:
+                case GAME_EVENTS.ShowResult:
                     ShowImage();
                     WordProgressUpdate();
                     ShowContext();
-                    buttonsHandler.SetNextQuestion(() => BuildTask(questionId + 1));
+                    buttonsHandler.SetNextQuestion(() => BuildTask(questionID + 1));
                     break;
             }
         }
@@ -107,7 +107,7 @@ namespace LinguaLeo.Scripts.Workout
 
         public QuestionLeo GetCurrentQuest()
         {
-            return questions[questionId];
+            return questions[questionID];
         }
 
         public void HideImage()
@@ -169,26 +169,26 @@ namespace LinguaLeo.Scripts.Workout
         /// <returns></returns>
         private List<WordLeo> AddWordsForAnswers(List<WordLeo> words)
         {
-            List<WordLeo> tempWords = new List<WordLeo>(AnswerCount * 2);
+            List<WordLeo> TempWords = new List<WordLeo>(ANSWER_COUNT * 2);
             if (words != null)
-                tempWords.AddRange(words);
+                TempWords.AddRange(words);
             List<WordLeo> allWords = GameManager.WordManager.GetAllWords();
 
             //TODO: Заменить на случайный индекс
             allWords = ShuffleList(allWords);
             int index = 0;
-            while (tempWords.Count < AnswerCount * 2) { tempWords.Add(allWords[index++]); }
+            while (TempWords.Count < ANSWER_COUNT * 2) { TempWords.Add(allWords[index++]); }
 
-            return tempWords;
+            return TempWords;
         }
 
 
         // Use this for initialization
         private void Awake()
         {
-            GameManager.Notifications.AddListener(this, GameEvents.ShowResult);
-            GameManager.Notifications.AddListener(this, GameEvents.BuildTask);
-            GameManager.Notifications.AddListener(this, GameEvents.LoadedVocabulary);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
 
             contextPanel = contextText.transform.parent.gameObject;
             buttonsHandler = FindObjectOfType<ButtonsHandler>();
@@ -200,25 +200,25 @@ namespace LinguaLeo.Scripts.Workout
 
             if (trainingСompleted || questions.Count == 0)
             {
-                GameManager.Notifications.PostNotification(this, GameEvents.WordsEnded);
+                GameManager.Notifications.PostNotification(this, GAME_EVENTS.WordsEnded);
                 return;
             }
 
-            questionId = FindNodeById(current);
-            if (questionId < 0)
+            questionID = FindNodeByID(current);
+            if (questionID < 0)
             {
                 Debug.LogError(this + "отсутствует или указан неверно идентификатор узла.");
                 return;
             }
 
-            int toNode = questionId + 1;
+            int toNode = questionID + 1;
             if (questions.Count <= toNode)
             {
                 toNode = 0;
                 trainingСompleted = true;
             }
 
-            QuestionLeo questionLeo = questions[questionId];
+            QuestionLeo questionLeo = questions[questionID];
 
             // добавление слова для перевода
             string questionWord = questionLeo.questWord.wordValue;
@@ -226,7 +226,7 @@ namespace LinguaLeo.Scripts.Workout
             SetTranscript(questionLeo.questWord.transcription);
 
             //TODO: заполнять все кнопки одновременно
-            List<string> answers = new List<string>(AnswerCount);
+            List<string> answers = new List<string>(ANSWER_COUNT);
             foreach (WordLeo item in questionLeo.answers)
                 answers.Add(item.wordValue);
 
@@ -240,14 +240,14 @@ namespace LinguaLeo.Scripts.Workout
 
             // выбор окна диалога как активного, чтобы снять выделение с кнопок диалога
             EventSystem.current.SetSelectedGameObject(gameObject);
-            GameManager.Notifications.PostNotification(this, GameEvents.BuildTask);
+            GameManager.Notifications.PostNotification(this, GAME_EVENTS.BuildTask);
         }
 
         private static void FillAnswers(QuestionLeo questionLeo, Stack<WordLeo> answers)
         {
             int[] numAnswers = {0, 1, 2, 3, 4};
-            int indexOfQuestWord = URandom.Range(0, AnswerCount);
-            questionLeo.answers = new List<WordLeo>(AnswerCount);
+            int indexOfQuestWord = URandom.Range(0, ANSWER_COUNT);
+            questionLeo.answers = new List<WordLeo>(ANSWER_COUNT);
 
             foreach (var item in numAnswers)
             {
@@ -277,13 +277,13 @@ namespace LinguaLeo.Scripts.Workout
             List<WordLeo> words = GameManager.WordManager.GetWordsWithLicense();
             Stack<WordLeo> answers = null;
 
-            if (words.Count <= AnswerCount * 2)
+            if (words.Count <= ANSWER_COUNT * 2)
             {
                 words = AddWordsForAnswers(words);
                 //words = GameManager.WordManager.GetAllWords();
             }
 
-            answers = PrepareAnswers(words, AnswerCount);
+            answers = PrepareAnswers(words, ANSWER_COUNT);
             FillAnswers(questionLeo, answers);
             questionLeo.answers = ShuffleList(questionLeo.answers);
         }
@@ -293,7 +293,7 @@ namespace LinguaLeo.Scripts.Workout
         /// </summary>
         /// <param name="i">ID для поиска</param>
         /// <returns></returns>
-        private int FindNodeById(int i)
+        private int FindNodeByID(int i)
         {
             int j = 0;
             foreach (var quest in questions)
@@ -333,7 +333,7 @@ namespace LinguaLeo.Scripts.Workout
 
         WordLeo IWorkout.GetCurrentWord()
         {
-            return questions[questionId].questWord;
+            return questions[questionID].questWord;
         }
 
         /// <summary>
@@ -359,10 +359,10 @@ namespace LinguaLeo.Scripts.Workout
 
         private void LoadTasks()
         {
-            questions = new List<QuestionLeo>(QuestCount);
+            questions = new List<QuestionLeo>(QUEST_COUNT);
             untrainedWords = GameManager.WordManager.GetWordsWithLicense();
 
-            for (int i = 0; i < QuestCount; i++)
+            for (int i = 0; i < QUEST_COUNT; i++)
             {
                 QuestionLeo question = GeneratorTask(i, questions);
 

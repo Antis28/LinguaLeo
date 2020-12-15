@@ -31,11 +31,11 @@ namespace LinguaLeo.Scripts.Behaviour
 
         #region Events
 
-        public void OnNotify(object parametr, GameEvents notificationName)
+        public void OnNotify(object parametr, GAME_EVENTS notificationName)
         {
             switch (notificationName)
             {
-                case GameEvents.CorrectAnswer:
+                case GAME_EVENTS.CorrectAnswer:
                     AddScore(priceScore);
                     print("Верный ответ");
                     break;
@@ -49,7 +49,7 @@ namespace LinguaLeo.Scripts.Behaviour
         // Use this for initialization
         private void Start()
         {
-            GameManager.Notifications.AddListener(this, GameEvents.CorrectAnswer);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.CorrectAnswer);
             ResetScore();
         }
 

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Managers;
-using UnityEngine.Serialization;
 
 namespace LinguaLeo.Scripts.Behaviour
 {
@@ -12,17 +11,14 @@ namespace LinguaLeo.Scripts.Behaviour
     {
         #region SerializeFields
 
-        [FormerlySerializedAs("LevelText")]
         [SerializeField]
-        private Text levelText = null;
+        private Text LevelText = null;
 
-        [FormerlySerializedAs("TimeRepeatText")]
         [SerializeField]
-        private Text timeRepeatText = null;
+        private Text TimeRepeatText = null;
 
-        [FormerlySerializedAs("TimeReduceText")]
         [SerializeField]
-        private Text timeReduceText = null;
+        private Text TimeReduceText = null;
 
         #endregion
 
@@ -34,11 +30,11 @@ namespace LinguaLeo.Scripts.Behaviour
 
         #region Events
 
-        void IObserver.OnNotify(object parametr, GameEvents notificationName)
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
             switch (notificationName)
             {
-                case GameEvents.UpdatedLicenseLevel:
+                case GAME_EVENTS.UpdatedLicenseLevel:
                     UpdateInfoWord();
                     break;
             }
@@ -51,8 +47,8 @@ namespace LinguaLeo.Scripts.Behaviour
         // Use this for initialization
         private void Start()
         {
-            GameManager.Notifications.AddListener(this, GameEvents.BuildTask);
-            GameManager.Notifications.AddListener(this, GameEvents.UpdatedLicenseLevel);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
+            GameManager.Notifications.AddListener(this, GAME_EVENTS.UpdatedLicenseLevel);
 
             ComponentsInit();
 
@@ -67,9 +63,9 @@ namespace LinguaLeo.Scripts.Behaviour
 
         private void ComponentsInit()
         {
-            levelText = MyUtilities.FindComponentInGo<Text>("LevelText");
-            timeRepeatText = MyUtilities.FindComponentInGo<Text>("TimeRepeatText");
-            timeReduceText = MyUtilities.FindComponentInGo<Text>("TimeReduceText");
+            LevelText = MyUtilities.FindComponentInGO<Text>("LevelText");
+            TimeRepeatText = MyUtilities.FindComponentInGO<Text>("TimeRepeatText");
+            TimeReduceText = MyUtilities.FindComponentInGO<Text>("TimeReduceText");
         }
 
 
@@ -88,13 +84,13 @@ namespace LinguaLeo.Scripts.Behaviour
         {
             WordLeo word = coreWorkout.GetCurrentWord();
 
-            levelText.text = word.progress.license.ToString();
+            LevelText.text = word.progress.license.ToString();
 
             TimeSpan time = word.GetLicenseValidityTime();
-            timeReduceText.text = MyUtilities.FormatTime(time);
+            TimeReduceText.text = MyUtilities.FormatTime(time);
 
             TimeSpan timeUnlock = word.GetLicenseUnlockForRepeat();
-            timeRepeatText.text = MyUtilities.FormatTime(timeUnlock);
+            TimeRepeatText.text = MyUtilities.FormatTime(timeUnlock);
         }
 
         #endregion

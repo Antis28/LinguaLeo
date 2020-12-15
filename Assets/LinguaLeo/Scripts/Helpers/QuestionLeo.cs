@@ -56,8 +56,8 @@ namespace LinguaLeo.Scripts.Helpers
             int[] numAnswers = {0, 1, 2, 3, 4};
             int indexOfQuestWord = URandom.Range(0, answerCount);
 
-            List<WordLeo> groupWords = GameManager.WordManager.GetAllGroupWords();
-            Stack<WordLeo> tempAnswers = FillRandomStack(groupWords, answerCount);
+            List<WordLeo> GroupWords = GameManager.WordManager.GetAllGroupWords();
+            Stack<WordLeo> tempAnswers = FillRandomStack(GroupWords, answerCount);
             answers = new List<WordLeo>(answerCount);
             foreach (var item in numAnswers)
             {
