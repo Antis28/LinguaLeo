@@ -43,7 +43,17 @@ namespace LinguaLeo.Scripts.Helpers
             if (CountTransform == null)
                 return;
             countText = CountTransform.GetComponent<Text>();
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+            
+            if (GameManager.WordManager.VocabularyReady)
+            {
+                ShowWordCount();
+            }
+            else
+            {
+                GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+            }
+            
+           
         }
 
         #endregion

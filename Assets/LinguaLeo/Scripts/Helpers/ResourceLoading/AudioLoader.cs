@@ -56,7 +56,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
             {
                 var asyncOperation = www.SendWebRequest();
 
-                while (!asyncOperation.isDone) { Task.Yield(); }
+                while (!asyncOperation.isDone) {await  Task.Yield(); }
 
                 if (www.isNetworkError) { Debug.Log(www.error); }
 

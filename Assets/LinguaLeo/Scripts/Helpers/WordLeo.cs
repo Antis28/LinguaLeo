@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
+using JetBrains.Annotations;
 using LinguaLeo.Scripts.Helpers.Licences;
 using LinguaLeo.Scripts.Managers;
 
@@ -16,9 +17,11 @@ namespace LinguaLeo.Scripts.Helpers
 
         public string wordValue;
         public string translations;
+        [NotNull]
         public string pictureUrl;
         public string transcription;
         public string highlightedContext;
+        [NotNull]
         public string soundUrl;
         public string clozefiedContext;
         public string[] groups;

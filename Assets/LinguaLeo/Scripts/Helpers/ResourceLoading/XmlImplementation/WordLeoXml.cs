@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
+using JetBrains.Annotations;
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
 {
@@ -18,7 +20,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
         public string translations;
 
         [XmlAttribute]
-        public string pictureUrl;
+        public string pictureURL;
 
         [XmlAttribute]
         public string transcription;
@@ -27,7 +29,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
         public string highlightedContext;
 
         [XmlAttribute]
-        public string soundUrl;
+        public string soundURL;
 
         [XmlAttribute]
         public string closeFieldContext;
@@ -47,13 +49,13 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
 
             word.groups = coll.groups;
             word.progress = coll.progress;
-            word.transcription = coll.transcription;
-            word.translations = coll.translations;
-            word.clozefiedContext = coll.closeFieldContext;
-            word.highlightedContext = coll.highlightedContext;
-            word.pictureUrl = coll.pictureUrl;
-            word.soundUrl = coll.soundUrl;
-            word.wordValue = coll.wordValue;
+            word.transcription = coll.transcription ?? string.Empty;
+            word.translations = coll.translations ?? string.Empty;
+            word.clozefiedContext = coll.closeFieldContext ?? string.Empty;
+            word.highlightedContext = coll.highlightedContext ?? string.Empty;
+            word.pictureUrl = coll.pictureURL ?? string.Empty;
+            word.soundUrl = coll.soundURL ?? string.Empty;
+            word.wordValue = coll.wordValue ?? string.Empty;
 
             return word;
         }
@@ -68,8 +70,8 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
                 translations = coll.translations,
                 closeFieldContext = coll.clozefiedContext,
                 highlightedContext = coll.highlightedContext,
-                pictureUrl = coll.pictureUrl,
-                soundUrl = coll.soundUrl,
+                pictureURL = coll.pictureUrl,
+                soundURL = coll.soundUrl,
                 wordValue = coll.wordValue
             };
         }

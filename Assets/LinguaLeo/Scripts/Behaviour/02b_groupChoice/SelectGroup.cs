@@ -74,7 +74,11 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
         /// </summary>
         private void Start()
         {
-            if (GameManager.WordManager.VocabularyReady) { StartCoroutine(CreatePanels()); } else
+            if (GameManager.WordManager.VocabularyReady)
+            {
+                StartCoroutine(CreatePanels());
+            }
+            else
             {
                 GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
             }

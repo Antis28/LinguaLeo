@@ -41,10 +41,9 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
         {
             if (!File.Exists(path))
             {
-                Debug.LogWarning("File not found\n" + path);
                 path = "Data/Picture" + "/" + "image-not-found.png";
                 if (!File.Exists(path))
-                    throw new FileLoadException(path);
+                    throw new FileLoadException("Sprite File not found\n" + path);
             }
 
             byte[] picture;
