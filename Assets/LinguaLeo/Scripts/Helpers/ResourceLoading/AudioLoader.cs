@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿#region
+
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+
+#endregion
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 {
@@ -18,15 +21,18 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
         #region Private variables
 
         private readonly string audioDirectory;
+        private string fullPath;
         private readonly string resExt = ".ogg";
+
+        private readonly string resFolder = @"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\OGG\";
 
         #endregion
 
         #region Public Methods
 
-        public AudioClip GetAudioClip(string fileName)
+        public Task<AudioClip> GetAudioClip(string fileName)
         {
-            var fullPath = Path.Combine(audioDirectory, fileName + resExt);
+            fullPath = Path.Combine(audioDirectory, fileName + resExt);
             return LoadAudioFromFile(fullPath);
         }
 
@@ -34,16 +40,23 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 
         #region Private Methods
 
-        private AudioClip LoadAudioFromFile(string path)
+        /// <summary>
+        /// Загружает аудио Ogg файл
+        /// функци медленная требуется отдельный поток(корутина).
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        private async Task<AudioClip> LoadAudioFromFile(string path)
         {
             if (!File.Exists(path))
                 throw new FileNotFoundException();
 
-            var fullPath = Path.Combine(audioDirectory, path);
-
             using (var www = UnityWebRequestMultimedia.GetAudioClip(fullPath, AudioType.OGGVORBIS))
             {
-                www.SendWebRequest();
+                var asyncOperation = www.SendWebRequest();
+
+                while (!asyncOperation.isDone) { Task.Yield(); }
 
                 if (www.isNetworkError) { Debug.Log(www.error); }
 
@@ -53,9 +66,10 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 
         #endregion
 
-        public AudioLoader(string PathToRootResources)
+        public AudioLoader(string pathToRootResources)
         {
-            audioDirectory = Path.Combine(PathToRootResources, "Audio", "OGG");
+            audioDirectory = Path.Combine(pathToRootResources, "Audio", "OGG");
+            audioDirectory = resFolder;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace LinguaLeo.Scripts.Helpers.Interfaces
@@ -7,7 +8,7 @@ namespace LinguaLeo.Scripts.Helpers.Interfaces
     {
         #region Public Methods
 
-        AudioClip GetAudioClip(string fileName);
+        Task<AudioClip> GetAudioClip(string fileName);
         Sprite GetCover(string fileName);
         Sprite GetPicture(string fileName);
 

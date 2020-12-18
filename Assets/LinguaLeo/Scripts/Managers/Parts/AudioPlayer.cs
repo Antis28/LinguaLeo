@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
+using JetBrains.Annotations;
 using LinguaLeo._Adapters;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -21,7 +23,7 @@ namespace LinguaLeo.Scripts.Managers.Parts
 
         #region Public variables
 
-        public AudioSource Music
+        private AudioSource Music
         {
             get
             {
@@ -58,8 +60,11 @@ namespace LinguaLeo.Scripts.Managers.Parts
 
         public IEnumerator LoadMusicFromFile()
         {
+            
             if (!File.Exists(lastPath))
                 throw new FileNotFoundException();
+           
+            
             using (UnityWebRequest www =
                 UnityWebRequestMultimedia.GetAudioClip("file://" + lastPath, AudioType.OGGVORBIS))
             {
@@ -71,20 +76,29 @@ namespace LinguaLeo.Scripts.Managers.Parts
                 }
             }
         }
+        
 
         public void SayWord()
         {
-            if (sayClip == null) { StartCoroutine(LoadMusicFromFile()); }
-
+           // if (sayClip == null) { StartCoroutine(LoadMusicFromFile()); }
             StartCoroutine(WaitLoadingAudio());
         }
 
-        public void SetSound(string fileName)
+        public void SetSound([NotNull] string fileName)
         {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                lastPath = string.Empty;
+                sayClip = null;
+                return;
+            }
+
+            lastPath = fileName;
+            sayClip = null;
+               
             //sayClip = Resources.Load<AudioClip>(folder + "/" + fileName);
             //sayClip = ExtractFromBundle();
-            lastPath = resFolder + fileName + resExt;
-            sayClip = null;
+          
         }
 
         #endregion
@@ -122,8 +136,12 @@ namespace LinguaLeo.Scripts.Managers.Parts
 
         private IEnumerator WaitLoadingAudio()
         {
-            while (sayClip == null) { yield return null; }
-
+           var  task =  GameManager.ResourcesLoader.GetAudioClip(lastPath);
+            while (!task.IsCompleted)
+            {
+                yield return null;
+            }
+            sayClip = task.Result;
             Music.PlayOneShot(sayClip);
         }
 

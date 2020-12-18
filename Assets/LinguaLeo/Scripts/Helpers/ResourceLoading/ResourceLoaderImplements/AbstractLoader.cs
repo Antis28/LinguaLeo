@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using UnityEngine;
 using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
@@ -26,7 +29,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 
         #region Public Methods
 
-        public AudioClip GetAudioClip(string fileName)
+        public Task<AudioClip> GetAudioClip(string fileName)
         {
             return audioLoader.GetAudioClip(fileName);
         }
@@ -38,7 +41,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 
         public Sprite GetPicture(string fileName)
         {
-            var normalizeName = ConverterUrlToName(fileName);
+            var normalizeName = ConverterUrlToName(fileName, false);
             return spriteLoader.GetSpriteFromPicture(normalizeName);
         }
 
@@ -66,8 +69,10 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 
         #region Private Methods
 
-        private string ConverterUrlToName(string url, bool withExtension = true)
+        private string ConverterUrlToName([NotNull] string url, bool withExtension = true)
         {
+            if (url == null) throw new ArgumentNullException(nameof(url));
+
             //string url = "http://contentcdn.lingualeo.com/uploads/picture/3466359.png";
             //string url = "http://contentcdn.lingualeo.com/uploads/picture/96-631152008.mp3";
             const string patern = @"(\d+.png$)|(\d+-\d+.mp3$)";
