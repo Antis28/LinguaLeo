@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,11 +10,11 @@ using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
 
 namespace LinguaLeo.Scripts.Helpers
 {
-    public class WordCollection
+    public class WordCollection 
     {
         #region Public variables
 
-        public List<WordLeo> allWords;       // полный словарь
+        public readonly List<WordLeo> allWords;       // полный словарь
         public List<WordLeo> wordsFromGroup; // словарь для набора слов
 
         #endregion
@@ -25,6 +26,12 @@ namespace LinguaLeo.Scripts.Helpers
         #endregion
 
         #region Public Methods
+
+
+        public WordCollection()
+        {
+            allWords = new List<WordLeo>();
+        }
 
         /// <summary>
         /// Извлекает название всех групп
@@ -107,21 +114,7 @@ namespace LinguaLeo.Scripts.Helpers
             wordsFromGroup = new List<WordLeo>();
             var query = allWords.Where(word => word.groups.Contains(groupName));
             foreach (var word in query) { wordsFromGroup.Add(word); }
-        }
-
-        public void SaveToXml(string path)
-        {
-            if (!File.Exists(path))
-                throw new Exception("File not founded");
-
-            using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
-            {
-                //Now save game data
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(WordCollection));
-
-                xmlSerializer.Serialize(stream, this);
-                stream.Close();
-            }
+            
         }
 
         #endregion
@@ -142,5 +135,7 @@ namespace LinguaLeo.Scripts.Helpers
         }
 
         #endregion
+
+  
     }
 }

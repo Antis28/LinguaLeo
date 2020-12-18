@@ -21,7 +21,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
 
         public Sprite GetSpriteFromCovers(string fileName)
         {
-            var fullPath = Path.Combine(coverDirectory, fileName);
+            var fullPath = Path.Combine(coverDirectory,  fileName + fileExtension);
             var sprite = LoadSpriteFromFile(fullPath);
             return sprite;
         }

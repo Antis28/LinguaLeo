@@ -17,6 +17,12 @@ namespace LinguaLeo.Scripts.Managers
 {
     public class WordManager : MonoBehaviour, IObserver
     {
+        #region Public variables
+
+        public bool VocabularyReady { get; private set; } = false;
+
+        #endregion
+
         #region Private variables
 
         private WordCollection vocabulary = null; // полный словарь
@@ -87,11 +93,11 @@ namespace LinguaLeo.Scripts.Managers
             foreach (var word in allWords)
             {
                 word.LicenseExpirationCheck();
-                var AllWorkoutDone = word.AllWorkoutDone();
+                var allWorkoutDone = word.AllWorkoutDone();
                 var license = word.LicenseExists();
 
                 //if (!word.CanbeRepeated())
-                if (AllWorkoutDone || !license)
+                if (allWorkoutDone || !license)
                     continue;
                 wordsByLicense.Add(word);
             }
@@ -146,6 +152,7 @@ namespace LinguaLeo.Scripts.Managers
         {
             while (vocabulary == null) { yield return null; }
 
+            VocabularyReady = true;
             GameManager.Notifications.PostNotification(this, GAME_EVENTS.LoadedVocabulary);
         }
 

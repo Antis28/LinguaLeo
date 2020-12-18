@@ -60,7 +60,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
             {
                 case GAME_EVENTS.LoadedVocabulary:
                     Debug.Log("Start Size");
-                    StartCoroutine(CreatePanels());
+
                     break;
             }
         }
@@ -74,7 +74,10 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
         /// </summary>
         private void Start()
         {
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+            if (GameManager.WordManager.VocabularyReady) { StartCoroutine(CreatePanels()); } else
+            {
+                GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+            }
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
@@ -7,28 +8,44 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
     /// Корневой элемент Xml файла словаря.
     /// </summary>
     [XmlRoot("Root")]
-    public class WordCollectionXml
+    public class WordCollectionXml 
     {
         #region Public variables
 
         [XmlArray("LeoWords")]
         [XmlArrayItem("word")]
-        public List<WordLeo> allWords; // полный словарь
+        public List<WordLeoXml> allWords; // полный словарь
 
         #endregion
 
         #region Public Methods
 
-        public static explicit operator WordCollection(WordCollectionXml param)
+        public static explicit operator WordCollection(WordCollectionXml coll)
         {
-            return new WordCollection {allWords = param.allWords};
+            var collection = new WordCollection();
+
+            foreach (var val in coll.allWords)
+            {
+                collection.allWords.Add((WordLeo)val);
+            }
+
+            return collection;
         }
 
-        public static explicit operator WordCollectionXml(WordCollection param)
+        public static explicit operator WordCollectionXml(WordCollection coll)
         {
-            return new WordCollectionXml {allWords = param.allWords};
+            var collection = new WordCollectionXml();
+
+            foreach (var val in coll.allWords)
+            {
+                collection.allWords.Add((WordLeoXml)val);
+            }
+
+            return collection;
         }
 
         #endregion
+
+    
     }
 }
