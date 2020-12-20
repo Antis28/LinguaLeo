@@ -14,7 +14,7 @@ namespace LinguaLeo.Scripts.Helpers
     {
         #region Public variables
 
-        public readonly List<WordLeo> allWords;       // полный словарь
+        public  List<WordLeo> allWords;       // полный словарь
         public List<WordLeo> wordsFromGroup; // словарь для набора слов
 
         #endregion

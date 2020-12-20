@@ -20,6 +20,11 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
 
         #region Public Methods
 
+        public WordCollectionXml()
+        {
+            allWords = new List<WordLeoXml>();
+        }
+
         public static explicit operator WordCollection(WordCollectionXml coll)
         {
             var collection = new WordCollection();

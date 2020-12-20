@@ -92,7 +92,7 @@ namespace LinguaLeo.Scripts.Workout
             mistakeText = GameObject.Find("MistakeText").GetComponent<Text>();
             translateText = GameObject.Find("TranslateText").GetComponent<Text>();
 
-            answerInputField = GameObject.Find("answerInputField").GetComponent<InputField>();
+            answerInputField = GameObject.Find("AnswerInputField").GetComponent<InputField>();
 
             GameManager.Notifications.AddListener(this, GAME_EVENTS.CoreBuild);
             GameManager.Notifications.AddListener(this, GAME_EVENTS.ShowResult);

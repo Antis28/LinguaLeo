@@ -50,7 +50,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading
         private async Task<AudioClip> LoadAudioFromFile(string path)
         {
             if (!File.Exists(path))
-                throw new FileNotFoundException();
+                throw new FileNotFoundException("Not Found: " + path);
 
             using (var www = UnityWebRequestMultimedia.GetAudioClip(fullPath, AudioType.OGGVORBIS))
             {
