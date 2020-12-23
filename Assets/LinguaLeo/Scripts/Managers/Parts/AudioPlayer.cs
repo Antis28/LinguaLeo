@@ -49,9 +49,6 @@ namespace LinguaLeo.Scripts.Managers.Parts
 
         private readonly string bundleName = "voices";
 
-        private readonly string resFolder = @"M:\My_projects\!_Unity\LinguaLeo\Data\Audio\OGG\";
-        private readonly string resExt = ".ogg";
-
         private string lastPath = null;
 
         #endregion
