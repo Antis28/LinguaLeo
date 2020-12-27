@@ -42,7 +42,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
             var allBundles = 8;
             for (var counter = 1; counter < allBundles; counter++)
             {
-                var progress = (counter * 1f / allBundles) / 0.8f;
+                var progress = counter * 1f / allBundles;
                 OnNotifyLoadingProgress(progress);
                 var pictureBundle = await LoadBundle(assetBundlePictureName + counter);
                 pictureAssetBundles.Add(pictureBundle);
@@ -50,7 +50,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
                 //   var audioBundle = await LoadBundle(assetBundleAudioName + counter);
                 //   audioAssetBundles.Add(audioBundle);
             }
-
+            OnNotifyLoadingProgress(1);
             OnLoadingCompleted();
           
         }
