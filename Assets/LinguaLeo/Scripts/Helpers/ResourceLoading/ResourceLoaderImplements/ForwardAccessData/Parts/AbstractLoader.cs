@@ -29,6 +29,9 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 
         #region Public Methods
 
+        public event Action NotifyLoadingCompleted;
+        public event Action<float> NotifyLoadingProgress;
+
         public Task<AudioClip> GetAudioClip(string fileName)
         {
             return audioLoader.GetAudioClip(fileName);

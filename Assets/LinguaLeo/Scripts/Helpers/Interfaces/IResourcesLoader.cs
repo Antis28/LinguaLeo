@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace LinguaLeo.Scripts.Helpers.Interfaces
 {
     public interface IResourcesLoader
     {
+        event Action NotifyLoadingCompleted;
+        event Action<float>  NotifyLoadingProgress;
+        
         #region Public Methods
 
         Task<AudioClip> GetAudioClip(string fileName);
