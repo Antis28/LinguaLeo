@@ -14,62 +14,133 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
         private readonly string assetBundlePictureName = "pictures_";
         private readonly string assetBundleAudioName = "audio_";
 
+        private readonly int countAudioBundles = 3;
+        private readonly int countPictureBundles = 8;
+
+
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private string folderPath;
 
-        private List<AssetBundle> audioAssetBundles;
-        private List<AssetBundle> pictureAssetBundles;
+        private readonly List<AssetBundle> audioAssetBundles;
+        private readonly List<AssetBundle> pictureAssetBundles;
 
         public event Action NotifyLoadingCompleted;
         public event Action<float> NotifyLoadingProgress;
+        
+        public event Action<string> NotifyProgress;
+        public event Action<float> NotifyBundleProgress;
 
+        private readonly int countAllBundles;
+        private int countLoadingBundles = 0;
+
+        private int GetProgress()
+        {
+            countLoadingBundles++;
+            var t = (int) (countLoadingBundles * 1f / countAllBundles * 100);
+            return t;
+        }
 
         public AssetsBundleLoader()
         {
+            OnNotifyProgress("In AssetsBundleLoader");
             folderPath = Application.persistentDataPath;
-            audioAssetBundles = new List<AssetBundle>(8);
-            pictureAssetBundles = new List<AssetBundle>(8);
-            
-            LoadAllBundles();
+            audioAssetBundles = new List<AssetBundle>(countAudioBundles);
+            pictureAssetBundles = new List<AssetBundle>(countPictureBundles);
+
+            countAllBundles = countAudioBundles + countPictureBundles - 2;
         }
 
-        private async void LoadAsync()
+
+        private AssetBundle SelectPictureBundleByName(string name)
         {
-           
+            int.TryParse(name, out var number);
+            AssetBundle bundle = null;
+
+            if (number >= 533 && number <= 1996049) { bundle = pictureAssetBundles[0]; }
+            else if (number >= 1997605 && number <= 3221199) { bundle = pictureAssetBundles[1]; }
+            else if (number >= 3221200 && number <= 3237929) { bundle = pictureAssetBundles[2]; }
+            else if (number >= 3237930 && number <= 3245633) { bundle = pictureAssetBundles[3]; }
+            else if (number >= 3245637 && number <= 3331632) { bundle = pictureAssetBundles[4]; }
+            else if (number >= 3331970 && number <= 3610003) { bundle = pictureAssetBundles[5]; }
+            else if (number >= 3610055 && number <= 3770132) { bundle = pictureAssetBundles[6]; }
+            else if (number >= 3610055 && number <= 3770132) { bundle = pictureAssetBundles[7]; }
+
+            return bundle;
         }
 
-        private async void LoadAllBundles()
+        private AssetBundle SelectAudioBundleByName(string name)
         {
-            var allBundles = 8;
-            for (var counter = 1; counter < allBundles; counter++)
+            int.TryParse(name, out var number);
+
+            AssetBundle bundle = null;
+/*
+            if (number >= 67631152000 && number <= 35661631152008) { bundle = pictureAssetBundles[0];}
+            else if (number >= 35670631152008 && number <= 91373338631170000) { bundle = pictureAssetBundles[1]; }
+*/
+            return bundle;
+        }
+
+
+        private async Task LoadPictureBundles()
+        {
+            var tasks = new List<Task<AssetBundle>>();
+            for (var counter = 1; counter < countPictureBundles; counter++)
             {
-                var progress = counter * 1f / allBundles;
-                OnNotifyLoadingProgress(progress);
-                var pictureBundle = await LoadBundle(assetBundlePictureName + counter);
-                pictureAssetBundles.Add(pictureBundle);
-
-                //   var audioBundle = await LoadBundle(assetBundleAudioName + counter);
-                //   audioAssetBundles.Add(audioBundle);
+                tasks.Add(LoadBundleAsync(assetBundlePictureName + counter));
             }
-            OnNotifyLoadingProgress(1);
-            OnLoadingCompleted();
-          
+
+            foreach (var task in tasks)
+            {
+                pictureAssetBundles.Add(await task);
+                var progress = GetProgress();
+                OnNotifyLoadingProgress(progress);
+            }
         }
 
-        private async Task<AssetBundle> LoadBundle(string assetBundleName)
+        private async Task LoadAudioBundles()
+        {
+            var tasks = new List<Task<AssetBundle>>();
+            for (var counter = 1; counter < countAudioBundles; counter++)
+            {
+                tasks.Add(LoadBundleAsync(assetBundleAudioName + counter));
+            }
+
+            foreach (var task in tasks)
+            {
+                audioAssetBundles.Add(await task);
+                var progress = GetProgress();
+                OnNotifyLoadingProgress(progress);
+            }
+        }
+
+
+        public async void LoadAllBundlesAsync()
+        {
+            OnNotifyProgress("In LoadPictureBundles");
+            await LoadPictureBundles();
+            OnNotifyProgress("In LoadAudioBundles");
+            await LoadAudioBundles();
+            OnNotifyProgress("In OnLoadingCompleted");
+            OnLoadingCompleted();
+        }
+
+        private async Task<AssetBundle> LoadBundleAsync(string assetBundleName)
         {
             var uri = Path.Combine("file:///" + folderPath, assetBundleName);
 
-            if (File.Exists(uri)) { throw new FileNotFoundException(); }
+            if (File.Exists(uri)) { throw new FileNotFoundException(uri); }
 
             var request = UnityWebRequestAssetBundle.GetAssetBundle(uri, 0);
             var asyncOperation = request.SendWebRequest();
 
             while (!asyncOperation.isDone)
-            { 
-                await  Task.Yield();
+            {
+                
                 var progress = asyncOperation.progress / 0.9f;
+                OnNotifyBundleProgress(progress);
+                await Task.Yield();
             }
-
+            OnNotifyBundleProgress(1);
             return DownloadHandlerAssetBundle.GetContent(request);
         }
 
@@ -87,7 +158,8 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
         {
             if (pictureAssetBundles.Count == 0) { throw new FileLoadException("Bundles Not Loaded!!!!"); }
 
-            return pictureAssetBundles[0].LoadAsset<Sprite>(fileName);
+            var bundle = SelectPictureBundleByName(Path.GetFileNameWithoutExtension(fileName));
+            return bundle.LoadAsset<Sprite>(fileName);
         }
 
         public WordCollection LoadVocabulary()
@@ -118,6 +190,16 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
         private void OnNotifyLoadingProgress(float obj)
         {
             NotifyLoadingProgress?.Invoke(obj);
+        }
+
+        private void OnNotifyProgress(string obj)
+        {
+            NotifyProgress?.Invoke(obj);
+        }
+
+        private void OnNotifyBundleProgress(float obj)
+        {
+            NotifyBundleProgress?.Invoke(obj);
         }
     }
 }
