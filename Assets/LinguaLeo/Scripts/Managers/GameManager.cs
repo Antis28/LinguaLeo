@@ -180,6 +180,7 @@ namespace LinguaLeo.Scripts.Managers
         private void Start()
         {
 #if UNITY_ANDROID
+            StartCoroutine(LoadYourAsyncScene("LoadingScreen"));
             StartCoroutine(LoadYourAsyncScene("01a_Start_Android"));
 #else
             StartCoroutine(LoadYourAsyncScene("01a_Start"));
