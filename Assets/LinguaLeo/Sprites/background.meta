@@ -1,10 +1,8 @@
 fileFormatVersion: 2
 guid: ccc711c86a6d04f4e9980aa454b7ce7d
 folderAsset: yes
-timeCreated: 1524588183
-licenseType: Free
 DefaultImporter:
   externalObjects: {}
   userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+  assetBundleName: sprites/background
+  assetBundleVariant: l

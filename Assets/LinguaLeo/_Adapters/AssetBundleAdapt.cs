@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 
-namespace LinguaLeo.Adapters
+namespace LinguaLeo._Adapters
 {
-    public class AssetBundleAdapt {
+    public class AssetBundleAdapt
+    {
+        #region Public Methods
 
         public static AssetBundle LoadFromFile(string path)
         {
@@ -13,5 +15,7 @@ namespace LinguaLeo.Adapters
         return AssetBundle.CreateFromFile(path);
 #endif
         }
+
+        #endregion
     }
 }

@@ -2,30 +2,64 @@
 using System.Collections.Generic;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers;
-using LinguaLeo.Scripts.Manegers.Parts;
+using LinguaLeo.Scripts.Managers;
+using LinguaLeo.Scripts.Managers.Parts;
 using UnityEngine;
 
 namespace LinguaLeo.Scripts.Workout
 {
     public class BrainStorm : IObserver
     {
+        #region Private variables
+
         private SceneLoader sceneLoader;
         private Workout core;
         private Workout subCore;
         private int stage;
         private WorkoutNames subWorkout;
 
-        public BrainStorm(Workout brainStormCore, SceneLoader sceneLoader)
+        #endregion
+
+        #region Events
+
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
-            core = brainStormCore;
-            this.sceneLoader = sceneLoader;
-
-            ResetStage();
-            Run();
-
-            GameManager.Notifications.AddListener(null, GAME_EVENTS.NotUntrainedWords);
+            switch (notificationName)
+            {
+                case GAME_EVENTS.NotUntrainedWords:
+                    Run();
+                    break;
+            }
         }
+
+        #endregion
+
+        #region Public Methods
+
+        public void CoreInitialization()
+        {
+            if (subCore != null) { GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.CoreBuild); } else
+            {
+                Debug.LogError("core == null");
+                GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.NotUntrainedWords);
+            }
+        }
+
+        public int GetInstanceID()
+        {
+            return UnityEngine.Random.Range(1000, 999999);
+        }
+
+        public Workout GetsSubCore()
+        {
+            return subCore;
+        }
+
+        private void ResetStage()
+        {
+            stage = 0;
+        }
+
         /// <summary>
         /// Поведение тренировки мозгового штурма
         /// </summary>
@@ -63,40 +97,24 @@ namespace LinguaLeo.Scripts.Workout
                     ShowResult();
                     break;
             }
-            if (sceneName != string.Empty)
+
+            if (sceneName != string.Empty) { sceneLoader.LoadLevel(sceneName); }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private bool CoreValid(Workout workout)
+        {
+            if (workout == null || workout.tasks.Count == 0)
             {
-                sceneLoader.LoadLevel(sceneName);
+                //перейти к следующей тренировке
+                Run();
+                return false;
             }
 
-        }
-
-        public Workout GetsSubCore()
-        {
-            return subCore;
-        }
-
-        public void CoreInitialization()
-        {
-            if (subCore != null)
-            {
-                GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.CoreBuild);
-            }
-            else
-            {
-                Debug.LogError("core == null");
-                GameManager.Notifications.PostNotification(subCore, GAME_EVENTS.NotUntrainedWords);
-            }
-        }
-
-        private void ShowResult()
-        {
-            ResetStage();
-            GameManager.SceneLoader.LoadResultWorkOut();
-        }
-
-        public void ResetStage()
-        {
-            stage = 0;
+            return true;
         }
 
         private Workout FilterCore(WorkoutNames currentWorkout)
@@ -112,71 +130,9 @@ namespace LinguaLeo.Scripts.Workout
                     newTasks.Add(task);
                 }
             }
+
             newCore.tasks = newTasks;
             return newCore;
-        }
-
-        /// <summary>
-        /// //Завершает тренировку
-        /// </summary>
-        /// <param name="sceneName"></param>
-        private void TerminateBrainStorm(string sceneName)
-        {
-            if (sceneName != string.Empty)
-            {
-                //Завершает тренировку на следующей итерации
-                stage = 99;
-            }
-            else
-            {
-                //Завершает тренировку            
-                ShowResult();
-            }
-        }
-
-        private string InitSubCore()
-        {
-            subCore = FilterCore(subWorkout);
-
-            if (CoreValid(subCore))
-                return GetSceneName(subWorkout);
-            else
-                return string.Empty;
-        }
-
-        private bool CoreValid(Workout workout)
-        {
-            if (workout == null || workout.tasks.Count == 0)
-            {
-                //перейти к следующей тренировке
-                Run();
-                return false;
-            }
-            return true;
-        }
-
-        private string PrepareWordTranslate()
-        {
-            subWorkout = WorkoutNames.WordTranslate;
-            return InitSubCore();
-        }
-
-        private string PrepareTranslateWord()
-        {
-            subWorkout = WorkoutNames.TranslateWord;
-            return InitSubCore();
-        }
-
-        private string PrepareAudioTest()
-        {
-            subWorkout = WorkoutNames.Audio;
-            return InitSubCore();
-        }
-
-        private string PrepareWordPuzzle()
-        {
-            subWorkout = WorkoutNames.Puzzle;
-            return InitSubCore();
         }
 
         private string GetSceneName(WorkoutNames name)
@@ -206,23 +162,77 @@ namespace LinguaLeo.Scripts.Workout
                     sceneName = "savanna";
                     break;
             }
+
             return sceneName;
         }
 
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        private string InitSubCore()
         {
-            switch (notificationName)
+            subCore = FilterCore(subWorkout);
+
+            if (CoreValid(subCore))
+                return GetSceneName(subWorkout);
+            return string.Empty;
+        }
+
+        private string PrepareAudioTest()
+        {
+            subWorkout = WorkoutNames.Audio;
+            return InitSubCore();
+        }
+
+        private string PrepareTranslateWord()
+        {
+            subWorkout = WorkoutNames.TranslateWord;
+            return InitSubCore();
+        }
+
+        private string PrepareWordPuzzle()
+        {
+            subWorkout = WorkoutNames.Puzzle;
+            return InitSubCore();
+        }
+
+        private string PrepareWordTranslate()
+        {
+            subWorkout = WorkoutNames.WordTranslate;
+            return InitSubCore();
+        }
+
+        private void ShowResult()
+        {
+            ResetStage();
+            GameManager.SceneLoader.LoadResultWorkOut();
+        }
+
+        /// <summary>
+        /// //Завершает тренировку
+        /// </summary>
+        /// <param name="sceneName"></param>
+        private void TerminateBrainStorm(string sceneName)
+        {
+            if (sceneName != string.Empty)
             {
-                case GAME_EVENTS.NotUntrainedWords:
-                    Run();
-                    break;
+                //Завершает тренировку на следующей итерации
+                stage = 99;
+            } else
+            {
+                //Завершает тренировку            
+                ShowResult();
             }
         }
 
-        public int GetInstanceID()
+        #endregion
+
+        public BrainStorm(Workout brainStormCore, SceneLoader sceneLoader)
         {
-            return UnityEngine.Random.Range(1000, 999999);
+            core = brainStormCore;
+            this.sceneLoader = sceneLoader;
+
+            ResetStage();
+            Run();
+
+            GameManager.Notifications.AddListener(null, GAME_EVENTS.NotUntrainedWords);
         }
     }
 }
-

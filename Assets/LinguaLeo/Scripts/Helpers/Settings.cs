@@ -7,14 +7,23 @@ namespace LinguaLeo.Scripts.Helpers
     [XmlRoot("Settings")]
     public class Settings
     {
+        #region Static Fields and Constants
+
         [XmlIgnore]
         private static readonly string folderXml = @"Data/";
+
         [XmlIgnore]
         private static readonly string fileNameXml = "Settings.xml";
+
         [XmlIgnore]
         private static readonly string path = folderXml + fileNameXml;
+
         [XmlIgnore]
         private static Settings instance;
+
+        #endregion
+
+        #region Public variables
 
         /// <summary>
         /// Название последней выбранной группы до выхода из игры.
@@ -25,34 +34,20 @@ namespace LinguaLeo.Scripts.Helpers
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new Settings();
-                }
+                if (instance == null) { instance = new Settings(); }
+
                 return instance;
-
             }
         }
 
-        private Settings() { }
+        #endregion
 
-        public static void SaveToXml()
-        {        
-            using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
-            {
-                //Now save game data
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Settings));
+        #region Public Methods
 
-                xmlSerializer.Serialize(stream, Instance);
-                stream.Close();
-            }
-        }
         public static void LoadFromXml()
         {
-            if (!File.Exists(path))
-            {
-                SaveToXml();
-            }
+            if (!File.Exists(path)) { SaveToXml(); }
+
             Settings result = null;
             using (TextReader Stream = new StreamReader(path, Encoding.UTF8))
             {
@@ -64,5 +59,20 @@ namespace LinguaLeo.Scripts.Helpers
             instance = result;
         }
 
+        public static void SaveToXml()
+        {
+            using (TextWriter stream = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                //Now save game data
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Settings));
+
+                xmlSerializer.Serialize(stream, Instance);
+                stream.Close();
+            }
+        }
+
+        #endregion
+
+        private Settings() { }
     }
 }

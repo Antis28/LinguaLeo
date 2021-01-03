@@ -2,14 +2,20 @@
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-namespace LinguaLeo.Adapters
+namespace LinguaLeo._Adapters
 {
     public class SceneManagerAdapt
     {
+        #region Public Methods
 
-        public static AsyncOperation LoadSceneAsync(string sceneName, LoadSceneMode mode)
+        public static void AddSceneLoaded(UnityAction action)
         {
-            return SceneManager.LoadSceneAsync("wordinfo", LoadSceneMode.Additive);
+            SceneManager.sceneLoaded += (arg0, mode) => action();
+        }
+
+        public static Scene GetActiveScene()
+        {
+            return SceneManager.GetActiveScene();
         }
 
         public static void LoadScene(int sceneBuildIndex)
@@ -22,14 +28,11 @@ namespace LinguaLeo.Adapters
             SceneManager.LoadScene(sceneName);
         }
 
-        public static Scene GetActiveScene()
+        public static AsyncOperation LoadSceneAsync(string sceneName, LoadSceneMode mode)
         {
-            return SceneManager.GetActiveScene();
+            return SceneManager.LoadSceneAsync("wordinfo", LoadSceneMode.Additive);
         }
 
-        public static void AddSceneLoaded(UnityAction action)
-        {
-            SceneManager.sceneLoaded += (arg0, mode) => action();
-        }
+        #endregion
     }
 }

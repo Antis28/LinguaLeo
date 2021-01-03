@@ -10,8 +10,10 @@ namespace LinguaLeo.Scripts.Helpers.XML
     /// <typeparam name="TValue"></typeparam>
     [XmlRoot("Dictionary")]
     public class DictionaryForXml<TKey, TValue>
-                                : Dictionary<TKey, TValue>, IXmlSerializable
+        : Dictionary<TKey, TValue>, IXmlSerializable
     {
+        #region Public Methods
+
         public System.Xml.Schema.XmlSchema GetSchema()
         {
             return null;
@@ -29,15 +31,16 @@ namespace LinguaLeo.Scripts.Helpers.XML
             {
                 reader.ReadStartElement("item");
                 reader.ReadStartElement("key");
-                TKey key = (TKey)keySerializer.Deserialize(reader);
+                TKey key = (TKey) keySerializer.Deserialize(reader);
                 reader.ReadEndElement();
                 reader.ReadStartElement("value");
-                TValue value = (TValue)valueSerializer.Deserialize(reader);
+                TValue value = (TValue) valueSerializer.Deserialize(reader);
                 reader.ReadEndElement();
-                this.Add(key, value);
+                Add(key, value);
                 reader.ReadEndElement();
                 reader.MoveToContent();
             }
+
             reader.ReadEndElement();
         }
 
@@ -45,7 +48,7 @@ namespace LinguaLeo.Scripts.Helpers.XML
         {
             XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
             XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
-            foreach (TKey key in this.Keys)
+            foreach (TKey key in Keys)
             {
                 writer.WriteStartElement("item");
                 writer.WriteStartElement("key");
@@ -58,5 +61,7 @@ namespace LinguaLeo.Scripts.Helpers.XML
                 writer.WriteEndElement();
             }
         }
+
+        #endregion
     }
 }

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/LinguaLeo/Scenes/LoadingScreen.unity
+    guid: 5bf8a02814a49934fbe221a57fc208da
+  - enabled: 1
     path: Assets/LinguaLeo/Scenes/Managers.unity
     guid: 7dbaad1fa5616d24289370a7de2ca102
   - enabled: 1

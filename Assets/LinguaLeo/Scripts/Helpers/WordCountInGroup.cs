@@ -1,5 +1,5 @@
 ﻿using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,30 +7,20 @@ namespace LinguaLeo.Scripts.Helpers
 {
     public class WordCountInGroup : MonoBehaviour, IObserver
     {
+        #region SerializeFields
+
         [SerializeField]
-        WorkoutNames workoutName = WorkoutNames.WordTranslate;
-        Text countText;
+        private WorkoutNames workoutName = WorkoutNames.WordTranslate;
 
-        // Use this for initialization
-        void Start () {
-            Transform CountTransform = transform.Find("CountText");
-            if (CountTransform == null)
-                return;
-            countText = CountTransform.GetComponent<Text>();
-            GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
-        }
-	
-        // Update is called once per frame
-        void Update () {
-		
-        }
+        #endregion
 
-        void ShowWordCount()
-        {
-            if (countText == null)
-                return;
-            countText.text = GameManager.WordManeger.GetUntrainedGroupWords(workoutName).Count.ToString();
-        }
+        #region Private variables
+
+        private Text countText;
+
+        #endregion
+
+        #region Events
 
         void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
         {
@@ -41,5 +31,45 @@ namespace LinguaLeo.Scripts.Helpers
                     break;
             }
         }
+
+        #endregion
+
+        #region Unity events
+
+        // Use this for initialization
+        private void Start()
+        {
+            Transform CountTransform = transform.Find("CountText");
+            if (CountTransform == null)
+                return;
+            countText = CountTransform.GetComponent<Text>();
+            
+            if (GameManager.WordManager.VocabularyReady)
+            {
+                ShowWordCount();
+            }
+            else
+            {
+                GameManager.Notifications.AddListener(this, GAME_EVENTS.LoadedVocabulary);
+            }
+            
+           
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void ShowWordCount()
+        {
+            if (countText == null)
+                return;
+            countText.text = GameManager.WordManager.GetUntrainedGroupWords(workoutName).Count.ToString();
+        }
+
+        // Update is called once per frame
+        private void Update() { }
+
+        #endregion
     }
 }

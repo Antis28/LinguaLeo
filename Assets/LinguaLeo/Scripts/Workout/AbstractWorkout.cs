@@ -1,7 +1,7 @@
 ﻿using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
 using LinguaLeo.Scripts.Helpers.ResourceLoading;
-using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -14,7 +14,7 @@ namespace LinguaLeo.Scripts.Workout
     /// </summary>
     public class AbstractWorkout : MonoBehaviour, IWorkout
     {
-        protected Workout core;
+        #region SerializeFields
 
         [FormerlySerializedAs("WorkoutName")]
         [SerializeField]
@@ -26,20 +26,45 @@ namespace LinguaLeo.Scripts.Workout
         [SerializeField]
         protected Image wordImage = null; // Картинка ассоциаци со словом
 
+        #endregion
+
+        #region Private variables
+
+        protected Workout core;
+
         WorkoutNames IWorkout.WorkoutName => workoutName;
+
+        #endregion
+
+        #region Private Methods
+
+        Workout IWorkout.GetCore()
+        {
+            return core;
+        }
+
+        WordLeo IWorkout.GetCurrentWord()
+        {
+            return core.GetCurrentWord();
+        }
+
+        protected void HideImage()
+        {
+            wordImage.enabled = false;
+        }
 
         protected void SetImage(string fileName)
         {
-            var sprite = GameManager.ResourcesLoader.GetPicture(fileName);
+            var sprite = GameManager.ResourcesManager.GetPicture(fileName);
             wordImage.sprite = sprite;
             wordImage.preserveAspect = true;
         }
 
-        protected void HideImage() { wordImage.enabled = false; }
-        protected void ShowImage() { wordImage.enabled = true; }
+        protected void ShowImage()
+        {
+            wordImage.enabled = true;
+        }
 
-        WordLeo IWorkout.GetCurrentWord() { return core.GetCurrentWord(); }
-
-        Workout IWorkout.GetCore() { return core; }
+        #endregion
     }
 }

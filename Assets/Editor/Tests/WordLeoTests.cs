@@ -8,15 +8,13 @@ namespace Editor.Tests
     [TestFixture]
     public class WordLeoTests
     {
+        #region Private variables
+
         private WordLeo _word;
 
-        [OneTimeSetUp]
-        public void Prepare()
-        {
-            _word = new WordLeo();
-            _word.progress = new WorkoutProgress();
-            _word.progress.license = LicenseLevels.Level_5;
-        }
+        #endregion
+
+        #region Public Methods
 
         [Test]
         public void AddLicenseLevel()
@@ -110,6 +108,14 @@ namespace Editor.Tests
             Assert.Fail();
         }
 
+        [OneTimeSetUp]
+        public void Prepare()
+        {
+            _word = new WordLeo();
+            _word.progress = new WorkoutProgress();
+            _word.progress.license = LicenseLevels.Level_5;
+        }
+
         [Test]
         public void ReduceLicense()
         {
@@ -144,5 +150,7 @@ namespace Editor.Tests
             Assert.AreEqual(_word.progress.audio_word, false);
             Assert.AreEqual(_word.progress.word_puzzle, false);
         }
+
+        #endregion
     }
 }

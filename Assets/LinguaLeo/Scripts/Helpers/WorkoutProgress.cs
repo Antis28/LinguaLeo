@@ -9,16 +9,20 @@ namespace LinguaLeo.Scripts.Helpers
     /// Прогресс изучения слова
     /// на разных тренировках
     /// </summary>
-
     public class WorkoutProgress
     {
+        #region Public variables
+
         [XmlElement("translate")]
         public bool word_translate;
+
         [XmlElement("reverse")]
         public bool translate_word;
+
         //savannah,
         [XmlElement("audio")]
         public bool audio_word;
+
         [XmlElement("puzzle")]
         public bool word_puzzle;
 
@@ -30,15 +34,10 @@ namespace LinguaLeo.Scripts.Helpers
         public DateTime lastRepeat;
         public LicenseLevels license;
 
-        public WorkoutProgress() { }
+        #endregion
 
-        public void ResetAllWorkouts()
-        {
-            word_translate = false;
-            translate_word = false;
-            audio_word = false;
-            word_puzzle = false;
-        }
+        #region Public Methods
+
         /// <summary>
         /// Все тренировки пройдены
         /// </summary>
@@ -76,5 +75,15 @@ namespace LinguaLeo.Scripts.Helpers
                     return false;
             }
         }
+
+        public void ResetAllWorkouts()
+        {
+            word_translate = false;
+            translate_word = false;
+            audio_word = false;
+            word_puzzle = false;
+        }
+
+        #endregion
     }
 }

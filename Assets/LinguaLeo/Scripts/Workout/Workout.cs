@@ -2,7 +2,7 @@
 using System.Linq;
 using LinguaLeo.Scripts.Helpers;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,7 +22,7 @@ namespace LinguaLeo.Scripts.Workout
 
         private List<WordLeo> untrainedWords;
 
-        WorkoutNames workoutName;
+        private WorkoutNames workoutName;
 
         public event UnityAction DrawTask;
 
@@ -83,7 +83,7 @@ namespace LinguaLeo.Scripts.Workout
         private List<QuestionLeo> LoadTasks()
         {
             List<QuestionLeo> questionsTemp = new List<QuestionLeo>(maxQuestCount);
-            untrainedWords = GameManager.WordManeger.GetUntrainedGroupWords(workoutName);
+            untrainedWords = GameManager.WordManager.GetUntrainedGroupWords(workoutName);
             if (untrainedWords.Count == 0)
                 return questionsTemp;
 
@@ -187,7 +187,7 @@ namespace LinguaLeo.Scripts.Workout
         /// </summary>
         /// <param name="i">ID для поиска</param>
         /// <returns></returns>
-        int FindNodeByID(int i)
+        private int FindNodeByID(int i)
         {
             int j = 0;
             foreach (var quest in tasks)

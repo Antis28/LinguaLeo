@@ -1,6 +1,6 @@
 ﻿using System;
 using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Manegers;
+using LinguaLeo.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,25 +8,34 @@ namespace LinguaLeo.Scripts.Behaviour
 {
     public class ResultPanel : MonoBehaviour
     {
+        #region Static Fields and Constants
+
+        private const int BED_RESULT = 0;
+        private const int GOOD_RESULT = 9;
+        private const int BEST_RESULT = 10;
+
+        #endregion
+
+        #region SerializeFields
 
         [SerializeField]
-        Text CaptionText = null;
-        [SerializeField]
-        Text LearnText = null;
-        [SerializeField]
-        Text EatingText = null;
+        private Text CaptionText = null;
 
         [SerializeField]
-        Button[] buttons;
+        private Text LearnText = null;
 
+        [SerializeField]
+        private Text EatingText = null;
 
+        [SerializeField]
+        private Button[] buttons;
 
-        const int BED_RESULT = 0;
-        const int GOOD_RESULT = 9;
-        const int BEST_RESULT = 10;
+        #endregion
+
+        #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             float score = GameManager.ScoreKeeper.GetCorrectAnswers();
             ShowCaption(score);
@@ -36,6 +45,54 @@ namespace LinguaLeo.Scripts.Behaviour
             InitButtons();
             GameManager.ScoreKeeper.ResetScore();
             print("lastWorkout = " + GameManager.SceneLoader.lastWorkout);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void CheckContinueWorkout(Button button)
+        {
+            float score = GameManager.ScoreKeeper.ScoreValue;
+            int wordInGroupRemain = GameManager.WordManager.CountUntrainedWordInGroup();
+            if (wordInGroupRemain > 0)
+            {
+                button.interactable = true;
+                button.onClick.AddListener(() =>
+                                               GameManager.Notifications.PostNotification(
+                                                   this, GAME_EVENTS.ContinueWorkout)
+                );
+                button.gameObject.SetActive(true);
+            } else
+            {
+                button.interactable = false;
+                button.gameObject.SetActive(false);
+            }
+        }
+
+        /// <summary>
+        /// Получить количество изученных слов.
+        /// </summary>
+        /// <param name="score"></param>
+        /// <returns></returns>
+        private String GetStudiedWordsCount(float score)
+        {
+            if (score == 0 || score > 4)
+                return string.Format("{0} слов изучено, ", score);
+            if (score == 1)
+                return string.Format("{0} слово изучено, ", score);
+
+            return string.Format("{0} слова изучено, ", score);
+        }
+
+        /// <summary>
+        /// Получить количество оставшихся слов на изучении.
+        /// </summary>
+        /// <param name="score"></param>
+        private String GetWordsCountLeft()
+        {
+            int wordsLeft = GameManager.WordManager.CountUntrainedWordInGroup();
+            return string.Format("{0} на изучении", wordsLeft);
         }
 
         private void InitButtons()
@@ -50,7 +107,7 @@ namespace LinguaLeo.Scripts.Behaviour
                         break;
                     case "ListWorkoutButton":
                         button.onClick.AddListener(() =>
-                            GameManager.SceneLoader.LoadLevel(SceneNames.trainingСhoice)
+                                                       GameManager.SceneLoader.LoadLevel(SceneNames.trainingСhoice)
                         );
                         break;
                     case "ContinueWorkoutButton":
@@ -60,43 +117,13 @@ namespace LinguaLeo.Scripts.Behaviour
             }
         }
 
-        private void CheckContinueWorkout(Button button)
-        {
-            float score = GameManager.ScoreKeeper.ScoreValue;
-            int wordInGroupRemain = GameManager.WordManeger.CountUntrainWordInGroup();
-            if (wordInGroupRemain > 0)
-            {
-                button.interactable = true;
-                button.onClick.AddListener(() =>
-                    GameManager.Notifications.PostNotification(this, GAME_EVENTS.ContinueWorkout)
-                );
-                button.gameObject.SetActive(true);
-            }
-            else
-            {
-                button.interactable = false;
-                button.gameObject.SetActive(false);
-            }
-        }
-
         private void ShowCaption(float score)
         {
-            if (score == BED_RESULT)
-            {
-                CaptionText.text = "В этот раз не получилось, но продолжай тренироваться!";
-            }
-            else if (score < GOOD_RESULT)
-            {
-                CaptionText.text = "Неплохо, но есть над чем поработать.";
-            }
-            else if (score == GOOD_RESULT)
-            {
-                CaptionText.text = "Круто, отличный результат!";
-            }
-            else if (score == BEST_RESULT)
-            {
-                CaptionText.text = "Поздравляем, отличный результат!";
-            }
+            if (score == BED_RESULT
+            ) { CaptionText.text = "В этот раз не получилось, но продолжай тренироваться!"; } else if (
+                score < GOOD_RESULT) { CaptionText.text = "Неплохо, но есть над чем поработать."; } else if (
+                score == GOOD_RESULT) { CaptionText.text = "Круто, отличный результат!"; } else if (score == BEST_RESULT
+            ) { CaptionText.text = "Поздравляем, отличный результат!"; }
         }
 
         private void ShowLearn(float score)
@@ -106,40 +133,15 @@ namespace LinguaLeo.Scripts.Behaviour
                 Debug.LogError("score = " + score);
                 score = 0;
             }
+
             var resultText = GetStudiedWordsCount(score);
             resultText += GetWordsCountLeft();
             LearnText.text = resultText;
         }
 
-        /// <summary>
-        /// Получить количество изученных слов.
-        /// </summary>
-        /// <param name="score"></param>
-        /// <returns></returns>
-        private String GetStudiedWordsCount(float score)
-        {
-            if (score == 0 || score > 4)
-                return string.Format("{0} слов изучено, ", score);
-            else if (score == 1)
-                return string.Format("{0} слово изучено, ", score);
-
-            return string.Format("{0} слова изучено, ", score);
-        }
-
-        /// <summary>
-        /// Получить количество оставшихся слов на изучении.
-        /// </summary>
-        /// <param name="score"></param>
-        private String GetWordsCountLeft()
-        {
-            int wordsLeft = GameManager.WordManeger.CountUntrainWordInGroup();
-            return string.Format("{0} на изучении", wordsLeft);
-        }
-
-
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (Input.GetKey(KeyCode.A))
             {
@@ -148,6 +150,8 @@ namespace LinguaLeo.Scripts.Behaviour
                 ShowLearn(GameManager.ScoreKeeper.ScoreValue);
             }
         }
+
+        #endregion
     }
 }
 

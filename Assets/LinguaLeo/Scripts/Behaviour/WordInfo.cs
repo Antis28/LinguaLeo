@@ -1,25 +1,51 @@
 ﻿using System;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Manegers;
 using UnityEngine;
 using UnityEngine.UI;
 using LinguaLeo.Scripts.Helpers;
+using LinguaLeo.Scripts.Managers;
 
 namespace LinguaLeo.Scripts.Behaviour
 {
     public class WordInfo : MonoBehaviour, IObserver
     {
-        [SerializeField]
-        Text LevelText = null;
-        [SerializeField]
-        Text TimeRepeatText = null;
-        [SerializeField]
-        Text TimeReduceText = null;
+        #region SerializeFields
 
-        Workout.Workout coreWorkout = null;
+        [SerializeField]
+        private Text LevelText = null;
+
+        [SerializeField]
+        private Text TimeRepeatText = null;
+
+        [SerializeField]
+        private Text TimeReduceText = null;
+
+        #endregion
+
+        #region Private variables
+
+        private Workout.Workout coreWorkout = null;
+
+        #endregion
+
+        #region Events
+
+        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
+        {
+            switch (notificationName)
+            {
+                case GAME_EVENTS.UpdatedLicenseLevel:
+                    UpdateInfoWord();
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Unity events
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             GameManager.Notifications.AddListener(this, GAME_EVENTS.BuildTask);
             GameManager.Notifications.AddListener(this, GAME_EVENTS.UpdatedLicenseLevel);
@@ -31,6 +57,10 @@ namespace LinguaLeo.Scripts.Behaviour
             UpdateInfoWord();
         }
 
+        #endregion
+
+        #region Private Methods
+
         private void ComponentsInit()
         {
             LevelText = MyUtilities.FindComponentInGO<Text>("LevelText");
@@ -38,7 +68,17 @@ namespace LinguaLeo.Scripts.Behaviour
             TimeReduceText = MyUtilities.FindComponentInGO<Text>("TimeReduceText");
         }
 
-   
+
+        private string TimeSpanToString(TimeSpan time)
+        {
+            if (time.TotalDays > 1)
+                return (int) time.TotalDays + " дн. " + time.Hours + " ч.";
+            if (time.TotalHours > 1)
+                return (int) time.TotalHours + " ч. " + time.Minutes + " мин.";
+
+            return (int) time.TotalMinutes + " мин.";
+        }
+
 
         private void UpdateInfoWord()
         {
@@ -53,26 +93,6 @@ namespace LinguaLeo.Scripts.Behaviour
             TimeRepeatText.text = MyUtilities.FormatTime(timeUnlock);
         }
 
-    
-
-        private string TimeSpanToString(TimeSpan time)
-        {
-            if (time.TotalDays > 1)
-                return (int)time.TotalDays + " дн. " + (int)time.Hours + " ч.";
-            if (time.TotalHours > 1)
-                return (int)time.TotalHours + " ч. " + (int)time.Minutes + " мин.";
-
-            return (int)time.TotalMinutes + " мин.";
-        }
-
-        void IObserver.OnNotify(object parametr, GAME_EVENTS notificationName)
-        {
-            switch (notificationName)
-            {
-                case GAME_EVENTS.UpdatedLicenseLevel:
-                    UpdateInfoWord();
-                    break;
-            }
-        }
+        #endregion
     }
 }
