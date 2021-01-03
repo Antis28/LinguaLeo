@@ -125,7 +125,7 @@ namespace LinguaLeo.Scripts.Workout
 
         public void SetImage(string fileName)
         {
-            var sprite = GameManager.ResourcesLoader.GetPicture(fileName);
+            var sprite = GameManager.ResourcesManager.GetPicture(fileName);
             wordImage.sprite = sprite;
             wordImage.preserveAspect = true;
         }
