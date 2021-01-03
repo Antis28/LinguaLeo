@@ -47,7 +47,7 @@ namespace LinguaLeo.Scripts.Managers.Parts
         /// <returns>описание наборов слов</returns>
         public List<WordGroup> GetGroupNames()
         {
-            return groupNames ?? (groupNames = GameManager.ResourcesLoader.LoadWordGroup());
+            return groupNames ?? (groupNames = GameManager.ResourcesManager.GetWordGroup());
         }
 
         /// <summary>

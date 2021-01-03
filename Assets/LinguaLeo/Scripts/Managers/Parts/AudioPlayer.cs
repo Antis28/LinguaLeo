@@ -78,7 +78,7 @@ namespace LinguaLeo.Scripts.Managers.Parts
         public void SayWord()
         {
            // if (sayClip == null) { StartCoroutine(LoadMusicFromFile()); }
-            StartCoroutine(WaitLoadingAudio());
+           // StartCoroutine(WaitLoadingAudio());
         }
 
         public void SetSound([NotNull] string fileName)
@@ -131,15 +131,10 @@ namespace LinguaLeo.Scripts.Managers.Parts
             path = bundleFolder + bundleName;
         }
 
-        private IEnumerator WaitLoadingAudio()
+        private void WaitLoadingAudio()
         {
-           var  task =  GameManager.ResourcesLoader.GetAudioClip(lastPath);
-            while (!task.IsCompleted)
-            {
-                yield return null;
-            }
-            sayClip = task.Result;
-            Music.PlayOneShot(sayClip);
+             sayClip =  GameManager.ResourcesManager.GetAudioClip(lastPath);
+             Music.PlayOneShot(sayClip);
         }
 
         #endregion

@@ -159,7 +159,7 @@ namespace LinguaLeo.Scripts.Managers
 
         private void LoadVocabulary()
         {
-            if (vocabulary == null) { vocabulary = GameManager.ResourcesLoader.LoadVocabulary(); }
+            if (vocabulary == null) { vocabulary = GameManager.ResourcesManager.GetVocabulary(); }
 
             groupWords = new GroupWords(vocabulary);
             SceneManagerAdapt.AddSceneLoaded(SceneManager_sceneLoaded);
@@ -168,7 +168,7 @@ namespace LinguaLeo.Scripts.Managers
 
         private void SaveVocabulary()
         {
-            GameManager.ResourcesLoader.SaveVocabulary(vocabulary);
+            GameManager.ResourcesManager.SaveVocabulary(vocabulary);
         }
 
         private void SceneManager_sceneLoaded()

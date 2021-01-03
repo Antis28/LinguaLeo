@@ -1,4 +1,11 @@
-﻿using LinguaLeo.Scripts.Helpers.Interfaces;
+﻿// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
+#region
+
+using LinguaLeo.Scripts.Helpers.Interfaces;
+
+#endregion
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
 {
@@ -18,6 +25,12 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
 
         #region Public Methods
 
+        public VocabularyFromXml(string path)
+        {
+            this.path = path;
+            xmlSerialization = new XmlSerialization<WordCollectionXml>();
+        }
+
         public WordCollection Load()
         {
             return (WordCollection) xmlSerialization.Load(path);
@@ -29,12 +42,6 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
         }
 
         #endregion
-
-        public VocabularyFromXml(string path)
-        {
-            this.path = path;
-            xmlSerialization = new XmlSerialization<WordCollectionXml>();
-        }
 
 
         /*

@@ -13,6 +13,23 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
     {
         #region Public Methods
 
+        public T LoadFromString(string xmlString)
+        {
+            T result;
+
+            using (TextReader stream = new StringReader(xmlString)) 
+            {
+                var serializer = new XmlSerializer(typeof(T));
+                result = serializer.Deserialize(stream) as T;
+                stream.Close();
+
+                if (result == null)
+                    throw new SerializationException("File not Deserialize");
+            }
+
+            return result;
+        }
+        
         public T Load(string path)
         {
             if (!File.Exists(path))

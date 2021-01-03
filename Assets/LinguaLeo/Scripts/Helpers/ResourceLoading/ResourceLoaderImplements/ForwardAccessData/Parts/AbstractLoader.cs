@@ -1,12 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using LinguaLeo.Scripts.Helpers.Interfaces;
-using UnityEngine;
 using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
+using UnityEngine;
+
+#endregion
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 {
@@ -17,6 +21,13 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
     /// </summary>
     public abstract class AbstractLoader : IResourcesLoader
     {
+        #region Public variables
+
+        public event Action NotifyLoadingCompleted;
+        public event Action<float> NotifyLoadingProgress;
+
+        #endregion
+
         #region Private variables
 
         protected string pathToRootResources = string.Empty;
@@ -28,9 +39,6 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
         #endregion
 
         #region Public Methods
-
-        public event Action NotifyLoadingCompleted;
-        public event Action<float> NotifyLoadingProgress;
 
         public Task<AudioClip> GetAudioClip(string fileName)
         {

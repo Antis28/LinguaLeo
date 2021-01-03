@@ -46,7 +46,7 @@ namespace LinguaLeo.Scripts.Managers
 
         private static WorkoutManager workoutManager = null;
 
-        private static IResourcesLoader resourcesLoader = null;
+        private static ExternalResourceManager resourcesLoader = null;
 
         #endregion
 
@@ -171,7 +171,7 @@ namespace LinguaLeo.Scripts.Managers
             }
         }
 
-        public static IResourcesLoader ResourcesLoader => resourcesLoader ?? (resourcesLoader = new DataLoader());
+        public static ExternalResourceManager ResourcesManager => resourcesLoader ?? (resourcesLoader = new ExternalResourceManager());
 
         #endregion
 

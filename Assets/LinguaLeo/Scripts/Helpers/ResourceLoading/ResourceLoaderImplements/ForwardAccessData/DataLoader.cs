@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#region
+
 using System.IO;
 using UnityEngine;
+
+#endregion
 
 namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 {
@@ -12,6 +15,16 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
         #region Private variables
 
         private readonly string folderXml = @"Data";
+
+        #endregion
+
+        #region Public Methods
+
+        public DataLoader()
+        {
+            SelectPathByPlatform();
+            InitAllLoaders();
+        }
 
         #endregion
 
@@ -29,11 +42,5 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
         }
 
         #endregion
-
-        public DataLoader()
-        {
-            SelectPathByPlatform();
-            InitAllLoaders();
-        }
     }
 }
