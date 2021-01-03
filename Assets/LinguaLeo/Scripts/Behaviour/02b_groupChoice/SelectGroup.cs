@@ -224,7 +224,7 @@ namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
             UpdateContentHeight(groups.Count);
             foreach (var item in groups)
             {
-                var sprite = GameManager.ResourcesLoader.GetCover(item.pictureName);
+                var sprite = GameManager.ResourcesManager.GetCover(item.pictureName);
 
                 CreateCard(sprite, item.name, item.wordCount);
                 yield return null;

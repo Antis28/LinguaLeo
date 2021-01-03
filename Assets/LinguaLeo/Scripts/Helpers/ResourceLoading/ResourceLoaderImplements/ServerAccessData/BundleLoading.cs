@@ -22,6 +22,9 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements.Ser
 
         [SerializeField]
         private Image imgProgressLoading;
+        
+        [SerializeField]
+        private Image imgPanel;
 
         [SerializeField]
         private UnityEvent PictureComplete;
@@ -50,7 +53,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements.Ser
         {
             LoadBundlesToMemory();
 
-           // ShowAsync();
+            ShowAsync();
         }
 
         private async void ShowAsync()
@@ -78,6 +81,8 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements.Ser
             loader.NotifyLoadingCompleted += () =>
             {
                 print("LoadingCompleted");
+                imgPanel.sprite = loader.GetPicture("1308");
+                imgPanel.color = Color.white;
             };
             loader.NotifyLoadingProgress += f =>
             {

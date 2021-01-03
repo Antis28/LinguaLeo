@@ -83,6 +83,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
             if (pictureAssetBundles.Count == 0) { throw new FileLoadException("Bundles Not Loaded!!!!"); }
 
             var bundle = SelectPictureBundleByName(Path.GetFileNameWithoutExtension(fileName));
+            
             return bundle.LoadAsset<Sprite>(fileName);
         }
 
@@ -92,7 +93,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
             try
             {
                 await LoadPictureBundles();
-                await LoadAudioBundles();
+             //   await LoadAudioBundles();
 
                 OnLoadingCompleted();
             } catch (Exception e)
@@ -142,11 +143,11 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 
         private async Task LoadAudioBundles()
         {
-            OnNotifyProgress("In LoadAudioBundles");
             for (var counter = 1; counter < quantityAudioBundles; counter++)
             {
                 audioAssetBundles.Add(await LoadBundleAsync(assetBundleAudioName + counter));
             }
+            OnNotifyProgress("In LoadAudioBundles");
         }
 
         private async Task<AssetBundle> LoadBundleAsync(string assetBundleName)
@@ -160,7 +161,7 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
             {
                 var progress = asyncOperation.progress / 0.9f;
                 OnNotifyBundleProgress(progress);
-                OnNotifyProgress($"Bundle {assetBundleName} - progress = {progress}");
+              //  OnNotifyProgress($"Bundle {assetBundleName} - progress = {progress}");
                 await Task.Yield();
             }
 
@@ -175,11 +176,11 @@ namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
 
         private async Task LoadPictureBundles()
         {
-            OnNotifyProgress("In LoadPictureBundles");
             for (var counter = 1; counter < quantityPictureBundles; counter++)
             {
                 pictureAssetBundles.Add(await LoadBundleAsync(assetBundlePictureName + counter));
             }
+            OnNotifyProgress("In LoadPictureBundles");
         }
 
         private async Task LoadVocabularyBundles()
