@@ -3,11 +3,11 @@
 
 #region
 
-using LinguaLeo.Scripts.Helpers.Interfaces;
+using Helpers.Interfaces;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.AssetBundleImplementation
+namespace Helpers.ResourceLoading.ResourceLoaderImplements.ServerAccessData.AssetBundleImplementation
 {
     public class VocabularyFromBundle : IVocabularyManager<WordCollection>
     {

@@ -7,14 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
+using Helpers.ResourceLoading.XmlImplementation;
 using UnityEngine;
 using UnityEngine.Networking;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
+namespace Helpers.ResourceLoading.ResourceLoaderImplements.ServerAccessData
 {
     public sealed class AssetsBundleLoader
     {

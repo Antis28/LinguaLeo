@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Managers;
-using LinguaLeo.Scripts.Managers.Parts;
+using Helpers;
+using Helpers.Interfaces;
+using Managers;
+using Managers.Parts;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Workout
+namespace Workout
 {
     public class BrainStorm : IObserver
     {

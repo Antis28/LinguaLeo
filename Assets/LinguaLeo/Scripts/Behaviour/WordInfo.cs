@@ -1,11 +1,11 @@
 ﻿using System;
-using LinguaLeo.Scripts.Helpers.Interfaces;
+using Helpers;
+using Helpers.Interfaces;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
-using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Managers;
 
-namespace LinguaLeo.Scripts.Behaviour
+namespace Behaviour
 {
     public class WordInfo : MonoBehaviour, IObserver
     {

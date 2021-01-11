@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
+namespace Helpers.ResourceLoading.XmlImplementation
 {
     /// <summary>
     /// Сохраняет и загружает Xml файл сеапилизацией

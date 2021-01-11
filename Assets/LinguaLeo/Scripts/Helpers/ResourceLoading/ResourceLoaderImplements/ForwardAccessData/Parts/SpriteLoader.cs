@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading
+namespace Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData.Parts
 {
     public class SpriteLoader
     {

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
-using LinguaLeo.Scripts.Helpers;
+using Helpers;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Managers.Parts
+namespace Managers.Parts
 {
     public class GroupWords
     {

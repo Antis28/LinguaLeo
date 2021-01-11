@@ -1,11 +1,12 @@
 ﻿#region
 
 using System.IO;
+using Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData.Parts;
 using UnityEngine;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
+namespace Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData
 {
     /// <summary>
     /// Загрузка с диска обычным IO.

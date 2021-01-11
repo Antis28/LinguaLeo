@@ -1,6 +1,6 @@
-﻿using LinguaLeo.Scripts.Managers;
+﻿using Managers;
 
-namespace LinguaLeo.Scripts.Helpers.Interfaces
+namespace Helpers.Interfaces
 {
     public interface IObserver
     {

@@ -7,7 +7,7 @@ using UnityEngine;
 #endif
 
 
-namespace LinguaLeo.Scripts.Managers.Parts
+namespace Managers.Parts
 {
     public class SceneLoader : MonoBehaviour
     {

@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Helpers.Interfaces;
+using Helpers.ResourceLoading.XmlImplementation;
 using JetBrains.Annotations;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
 using UnityEngine;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
+namespace Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData.Parts
 {
     /// <summary>
     /// Базовый загрузчик не имеющий пути.

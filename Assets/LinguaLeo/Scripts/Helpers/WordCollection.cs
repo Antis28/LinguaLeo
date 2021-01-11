@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
 
-namespace LinguaLeo.Scripts.Helpers
+namespace Helpers
 {
     public class WordCollection 
     {

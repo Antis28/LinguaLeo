@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Helpers.Interfaces
+namespace Helpers.Interfaces
 {
     public interface IResourcesLoader
     {

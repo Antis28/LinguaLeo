@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using LinguaLeo.Scripts.Helpers.Interfaces;
+using Helpers.Interfaces;
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
+namespace Helpers.ResourceLoading.XmlImplementation
 {
     public class WordGroupFromXml : IVocabularyManager<List<WordGroup>>
     {

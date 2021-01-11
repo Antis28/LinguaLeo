@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using JetBrains.Annotations;
 using LinguaLeo._Adapters;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace LinguaLeo.Scripts.Managers.Parts
+namespace Managers.Parts
 {
     [RequireComponent(typeof(AudioSource))]
     public class AudioPlayer : MonoBehaviour

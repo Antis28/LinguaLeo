@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Behaviour._02c_wordView
+namespace Behaviour._02c_wordView
 {
     public class SearchWordCardByChar : MonoBehaviour
     {

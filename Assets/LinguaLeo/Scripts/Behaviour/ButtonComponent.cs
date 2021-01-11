@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Behaviour
+namespace Behaviour
 {
     public class ButtonComponent : MonoBehaviour
     {

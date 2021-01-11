@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using Helpers.Interfaces;
 using LinguaLeo._Adapters;
-using LinguaLeo.Scripts.Helpers.Interfaces;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Managers
+namespace Managers
 {
     /// <summary>
     /// EVENTS MANAGER CLASS - for receiving notifications and notifying listeners -

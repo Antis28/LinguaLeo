@@ -1,12 +1,11 @@
-﻿using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Helpers.ResourceLoading;
-using LinguaLeo.Scripts.Managers;
+﻿using Helpers;
+using Helpers.Interfaces;
+using Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Workout
+namespace Workout
 {
     /// <summary>
     /// Является базой для тренировок.

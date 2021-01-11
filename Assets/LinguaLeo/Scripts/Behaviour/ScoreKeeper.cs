@@ -1,8 +1,8 @@
-﻿using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Managers;
+﻿using Helpers.Interfaces;
+using Managers;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Behaviour
+namespace Behaviour
 {
     public class ScoreKeeper : MonoBehaviour, IObserver
     {

@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
+namespace Helpers.ResourceLoading.XmlImplementation
 {
     /// <summary>
     /// Корневой элемент Xml файла словаря.

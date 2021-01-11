@@ -5,15 +5,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using Helpers;
+using Helpers.Interfaces;
 using LinguaLeo._Adapters;
-using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Managers.Parts;
+using Managers.Parts;
 using UnityEngine;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Managers
+namespace Managers
 {
     public class WordManager : MonoBehaviour, IObserver
     {

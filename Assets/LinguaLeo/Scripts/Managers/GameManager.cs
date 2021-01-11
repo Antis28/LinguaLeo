@@ -1,13 +1,12 @@
 ﻿using System.Collections;
-using LinguaLeo.Scripts.Behaviour;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements;
-using LinguaLeo.Scripts.Managers.Parts;
+using Behaviour;
+using Helpers.ResourceLoading.ResourceLoaderImplements;
+using Managers.Parts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
-namespace LinguaLeo.Scripts.Managers
+namespace Managers
 {
     /// <summary>
     /// Хранилище ссылок на синглтоны

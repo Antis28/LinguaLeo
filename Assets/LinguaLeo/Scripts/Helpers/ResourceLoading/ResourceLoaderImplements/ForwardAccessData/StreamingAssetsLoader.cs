@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+using Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData.Parts;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
+namespace Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData
 {
     public class StreamingAssetsLoader : AbstractLoader
     {

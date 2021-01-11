@@ -1,9 +1,9 @@
-﻿using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Managers;
+﻿using Helpers.Interfaces;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Helpers
+namespace Helpers
 {
     public class WordCountInGroup : MonoBehaviour, IObserver
     {

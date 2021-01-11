@@ -1,4 +1,4 @@
-﻿namespace LinguaLeo.Scripts.Helpers
+﻿namespace Helpers
 {
     public class SceneNames
     {

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Xml.Serialization;
+using Helpers.Licences;
 using JetBrains.Annotations;
-using LinguaLeo.Scripts.Helpers.Licences;
-using LinguaLeo.Scripts.Managers;
+using Managers;
 
-namespace LinguaLeo.Scripts.Helpers
+namespace Helpers
 {
     /// <summary>
     /// Mapping Class

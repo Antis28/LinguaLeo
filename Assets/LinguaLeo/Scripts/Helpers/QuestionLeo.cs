@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using LinguaLeo.Scripts.Managers;
+using Managers;
 using URandom = UnityEngine.Random;
 
-namespace LinguaLeo.Scripts.Helpers
+namespace Helpers
 {
     public class QuestionLeo : IEquatable<QuestionLeo>
     {

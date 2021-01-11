@@ -1,4 +1,4 @@
-﻿namespace LinguaLeo.Scripts.Helpers.Interfaces
+﻿namespace Helpers.Interfaces
 {
     internal interface IWorkout
     {

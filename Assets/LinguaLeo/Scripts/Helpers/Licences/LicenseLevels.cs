@@ -1,4 +1,4 @@
-﻿namespace LinguaLeo.Scripts.Helpers.Licences
+﻿namespace Helpers.Licences
 {
     public enum LicenseLevels
     {

@@ -1,15 +1,15 @@
 ﻿#region
 
-using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Managers;
-using LinguaLeo.Scripts.Workout;
+using Helpers;
+using Helpers.Interfaces;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
+using Workout;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Behaviour
+namespace Behaviour
 {
     public class AnswerResult : MonoBehaviour, IObserver
     {

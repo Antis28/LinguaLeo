@@ -8,7 +8,7 @@ using UnityEngine;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Helpers.Interfaces
+namespace Helpers.Interfaces
 {
     public interface IExternalResourceManager
     {

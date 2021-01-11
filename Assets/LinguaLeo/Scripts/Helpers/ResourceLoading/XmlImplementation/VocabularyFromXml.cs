@@ -3,11 +3,11 @@
 
 #region
 
-using LinguaLeo.Scripts.Helpers.Interfaces;
+using Helpers.Interfaces;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
+namespace Helpers.ResourceLoading.XmlImplementation
 {
     /// <summary>
     /// Позволяет работать со словорем в XML реализации

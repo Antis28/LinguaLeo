@@ -1,9 +1,9 @@
-﻿using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Managers;
+﻿using Helpers.Interfaces;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Behaviour.Health_Bars
+namespace Behaviour.Health_Bars
 {
     public class HealthbarScript : MonoBehaviour, IObserver
     {

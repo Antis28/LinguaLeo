@@ -1,8 +1,8 @@
 ﻿using LinguaLeo._Adapters;
-using LinguaLeo.Scripts.Managers;
+using Managers;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Behaviour
+namespace Behaviour
 {
     public class QuitHelper : MonoBehaviour
     {

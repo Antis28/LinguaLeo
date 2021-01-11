@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Xml;
-using LinguaLeo.Scripts.Helpers;
+using Helpers;
 using NUnit.Framework;
 
 #pragma warning disable 414
 
-namespace Editor.Tests
+namespace Tests
 {
     /// Правила именования Unit тестов:
     /// {UnitOfWorkName}_{Scenario}_{ExpectedBehaviour}

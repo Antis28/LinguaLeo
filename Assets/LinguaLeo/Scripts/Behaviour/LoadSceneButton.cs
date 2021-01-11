@@ -1,8 +1,8 @@
-﻿using LinguaLeo.Scripts.Managers;
+﻿using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Behaviour
+namespace Behaviour
 {
     public class LoadSceneButton : MonoBehaviour
     {

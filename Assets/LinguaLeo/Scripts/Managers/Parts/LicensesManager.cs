@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Helpers.Interfaces;
+using Helpers;
+using Helpers.Interfaces;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Managers.Parts
+namespace Managers.Parts
 {
     public class LicensesManager : MonoBehaviour, IObserver
     {

@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading
+namespace Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData.Parts
 {
     public class AudioLoader
     {

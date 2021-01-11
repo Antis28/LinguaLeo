@@ -2,14 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using LinguaLeo.Scripts.Behaviour;
+using Behaviour;
 using UnityEngine;
-using UnityEngine.Networking;
 using Random = UnityEngine.Random;
 
-namespace LinguaLeo.Scripts.Helpers
+namespace Helpers
 {
     public class MyUtilities
     {

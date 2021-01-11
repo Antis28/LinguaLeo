@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace LinguaLeo.Scripts.Helpers.XML
+namespace Helpers.XML
 {
     /// <summary>
     /// Словарь способный сериализоваться в xml 

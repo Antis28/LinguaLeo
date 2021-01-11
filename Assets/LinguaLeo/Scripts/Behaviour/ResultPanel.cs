@@ -1,10 +1,10 @@
 ﻿using System;
-using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Managers;
+using Helpers;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Behaviour
+namespace Behaviour
 {
     public class ResultPanel : MonoBehaviour
     {

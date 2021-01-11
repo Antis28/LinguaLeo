@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace LinguaLeo.Scripts.Behaviour
+namespace Behaviour
 {
     public class SymbolicLivesCounter : MonoBehaviour
     {

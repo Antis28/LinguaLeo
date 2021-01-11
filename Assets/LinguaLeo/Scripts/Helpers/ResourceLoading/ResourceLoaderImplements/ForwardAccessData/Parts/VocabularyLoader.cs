@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
+using Helpers.Interfaces;
+using Helpers.ResourceLoading.XmlImplementation;
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading
+namespace Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData.Parts
 {
     public class VocabularyLoader
     {

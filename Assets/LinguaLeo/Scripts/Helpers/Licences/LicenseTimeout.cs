@@ -1,4 +1,4 @@
-﻿namespace LinguaLeo.Scripts.Helpers.Licences
+﻿namespace Helpers.Licences
 {
     /// <summary>
     /// Время через которое лицензия понижается.

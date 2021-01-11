@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using LinguaLeo.Scripts.Behaviour;
-using LinguaLeo.Scripts.Helpers;
+using Behaviour;
+using Helpers;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Managers
+namespace Managers
 {
     public class ButtonsHandler : MonoBehaviour
     {

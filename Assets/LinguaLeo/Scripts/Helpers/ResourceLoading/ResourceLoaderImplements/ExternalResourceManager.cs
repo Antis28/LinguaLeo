@@ -5,16 +5,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation;
+using Helpers.Interfaces;
+using Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData;
+using Helpers.ResourceLoading.ResourceLoaderImplements.ForwardAccessData.Parts;
+using Helpers.ResourceLoading.XmlImplementation;
 using UnityEngine;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements
+namespace Helpers.ResourceLoading.ResourceLoaderImplements
 {
     public class ExternalResourceManager : IExternalResourceManager
     {

@@ -1,9 +1,9 @@
 ﻿using System;
-using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Helpers.Licences;
+using Helpers;
+using Helpers.Licences;
 using NUnit.Framework;
 
-namespace Editor.Tests
+namespace Tests
 {
     [TestFixture]
     public class WordLeoTests

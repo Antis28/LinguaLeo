@@ -1,12 +1,12 @@
-﻿using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Managers;
+﻿using Helpers;
+using Helpers.Interfaces;
+using Managers;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Workout
+namespace Workout
 {
     public class WordPuzzle : AbstractWorkout, IObserver
     {

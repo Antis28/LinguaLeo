@@ -2,7 +2,7 @@
 using System.Text;
 using System.Xml.Serialization;
 
-namespace LinguaLeo.Scripts.Helpers
+namespace Helpers
 {
     [XmlRoot("Settings")]
     public class Settings

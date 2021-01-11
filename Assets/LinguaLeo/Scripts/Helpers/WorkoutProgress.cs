@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
-using LinguaLeo.Scripts.Helpers.Licences;
+using Helpers.Licences;
 using UnityEngine;
 
-namespace LinguaLeo.Scripts.Helpers
+namespace Helpers
 {
     /// <summary>
     /// Прогресс изучения слова

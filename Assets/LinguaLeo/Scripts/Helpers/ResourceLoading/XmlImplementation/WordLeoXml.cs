@@ -1,8 +1,6 @@
-﻿using System;
-using System.Xml.Serialization;
-using JetBrains.Annotations;
+﻿using System.Xml.Serialization;
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.XmlImplementation
+namespace Helpers.ResourceLoading.XmlImplementation
 {
     /// <summary>
     /// Mapping Class

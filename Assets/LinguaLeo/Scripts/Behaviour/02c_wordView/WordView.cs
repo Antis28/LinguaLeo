@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using LinguaLeo.Scripts.Helpers;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Managers;
+using Helpers;
+using Helpers.Interfaces;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LinguaLeo.Scripts.Behaviour._02c_wordView
+namespace Behaviour._02c_wordView
 {
     public class WordView : MonoBehaviour, IObserver
     {

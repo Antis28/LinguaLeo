@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace Editor.Hierarchy {
+namespace Hierarchy {
     public class DirtyAndSaveSceneToRemoveDeprecatedComponents : MonoBehaviour
     {
         #region Private Methods

@@ -3,7 +3,6 @@
 
 #region
 
-using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +10,7 @@ using UnityEngine.UI;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Helpers.ResourceLoading.ResourceLoaderImplements.ServerAccessData
+namespace Helpers.ResourceLoading.ResourceLoaderImplements.ServerAccessData
 {
     public class BundleLoading : MonoBehaviour
     {

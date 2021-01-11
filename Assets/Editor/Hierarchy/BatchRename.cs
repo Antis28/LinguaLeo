@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace Editor.Hierarchy
+namespace Hierarchy
 {
     public class BatchRename : ScriptableWizard
     {

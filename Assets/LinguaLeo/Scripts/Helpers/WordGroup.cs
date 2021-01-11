@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace LinguaLeo.Scripts.Helpers
+namespace Helpers
 {
     public struct WordGroup
     {

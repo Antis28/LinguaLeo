@@ -2,14 +2,14 @@
 
 using System.Collections;
 using System.Linq;
-using LinguaLeo.Scripts.Helpers.Interfaces;
-using LinguaLeo.Scripts.Managers;
+using Helpers.Interfaces;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
 #endregion
 
-namespace LinguaLeo.Scripts.Behaviour._02b_groupChoice
+namespace Behaviour._02b_groupChoice
 {
     /// <summary>
     /// Выбор группы слов для изучения.
