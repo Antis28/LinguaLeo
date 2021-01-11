@@ -21,11 +21,12 @@ namespace SceneSettings
 
         public static implicit operator UnityEditor.SceneManagement.SceneSetup(SceneSetupWrap vWrap)
         {
-            Debug.Log($"Загружено:  {vWrap.PathToScenes}{vWrap.Path.name}.unity");
-            return new UnityEditor.SceneManagement.SceneSetup()
+            Debug.Log($"Загружено: {AssetDatabase.GetAssetPath(vWrap.Path)}");
+                          
+            return new UnityEditor.SceneManagement.SceneSetup
             {
                 
-                path = $"{vWrap.PathToScenes}{vWrap.Path.name}.unity",
+                path = AssetDatabase.GetAssetPath(vWrap.Path),
                 
                 isActive = vWrap.IsActive,
                 isLoaded = vWrap.IsLoaded
@@ -51,6 +52,5 @@ namespace SceneSettings
             set => path = value;
         }
 
-        public string PathToScenes { get; set; }
     }
 }

@@ -52,12 +52,10 @@ namespace SceneSettings
                     EditorGUILayout.IntField("Индекс", setupData.index);
 
                     EditorGUILayout.SelectableLabel("Подсцены:");
-                    setupData.pathToScenes =  EditorGUILayout.TextField("Путь к сценам:", setupData.pathToScenes);
-                    
+
                     foreach (var setupWrap in setupData.setup)
                     {
                         EditorGUILayout.BeginVertical("box");
-                        setupWrap.PathToScenes = setupData.pathToScenes;
 
                         EditorGUILayout.BeginHorizontal();
                         if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(15)))
@@ -97,7 +95,6 @@ namespace SceneSettings
                         IsLoaded = true,
                         IsActive = true
                     }},
-                    pathToScenes = "Assets/Scenes/"
                 };
                 sceneSetupData.setup.Add(item);
             }

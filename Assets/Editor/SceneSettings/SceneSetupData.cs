@@ -13,7 +13,6 @@ namespace SceneSettings
 			public int index;
 			public string name;
 			public SceneSetupWrap[] setup;
-			public string pathToScenes;
 		}
 
 		public List<SetupData> setup;
