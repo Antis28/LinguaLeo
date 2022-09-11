@@ -1,5 +1,6 @@
 # LinguaLeo
-
+[parameters](https://img.shields.io/github/issues/Antis28/Asterion.git)  
+  
 Данный проект будет реализовывать функциональность сайта lingualeo.com для desktop без доступа к интернету.
 
 ### Обновление:
