@@ -1,5 +1,12 @@
 # LinguaLeo
-[parameters](https://img.shields.io/github/issues/Antis28/Asterion.git)  
+![GitHub all releases](https://img.shields.io/github/downloads/Antis28/LinguaLeo/total?color=%23802BCF&logo=GitHub&style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/antis28/LinguaLeo?color=802bcf&style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/code-size/antis28/LinguaLeo?color=802bcf&style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/repo-size/antis28/LinguaLeo?color=802bcf&style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/issues/antis28/LinguaLeo?color=F26BAF&style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/issues-closed/antis28/LinguaLeo?color=42BC14&style=for-the-badge)
+
+
   
 Данный проект будет реализовывать функциональность сайта lingualeo.com для desktop без доступа к интернету.
 
